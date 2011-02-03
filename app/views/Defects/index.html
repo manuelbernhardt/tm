@@ -1,4 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
-Everything is broken.
+Everything is broken. Let's break some more.
+
+<h2>Existing defects</h2>
+#{list items:defects, as:'defect'}
+${defect.title}<br/>
+#{/list}
+
+<h2>New defect</h2>
+
+<form action=@{Defects.create()} method="POST">
+  Title: <input type="text" name="defect.title" id="defect.title"/>
+  <input type="submit" value="Save!"/>
+</form>

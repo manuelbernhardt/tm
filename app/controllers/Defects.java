@@ -1,6 +1,9 @@
 package controllers;
 
+import models.Defect;
 import play.mvc.Controller;
+
+import java.util.List;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -8,7 +11,13 @@ import play.mvc.Controller;
 public class Defects extends Controller {
 
     public static void index() {
-        render();
+        List<Defect> defects = Defect.findAll();
+        render(defects);
+    }
+
+    public static void create(Defect defect) {
+        defect.save();
+        index();
     }
 
 }
