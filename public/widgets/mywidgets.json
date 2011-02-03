@@ -1,0 +1,20 @@
+{
+    "data" : [
+        {
+            "title" : "Announcements",
+            "id" : "widget1",
+            "column" : "first",
+            "editurl" : "widgets/editwidget1.html",
+            "open" : true,
+            "url" : "widgets/widget1.html"
+        },
+        {
+            "title" : "Graph",
+            "id" : "widget2",
+            "column" : "second",
+            "editurl" : "widgets/editwidget2.html",
+            "open" : true,
+            "url" : "widgets/widget2.html"
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/dashboardui.css'}">
+#{/set}
+
+#{set 'moreScripts'}
+<script src="@{'/public/javascripts/jquery.dashboard.min.js'}" type="text/javascript" charset="utf-8"></script>
+#{/set}
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // load the templates
+    $('body').append('<div id="templates"></div>');
+    $("#templates").hide();
+    $("#templates").load("public/templates.html", initDashboard);
+
+    // call for the minimal dashboard
+    function initDashboard() {
+      var dashboard = $('#dashboard').dashboard({
+        json_data : { url: "public/widgets/mywidgets.json" }
+      });
+      dashboard.init();
+    }
+
+  });
+
+</script>
+
+<div id="dashboard" class="dashboard">
+  <div class="layout">
+    <div class="column first column-first"></div>
+    <div class="column second column-second"></div>
+    <div class="column third column-third"></div>
+  </div>
+</div>

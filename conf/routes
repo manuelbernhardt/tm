@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                       Application.index
+GET     /approach                               Application.approach
+
+
+# Tree
+GET     /tree                                   Tree.get
+PUT     /tree/create                            Tree.create
+
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+
+# TODO remove this once we have real widgets
+GET     /widgets/                               staticDir:widgets
+
+
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

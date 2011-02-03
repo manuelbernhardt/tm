@@ -1,0 +1,11 @@
+User(Gwen):
+    firstname: Gwenael
+    lastname: Alizon
+    email: gwenael.alizon@oxiras.com
+    password: gwen
+
+User(Manu):
+    firstname: Manuel
+    lastname: Bernhardt
+    email: manuel.bernhardt@oxiras.com
+    password: manu

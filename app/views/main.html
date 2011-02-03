@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>#{get 'title' /}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+  <link rel="stylesheet" type="text/css" media="screen"
+
+        href="@{'/public/stylesheets/cupertino/jquery-ui-1.8.9.custom.css'}"/>
+
+  #{get 'moreStyles' /}
+  <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+  <script src="@{'/public/javascripts/jquery-1.4.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+  <script src="@{'/public/javascripts/jquery.metadata.js'}" type="text/javascript" charset="utf-8"></script>
+  <script src="@{'/public/javascripts/jquery-ui-1.8.9.custom.min.js'}" type="text/javascript" charset="utf-8"></script>
+  #{get 'moreScripts' /}
+
+
+</head>
+<body>
+
+#{tabs id:'tabs'}
+    #{tab link:@Application.index(), title:'Home', controller:'Application' /}
+    #{tab link:@Application.index(), title:'Requirements', controller:'Requirements' /}
+    #{tab link:@Approach.index(), title:'Test approach', controller:'Approach' /}
+    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Test preparation</span></a></li>
+    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Test execution</span></a></li>
+    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-6"><span>Defects</span></a></li>
+  </ul>
+  <div id="ui-tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" >
+    #{doLayout /}
+  </div>
+  #{/tabs}
+
+</body>
+</html>
