@@ -15,11 +15,5 @@ PUT     /tree/create                            Tree.create
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
-
-# TODO remove this once we have real widgets
-GET     /widgets/                               staticDir:widgets
-
-
-
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
