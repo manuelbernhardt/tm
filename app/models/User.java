@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 @Entity
 public class User extends Model {
 
-    public String firstname;
-    public String lastname;
+    public String firstName;
+    public String lastName;
 
     @Email
     public String email;
@@ -20,10 +20,10 @@ public class User extends Model {
     public String password;
 
 
-    public User(String email, String firstname, String lastname, String password) {
+    public User(String email, String firstName, String lastName, String password) {
         this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
     }
 }
