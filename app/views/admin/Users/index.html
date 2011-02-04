@@ -1,0 +1,18 @@
+#{extends 'admin/main.html' /}
+#{set title:'User administration' /}
+
+<h2>Existing users</h2>
+#{list items:users, as:'user'}
+${user.firstname} ${user.lastname}<br/>
+#{/list}
+
+<h2>New user</h2>
+
+<form action=@{admin.Users.create()} method="POST">
+  First name: <input type="text" name="user.firstname" id="user.firstname"/><br/>
+  Last name: <input type="text" name="user.lastname" id="user.lastname"/><br/>
+  <input type="submit" value="Save!"/>
+</form>
+
+
+

@@ -6,6 +6,8 @@
 GET     /                                       Application.index
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
+GET     /profile                                Profile.index
+GET     /admin/users                            admin.Users.index
 
 # Tree
 GET     /tree                                   Tree.get
