@@ -10,13 +10,10 @@ import java.util.Date;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class Order extends Model {
+public class PurchaseOrder extends Model {
 
     @ManyToOne
-    public Account account;
-
-    @ManyToOne
-    public Product product;
+    public AccountProduct product;
 
     public Integer seats;
 
