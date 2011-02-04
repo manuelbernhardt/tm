@@ -3,6 +3,7 @@ package models;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -10,9 +11,8 @@ import javax.persistence.Entity;
 @Entity
 public class Project extends Model {
 
-    public Account account;
-
-    public Product product;
+    @ManyToOne
+    public AccountProduct product;
 
     public String name;
 
