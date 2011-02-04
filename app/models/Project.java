@@ -12,10 +12,7 @@ import javax.persistence.ManyToOne;
 public class Project extends Model {
 
     @ManyToOne
-    public Account account;
-
-    @ManyToOne
-    public Product product;
+    public AccountProduct product;
 
     public String name;
 
