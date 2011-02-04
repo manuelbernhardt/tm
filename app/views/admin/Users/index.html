@@ -3,14 +3,14 @@
 
 <h2>Existing users</h2>
 #{list items:users, as:'user'}
-${user.firstname} ${user.lastname}<br/>
+${user.firstName} ${user.lastName}<br/>
 #{/list}
 
 <h2>New user</h2>
 
 <form action=@{admin.Users.create()} method="POST">
-  First name: <input type="text" name="user.firstname" id="user.firstname"/><br/>
-  Last name: <input type="text" name="user.lastname" id="user.lastname"/><br/>
+  First name: <input type="text" name="user.firstName" id="user.firstName"/><br/>
+  Last name: <input type="text" name="user.lastName" id="user.lastName"/><br/>
   <input type="submit" value="Save!"/>
 </form>
 

@@ -20,7 +20,7 @@ public class Defect extends Model {
     @ManyToOne
     public User submittedBy;
 
-    @OneToOne
+    @ManyToOne
     public DefectStatus status;
 
 }
