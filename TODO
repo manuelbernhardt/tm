@@ -1,0 +1,3 @@
+== generic
+
+- model class for project-dependent entities, generating also the project + auto-incrementing ID for the entity
