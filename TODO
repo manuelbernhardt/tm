@@ -1,3 +1,25 @@
-== generic
+== model
+- read & experiment with JPA mappings and cascading settings
+
+== generic implementations
 
 - model class for project-dependent entities, generating also the project + auto-incrementing ID for the entity
+  - look again at how the captcha is implemented for security
+
+== view / javascript
+
+- modal windows
+  --> ideally wrap it in some custom tag
+
+- collapsible div
+
+- date picker
+
+- charts
+
+- tree
+  - drag and drop between trees
+
+- timeline widget
+
+- select many (like facebook)
