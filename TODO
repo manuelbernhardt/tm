@@ -1,4 +1,5 @@
 == model
+
 - read & experiment with JPA mappings and cascading settings
 
 == generic implementations
@@ -8,18 +9,18 @@
 
 == view / javascript
 
+try out and create simplified ways of using the following widgets:
 - modal windows
   --> ideally wrap it in some custom tag
-
 - collapsible div
-
 - date picker
-
 - charts
-
 - tree
   - drag and drop between trees
-
 - timeline widget
-
 - select many (like facebook)
+
+
+== optimization (later)
+- optimize javascript loading
+- cache
