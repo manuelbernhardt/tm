@@ -1,12 +1,12 @@
 #{extends 'header.html' /}
 
-<div style="align:left">
+<div style="align:right">
    <a href="@{admin.Users.index}"><span>Administration</span></a>
 </div>
 
 #{tabs id:'tabs'}
-    #{tab link:@Application.index(), title:'Home', controller:'Application' /}
-    #{tab link:@Application.index(), title:'Requirements', controller:'Requirements' /}
+    #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
+    #{tab link:@Dashboard.index(), title:'Requirements', controller:'Requirements' /}
     #{tab link:@Approach.index(), title:'Test approach', controller:'Approach' /}
     <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Test preparation</span></a></li>
     <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Test execution</span></a></li>

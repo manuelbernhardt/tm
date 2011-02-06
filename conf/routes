@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /                                       Application.index
+GET     /                                       Dashboard.index
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
 GET     /profile                                Profile.index
