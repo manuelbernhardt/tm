@@ -17,7 +17,7 @@ public class Users extends Controller {
     }
 
     public static void create(User user) {
-        user.save();
+        user.create();
         index();
     }
 

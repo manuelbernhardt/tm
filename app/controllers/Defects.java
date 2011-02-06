@@ -16,7 +16,7 @@ public class Defects extends Controller {
     }
 
     public static void create(Defect defect) {
-        defect.save();
+        defect.create();
         index();
     }
 
