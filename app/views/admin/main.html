@@ -1,13 +1,13 @@
 #{extends 'header.html' /}
 
-<div style="align:left">
-   <a href="@{admin.Users.index}"><span>Administration</span></a>
+<div style="align:right">
+   <a href="@{Dashboard.index}"><span>Test Management</span></a>
 </div>
 
 #{tabs id:'tabs'}
-    #{tab link:@admin.Users.index(), title:'User administration', controller:'admin.Users' /}
-    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Roles</span></a></li>
-    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Projects</span></a></li>
+    #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
+    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Projects</span></a></li>
+    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Account & Settings</span></a></li>
   </ul>
   <div id="ui-tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" >
     #{doLayout /}
