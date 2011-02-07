@@ -1,59 +1,29 @@
 package models.tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import controllers.tree.NodeType;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class Node {
-    private Long id;
-    private String title;
-    private NodeType type;
-    private Map<String, Object> attributes = new HashMap<String, Object>();
-    private boolean opened = false;
-    private List<Node> children = new ArrayList<Node>();
+public interface Node {
 
-    public Long getId() {
-        return id;
-    }
+    Long getId();
 
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
+    String getName();
+    void setName(String name);
 
-    public List<Node> getChildren() {
-        return children;
-    }
+    NodeType getType();
+    void setType(NodeType type);
 
-    public boolean isOpened() {
-        return opened;
-    }
+    Node getParent();
+    void setParent(Node parent);
 
-    public String getTitle() {
-        return title;
-    }
+    List<? extends Node> getChildren();
+    void addChild(Node child);
 
-    public NodeType getType() {
-        return type;
-    }
-
-    public boolean isContainer() {
-        return type == models.tree.NodeType.FOLDER || type == models.tree.NodeType.ROOT;
-    }
-
-    public Node(Long id, String title, NodeType type) {
-        this.id = id;
-        this.title = title;
-        this.type = type;
-        this.attributes.put("id", "node_" + id);
-        this.attributes.put("rel", type.toString().toLowerCase());
-    }
-
-    public void addChild(Node child) {
-        children.add(child);
-    }
+    boolean isOpened();
+    void setOpened(boolean opened);
 
 }

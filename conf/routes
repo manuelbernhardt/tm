@@ -9,9 +9,10 @@ GET     /profile                                Profile.index
 *       /admin                                  module:crud
 GET     /admin/users                            admin.Users.index
 
+
 # Tree
-GET     /tree                                   Tree.get
-PUT     /tree/create                            Tree.create
+GET     /tree                                   tree.TreeController.getChildren
+POST    /tree/create                            tree.TreeController.create
 
 
 # Map static resources from the /app/public folder to the /public path

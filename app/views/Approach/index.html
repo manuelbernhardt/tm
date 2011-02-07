@@ -11,30 +11,33 @@
 
 
 <!-- the tree container (notice NOT an UL node) -->
+
+<div id="actions">
+  <input type="button" id="create" value="Create folder"/>
+</div>
+
 <div id="tree" class="tree"></div>
 
-
-<!-- JavaScript neccessary for the tree -->
+<!-- JavaScript necessary for the tree -->
 <script type="text/javascript">
   $(function () {
     $("#tree")
             .jstree({
                         // the list of plugins to include
-                        "plugins" : [ "json_data", "types", "themes" ],
-
+                        "plugins" : [ "json_data", "ui", "crrm",  "types", "themes" ],
 
                         // Plugin configuration
 
                         "json_data" : {
                           "ajax" : {
-                            "url" : "@{Tree.get()}",
+                            "url" : "@{tree.TreeController.getChildren()}",
                             // this function is executed in the instance's scope (this refers to the tree instance)
                             // the parameter is the node being loaded (may be -1, 0, or undefined when loading the root nodes)
                             "data" : function (n) {
                               // the result is fed to the AJAX request `data` option
                               return {
-                                "operation" : "get_children",
-                                "id" : n.attr ? n.attr("id").replace("node_", "") : 1
+                                "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+                                "treeId" : "testTree"
                               };
                             }
                           }
@@ -46,7 +49,7 @@
                           "max_children" : -2,
                           // I want only `drive` nodes to be root nodes
                           // This will prevent moving or creating any other type as a root node
-                          "valid_children" : [ "release", "test" ],
+//                          "valid_children" : [ "folder", "default", "root" ],
                           "types" : {
                             // The default type
                             "default" : {
@@ -65,7 +68,7 @@
                               }
                             },
                             "root" : {
-                              "valid_children" : [ "default", "test" ],
+                              "valid_children" : [ "default", "folder" ],
                               "icon" : {
                                 "image" : "@{'public/images/jstree/root.png'}"
                               },
@@ -81,12 +84,12 @@
                     })
             .bind("create.jstree", function (e, data) {
       $.post(
-              "@{Tree.create()}",
+              "@{tree.TreeController.create()}",
       {
-        "operation" : "create_node",
-        "id" : data.rslt.parent.attr("id"),
+        "treeId" : "testTree",
+        "parentId" : data.rslt.parent > -1 ? data.rslt.parent.attr("id") : 1,
         "position" : data.rslt.position,
-        "title" : data.rslt.name,
+        "name" : data.rslt.name,
         "type" : data.rslt.obj.attr("rel")
       },
             function (r) {
@@ -162,4 +165,11 @@
      });
      });*/
   });
+
+  $(function () {
+    $("#create").click(function () {
+      $("#tree").jstree("create", null, "last", {attr:{"rel":"root"}});
+    })
+  });
+
 </script>
