@@ -1,13 +1,21 @@
-== model
+== NOW ==
 
+JStree
+- see why parent is not persisted in the database, when creating a folder inside of a node
+- implement missing methods for removal, renaming, moving, and all the rest
+- implement full example with root, folder, file
+
+
+== model
 - read & experiment with JPA mappings and cascading settings
 
 == generic implementations
-
 - model class for project-dependent entities, generating also the project + auto-incrementing ID for the entity
   - look again at how the captcha is implemented for security
 
 == view / javascript
+
+- validation (ajax + controller)
 
 try out and create simplified ways of using the following widgets:
 - modal windows
