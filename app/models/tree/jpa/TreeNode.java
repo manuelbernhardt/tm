@@ -6,6 +6,7 @@ import models.tree.GenericTreeNode;
 import models.tree.Node;
 import play.db.jpa.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -25,10 +26,10 @@ public class TreeNode extends Model implements GenericTreeNode {
     public boolean opened;
     public String path;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     public AbstractNode abstractNode;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     public TreeNode parent;
 
     public String getName() {

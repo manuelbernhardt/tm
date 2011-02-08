@@ -69,13 +69,12 @@ public abstract class AbstractTree {
         try {
             GenericTreeNode node = storage.getNewGenericTreeNode();
             populateTreeNode(node, parentId, name, type);
-            storage.create(node);
+            node = storage.create(node);
+            System.out.println("************* " + node.getId());
 
             Node concrete = createConcreteNode(name, type);
-            storage.create(concrete);
-
             concrete.setTreeNode(node);
-            storage.update(concrete);
+            concrete = storage.create(concrete);
 
             node.setNode(concrete);
             node = storage.update(node);

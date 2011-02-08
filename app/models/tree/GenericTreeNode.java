@@ -5,6 +5,8 @@ import controllers.tree.NodeType;
 import java.util.List;
 
 /**
+ * A generic node in a tree. Implementations of this interface need to also have an equivalent {@link controllers.tree.TreeStorage} implementation
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public interface GenericTreeNode {

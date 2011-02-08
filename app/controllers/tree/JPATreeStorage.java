@@ -32,12 +32,12 @@ public class JPATreeStorage extends TreeStorage {
 
     @Override
     public Node update(Node node) {
-        return (Node) ((Model) node).merge();
+        return (Node) ((Model) node).save();
     }
 
     @Override
     public GenericTreeNode update(GenericTreeNode node) {
-        return (GenericTreeNode) ((Model) node).merge();
+        return (GenericTreeNode) ((Model) node).save();
     }
 
     @Override
