@@ -21,7 +21,8 @@ public class JPATreeStorage extends TreeStorage {
     @Override
     public Node getNode(Long id, Class<? extends Node> nodeClass) {
         try {
-            return (Node) Java.invokeStatic(nodeClass, "findById", new Object[]{id});
+            GenericModel.JPAQuery query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.id = ?", nodeClass.getSimpleName()), new Object[]{id}});
+            return query.first();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,10 +31,10 @@ public class JPATreeStorage extends TreeStorage {
 
     @Override
     public List<Node> getChildren(Long parentId, Class<? extends Node> nodeClass) {
+        System.out.println("Looking for children of " + parentId);
         try {
-            System.out.println("parent " + parentId);
             GenericModel.JPAQuery query = null;
-            if(parentId == -1) {
+            if (parentId == null || parentId == -1) {
                 query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.parent is null", nodeClass.getSimpleName()), new Object[]{}});
             } else {
                 query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.parent.id = ?", nodeClass.getSimpleName()), new Object[]{parentId}});

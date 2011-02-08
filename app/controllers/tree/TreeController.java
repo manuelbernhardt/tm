@@ -64,6 +64,8 @@ public class TreeController extends Controller {
     }
 
     public static void create(String treeId, Long parentId, String parentType, Long position, String name, String type) {
+
+        System.out.println("parentId " + parentId);
         NodeType nt = null;
         NodeType pt = null;
         if (type == null) {
@@ -74,15 +76,15 @@ public class TreeController extends Controller {
         if (parentType != null) {
             pt = AbstractTree.getNodeType(parentType);
         }
-        Node node = getTree(treeId).createNode(parentId, pt, position, name, nt);
 
+        Node node = getTree(treeId).createNode(parentId, pt, position, name, nt);
         JsonObject status = new JsonObject();
-        status.addProperty("status", 1);
-        status.addProperty("id", node.getId());
-//        JsonObject attr = new JsonObject();
-//        attr.addProperty("rel", node.getName());
-//        attr.addProperty("title", nt.getName());
-//        status.add("attr", attr);
+        if(node == null) {
+            status.addProperty("status", 0);
+        } else {
+            status.addProperty("status", 1);
+            status.addProperty("id", node.getId());
+        }
         renderJSON(status.toString());
 
     }

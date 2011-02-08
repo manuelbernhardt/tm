@@ -67,7 +67,11 @@ public abstract class AbstractTree {
             Constructor c = type.getNodeClass().getDeclaredConstructor();
             Node n = (Node) c.newInstance();
             if(parentType != null) {
-                n.setParent(getNode(parentId, parentType.getNodeClass()));
+                Node parent = getNode(parentId, parentType.getNodeClass());
+                if(parent == null) {
+                    throw new RuntimeException("Could not find parent node with ID " + parentId);
+                }
+                n.setParent(parent);
             }
             n.setName(name);
             // TODO configurable

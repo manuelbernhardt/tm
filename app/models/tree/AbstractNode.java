@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
@@ -35,6 +36,7 @@ public class AbstractNode extends Model implements Node {
     public boolean opened;
     public String path;
 
+    @ManyToOne
     public AbstractNode parent;
 
     @OneToMany(cascade = {CascadeType.ALL})

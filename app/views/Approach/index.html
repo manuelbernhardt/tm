@@ -13,7 +13,8 @@
 <!-- the tree container (notice NOT an UL node) -->
 
 <div id="actions">
-  <input type="button" id="create" value="Create folder"/>
+  <input type="button" id="create_folder" value="Create folder"/>
+  <input type="button" id="create_root" value="Create folder"/>
 </div>
 
 <div id="tree" class="tree"></div>
@@ -87,7 +88,8 @@
               "@{tree.TreeController.create()}",
       {
         "treeId" : "testTree",
-        "parentId" : data.rslt.parent > -1 ? data.rslt.parent.attr("id") : 1,
+        "parentId": data.rslt.parent != -1 ? data.rslt.parent.attr("id").replace("node_", "") : null,
+        "parentType" : data.rslt.parent != -1 ? data.rslt.parent.attr("rel") : null,
         "position" : data.rslt.position,
         "name" : data.rslt.name,
         "type" : data.rslt.obj.attr("rel")
@@ -167,8 +169,11 @@
   });
 
   $(function () {
-    $("#create").click(function () {
+    $("#create_root").click(function () {
       $("#tree").jstree("create", null, "last", {attr:{"rel":"root"}});
+    })
+    $("#create_folder").click(function () {
+      $("#tree").jstree("create", null, "last", {attr:{"rel":"folder"}});
     })
   });
 
