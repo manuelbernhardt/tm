@@ -1,7 +1,9 @@
-package models.tree;
+package models.tree.test;
 
 import controllers.tree.AbstractTree;
 import controllers.tree.NodeType;
+import models.tree.test.Folder;
+import models.tree.test.Root;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

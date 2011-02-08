@@ -1,5 +1,6 @@
 package controllers.tree;
 
+import models.tree.GenericTreeNode;
 import models.tree.Node;
 
 import java.util.List;
@@ -9,9 +10,17 @@ import java.util.List;
  */
 public abstract class TreeStorage {
 
-    public abstract Node save(Node n);
+    public abstract Node create(Node node);
 
-    public abstract Node getNode(Long id, Class<? extends Node> nodeClass);
+    public abstract Node update(Node node);
 
-    public abstract List<Node> getChildren(Long parentId, Class<? extends Node> nodeClass);
+    public abstract GenericTreeNode getNewGenericTreeNode();
+
+    public abstract GenericTreeNode create(GenericTreeNode node);
+
+    public abstract GenericTreeNode update(GenericTreeNode node);
+
+    public abstract GenericTreeNode getTreeNode(Long id);
+
+    public abstract List<GenericTreeNode> getChildren(Long parentId);
 }

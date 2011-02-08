@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import models.tree.Node;
+import models.tree.GenericTreeNode;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -15,21 +15,21 @@ import java.util.Map;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class NodeSerializer implements JsonSerializer<Node> {
+public class NodeSerializer implements JsonSerializer<GenericTreeNode> {
 
-    public JsonElement serialize(Node node, Type type, JsonSerializationContext context) {
+    public JsonElement serialize(GenericTreeNode node, Type type, JsonSerializationContext context) {
         JsonObject o = new JsonObject();
         populateBasicProperties(node, context, o);
 
         if (node.getType().isContainer()) {
-            List<? extends Node> c = node.getChildren();
+            List<? extends GenericTreeNode> c = node.getChildren();
             JsonArray children = new JsonArray();
             if(node.isOpen()) {
                 // render full children
                 o.add("children", context.serialize(node.getChildren()));
             } else {
                 // render "closed" children
-                for (Node n : c) {
+                for (GenericTreeNode n : c) {
                     JsonObject child = new JsonObject();
                     children.add(child);
                     populateBasicProperties(n, context, child);
@@ -40,7 +40,7 @@ public class NodeSerializer implements JsonSerializer<Node> {
         return o;
     }
 
-    private void populateBasicProperties(Node node, JsonSerializationContext context, JsonObject o) {
+    private void populateBasicProperties(GenericTreeNode node, JsonSerializationContext context, JsonObject o) {
         o.addProperty("data", node.getName());
         Map<String, Object> attributes = new HashMap<String, Object>();
         attributes.put("id", node.getId());

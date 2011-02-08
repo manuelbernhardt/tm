@@ -3,7 +3,8 @@ package controllers.tree;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import models.tree.Node;
+import models.tree.GenericTreeNode;
+import models.tree.jpa.TreeNode;
 import play.Play;
 import play.classloading.ApplicationClasses;
 import play.mvc.Controller;
@@ -19,7 +20,6 @@ import java.util.Map;
 public class TreeController extends Controller {
 
     private final static Map<String, AbstractTree> allTrees = new HashMap<String, AbstractTree>();
-    private final static Map<String, Class<? extends Node>> allNodes = new HashMap<String, Class<? extends Node>>();
 
     private static Gson gson = null;
 
@@ -50,36 +50,25 @@ public class TreeController extends Controller {
         // gson doesn't provide a way to pass information in a serialization context
         final NodeSerializer serializer = new NodeSerializer();
 
-        // initialize all nodes that are being used
-        for (AbstractTree tree : allTrees.values()) {
-
-            for (NodeType nodeType : AbstractTree.nodeTypes.values()) {
-                allNodes.put(nodeType.getName(), nodeType.getNodeClass());
-
-                // workaround for gson not being smart enough (yet)
-                builder.registerTypeAdapter(nodeType.getNodeClass(), serializer);
-            }
-        }
+        // workaround for gson not being smart enough (yet)
+        builder.registerTypeAdapter(GenericTreeNode.class, serializer);
+        builder.registerTypeAdapter(TreeNode.class, serializer);
         gson = builder.create();
     }
 
-    public static void create(String treeId, Long parentId, String parentType, Long position, String name, String type) {
+    public static void create(String treeId, Long parentId, Long position, String name, String type) {
 
         System.out.println("parentId " + parentId);
         NodeType nt = null;
-        NodeType pt = null;
         if (type == null) {
             nt = getTree(treeId).getRootType();
         } else {
             nt = AbstractTree.getNodeType(type);
         }
-        if (parentType != null) {
-            pt = AbstractTree.getNodeType(parentType);
-        }
 
-        Node node = getTree(treeId).createNode(parentId, pt, position, name, nt);
+        GenericTreeNode node = getTree(treeId).createNode(parentId, position, name, nt);
         JsonObject status = new JsonObject();
-        if(node == null) {
+        if (node == null) {
             status.addProperty("status", 0);
         } else {
             status.addProperty("status", 1);
@@ -90,22 +79,14 @@ public class TreeController extends Controller {
     }
 
     public static void getChildren(String treeId, Long id, String type) {
-        List<? extends Node> children = null;
+        List<? extends GenericTreeNode> children = null;
         if (type == null) {
             children = getTree(treeId).getChildren(id, getTree(treeId).getRootType());
         } else {
-            children = getTree(treeId).getNode(id, getNodeClass(type)).getChildren();
+            children = getTree(treeId).getNode(id).getChildren();
         }
         System.out.println("Children: " + children);
         renderJSON(gson.toJson(children));
-    }
-
-    private static Class<? extends Node> getNodeClass(String type) {
-        Class<? extends Node> nodeClass = allNodes.get(type);
-        if (nodeClass == null) {
-            throw new RuntimeException(String.format("Can't find node class for type '%s'", type));
-        }
-        return nodeClass;
     }
 
     private static AbstractTree getTree(String treeId) {

@@ -1,4 +1,6 @@
-package models.tree;
+package models.tree.test;
+
+import models.tree.jpa.AbstractNode;
 
 import javax.persistence.Entity;
 

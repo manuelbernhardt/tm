@@ -1,15 +1,14 @@
-package models.tree;
+package models.tree.jpa;
 
 import controllers.tree.AbstractTree;
 import controllers.tree.NodeType;
+import models.tree.GenericTreeNode;
+import models.tree.Node;
 import play.db.jpa.Model;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import java.util.List;
@@ -18,12 +17,7 @@ import java.util.List;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-        name = "nodeType",
-        discriminatorType = DiscriminatorType.STRING
-)
-public class AbstractNode extends Model implements Node {
+public class TreeNode extends Model implements GenericTreeNode {
 
     public String name;
     public transient NodeType type;
@@ -31,8 +25,11 @@ public class AbstractNode extends Model implements Node {
     public boolean opened;
     public String path;
 
+    @OneToOne
+    public AbstractNode abstractNode;
+
     @ManyToOne
-    public AbstractNode parent;
+    public TreeNode parent;
 
     public String getName() {
         return name;
@@ -40,6 +37,14 @@ public class AbstractNode extends Model implements Node {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Node getNode() {
+        return abstractNode;
+    }
+
+    public void setNode(Node n) {
+        this.abstractNode = (AbstractNode) n;
     }
 
     public NodeType getType() {
@@ -50,19 +55,19 @@ public class AbstractNode extends Model implements Node {
         this.type = type;
     }
 
-    public Node getParent() {
+    public GenericTreeNode getParent() {
         return parent;
     }
 
-    public void setParent(Node parent) {
-        this.parent = (AbstractNode) parent;
+    public void setParent(GenericTreeNode parent) {
+        this.parent = (TreeNode) parent;
     }
 
-    public List<? extends Node> getChildren() {
-        return find("from AbstractNode n where n.parent.id = ?", getId()).fetch();
+    public List<? extends GenericTreeNode> getChildren() {
+        return find("from TreeNode n where n.parent.id = ?", getId()).fetch();
     }
 
-    public void addChild(Node child) {
+    public void addChild(GenericTreeNode child) {
         child.setParent(this);
     }
 
@@ -70,7 +75,7 @@ public class AbstractNode extends Model implements Node {
         return opened;
     }
 
-    public void setOpened(boolean opened) {
+    public void setOpen(boolean opened) {
         this.opened = opened;
     }
 

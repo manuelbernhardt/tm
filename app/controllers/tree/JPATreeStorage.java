@@ -1,9 +1,10 @@
 package controllers.tree;
 
+import models.tree.GenericTreeNode;
 import models.tree.Node;
+import models.tree.jpa.TreeNode;
 import play.db.jpa.GenericModel;
 import play.db.jpa.Model;
-import play.utils.Java;
 
 import java.util.List;
 
@@ -13,35 +14,47 @@ import java.util.List;
 public class JPATreeStorage extends TreeStorage {
 
     @Override
-    public Node save(Node n) {
-        ((Model) n).save();
-        return n;
+    public GenericTreeNode getNewGenericTreeNode() {
+        return new TreeNode();
     }
 
     @Override
-    public Node getNode(Long id, Class<? extends Node> nodeClass) {
-        try {
-            GenericModel.JPAQuery query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.id = ?", nodeClass.getSimpleName()), new Object[]{id}});
-            return query.first();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public GenericTreeNode create(GenericTreeNode node) {
+        ((Model)node).create();
+        return node;
     }
 
     @Override
-    public List<Node> getChildren(Long parentId, Class<? extends Node> nodeClass) {
+    public Node create(Node concrete) {
+        ((Model) concrete).create();
+        return concrete;
+    }
+
+    @Override
+    public Node update(Node node) {
+        return (Node) ((Model) node).merge();
+    }
+
+    @Override
+    public GenericTreeNode update(GenericTreeNode node) {
+        return (GenericTreeNode) ((Model) node).merge();
+    }
+
+    @Override
+    public GenericTreeNode getTreeNode(Long id) {
+        return (GenericTreeNode) TreeNode.findById(id);
+
+    }
+
+    @Override
+    public List<GenericTreeNode> getChildren(Long parentId) {
         System.out.println("Looking for children of " + parentId);
-        try {
-            GenericModel.JPAQuery query = null;
-            if (parentId == null || parentId == -1) {
-                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{"from AbstractNode n where n.parent is null", new Object[]{}});
-            } else {
-                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{"from AbstractNode n where n.parent.id = ?", new Object[]{parentId}});
-            }
-            return query.fetch();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        GenericModel.JPAQuery query = null;
+        if (parentId == null || parentId == -1) {
+            query = TreeNode.find("from TreeNode n where n.parent is null", null);
+        } else {
+            query = TreeNode.find("from TreeNode n where n.parent.id = ?", parentId);
         }
+        return query.fetch();
     }
 }

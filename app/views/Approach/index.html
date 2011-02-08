@@ -84,13 +84,11 @@
                         }
                     })
             .bind("create.jstree", function (e, data) {
-      $(function() {alert(data.rslt.parent.attr("id"))})
       $.post(
               "@{tree.TreeController.create()}",
       {
         "treeId" : "testTree",
-        "parentId": data.rslt.parent ? data.rslt.parent.attr("id").replace("node_", "") : null,
-        "parentType" : data.rslt.parent ? data.rslt.parent.attr("rel") : null,
+        "parentId": data.rslt.parent.attr ? data.rslt.parent.attr("id").replace("node_", "") : -1,
         "position" : data.rslt.position,
         "name" : data.rslt.name,
         "type" : data.rslt.obj.attr("rel")
