@@ -70,7 +70,6 @@ public abstract class AbstractTree {
             GenericTreeNode node = storage.getNewGenericTreeNode();
             populateTreeNode(node, parentId, name, type);
             node = storage.create(node);
-            System.out.println("************* " + node.getId());
 
             Node concrete = createConcreteNode(name, type);
             concrete.setTreeNode(node);
@@ -85,6 +84,12 @@ public abstract class AbstractTree {
         }
         return null;
     }
+
+    public void remove(Long id) throws Exception {
+        // TODO make configurable
+        storage.remove(id, true);
+    }
+
 
     private Node createConcreteNode(String name, NodeType type) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Constructor c = type.getNodeClass().getDeclaredConstructor();

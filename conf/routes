@@ -13,7 +13,7 @@ GET     /admin/users                            admin.Users.index
 # Tree
 GET     /tree                                   tree.TreeController.getChildren
 POST    /tree/create                            tree.TreeController.create
-
+DELETE  /tree/remove                            tree.TreeController.remove
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

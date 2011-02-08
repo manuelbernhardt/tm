@@ -67,15 +67,22 @@ public class TreeController extends Controller {
         }
 
         GenericTreeNode node = getTree(treeId).createNode(parentId, position, name, nt);
-        JsonObject status = new JsonObject();
+        JsonObject status = null;
         if (node == null) {
-            status.addProperty("status", 0);
+            status = makeStatus(0, null);
         } else {
-            status.addProperty("status", 1);
-            status.addProperty("id", node.getId());
+            status = makeStatus(1, node.getId());
         }
         renderJSON(status.toString());
+    }
 
+    public static void remove(String treeId, Long id) {
+        try {
+            getTree(treeId).remove(id);
+        } catch (Exception e) {
+            renderJSON(makeStatus(0, null).toString());
+        }
+        renderJSON(makeStatus(1, null).toString());
     }
 
     public static void getChildren(String treeId, Long id, String type) {
@@ -95,6 +102,15 @@ public class TreeController extends Controller {
             throw new RuntimeException(String.format("Could not find implementation of tree '%s'. You need to implement it by extending AbstractTree", treeId));
         }
         return tree;
+    }
+
+    private static JsonObject makeStatus(int status, Long id) {
+        JsonObject r = new JsonObject();
+        r.addProperty("status", status);
+        if (id != null) {
+            r.addProperty("id", id);
+        }
+        return r;
     }
 
 

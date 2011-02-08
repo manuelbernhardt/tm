@@ -47,6 +47,18 @@ public class JPATreeStorage extends TreeStorage {
     }
 
     @Override
+    public void remove(Long id, boolean removeObject) {
+        TreeNode treeNode = TreeNode.findById(id);
+        if(removeObject) {
+            ((Model)treeNode.getNode()).delete();
+        } else {
+            treeNode.getNode().setTreeNode(null);
+            ((Model)treeNode.getNode()).save();
+        }
+        ((Model)treeNode).delete();
+    }
+
+    @Override
     public List<GenericTreeNode> getChildren(Long parentId) {
         System.out.println("Looking for children of " + parentId);
         GenericModel.JPAQuery query = null;

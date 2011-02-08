@@ -1,7 +1,6 @@
 == NOW ==
 
 JStree
-- see why parent is not persisted in the database, when creating a folder inside of a node
 - implement missing methods for removal, renaming, moving, and all the rest
 - implement full example with root, folder, file
 
