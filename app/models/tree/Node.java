@@ -23,7 +23,7 @@ public interface Node {
     List<? extends Node> getChildren();
     void addChild(Node child);
 
-    boolean isOpened();
+    boolean isOpen();
     void setOpened(boolean opened);
 
 }

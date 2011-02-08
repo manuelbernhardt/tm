@@ -35,9 +35,9 @@ public class JPATreeStorage extends TreeStorage {
         try {
             GenericModel.JPAQuery query = null;
             if (parentId == null || parentId == -1) {
-                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.parent is null", nodeClass.getSimpleName()), new Object[]{}});
+                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{"from AbstractNode n where n.parent is null", new Object[]{}});
             } else {
-                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{String.format("from %s n where n.parent.id = ?", nodeClass.getSimpleName()), new Object[]{parentId}});
+                query = (GenericModel.JPAQuery) Java.invokeStaticOrParent(nodeClass, "find", new Object[]{"from AbstractNode n where n.parent.id = ?", new Object[]{parentId}});
             }
             return query.fetch();
         } catch (Exception e) {

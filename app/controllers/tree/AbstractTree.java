@@ -75,7 +75,7 @@ public abstract class AbstractTree {
             }
             n.setName(name);
             // TODO configurable
-            n.setOpened(true);
+            n.setOpened(false);
             n.setType(type);
 
             storage.save(n);

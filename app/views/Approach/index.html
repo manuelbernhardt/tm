@@ -13,8 +13,8 @@
 <!-- the tree container (notice NOT an UL node) -->
 
 <div id="actions">
+  <input type="button" id="create_root" value="Create drive"/>
   <input type="button" id="create_folder" value="Create folder"/>
-  <input type="button" id="create_root" value="Create folder"/>
 </div>
 
 <div id="tree" class="tree"></div>
@@ -63,7 +63,7 @@
                               }
                             },
                             "folder" : {
-                              "valid_children" : [ "default" ],
+                              "valid_children" : [ "default", "folder" ],
                               "icon" : {
                                 "image" : "@{'public/images/jstree/folder.png'}"
                               }
@@ -84,12 +84,13 @@
                         }
                     })
             .bind("create.jstree", function (e, data) {
+      $(function() {alert(data.rslt.parent.attr("id"))})
       $.post(
               "@{tree.TreeController.create()}",
       {
         "treeId" : "testTree",
-        "parentId": data.rslt.parent != -1 ? data.rslt.parent.attr("id").replace("node_", "") : null,
-        "parentType" : data.rslt.parent != -1 ? data.rslt.parent.attr("rel") : null,
+        "parentId": data.rslt.parent ? data.rslt.parent.attr("id").replace("node_", "") : null,
+        "parentType" : data.rslt.parent ? data.rslt.parent.attr("rel") : null,
         "position" : data.rslt.position,
         "name" : data.rslt.name,
         "type" : data.rslt.obj.attr("rel")

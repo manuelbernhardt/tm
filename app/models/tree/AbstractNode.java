@@ -4,19 +4,14 @@ import controllers.tree.AbstractTree;
 import controllers.tree.NodeType;
 import play.db.jpa.Model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,11 +33,6 @@ public class AbstractNode extends Model implements Node {
 
     @ManyToOne
     public AbstractNode parent;
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    @OrderBy("path")
-    @JoinTable
-    public List<AbstractNode> children = new ArrayList<AbstractNode>();
 
     public String getName() {
         return name;
@@ -69,14 +59,14 @@ public class AbstractNode extends Model implements Node {
     }
 
     public List<? extends Node> getChildren() {
-        return children;
+        return find("from AbstractNode n where n.parent.id = ?", getId()).fetch();
     }
 
     public void addChild(Node child) {
-        children.add((AbstractNode) child);
+        child.setParent(this);
     }
 
-    public boolean isOpened() {
+    public boolean isOpen() {
         return opened;
     }
 
