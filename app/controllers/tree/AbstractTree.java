@@ -49,6 +49,14 @@ public abstract class AbstractTree {
         getNodes();
     }
 
+    public void copy(Long id, Long target, Long position) {
+        storage.copy(id, target);
+    }
+
+    public void move(Long id, Long target, Long position) {
+        storage.move(id, target);
+    }
+
     protected enum StorageType {JPA}
 
     protected StorageType getStorageType() {

@@ -95,6 +95,20 @@ public class TreeController extends Controller {
         renderJSON(makeStatus(1, null).toString());
     }
 
+    public static void move(String treeId, Long id, Long target, Long position, String name, boolean copy) {
+        try {
+            if (copy) {
+                getTree(treeId).copy(id, target, position);
+            } else {
+                getTree(treeId).move(id, target, position);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            renderJSON(makeStatus(0, null).toString());
+        }
+        renderJSON(makeStatus(1, null).toString());
+    }
+
     public static void getChildren(String treeId, Long id, String type) {
         List<? extends GenericTreeNode> children = null;
         if (type == null) {

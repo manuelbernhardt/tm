@@ -137,35 +137,34 @@
             }
               );
     })
-    /*     .bind("move_node.jstree", function (e, data) {
-     data.rslt.o.each(function (i) {
-     $.ajax({
-     async : false,
-     type: 'POST',
-     url: "./server.php",
-     data : {
-     "operation" : "move_node",
-     "id" : $(this).attr("id").replace("node_", ""),
-     "ref" : data.rslt.np.attr("id").replace("node_", ""),
-     "position" : data.rslt.cp + i,
-     "title" : data.rslt.name,
-     "copy" : data.rslt.cy ? 1 : 0
-     },
-     success : function (r) {
-     if (!r.status) {
-     $.jstree.rollback(data.rlbk);
-     }
-     else {
-     $(data.rslt.oc).attr("id", "node_" + r.id);
-     if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
-     data.inst.refresh(data.inst._get_parent(data.rslt.oc));
-     }
-     }
-     $("#analyze").click();
-     }
-     });
-     });
-     });*/
+            .bind("move_node.jstree", function (e, data) {
+      data.rslt.o.each(function (i) {
+        $.ajax({
+          async : false,
+          type: 'POST',
+          url: "@{tree.TreeController.move()}",
+          data : {
+            "treeId" : "testTree",
+            "id" : $(this).attr("id").replace("node_", ""),
+            "target" : data.rslt.np.attr("id").replace("node_", ""),
+            "position" : data.rslt.cp + i,
+            "name" : data.rslt.name,
+            "copy" : data.rslt.cy ? true : false
+          },
+          success : function (r) {
+            if (!r.status) {
+              $.jstree.rollback(data.rlbk);
+            }
+            else {
+              $(data.rslt.oc).attr("id", "node_" + r.id);
+              if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+              }
+            }
+          }
+        });
+      });
+    });
   });
 
   $(function () {

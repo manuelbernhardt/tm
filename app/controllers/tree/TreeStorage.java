@@ -27,4 +27,8 @@ public abstract class TreeStorage {
     public abstract void remove(Long id, boolean removeObject);
 
     public abstract void rename(Long id, String name);
+
+    public abstract void move(Long id, Long target);
+
+    public abstract void copy(Long id, Long target);
 }
