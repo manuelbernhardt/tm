@@ -49,14 +49,6 @@ public abstract class AbstractTree {
         getNodes();
     }
 
-    public void copy(Long id, Long target, Long position) {
-        storage.copy(id, target);
-    }
-
-    public void move(Long id, Long target, Long position) {
-        storage.move(id, target);
-    }
-
     protected enum StorageType {JPA}
 
     protected StorageType getStorageType() {
@@ -95,7 +87,8 @@ public abstract class AbstractTree {
         return null;
     }
 
-    protected String computePath(GenericTreeNode parent, Long id, String name) {
+    /** the rules for creating the path should be the same as in the TreeStorage **/
+    private String computePath(GenericTreeNode parent, Long id, String name) {
         String path = "";
         if(parent != null) {
             path += parent.getPath();
@@ -113,6 +106,14 @@ public abstract class AbstractTree {
 
     public void rename(Long id, String name) {
         storage.rename(id, name);
+    }
+
+    public void copy(Long id, Long target, Long position) {
+        storage.copy(id, target, true);
+    }
+
+    public void move(Long id, Long target, Long position) {
+        storage.move(id, target);
     }
 
     private Node createObjectNode(String name, NodeType type) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {

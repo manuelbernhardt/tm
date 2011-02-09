@@ -84,12 +84,11 @@ public class JPATreeStorage extends TreeStorage {
     }
 
     private Long getAbstractNodeId(Long id) {
-        return idQuery("select a.id from TreeNode n join n.abstractNode a where n.id = ?", id);
+        return query("select a.id from TreeNode n join n.abstractNode a where n.id = :id", id, Long.class);
     }
 
     @Override
     public List<GenericTreeNode> getChildren(Long parentId) {
-        System.out.println("Looking for children of " + parentId);
         GenericModel.JPAQuery query = null;
         if (parentId == null || parentId == -1) {
             query = TreeNode.find("from TreeNode n where n.parent is null", null);
@@ -120,19 +119,20 @@ public class JPATreeStorage extends TreeStorage {
                     "( concat( n.name, n.id ) ) ) where n.id = ?", target, parent.getPath(), id);
             // update the children's paths
             updateQuery("update TreeNode n set n.path = " +
-                    "(concat( n.name, n.id ) ) where n.parent.id = ?", id);
+                    "( concat( n.name, n.id ) ) where n.parent.id = ?", id);
         }
 
     }
 
     @Override
-    public void copy(Long id, Long target) {
+    public void copy(Long id, Long target, boolean copyObject) {
+
     }
 
-    private Long idQuery(String query, Long id) {
+    private <T> T query(String query, Long id, Class<T> type) {
         Query q = JPA.em().createQuery(query);
         q.setParameter("id", id);
-        return (Long) q.getSingleResult();
+        return (T) q.getSingleResult();
     }
 
     private void updateQuery(String query, Object... args) {

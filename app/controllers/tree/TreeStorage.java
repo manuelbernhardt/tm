@@ -30,5 +30,5 @@ public abstract class TreeStorage {
 
     public abstract void move(Long id, Long target);
 
-    public abstract void copy(Long id, Long target);
+    public abstract void copy(Long id, Long target, boolean copyObject);
 }
