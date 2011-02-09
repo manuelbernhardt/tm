@@ -31,4 +31,7 @@ public interface GenericTreeNode {
     boolean isOpen();
     void setOpen(boolean open);
 
+    String getPath();
+    void setPath(String path);
+
 }

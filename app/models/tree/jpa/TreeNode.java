@@ -7,6 +7,7 @@ import models.tree.Node;
 import play.db.jpa.Model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -25,6 +26,9 @@ public class TreeNode extends Model implements GenericTreeNode {
     public transient NodeType type;
     public String typeName;
     public boolean opened;
+
+    // let's assume nobody creates such mad hierarchies
+    @Column(length = 5000)
     public String path;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -81,6 +85,14 @@ public class TreeNode extends Model implements GenericTreeNode {
         this.opened = opened;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @PrePersist
     public void doSave() {
         this.typeName = type.getName();
@@ -89,6 +101,5 @@ public class TreeNode extends Model implements GenericTreeNode {
     @PostLoad
     public void doLoad() {
         this.type = AbstractTree.getNodeType(this.typeName);
-        System.out.println("loading type for " + typeName + " " + type);
     }
 }

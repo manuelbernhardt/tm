@@ -49,10 +49,6 @@ public abstract class AbstractTree {
         getNodes();
     }
 
-    public void rename(Long id, String name) {
-        storage.rename(id,name);
-    }
-
     protected enum StorageType {JPA}
 
     protected StorageType getStorageType() {
@@ -75,11 +71,13 @@ public abstract class AbstractTree {
             populateTreeNode(node, parentId, name, type);
             node = storage.create(node);
 
-            Node concrete = createConcreteNode(name, type);
-            concrete.setTreeNode(node);
-            concrete = storage.create(concrete);
+            Node object = createObjectNode(name, type);
+            object.setTreeNode(node);
+            object = storage.create(object);
 
-            node.setNode(concrete);
+            node.setNode(object);
+            // compute only when we have an ID
+            node.setPath(computePath(node.getParent(), node.getId(), node.getName()));
             node = storage.update(node);
 
             return node;
@@ -89,17 +87,31 @@ public abstract class AbstractTree {
         return null;
     }
 
+    protected String computePath(GenericTreeNode parent, Long id, String name) {
+        String path = "";
+        if(parent != null) {
+            path += parent.getPath();
+            path += "___";
+        }
+        path += name;
+        path += id;
+        return path;
+    }
+
     public void remove(Long id) throws Exception {
         // TODO make configurable
         storage.remove(id, true);
     }
 
+    public void rename(Long id, String name) {
+        storage.rename(id, name);
+    }
 
-    private Node createConcreteNode(String name, NodeType type) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    private Node createObjectNode(String name, NodeType type) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Constructor c = type.getNodeClass().getDeclaredConstructor();
-        Node concrete = (Node) c.newInstance();
-        concrete.setName(name);
-        return concrete;
+        Node object = (Node) c.newInstance();
+        object.setName(name);
+        return object;
     }
 
     private void populateTreeNode(GenericTreeNode n, Long parentId, String name, NodeType type) {
@@ -109,9 +121,10 @@ public abstract class AbstractTree {
         }
         n.setParent(parent);
         n.setName(name);
+        n.setType(type);
+
         // TODO configurable
         n.setOpen(false);
-        n.setType(type);
     }
 
     public GenericTreeNode getNode(Long id) {
