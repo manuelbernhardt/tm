@@ -1,8 +1,14 @@
 == NOW ==
 
 JStree
-- implement missing methods for removal, renaming, moving, and all the rest
+- implement copy
+- implement a way to configure the tree behavior regarding object deletion and copying
 - implement full example with root, folder, file
+  - featuring multi-tree operations
+- write tests that trigger the controller
+
+after discussion:
+- improve keyboard navigation?
 
 
 == model
@@ -22,8 +28,6 @@ try out and create simplified ways of using the following widgets:
 - collapsible div
 - date picker
 - charts
-- tree
-  - drag and drop between trees
 - timeline widget
 - select many (like facebook)
 
