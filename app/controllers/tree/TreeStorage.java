@@ -25,4 +25,6 @@ public abstract class TreeStorage {
     public abstract List<GenericTreeNode> getChildren(Long parentId);
 
     public abstract void remove(Long id, boolean removeObject);
+
+    public abstract void rename(Long id, String name);
 }

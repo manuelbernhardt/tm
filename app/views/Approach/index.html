@@ -26,7 +26,7 @@
     $("#tree")
             .jstree({
                         // the list of plugins to include
-                        "plugins" : [ "json_data", "ui", "crrm",  "types", "themes" ],
+                        "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "themes" ],
 
                         // Plugin configuration
 
@@ -105,7 +105,6 @@
               );
     })
             .bind("remove.jstree", function (e, data) {
-      $(function() { alert(data)})
       data.rslt.obj.each(function () {
         $.ajax({
           async : false,
@@ -123,23 +122,22 @@
         });
       });
     })
-    /*
-     .bind("rename.jstree", function (e, data) {
-     $.post(
-     "./server.php",
-     {
-     "operation" : "rename_node",
-     "id" : data.rslt.obj.attr("id").replace("node_", ""),
-     "title" : data.rslt.new_name
-     },
-     function (r) {
-     if (!r.status) {
-     $.jstree.rollback(data.rlbk);
-     }
-     }
-     );
-     })
-     .bind("move_node.jstree", function (e, data) {
+            .bind("rename.jstree", function (e, data) {
+      $.post(
+              "@{tree.TreeController.rename()}",
+      {
+        "treeId" : "testTree",
+        "id" : data.rslt.obj.attr("id").replace("node_", ""),
+        "name" : data.rslt.new_name
+      },
+            function (r) {
+              if (!r.status) {
+                $.jstree.rollback(data.rlbk);
+              }
+            }
+              );
+    })
+    /*     .bind("move_node.jstree", function (e, data) {
      data.rslt.o.each(function (i) {
      $.ajax({
      async : false,

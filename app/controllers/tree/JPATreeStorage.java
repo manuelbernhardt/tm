@@ -8,7 +8,6 @@ import play.db.jpa.JPA;
 import play.db.jpa.Model;
 
 import javax.persistence.Query;
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -55,46 +54,26 @@ public class JPATreeStorage extends TreeStorage {
         // making this behaviour configurable is some manual labor
         if (removeObject) {
             Long oid = getAbstractNodeId(id);
-
             removeReferences(id);
-
-            Query deleteObject = JPA.em().createQuery("delete from AbstractNode a where a.id = :id");
-            deleteObject.setParameter("id", oid);
-            deleteObject.executeUpdate();
-
+            updateQuery("delete from AbstractNode a where a.id = :id", oid);
             deleteNode(id);
         } else {
-            Long oid = getAbstractNodeId(id);
-
-            // de-reference the node
-            Query updateObject = JPA.em().createQuery("update AbstractNode a set a.treeNode = null where a.id = :oid");
-            updateObject.setParameter("oid", oid);
-            updateObject.executeUpdate();
-
+            updateQuery("update AbstractNode a set a.treeNode = null where a.treeNode.id = :id", id);
             removeReferences(id);
-
             deleteNode(id);
         }
     }
 
     private void deleteNode(Long id) {
-        // delete the node
-        Query deleteNode = JPA.em().createQuery("delete from TreeNode n where n.id = :id");
-        deleteNode.setParameter("id", id);
-        deleteNode.executeUpdate();
+        updateQuery("delete from TreeNode n where n.id = :id", id);
     }
 
     private void removeReferences(Long id) {
-        // remove references to other objects
-        Query updateRef = JPA.em().createQuery("update TreeNode n set n.abstractNode = null, n.parent = null where n.id = :id");
-        updateRef.setParameter("id", id);
-        updateRef.executeUpdate();
+        updateQuery("update TreeNode n set n.abstractNode = null, n.parent = null where n.id = :id", id);
     }
 
     private Long getAbstractNodeId(Long id) {
-        Query objectId = JPA.em().createQuery("select a.id from TreeNode n join n.abstractNode a where n.id = :id");
-        objectId.setParameter("id", id);
-        return (Long) objectId.getSingleResult();
+        return idQuery("select a.id from TreeNode n join n.abstractNode a where n.id = :id", id);
     }
 
     @Override
@@ -107,5 +86,31 @@ public class JPATreeStorage extends TreeStorage {
             query = TreeNode.find("from TreeNode n where n.parent.id = ?", parentId);
         }
         return query.fetch();
+    }
+
+    @Override
+    public void rename(Long id, String name) {
+        updateQuery("update TreeNode n set n.name = ? where n.id = ?", name, id);
+        updateQuery("update AbstractNode n set n.name = ? where n.treeNode.id = ?", name, id);
+    }
+
+    private Long idQuery(String query, Long id) {
+        Query q = JPA.em().createQuery(query);
+        q.setParameter("id", id);
+        return (Long) q.getSingleResult();
+    }
+
+    private void updateQuery(String query, Long id) {
+        Query q = JPA.em().createQuery(query);
+        q.setParameter("id", id);
+        q.executeUpdate();
+    }
+
+    private void updateQuery(String query, Object... args) {
+        Query q = JPA.em().createQuery(query);
+        for (int i = 0; i < args.length; i++) {
+            q.setParameter(i+1, args[i]);
+        }
+        q.executeUpdate();
     }
 }

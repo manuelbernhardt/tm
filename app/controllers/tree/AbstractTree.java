@@ -49,6 +49,10 @@ public abstract class AbstractTree {
         getNodes();
     }
 
+    public void rename(Long id, String name) {
+        storage.rename(id,name);
+    }
+
     protected enum StorageType {JPA}
 
     protected StorageType getStorageType() {

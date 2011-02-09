@@ -58,7 +58,6 @@ public class TreeController extends Controller {
 
     public static void create(String treeId, Long parentId, Long position, String name, String type) {
 
-        System.out.println("parentId " + parentId);
         NodeType nt = null;
         if (type == null) {
             nt = getTree(treeId).getRootType();
@@ -79,6 +78,16 @@ public class TreeController extends Controller {
     public static void remove(String treeId, Long id) {
         try {
             getTree(treeId).remove(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            renderJSON(makeStatus(0, null).toString());
+        }
+        renderJSON(makeStatus(1, null).toString());
+    }
+
+    public static void rename(String treeId, Long id, String name) {
+        try {
+            getTree(treeId).rename(id, name);
         } catch (Exception e) {
             e.printStackTrace();
             renderJSON(makeStatus(0, null).toString());
