@@ -56,15 +56,26 @@ public class JPATreeStorage extends TreeStorage {
             Long oid = getAbstractNodeId(id);
             removeReferences(id);
             updateQuery("delete from AbstractNode a where a.id = :id", oid);
-            deleteNode(id);
+            deleteNode(id, removeObject);
         } else {
             updateQuery("update AbstractNode a set a.treeNode = null where a.treeNode.id = :id", id);
             removeReferences(id);
-            deleteNode(id);
+            deleteNode(id, removeObject);
         }
     }
 
-    private void deleteNode(Long id) {
+    private void deleteNode(Long id, boolean removeObject) {
+        // kill the kids
+        Query q = JPA.em().createQuery("select n.id from TreeNode n where n.parent.id = :id order by n.path desc");
+        q.setParameter("id", id);
+        List<Long> kids = q.getResultList();
+        updateQuery("update TreeNode n set n.parent = null, n.abstractNode = null where n.parent.id = :id", id);
+        if(removeObject) {
+            updateQuery("delete from AbstractNode a where a.treeNode.id in (:kids)", "kids", kids);
+        } else {
+            updateQuery("update AbstractNode a set a.treeNode = null where a.treeNode.id in (:kids)", "kids", kids);
+        }
+        updateQuery("delete from TreeNode n where n.id in (:kids)", "kids", kids);
         updateQuery("delete from TreeNode n where n.id = :id", id);
     }
 
@@ -111,6 +122,12 @@ public class JPATreeStorage extends TreeStorage {
         for (int i = 0; i < args.length; i++) {
             q.setParameter(i+1, args[i]);
         }
+        q.executeUpdate();
+    }
+
+    private void updateQuery(String query, String argName, Object arg) {
+        Query q = JPA.em().createQuery(query);
+        q.setParameter(argName, arg);
         q.executeUpdate();
     }
 }
