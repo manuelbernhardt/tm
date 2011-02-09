@@ -80,6 +80,7 @@ public class TreeController extends Controller {
         try {
             getTree(treeId).remove(id);
         } catch (Exception e) {
+            e.printStackTrace();
             renderJSON(makeStatus(0, null).toString());
         }
         renderJSON(makeStatus(1, null).toString());

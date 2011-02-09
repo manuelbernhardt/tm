@@ -8,6 +8,7 @@ import play.db.jpa.Model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
@@ -26,10 +27,10 @@ public class TreeNode extends Model implements GenericTreeNode {
     public boolean opened;
     public String path;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public AbstractNode abstractNode;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     public TreeNode parent;
 
     public String getName() {
@@ -88,5 +89,6 @@ public class TreeNode extends Model implements GenericTreeNode {
     @PostLoad
     public void doLoad() {
         this.type = AbstractTree.getNodeType(this.typeName);
+        System.out.println("loading type for " + typeName + " " + type);
     }
 }

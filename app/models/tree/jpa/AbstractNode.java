@@ -6,12 +6,14 @@ import play.db.jpa.Model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 /**
- * Extend this class if you want to
+ * Extend this template class if you don't want to re-implement the Node interface and are fine with a joined inheritance strategy
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
@@ -20,7 +22,7 @@ public class AbstractNode extends Model implements Node {
 
     public String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public TreeNode treeNode;
 
     public GenericTreeNode getTreeNode() {
