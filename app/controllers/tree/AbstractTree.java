@@ -109,7 +109,7 @@ public abstract class AbstractTree {
     }
 
     public void copy(Long id, Long target, Long position) {
-        storage.copy(id, target, true);
+        storage.copy(id, target, false);
     }
 
     public void move(Long id, Long target, Long position) {

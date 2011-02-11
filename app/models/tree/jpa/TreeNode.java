@@ -26,6 +26,10 @@ public class TreeNode extends Model implements GenericTreeNode {
     public transient NodeType type;
     public String typeName;
     public boolean opened;
+    public int level;
+
+    public String copyBatchId;
+    public String copyParentId;
 
     // let's assume nobody creates such mad hierarchies
     @Column(length = 5000)
@@ -91,6 +95,14 @@ public class TreeNode extends Model implements GenericTreeNode {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @PrePersist
