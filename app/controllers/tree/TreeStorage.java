@@ -31,4 +31,20 @@ public abstract class TreeStorage {
     public abstract void move(Long id, Long target);
 
     public abstract void copy(Long id, Long target, boolean copyObject);
+
+    /** the rules for creating the path should be the same as in the TreeStorage **/
+    public String computePath(GenericTreeNode parent, Long id, String name) {
+        String path = "";
+
+        // if it's not a null parent and if it's not a thread root
+        if(parent != null && parent.getId() != id) {
+            path += parent.getPath();
+            path += "___";
+        }
+        path += name;
+        path += id;
+        return path;
+    }
+
+
 }

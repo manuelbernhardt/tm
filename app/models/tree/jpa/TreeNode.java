@@ -28,6 +28,9 @@ public class TreeNode extends Model implements GenericTreeNode {
     public boolean opened;
     public int level;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public TreeNode threadRoot;
+
     public String copyBatchId;
     public String copyParentId;
 
@@ -37,9 +40,6 @@ public class TreeNode extends Model implements GenericTreeNode {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public AbstractNode abstractNode;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    public TreeNode parent;
 
     public String getName() {
         return name;
@@ -66,19 +66,15 @@ public class TreeNode extends Model implements GenericTreeNode {
     }
 
     public GenericTreeNode getParent() {
-        return parent;
-    }
-
-    public void setParent(GenericTreeNode parent) {
-        this.parent = (TreeNode) parent;
+        if(this.threadRoot.getId() == this.getId()) {
+            return this;
+        } else {
+            return find("from TreeNode n where level = ? and ? like concat(path, '%')", level - 1, path).first();
+        }
     }
 
     public List<? extends GenericTreeNode> getChildren() {
-        return find("from TreeNode n where n.parent.id = ?", getId()).fetch();
-    }
-
-    public void addChild(GenericTreeNode child) {
-        child.setParent(this);
+        return find("from TreeNode n where n.level = ? and n.threadRoot = ? and n.path like ?", level + 1, threadRoot, path + "%").fetch();
     }
 
     public boolean isOpen() {
@@ -97,12 +93,20 @@ public class TreeNode extends Model implements GenericTreeNode {
         this.path = path;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public TreeNode getThreadRoot() {
+        return threadRoot;
+    }
+
+    public void setThreadRoot(GenericTreeNode threadRoot) {
+        this.threadRoot = (TreeNode) threadRoot;
     }
 
     @PrePersist

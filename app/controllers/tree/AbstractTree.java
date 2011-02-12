@@ -76,8 +76,9 @@ public abstract class AbstractTree {
             object = storage.create(object);
 
             node.setNode(object);
+
             // compute only when we have an ID
-            node.setPath(computePath(node.getParent(), node.getId(), node.getName()));
+            node.setPath(storage.computePath(storage.getTreeNode(parentId), node.getId(), node.getName()));
             node = storage.update(node);
 
             return node;
@@ -85,18 +86,6 @@ public abstract class AbstractTree {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /** the rules for creating the path should be the same as in the TreeStorage **/
-    private String computePath(GenericTreeNode parent, Long id, String name) {
-        String path = "";
-        if(parent != null) {
-            path += parent.getPath();
-            path += "___";
-        }
-        path += name;
-        path += id;
-        return path;
     }
 
     public void remove(Long id) throws Exception {
@@ -128,7 +117,13 @@ public abstract class AbstractTree {
         if (parent == null && parentId != -1) {
             throw new RuntimeException("Could not find parent node with ID " + parentId);
         }
-        n.setParent(parent);
+        if(parent == null) {
+            n.setLevel(0);
+            n.setThreadRoot(n);
+        } else {
+            n.setLevel(parent.getLevel() + 1);
+            n.setThreadRoot(parent.getThreadRoot());
+        }
         n.setName(name);
         n.setType(type);
 

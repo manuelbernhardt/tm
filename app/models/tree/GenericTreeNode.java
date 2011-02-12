@@ -19,11 +19,15 @@ public interface GenericTreeNode {
     NodeType getType();
     void setType(NodeType type);
 
+    Integer getLevel();
+    void setLevel(Integer level);
+
+    GenericTreeNode getThreadRoot();
+    void setThreadRoot(GenericTreeNode node);
+
     GenericTreeNode getParent();
-    void setParent(GenericTreeNode parent);
 
     List<? extends GenericTreeNode> getChildren();
-    void addChild(GenericTreeNode child);
 
     Node getNode();
     void setNode(Node n);
