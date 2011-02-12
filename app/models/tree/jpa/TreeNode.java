@@ -1,6 +1,7 @@
 package models.tree.jpa;
 
 import controllers.tree.AbstractTree;
+import controllers.tree.JPATreeStorage;
 import controllers.tree.NodeType;
 import models.tree.GenericTreeNode;
 import models.tree.Node;
@@ -74,7 +75,7 @@ public class TreeNode extends Model implements GenericTreeNode {
     }
 
     public List<? extends GenericTreeNode> getChildren() {
-        return find("from TreeNode n where n.level = ? and n.threadRoot = ? and n.path like ?", level + 1, threadRoot, path + "%").fetch();
+        return JPATreeStorage.getChildren(level, path, threadRoot);
     }
 
     public boolean isOpen() {

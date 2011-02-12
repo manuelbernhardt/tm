@@ -3,7 +3,6 @@ package controllers.tree;
 import models.tree.GenericTreeNode;
 import models.tree.Node;
 import models.tree.jpa.TreeNode;
-import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import play.db.jpa.Model;
 
@@ -93,14 +92,16 @@ public class JPATreeStorage extends TreeStorage {
 
     @Override
     public List<GenericTreeNode> getChildren(Long parentId) {
-        GenericModel.JPAQuery query = null;
         if (parentId == null || parentId == -1) {
-            query = TreeNode.find("from TreeNode n where n.threadRoot = n");
+            return TreeNode.find("from TreeNode n where n.threadRoot = n").fetch();
         } else {
             TreeNode parent = TreeNode.findById(parentId);
-            query = TreeNode.find("from TreeNode n where n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
+            return getChildren(parent.getLevel(), parent.getPath(), parent.getThreadRoot());
         }
-        return query.fetch();
+    }
+
+    public static List<GenericTreeNode> getChildren(Integer parentLevel, String parentPath, TreeNode parentThreadRoot) {
+        return TreeNode.find("from TreeNode n where n.level = ? and n.path like ? and n.threadRoot = ?", parentLevel + 1, parentPath + "%", parentThreadRoot).fetch();
     }
 
     @Override
