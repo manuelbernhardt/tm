@@ -33,7 +33,6 @@ public class TreeNode extends Model implements GenericTreeNode {
     public TreeNode threadRoot;
 
     public String copyBatchId;
-    public String copyParentId;
 
     // let's assume nobody creates such mad hierarchies
     @Column(length = 5000)

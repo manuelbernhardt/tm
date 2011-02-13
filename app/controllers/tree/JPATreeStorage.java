@@ -117,7 +117,7 @@ public class JPATreeStorage extends TreeStorage {
         TreeNode parent = TreeNode.findById(target);
 
         String newPath = parent.getPath();
-        Integer delta = parent.getLevel() - node.getLevel();
+        Integer delta = parent.getLevel() - node.getLevel() + 1;
 
         if(node.getThreadRoot().getId() == node.getId()) {
             updateQuery("update TreeNode set path = concat(?, path), level = level + ? where threadRoot = ?", newPath + "____", delta, parent.getThreadRoot());
@@ -125,7 +125,7 @@ public class JPATreeStorage extends TreeStorage {
             String oldPath = node.getPath();
             Integer oldPathLength = oldParent.getPath().length();
             String pathLike = oldPath + "%";
-            updateQuery("update TreeNode set path = concat(?, substring(path, ?, length(path))), level = level + ? where threadRoot = ? and path like ?", newPath, oldPathLength + 1, delta + 1, parent.getThreadRoot(), pathLike);
+            updateQuery("update TreeNode set path = concat(?, substring(path, ?, length(path))), level = level + ? where threadRoot = ? and path like ?", newPath, oldPathLength + 1, delta, parent.getThreadRoot(), pathLike);
         }
     }
 
@@ -133,35 +133,41 @@ public class JPATreeStorage extends TreeStorage {
 
     @Override
     public void copy(Long id, Long target, boolean copyObject) {
+        TreeNode node = TreeNode.findById(id);
         TreeNode parent = TreeNode.findById(target);
-        if (!copyObject) {
-            // copy the tree structure
-            Query q = JPA.em().createQuery(String.format("insert into TreeNode (name, typeName, opened, %s path, copyParentId, copyBatchId) " +
-                    "select c.name, c.typeName, c.opened, %s c.path, c.parent.path, concat(:id, :target) from TreeNode c where (c.id = :id or c.parent.id = :id)", "abstractNode,", "c.abstractNode,"));
-            q.setParameter("target", target);
-            q.setParameter("id", id);
-            q.executeUpdate();
+        Integer delta = parent.getLevel() - node.getLevel() + 1;
+        String oldPath = node.getPath();
+        String newPath = parent.getThreadRoot().getId() == parent.getId() ? parent.getPath() + "___" : parent.getPath();
+        Integer oldPathLength = node.getParent().getPath().length();
+        String pathLike = oldPath + "%";
 
-            // need to set the parent
-            // this sucks but it's the best I could come up with now.
-            String copyBatch = new String(id + "" + target);
+        if(!copyObject) {
+            // TODO file hibernate bug
+//            Query query = JPA.em().createQuery("insert into TreeNode (name, typeName, opened, level, path, threadRoot, abstractNode) " +
+//                    "select c.name, c.typeName, c.opened, c.level + :delta, concat(:newPath, substring(path, :oldPathLength, length(path))), (select :newThreadRoot from AbstractNode), c.abstractNode " +
+//                    "from TreeNode c " +
+//                    "where c.threadRoot = :oldThreadRoot and c.path like :pathLike");
+//            query.setParameter("delta", delta);
+//            query.setParameter("newPath", newPath);
+//            query.setParameter("oldPathLength", oldPathLength + 1);
+//            query.setParameter("newThreadRoot", parent.getThreadRoot());
+//            query.setParameter("oldThreadRoot", node.getThreadRoot());
+//            query.setParameter("pathLike", pathLike);
 
-            // update the kids
-            List<String> parentPaths = queryList("select n.copyParentId from TreeNode n where n.copyBatchId = :id group by n.copyParentId", copyBatch, String.class);
-            for (String pp : parentPaths) {
-                TreeNode p = query("select n from TreeNode n where n.path = ? and n.path is not null and n.copyBatchId = ?", TreeNode.class, pp, copyBatch);
-                updateQuery("update TreeNode set parent = ? where copyParentId = ? and copyBatchId = ?", p, pp, copyBatch);
-            }
-            // update the root of the copy
-            TreeNode origin = TreeNode.findById(id);
-            updateQuery("update TreeNode set parent = ? where copyBatchId = ? and name = ? and typeName = ? and opened = ? and path = ?", parent, copyBatch, origin.getName(), origin.getType().getName(), origin.isOpen(), origin.getPath());
+            Query query = JPA.em().createNativeQuery("insert into TreeNode (name, typeName, opened, level, path, threadRoot_id, abstractNode_id) " +
+                    "select c.name, c.typeName, c.opened, c.level + ?, concat(?, substring(path, ?, length(path))), ?, c.abstractNode_id " +
+                    "from TreeNode c " +
+                    "where c.threadRoot_id = ? and c.path like ?");
+            query.setParameter(1, delta);
+            query.setParameter(2, newPath);
+            query.setParameter(3, oldPathLength + 1);
+            query.setParameter(4, parent.getThreadRoot().getId());
+            query.setParameter(5, node.getThreadRoot().getId());
+            query.setParameter(6, pathLike);
 
-            // re-compute the paths
-
-            // clean up
-
-
+            query.executeUpdate();
         } else {
+            // TODO
 
         }
 
