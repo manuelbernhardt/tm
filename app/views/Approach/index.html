@@ -13,7 +13,7 @@
 <!-- the tree container (notice NOT an UL node) -->
 
 <div id="actions">
-  <input type="button" id="create_root" value="Create drive"/>
+  <input type="button" id="create_drive" value="Create drive"/>
   <input type="button" id="create_folder" value="Create folder"/>
   <input type="button" id="remove" value="Remove"/>
 </div>
@@ -69,7 +69,7 @@ $(function () {
                               "image" : "@{'public/images/jstree/folder.png'}"
                             }
                           },
-                          "root" : {
+                          "drive" : {
                             "valid_children" : [ "default", "folder" ],
                             "icon" : {
                               "image" : "@{'public/images/jstree/root.png'}"
@@ -92,6 +92,9 @@ $(function () {
                         },
                         "Ctrl+c" : function() {
                           this.copy(null)
+                        },
+                        "Ctrl+n" : function() {
+                          this.create_node(null, "after", {attr:{"rel":"folder"}});
                         }
 
                         // TODO: improve the default behaviour - somehow
@@ -239,8 +242,8 @@ $(function () {
 });
 
 $(function () {
-  $("#create_root").click(function () {
-    $("#tree").jstree("create", null, "last", {attr:{"rel":"root"}});
+  $("#create_drive").click(function () {
+    $("#tree").jstree("create", null, "last", {attr:{"rel":"drive"}});
   })
   $("#create_folder").click(function () {
     $("#tree").jstree("create", null, "last", {attr:{"rel":"folder"}});

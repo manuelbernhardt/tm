@@ -1,9 +1,9 @@
 package controllers.tree;
 
+import java.util.List;
+
 import models.tree.GenericTreeNode;
 import models.tree.Node;
-
-import java.util.List;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -30,7 +30,7 @@ public abstract class TreeStorage {
 
     public abstract void move(Long id, Long target);
 
-    public abstract void copy(Long id, Long target, boolean copyObject);
+    public abstract void copy(Long id, Long target, boolean copyObject, NodeType[] objectTypes);
 
     /** the rules for creating the path should be the same as in the TreeStorage **/
     public String computePath(GenericTreeNode parent, Long id, String name) {

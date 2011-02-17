@@ -1,13 +1,13 @@
 package controllers.tree;
 
-import models.tree.GenericTreeNode;
-import models.tree.Node;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import models.tree.GenericTreeNode;
+import models.tree.Node;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -17,6 +17,12 @@ public abstract class AbstractTree {
     protected static Map<String, NodeType> nodeTypes = new HashMap<String, NodeType>();
     protected static Map<Class, NodeType> nodeTypesByClass = new HashMap<Class, NodeType>();
 
+    /**
+     * Registers a new {@link NodeType}. This method should be used when implementing {@link #getNodes()}
+     * @param nodeClass the Class of the tree node (must implement GenericTreeNode or extend a convenience class such as {@link models.tree.jpa.AbstractNode})
+     * @param isContainer whether this node can be a container of other nodes (i.e. a non-leaf node)
+     * @return a registered {@link NodeType}
+     */
     public static NodeType type(Class<? extends Node> nodeClass, boolean isContainer) {
         String name = nodeClass.getSimpleName().toLowerCase();
         NodeType nodeType = new NodeType(name, isContainer, nodeClass);
@@ -29,15 +35,17 @@ public abstract class AbstractTree {
         return nodeTypes.get(name);
     }
 
-    public static NodeType getNodeType(Class type) {
+    protected static NodeType getNodeType(Class type) {
         return nodeTypesByClass.get(type);
     }
 
-    private TreeStorage storage = null;
+    protected enum StorageType {JPA}
 
-    public abstract String getName();
+    protected StorageType getStorageType() {
+        return StorageType.JPA;
+    }
 
-    public void init() {
+    protected void init() {
         if (getStorageType() == StorageType.JPA) {
             storage = new JPATreeStorage();
         } else {
@@ -49,12 +57,19 @@ public abstract class AbstractTree {
         getNodes();
     }
 
-    protected enum StorageType {JPA}
+    private TreeStorage storage = null;
 
-    protected StorageType getStorageType() {
-        return StorageType.JPA;
-    }
+    /**
+     * The qualifier for this tree
+     * @return a qualifier for the tree, unique for all the application.
+     */
+    public abstract String getName();
 
+    /**
+     * Retuns all the possible node types for this tree.<br>
+     * Register a type with {@link #type(Class, boolean)}
+     * @return an Array of {@link NodeType}
+     */
     protected abstract NodeType[] getNodes();
 
     /**
@@ -72,7 +87,6 @@ public abstract class AbstractTree {
             node = storage.create(node);
 
             Node object = createObjectNode(name, type);
-            object.setTreeNode(node);
             object = storage.create(object);
 
             node.setNode(object);
@@ -98,7 +112,7 @@ public abstract class AbstractTree {
     }
 
     public void copy(Long id, Long target, Long position) {
-        storage.copy(id, target, false);
+        storage.copy(id, target, true, getNodes());
     }
 
     public void move(Long id, Long target, Long position) {

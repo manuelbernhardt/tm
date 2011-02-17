@@ -1,13 +1,13 @@
 package models.tree.test;
 
-import models.tree.jpa.AbstractNode;
-
 import javax.persistence.Entity;
+
+import models.tree.jpa.AbstractNode;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class Root extends AbstractNode  {
+public class Drive extends AbstractNode  {
 
 }

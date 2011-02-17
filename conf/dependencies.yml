@@ -2,4 +2,6 @@
 
 require:
     - play
-    - crud
+    - play -> crud
+    - play -> logisimayml 1.1
+    - mysql -> mysql-connector-java 5.1.13

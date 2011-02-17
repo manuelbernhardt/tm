@@ -1,12 +1,6 @@
 package models.tree.jpa;
 
-import controllers.tree.AbstractTree;
-import controllers.tree.JPATreeStorage;
-import controllers.tree.NodeType;
-import models.tree.GenericTreeNode;
-import models.tree.Node;
-import play.db.jpa.Model;
-
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +9,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
-import java.util.List;
+
+import controllers.tree.AbstractTree;
+import controllers.tree.JPATreeStorage;
+import controllers.tree.NodeType;
+import models.tree.GenericTreeNode;
+import models.tree.Node;
+import play.db.jpa.Model;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -111,7 +111,9 @@ public class TreeNode extends Model implements GenericTreeNode {
 
     @PrePersist
     public void doSave() {
-        this.typeName = type.getName();
+        if(type != null) {
+            this.typeName = type.getName();
+        }
     }
 
     @PostLoad
