@@ -1,20 +1,8 @@
 == NOW ==
 
-JStree
-- implement copy
-- implement a way to configure the tree behavior regarding object deletion and copying
-- implement full example with root, folder, file
-  - featuring multi-tree operations
-- write tests that trigger the controller
 
-after discussion:
-- improve keyboard navigation?
+== Model
 
-
-== model
-- read & experiment with JPA mappings and cascading settings
-
-== generic implementations
 - model class for project-dependent entities, generating also the project + auto-incrementing ID for the entity
   - look again at how the captcha is implemented for security
 
@@ -35,3 +23,25 @@ try out and create simplified ways of using the following widgets:
 == optimization (later)
 - optimize javascript loading
 - cache
+
+
+== Components ==
+
+JSTree
+
+- make a tag out of the view code
+
+- implement a way to configure the tree behavior regarding object deletion and copying
+- finish implementing the unit test
+
+- implement full example with root, folder, file
+  - featuring multi-tree operations
+- add indexes on the model
+- query optimization: simplified version of Model.findById() that does not retrieve all the fields but only a given list.
+
+after discussion:
+- abstract the JPA implementation (including entities):
+  - "cascade to object" --> cascade to object (delete, copy) active, and mappings in entities
+  - "don't cascade to object"
+
+- improve keyboard navigation?
