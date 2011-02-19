@@ -106,7 +106,7 @@ public class JPATreeStorage extends TreeStorage {
         String newPath = parent.getPath();
         Integer delta = parent.getLevel() - node.getLevel() + 1;
 
-        if (node.getThreadRoot().getId() == node.getId()) {
+        if (node.getThreadRoot().getId().equals(node.getId())) {
             updateQuery("update TreeNode set path = concat(?, path), level = level + ? where threadRoot = ?", newPath + "____", delta, parent.getThreadRoot());
         } else {
             String oldPath = node.getPath();
@@ -123,7 +123,7 @@ public class JPATreeStorage extends TreeStorage {
         TreeNode parent = TreeNode.findById(target);
         Integer delta = parent.getLevel() - node.getLevel() + 1;
         String oldPath = node.getPath();
-        String newPath = parent.getThreadRoot().getId() == parent.getId() ? parent.getPath() + "___" : parent.getPath();
+        String newPath = parent.getThreadRoot().getId().equals(parent.getId()) ? parent.getPath() + "___" : parent.getPath();
         Integer oldPathLength = node.getParent().getPath().length();
         String pathLike = oldPath + "%";
 

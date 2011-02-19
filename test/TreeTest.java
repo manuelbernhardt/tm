@@ -57,6 +57,28 @@ public class TreeTest extends UnitTest {
     }
 
     @Test
+    public void removeRecursively() {
+        GenericTreeNode root = t.createNode(-1l, 0l, "Root", DRIVE);
+        GenericTreeNode child1 = t.createNode(root.getId(), 0l, "Child 1", FOLDER);
+        GenericTreeNode child2 = t.createNode(child1.getId(), 0l, "child 2", FOLDER);
+
+        assertEquals(1, t.getChildren(root.getId(), FOLDER).size());
+        assertEquals(1, t.getChildren(child1.getId(), FOLDER).size());
+
+        try {
+            t.remove(root.getId());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+        JPA.em().clear();
+
+        assertNull(TreeNode.findById(root.getId()));
+        assertNull(TreeNode.findById(child1.getId()));
+        assertNull(TreeNode.findById(child2.getId()));
+    }
+
+    @Test
     public void rename() {
         t.rename(starwars.getId(), "Star Wars");
         // usually this is done by the controller

@@ -13,6 +13,9 @@ import play.Play;
 import play.classloading.ApplicationClasses;
 
 /**
+ * Entry point for Tree operations. This should probably become some part of a play module?
+ * /!\ Persistance operations via Hibernate rely on the Play! controller so any testing or outside operations need to take care of flushing and cache refresh.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Tree {
