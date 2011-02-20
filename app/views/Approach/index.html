@@ -1,15 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Test approach' /}
 
-#{set 'moreStyles'}
-<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jstree/style.css'}">
-#{/set}
-
-#{set 'moreScripts'}
-<script src="@{'/public/javascripts/jstree/jquery.jstree.js'}" type="text/javascript" charset="utf-8"></script>
-#{/set}
-
-
 <!-- the tree container (notice NOT an UL node) -->
 
 <div id="actions">
@@ -18,239 +9,20 @@
   <input type="button" id="remove" value="Remove"/>
 </div>
 
-<div id="tree" class="tree"></div>
+#{tree id:'testTree' /}
 
-<!-- JavaScript necessary for the tree -->
 <script type="text/javascript">
-$(function () {
-  $("#tree")
-          .jstree({
-                      // the list of plugins to include
-                      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
 
-                      // Plugin configuration
-
-                      "json_data" : {
-                        "ajax" : {
-                          "url" : "@{tree.TreeController.getChildren()}",
-                          // this function is executed in the instance's scope (this refers to the tree instance)
-                          // the parameter is the node being loaded (may be -1, 0, or undefined when loading the root nodes)
-                          "data" : function (n) {
-                            // the result is fed to the AJAX request `data` option
-                            return {
-                              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
-                              "treeId" : "testTree"
-                            };
-                          }
-                        }
-                      },
-                      "types" : {
-                        // I set both options to -2, as I do not need depth and children count checking
-                        // Those two checks may slow jstree a lot, so use only when needed
-                        "max_depth" : -2,
-                        "max_children" : -2,
-                        // I want only `drive` nodes to be root nodes
-                        // This will prevent moving or creating any other type as a root node
-//                          "valid_children" : [ "folder", "default", "root" ],
-                        "types" : {
-                          // The default type
-                          "default" : {
-                            // I want this type to have no children (so only leaf nodes)
-                            // In my case - those are files
-                            "valid_children" : "none",
-                            // If we specify an icon for the default type it WILL OVERRIDE the theme icons
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/file.png'}"
-                            }
-                          },
-                          "folder" : {
-                            "valid_children" : [ "default", "folder" ],
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/folder.png'}"
-                            }
-                          },
-                          "drive" : {
-                            "valid_children" : [ "default", "folder" ],
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/root.png'}"
-                            },
-                            // those options prevent the functions with the same name to be used on the `drive` type nodes
-                            // internally the `before` event is used
-                            "start_drag" : false,
-                            "move_node" : false,
-                            "delete_node" : true,
-                            "remove" : true
-                          }
-                        }
-                      },
-                      "hotkeys": {
-                        "Ctrl+x" : function() {
-                          this.cut(null)
-                        },
-                        "Ctrl+v" : function() {
-                          this.paste(null)
-                        },
-                        "Ctrl+c" : function() {
-                          this.copy(null)
-                        },
-                        "Ctrl+n" : function() {
-                          this.create_node(null, "after", {attr:{"rel":"folder"}});
-                        }
-
-                        // TODO: improve the default behaviour - somehow
-                        /*,
-
-                        "up" : function () {
-                          var o = this.data.ui.hovered || this.data.ui.last_selected || -1;
-                          if (this._get_prev(o, false)) {
-                            this.select_node(this._get_prev(o), false, null);
-                            if (o) {
-                              this.deselect_node(o);
-                            }
-                          }
-                          return false;
-                        },
-                        "down" : function () {
-                          var o = this.data.ui.hovered || this.data.ui.last_selected || -1;
-                          if (this._get_next(o, true)) {
-                            if (o && o.length) {
-                              if (o.hasClass("jstree-closed")) {
-                                this.open_node(o);
-                              }
-                            } else {
-                              this.select_node(this._get_next(o), false, null);
-                              this.deselect_node(o);
-                            }
-                          }
-                          return false;
-                        }
-                        ,
-                        "left" :
-                        function () {
-                          var o = this.data.ui.hovered || this.data.ui.last_selected;
-                          if (o) {
-                            if (o.hasClass("jstree-open")) {
-                              this.close_node(o);
-                            }
-                            else if (this._get_prev(o, false)) {
-                              this.select_node(this._get_prev(o), false, null);
-                              this.deselect_node(o);
-                            }
-                          }
-                          return false;
-                        }
-
-                        ,
-                        "right"
-                                :
-                        function () {
-                          var o = this.data.ui.hovered || this.data.ui.last_selected;
-                          if (o && o.length) {
-                            if (o.hasClass("jstree-closed")) {
-                              this.open_node(o);
-                            }
-                            else if (this._get_next(o, false)) {
-                              this.select_node(this._get_prev(o), false, null);
-                              this.deselect_node(o);
-                            }
-                          }
-                          return false;
-                        }*/
-                      }
-                  })
-          .bind("create.jstree", function (e, data) {
-    $.post(
-            "@{tree.TreeController.create()}",
-    {
-      "treeId" : "testTree",
-      "parentId": data.rslt.parent.attr ? data.rslt.parent.attr("id").replace("node_", "") : -1,
-      "position" : data.rslt.position,
-      "name" : data.rslt.name,
-      "type" : data.rslt.obj.attr("rel")
-    },
-          function (r) {
-            if (r.status) {
-              $(data.rslt.obj).attr("id", "node_" + r.id);
-            }
-            else {
-              $.jstree.rollback(data.rlbk);
-            }
-          }
-            );
-  })
-          .bind("remove.jstree", function (e, data) {
-    data.rslt.obj.each(function () {
-      $.ajax({
-        async : false,
-        type: 'DELETE',
-        url: "@{tree.TreeController.remove()}",
-        data : {
-          "treeId" : "testTree",
-          "id" : this.id.replace("node_", "")
-        },
-        success : function (r) {
-          if (!r.status) {
-            data.inst.refresh();
-          }
-        }
-      });
-    });
-  })
-          .bind("rename.jstree", function (e, data) {
-    $.post(
-            "@{tree.TreeController.rename()}",
-    {
-      "treeId" : "testTree",
-      "id" : data.rslt.obj.attr("id").replace("node_", ""),
-      "name" : data.rslt.new_name
-    },
-          function (r) {
-            if (!r.status) {
-              $.jstree.rollback(data.rlbk);
-            }
-          }
-            );
-  })
-          .bind("move_node.jstree", function (e, data) {
-    data.rslt.o.each(function (i) {
-      $.ajax({
-        async : false,
-        type: 'POST',
-        url: "@{tree.TreeController.move()}",
-        data : {
-          "treeId" : "testTree",
-          "id" : $(this).attr("id").replace("node_", ""),
-          "target" : data.rslt.np.attr("id").replace("node_", ""),
-          "position" : data.rslt.cp + i,
-          "name" : data.rslt.name,
-          "copy" : data.rslt.cy ? true : false
-        },
-        success : function (r) {
-          if (!r.status) {
-            $.jstree.rollback(data.rlbk);
-          }
-          else {
-            $(data.rslt.oc).attr("id", "node_" + r.id);
-            if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
-              data.inst.refresh(data.inst._get_parent(data.rslt.oc));
-            }
-          }
-        }
-      });
-    });
+  $(function () {
+    $("#create_drive").click(function () {
+      $("#testTree").jstree("create", null, "last", {attr:{"rel":"drive"}});
+    })
+    $("#create_folder").click(function () {
+      $("#testTree").jstree("create", null, "last", {attr:{"rel":"folder"}});
+    })
+    $("#remove").click(function () {
+      $("#testTree").jstree("remove", null);
+    })
   });
-});
-
-$(function () {
-  $("#create_drive").click(function () {
-    $("#tree").jstree("create", null, "last", {attr:{"rel":"drive"}});
-  })
-  $("#create_folder").click(function () {
-    $("#tree").jstree("create", null, "last", {attr:{"rel":"folder"}});
-  })
-  $("#remove").click(function () {
-    $("#tree").jstree("remove", null);
-  })
-});
 
 </script>
