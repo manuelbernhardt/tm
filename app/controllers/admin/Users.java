@@ -1,6 +1,5 @@
 package controllers.admin;
 
-import models.Defect;
 import models.User;
 import play.mvc.Controller;
 
