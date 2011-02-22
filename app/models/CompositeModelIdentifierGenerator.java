@@ -9,11 +9,12 @@ import javax.persistence.Query;
 import play.db.jpa.JPA;
 
 /**
- * If we are successful this will have to be rewritten
+ * Generates natural identifiers for composite models
+ * If we are successful this will have to be rewritten (as it can't work in a clustered environment)
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class CompositeIdentifierGenerator {
+public class CompositeModelIdentifierGenerator {
 
     private static Map<Class<? extends CompositeModel>, AtomicLong> counters = new ConcurrentHashMap<Class<? extends CompositeModel>, AtomicLong>();
 

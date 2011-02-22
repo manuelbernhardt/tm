@@ -17,7 +17,7 @@ public class CompositeModel extends Model {
 
     @PrePersist
     public void prePersist() {
-        naturalId = CompositeIdentifierGenerator.getNextNaturalIdentifier(this.getClass());
+        naturalId = CompositeModelIdentifierGenerator.getNextNaturalIdentifier(this.getClass());
     }
 
 }
