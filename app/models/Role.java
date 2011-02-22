@@ -1,10 +1,11 @@
 package models;
 
-import play.data.validation.Email;
-import play.db.jpa.Model;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+import play.db.jpa.Model;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

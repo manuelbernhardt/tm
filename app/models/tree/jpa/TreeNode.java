@@ -15,10 +15,11 @@ import controllers.tree.JPATreeStorage;
 import controllers.tree.NodeType;
 import models.tree.GenericTreeNode;
 import models.tree.Node;
-import org.hibernate.annotations.Index;
 import play.db.jpa.Model;
 
 /**
+ * TODO optimize this table (indexes)
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
@@ -35,7 +36,6 @@ public class TreeNode extends Model implements GenericTreeNode {
 
     // let's assume nobody creates such mad hierarchies
     @Column(length = 5000)
-    @Index(name="pathIndex")
     public String path;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

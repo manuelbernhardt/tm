@@ -1,11 +1,12 @@
 package models;
 
-import play.db.jpa.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import play.db.jpa.Model;
+
 /**
+ * FIXME this could be an embeddable rather than an own table?
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
