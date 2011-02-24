@@ -3,5 +3,7 @@
 require:
     - play
     - play -> crud
+    - play -> secure
+    - play -> deadbolt 1.2.1
     - play -> logisimayml 1.1
     - mysql -> mysql-connector-java 5.1.13
