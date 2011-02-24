@@ -1,4 +1,4 @@
-package models;
+package models.general;
 
 import java.util.List;
 import java.util.Map;

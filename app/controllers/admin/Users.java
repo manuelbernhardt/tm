@@ -3,7 +3,7 @@ package controllers.admin;
 import java.util.List;
 
 import controllers.deadbolt.Deadbolt;
-import models.User;
+import models.general.User;
 import play.mvc.Controller;
 import play.mvc.With;
 

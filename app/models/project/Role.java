@@ -1,4 +1,4 @@
-package models;
+package models.project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import models.general.UnitRole;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

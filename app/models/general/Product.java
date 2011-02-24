@@ -1,4 +1,4 @@
-package models;
+package models.general;
 
 import play.db.jpa.Model;
 

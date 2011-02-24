@@ -1,4 +1,4 @@
-package models;
+package models.general;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

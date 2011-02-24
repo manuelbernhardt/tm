@@ -2,7 +2,7 @@ package controllers;
 
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
-import models.User;
+import models.general.User;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.RoleHolder;
 import play.mvc.Controller;

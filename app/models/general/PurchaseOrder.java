@@ -1,10 +1,10 @@
-package models;
+package models.general;
 
-import play.db.jpa.Model;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+
+import play.db.jpa.Model;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

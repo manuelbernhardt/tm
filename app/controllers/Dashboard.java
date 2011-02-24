@@ -1,7 +1,7 @@
 package controllers;
 
 import controllers.deadbolt.Restrict;
-import models.UnitRole;
+import models.general.UnitRole;
 
 public class Dashboard extends TMController {
 

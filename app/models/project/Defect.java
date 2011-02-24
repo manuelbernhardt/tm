@@ -1,10 +1,12 @@
-package models;
+package models.project;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import models.general.User;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>

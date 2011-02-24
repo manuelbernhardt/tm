@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.general.User;
 
 public class Security extends Secure.Security {
 

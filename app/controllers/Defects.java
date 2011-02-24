@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.List;
 
-import models.Defect;
+import models.project.Defect;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

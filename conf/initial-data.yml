@@ -1,14 +1,14 @@
-Account(oxiras):
+general.Account(oxiras):
     name: Oxiras ApS
 
-User(Gwen):
+general.User(Gwen):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-User(Manu):
+general.User(Manu):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com

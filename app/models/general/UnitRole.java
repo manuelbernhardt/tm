@@ -1,4 +1,4 @@
-package models;
+package models.general;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

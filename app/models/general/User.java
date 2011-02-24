@@ -1,4 +1,4 @@
-package models;
+package models.general;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import models.project.Project;
 import models.deadbolt.RoleHolder;
+import models.project.Role;
 import net.sf.oval.constraint.NotEmpty;
 import play.data.validation.Email;
 import play.db.jpa.Model;
