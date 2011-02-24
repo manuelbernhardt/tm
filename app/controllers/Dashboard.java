@@ -1,14 +1,11 @@
 package controllers;
 
-import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
-import play.mvc.Controller;
-import play.mvc.With;
+import models.UnitRole;
 
-@With(Deadbolt.class)
-public class Dashboard extends Controller {
+public class Dashboard extends TMController {
 
-    @Restrict("user")
+    @Restrict(UnitRole.USER)
     public static void index() {
         render();
     }

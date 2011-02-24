@@ -1,10 +1,8 @@
 package models;
 
-import play.data.validation.Email;
-import play.db.jpa.Model;
-import sun.security.krb5.Realm;
-
 import javax.persistence.Entity;
+
+import play.db.jpa.Model;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -16,6 +14,6 @@ public class Account extends Model {
 
     public Double credit;
 
-    public String VATcode;
+    public String vatCode;
 
 }

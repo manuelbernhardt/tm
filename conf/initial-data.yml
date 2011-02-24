@@ -1,11 +1,16 @@
+Account(oxiras):
+    name: Oxiras ApS
+
 User(Gwen):
-    firstname: Gwenael
-    lastname: Alizon
+    firstName: Gwenael
+    lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
+    account: oxiras
 
 User(Manu):
-    firstname: Manuel
-    lastname: Bernhardt
+    firstName: Manuel
+    lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
+    account: oxiras

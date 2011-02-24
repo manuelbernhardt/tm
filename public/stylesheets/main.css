@@ -8,3 +8,7 @@ div.tree {
   width:250px;
   min-height:400px;
 }
+
+h1 {
+  text-align: center;
+}

@@ -8,8 +8,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
+import net.sf.oval.constraint.NotEmpty;
 import play.data.validation.Email;
 import play.db.jpa.Model;
+import play.libs.Crypto;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -17,10 +19,13 @@ import play.db.jpa.Model;
 @Entity
 public class User extends Model implements RoleHolder {
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;
 
+    @NotEmpty
     public String firstName;
+
+    @NotEmpty
     public String lastName;
 
     @Email
@@ -28,36 +33,52 @@ public class User extends Model implements RoleHolder {
 
     public String phone;
 
-    public String password;
+    private String password;
+
+    @NotEmpty
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = Crypto.passwordHash(password);
+    }
 
     @ManyToMany
     public List<Project> project;
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
-    public List<Role> roles;
+    public List<Role> projectRoles;
 
-    // TODO cache this, as it is called at each permission check!
-    // but evict the cache on Role definition change
+    public boolean connect(String password) {
+        return this.password.equals(Crypto.passwordHash(password));
+    }
+
+    // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
     public List<? extends models.deadbolt.Role> getRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
+        setApplicationRoles(res);
+        setAccountRoles(res);
+        setProjectRoles(res);
+        return res;
+    }
 
-        // application roles
-
+    private void setApplicationRoles(List<UnitRole> res) {
         // first off, everyone is a user
-        res.add(new UnitRole("user"));
+        res.add(UnitRole.user());
+    }
 
-        // next, we have to somehow fetch whether this user is an admin for an account
+    private void setAccountRoles(List<UnitRole> res) {
         // TODO
+    }
 
-        // project-specific roles
-        for(Role r : roles) {
-            for(UnitRole ur : r.getUnitRoles()) {
-                if(!res.contains(ur)) {
+    private void setProjectRoles(List<UnitRole> res) {
+        for (Role r : projectRoles) {
+            for (UnitRole ur : r.getUnitRoles()) {
+                if (!res.contains(ur)) {
                     res.add(ur);
                 }
             }
         }
-
-        return res;
     }
 }
