@@ -1,8 +1,6 @@
 package models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -11,16 +9,9 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
-public class DefectStatus extends CompositeModel implements ProjectModel {
+public class DefectStatus extends ProjectModel {
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
-    public Project project;
-
-    public Project getProject() {
-        return project;
-    }
-
-    public Integer Position;
-    public String Status;
+    public Integer position;
+    public String status;
 
 }

@@ -1,6 +1,5 @@
 package models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,14 +10,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "account_id"})})
-public class Project extends CompositeModel implements AccountModel {
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
-    public Account account;
-
-    public Account getAccount() {
-        return account;
-    }
+public class Project extends AccountModel {
 
     @ManyToOne
     public AccountProduct product;
@@ -26,6 +18,11 @@ public class Project extends CompositeModel implements AccountModel {
     public String name;
 
     public Project() {
+
     }
 
+    public Project(String name, Account account) {
+        this.account = account;
+        this.name = name;
+    }
 }

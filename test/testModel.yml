@@ -1,0 +1,20 @@
+Account(oxiras):
+  name: Oxiras ApS
+
+Project(p1):
+  name: Test Project 1
+  account: oxiras
+
+Project(p2):
+  name: Test Project 2
+  account: oxiras
+
+DefectStatus(ds1):
+  position: 1
+  project: p1
+  status: Broken
+
+Defect(defect1):
+  project: p1
+  title: All is Bad.
+  status: ds1

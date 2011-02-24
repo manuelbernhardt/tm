@@ -1,18 +1,19 @@
 package models;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+
 /**
- * Implementors of this class need to define:
- * - a @ManyToOne to Account
- * - the UniqueConstraint on (naturalId, account)
- * themselves.
- *
- * See http://opensource.atlassian.com/projects/hibernate/browse/HHH-5949
- * See http://opensource.atlassian.com/projects/hibernate/browse/HHH-5950
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public interface AccountModel {
+@MappedSuperclass
+public class AccountModel extends CompositeModel {
 
-    public Account getAccount();
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
+    public Account account;
+
 
 }

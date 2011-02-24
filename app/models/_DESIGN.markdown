@@ -3,38 +3,19 @@ When creating a new model entity
 
 Account-related entities
 ------------------------
-Account-related entities need to subclass CompositeModel and implement AccountModel.
+Account-related entities need to subclass AccountModel.
 
 They need to declare the following uniqueness constraint:
 
     @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "account_id"})})
 
-And they need to define the following relationship:
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
-    public Account account;
-
-    public Account getAccount() {
-        return account;
-    }
-
 Project-related entities
 ------------------------
-Project-related entities need to subclass CompositeModel and implement ProjectModel.
+Project-related entities need to subclass ProjectModel.
 
 They need to declare the following uniqueness constraint:
 
     @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "project_id"})})
-
-And they need to define the following relationship:
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
-    public Project project;
-
-    public Project getProject() {
-        return project;
-    }
-
 
 Design decisions
 ================
