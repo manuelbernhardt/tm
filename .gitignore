@@ -2,3 +2,5 @@ tmp/
 modules/
 .DS_Store
 tm.iml
+test-result/
+lib/
