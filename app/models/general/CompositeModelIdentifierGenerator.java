@@ -10,7 +10,8 @@ import play.db.jpa.JPA;
 
 /**
  * Generates natural identifiers for composite models
- * If we are successful this will have to be rewritten (as it can't work in a clustered environment)
+ * If we are successful this will have to be rewritten (as it can't work in a clustered environment),
+ * or a special Hibernate identifier generator will have to be used.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */

@@ -10,11 +10,14 @@ public class Security extends Secure.Security {
     }
 
     static void onAuthenticated() {
-        User u = User.find("byEmail", Security.connected()).first();
+        models.tm.User u = models.tm.User.find("byEmail", Security.connected()).first();
 
         // bind the basic session variables
         // we really want to keep the user session as thin as possible as it is sent at each request
         session.put("account", u.account.getId());
+        if(u.activeProject != null) {
+            session.put("project", u.activeProject);
+        }
     }
 
 }

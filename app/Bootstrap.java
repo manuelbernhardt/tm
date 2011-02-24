@@ -1,4 +1,4 @@
-import models.general.User;
+import models.tm.User;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;

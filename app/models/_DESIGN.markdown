@@ -17,7 +17,8 @@ They need to declare the following uniqueness constraint:
 
     @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "project_id"})})
 
-Design decisions
+
+Design explained
 ================
 
 Primary keys for "composite" entities
@@ -50,3 +51,24 @@ Additionally, a unique identifier for the table serves as primary key
 Play! does not handle well the usage of @EmbeddedId and its CRUD module does not support such cases. Also, creating HQL queries selecting entities with composite identifiers
 is cumbersome to say the least (you need to create an Embeddable identifier instance for each query). Thus, we will use the approach with a generated primary key which will also allow us to use
 the CRUD module if necessary for administration purposes. If there is a need for it, we can still switch to a composite primary key on the database level later on.
+
+
+Generic entities
+----------------
+
+In the view of creating more products that can be used in an integrated fashion with other products, we aim at re-using the same core entities:
+
+#### general.Account
+An account represents a company account that pays bills
+
+#### general.User
+A user represents a human user and is the handle for authentication and role holding.
+
+#### general.UnitRole
+Represents a concrete role existing in the application (interface and controllers).
+This entity is not persisted, it is part of the general AAA mechanism.
+
+#### tm.User
+The Test Management extends the general.User and holds additional tm-specific data (assigned projects, active project, ...)
+
+
