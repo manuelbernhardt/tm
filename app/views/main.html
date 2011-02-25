@@ -3,22 +3,22 @@
 <div style="text-align:right;">
    ${project == null ? 'No active project' : project}
    |
-   <a href="@{admin.Users.index}"><span>${firstName} ${lastName}</span></a>
+   <a href="@{profile.Profile.index}"><span>${firstName} ${lastName}</span></a>
    | 
    <a href="/logout"><span>Logout</span></a>
 </div>
 
-#{tabs id:'tabs'}
+#{tabLayout}
+  #{tabs id:'tabs'}
     #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
     #{tab link:@Dashboard.index(), title:'Requirements', controller:'Requirements' /}
     #{tab link:@Approach.index(), title:'Test approach', controller:'Approach' /}
     <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Test preparation</span></a></li>
     <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Test execution</span></a></li>
     #{tab link:@Defects.index(), title:'Defects', controller:'Defects' /}
-  </ul>
-  <div id="ui-tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" >
+  #{/tabs}
+  #{tabContent}
     #{doLayout /}
-  </div>
-#{/tabs}
-
+  #{/tabContent}
+#{/tabLayout}
 
