@@ -1,10 +1,15 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
-import models.general.User;
 import models.deadbolt.ExternalizedRestrictions;
+import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
+import models.general.Auth;
+import models.tm.User;
 import play.mvc.Controller;
 
 public class TMDeadboltHandler extends Controller implements DeadboltHandler {
@@ -24,8 +29,20 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     }
 
     public RoleHolder getRoleHolder() {
+        // TODO cache this!
+
+        // we want to collect all roles (Auth roles + TM roles)
+        CollectingRoleHolder crh = new CollectingRoleHolder();
+
         String userName = Secure.Security.connected();
-        return User.find("byEmail", userName).first();
+
+        Auth a = Auth.find("byEmail", userName).first();
+        crh.addRoles(a.getRoles());
+
+        User u = User.find("byAuthentication", a).first();
+        crh.addRoles(u.getRoles());
+
+        return crh;
     }
 
     public void onAccessFailure(String controllerClassName) {
@@ -38,5 +55,17 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
                 return null;
             }
         };
+    }
+
+    public static class CollectingRoleHolder implements RoleHolder {
+        List<Role> roles = new ArrayList<Role>();
+
+        public void addRoles(List<? extends Role> r) {
+            roles.addAll(r);
+        }
+
+        public List<? extends Role> getRoles() {
+            return roles;
+        }
     }
 }

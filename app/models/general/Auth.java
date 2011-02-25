@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
@@ -16,13 +14,12 @@ import play.db.jpa.Model;
 import play.libs.Crypto;
 
 /**
- * Generic user
+ * Generic user authentication. Does not extend AccountModel because natural IDs are not necessary.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class User extends Model implements RoleHolder {
+public class Auth extends Model implements RoleHolder {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;

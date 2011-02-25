@@ -1,7 +1,7 @@
 package controllers;
 
 import controllers.deadbolt.Deadbolt;
-import models.general.User;
+import models.general.Auth;
 import models.project.Project;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -19,9 +19,9 @@ public class TMController extends Controller {
     @Before
     public static void setConnectedUser() {
         if(Security.isConnected()) {
-            User u = User.find("byEmail", Security.connected()).first();
-            renderArgs.put("firstName", u.firstName);
-            renderArgs.put("lastName", u.lastName);
+            Auth a = Auth.find("byEmail", Security.connected()).first();
+            renderArgs.put("firstName", a.firstName);
+            renderArgs.put("lastName", a.lastName);
         }
     }
 

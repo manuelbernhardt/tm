@@ -1,16 +1,23 @@
 general.Account(oxiras):
     name: Oxiras ApS
 
-general.User(Gwen):
+general.Auth(gwenAuth):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-general.User(Manu):
+
+general.Auth(manuAuth):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
+
+tm.User(gwen):
+    authentication: gwenAuth
+
+tm.User(manu):
+    authentication: manuAuth
