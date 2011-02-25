@@ -1,0 +1,16 @@
+#{extends 'header.html' /}
+
+<div style="text-align: right;">
+   <a href="@{Dashboard.index}"><span>Test Management</span></a>
+   | <a href="/logout"><span>Logout</span></a>
+</div>
+
+#{tabLayout}
+  #{tabs id:'tabs'}
+      #{tab link:@profile.Profile.index(), title:'My Profile', controller:'profile.Profile' /}
+      <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-4"><span>Projects</span></a></li>
+  #{/tabs}
+  #{tabContent}
+    #{doLayout /}
+  #{/tabContent}
+#{/tabLayout}
