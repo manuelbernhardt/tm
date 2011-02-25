@@ -1,3 +1,7 @@
 #{extends 'profile/main.html' /}
 
-Here will come the form with the user stuff.
+<form action=@{profile.Profile.editUser()} method="POST">
+  First name: <input type="text" name="user.authentication.firstName" value="${user.authentication.firstName}" id="user.authentication.firstName"/><br/>
+  Last name: <input type="text" name="user.authentication.lastName" value="${user.authentication.lastName}" id="user.authentication.lastName"/><br/>
+  <input type="submit" value="Save"/>
+</form>
