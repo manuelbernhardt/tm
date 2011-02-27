@@ -1,14 +1,17 @@
 == NOW ==
 
+- post mail to Play! list -> normal that form binding not automatic if no IDs are passed?
+
+- form validation (ajax + controller)
+  - test validation degradation (i.e. without javascript)
+  - implement all rules for jquery validation:
+    - make a custom fasttag -> re-use code of jqvalidate, but generate the whole validate string instead
 
 == Model
 
-- model class for project-dependent entities, generating also the project + auto-incrementing ID for the entity
-  - look again at how the captcha is implemented for security
+- unit tests for the model entities ==> Gwen?
 
 == view / javascript
-
-- validation (ajax + controller)
 
 try out and create simplified ways of using the following widgets:
 - modal windows

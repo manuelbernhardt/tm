@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
-import net.sf.oval.constraint.NotEmpty;
 import play.data.validation.Email;
+import play.data.validation.Required;
 import play.db.jpa.Model;
 import play.libs.Crypto;
 
@@ -24,12 +24,12 @@ public class Auth extends Model implements RoleHolder {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;
 
-    @NotEmpty
     @Column(nullable = false)
+    @Required
     public String firstName;
 
-    @NotEmpty
     @Column(nullable = false)
+    @Required
     public String lastName;
 
     @Email
@@ -39,13 +39,13 @@ public class Auth extends Model implements RoleHolder {
 
     private String password;
 
-    @NotEmpty
     @Column(nullable = false)
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
+        // TODO minimal length
         this.password = Crypto.passwordHash(password);
     }
 

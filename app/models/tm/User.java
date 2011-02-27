@@ -12,6 +12,7 @@ import models.general.Auth;
 import models.general.UnitRole;
 import models.project.Project;
 import models.project.Role;
+import play.data.validation.Valid;
 import play.db.jpa.Model;
 
 /**
@@ -22,7 +23,8 @@ import play.db.jpa.Model;
 @Entity
 public class User extends Model implements RoleHolder {
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
+    @Valid
     public Auth authentication;
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})

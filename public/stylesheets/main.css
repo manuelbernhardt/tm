@@ -1,14 +1,28 @@
 body {
-  margin:0;
-  color:#333333;
-  font:12px/1.4 arial,FreeSans,Helvetica,sans-serif;
+  margin: 0;
+  color: #333333;
+  font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
 }
 
 div.tree {
-  width:250px;
-  min-height:400px;
+  width: 250px;
+  min-height: 400px;
 }
 
 h1 {
   text-align: center;
+}
+
+.field {
+	clear: both;
+	margin-bottom: 2px;
+}
+
+.infos {
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.error {
+	color: #c00;
 }
