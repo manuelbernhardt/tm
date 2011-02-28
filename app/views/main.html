@@ -3,8 +3,10 @@
 <div style="text-align:right;">
    ${project == null ? 'No active project' : project}
    |
+   <a href="@{admin.Users.index}"><span>Administration</span></a>
+   |
    <a href="@{profile.Profile.index}"><span>${firstName} ${lastName}</span></a>
-   | 
+   |
    <a href="/logout"><span>Logout</span></a>
 </div>
 

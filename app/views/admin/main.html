@@ -1,7 +1,11 @@
 #{extends 'header.html' /}
 
 <div style="text-align: right;">
-   <a href="@{Dashboard.index}"><span>Test Management</span></a>
+  <a href="@{Dashboard.index}"><span>Test Management</span></a>
+  |
+  <a href="@{profile.Profile.index}"><span>${firstName} ${lastName}</span></a>
+  |
+  <a href="/logout"><span>Logout</span></a>
 </div>
 
 #{tabLayout}

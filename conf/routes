@@ -8,8 +8,9 @@
 GET     /                                       Dashboard.index
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
-GET     /profile                                Profile.index
-*       /admin                                  module:crud
+GET     /profile                                profile.Profile.index
+
+GET     /admin                                  admin.Users.index
 GET     /admin/users                            admin.Users.index
 
 
