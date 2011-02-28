@@ -12,6 +12,7 @@ GET     /profile                                profile.Profile.index
 
 GET     /admin                                  admin.Users.index
 GET     /admin/users                            admin.Users.index
+GET     /admin/users/data                       admin.Users.data
 
 
 # Tree
