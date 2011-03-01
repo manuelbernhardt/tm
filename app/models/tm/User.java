@@ -27,6 +27,8 @@ public class User extends Model implements RoleHolder {
     @Valid
     public Auth authentication;
 
+    public boolean isApplicationAdmin;
+
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public List<Project> projects;
 
@@ -38,6 +40,10 @@ public class User extends Model implements RoleHolder {
     // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
     public List<? extends models.deadbolt.Role> getRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
+
+        if(isApplicationAdmin) {
+            res.add(UnitRole.admin());
+        }
 
         for (Role r : projectRoles) {
             for (UnitRole ur : r.getUnitRoles()) {

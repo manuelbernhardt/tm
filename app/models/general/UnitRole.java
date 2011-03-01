@@ -6,7 +6,8 @@ package models.general;
 public class UnitRole implements models.deadbolt.Role {
 
     public static final String USER = "user";
-    
+    public static final String ADMIN = "admin";
+
     private String name;
 
     public String getRoleName() {
@@ -30,4 +31,10 @@ public class UnitRole implements models.deadbolt.Role {
     public static UnitRole user() {
         return new UnitRole(USER);
     }
+
+    public static UnitRole admin() {
+        return new UnitRole(ADMIN);
+    }
 }
+
+

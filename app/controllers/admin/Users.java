@@ -4,15 +4,19 @@ import java.util.List;
 
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.Auth;
+import models.general.UnitRole;
 import models.tm.User;
+import play.db.jpa.GenericModel;
 import play.mvc.With;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @With(Deadbolt.class)
+@Restrict(UnitRole.ADMIN)
 public class Users extends TMController {
 
     public static void index() {
@@ -20,7 +24,8 @@ public class Users extends TMController {
         render(users);
     }
 
-    public static void create(Auth user) {
+    public static void create(User user) {
+        user.authentication.account = getConnectedUser().authentication.account;
         user.create();
         index();
     }
@@ -31,20 +36,17 @@ public class Users extends TMController {
                             String sColumns,
                             String sEcho,
                             String sSearch) {
-        List<User> people = null;
-        if(sSearch != null && sSearch.length() > 0) {
+        GenericModel.JPAQuery query = null;
+        if (sSearch != null && sSearch.length() > 0) {
+            // TODO look into criteria API to make this in a more convenient fashion
             String sLike = "%" + sSearch + "%";
-            people = User.find("from User u where u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike).fetch(iDisplayLength == null ? 10 : iDisplayLength);
+            query = User.find("from User u where u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
         } else {
-            people = User.all().from(iDisplayStart == null ? 0 : iDisplayStart).fetch(iDisplayLength == null ? 10 : iDisplayLength);
-
+            query = User.all().from(iDisplayStart == null ? 0 : iDisplayStart);
         }
+        List<User> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = User.count();
-        TableController.renderJSON(people,
-                User.class,
-                totalRecords,
-                sColumns,
-                sEcho);
+        TableController.renderJSON(people, User.class, totalRecords, sColumns, sEcho);
     }
 
 

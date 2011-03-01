@@ -41,8 +41,8 @@
 <h2>New user</h2>
 
 <form action=@{admin.Users.create()} method="POST">
-  First name: <input type="text" name="user.firstName" id="user.firstName"/><br/>
-  Last name: <input type="text" name="user.lastName" id="user.lastName"/><br/>
+  First name: <input type="text" name="user.authentication.firstName" id="user.authentication.firstName"/><br/>
+  Last name: <input type="text" name="user.authentication.lastName" id="user.authentication.lastName"/><br/>
   <input type="submit" value="Save!"/>
 </form>
 
