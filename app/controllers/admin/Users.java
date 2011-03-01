@@ -5,7 +5,6 @@ import java.util.List;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.tabularasa.TableController;
-import mappers.UserMapper;
 import models.general.Auth;
 import models.tm.User;
 import play.mvc.With;
@@ -15,10 +14,6 @@ import play.mvc.With;
  */
 @With(Deadbolt.class)
 public class Users extends TMController {
-
-    static {
-        TableController.addObjectValueMapper(User.class, new UserMapper());
-    }
 
     public static void index() {
         List<Auth> users = Auth.findAll();
@@ -34,8 +29,16 @@ public class Users extends TMController {
                             Integer iDisplayStart,
                             Integer iDisplayLength,
                             String sColumns,
-                            String sEcho) {
-        List<User> people = User.all().from(iDisplayStart == null ? 0 : iDisplayStart).fetch(iDisplayLength == null ? 10 : iDisplayLength);
+                            String sEcho,
+                            String sSearch) {
+        List<User> people = null;
+        if(sSearch != null && sSearch.length() > 0) {
+            String sLike = "%" + sSearch + "%";
+            people = User.find("from User u where u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike).fetch(iDisplayLength == null ? 10 : iDisplayLength);
+        } else {
+            people = User.all().from(iDisplayStart == null ? 0 : iDisplayStart).fetch(iDisplayLength == null ? 10 : iDisplayLength);
+
+        }
         long totalRecords = User.count();
         TableController.renderJSON(people,
                 User.class,
