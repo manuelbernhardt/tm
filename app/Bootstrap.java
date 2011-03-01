@@ -11,7 +11,7 @@ public class Bootstrap extends Job {
     @Override
     public void doJob() throws Exception {
         if(User.count() == 0) {
-            Fixtures.load("initial-data.yml");
+            Fixtures.loadModels("initial-data.yml");
         }
     }
 }
