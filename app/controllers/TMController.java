@@ -52,9 +52,11 @@ public class TMController extends Controller {
      */
     public static Project getActiveProject() {
         // TODO freaking cache this or we have an extra query each time we create a project-related entity!
-        Long id = Long.valueOf(session.get("project"));
-        if(id != null) {
-            return Project.findById(id);
+        if(session.get("project") != null) {
+            Long id = Long.valueOf(session.get("project"));
+            if(id != null) {
+                return Project.findById(id);
+            }
         }
         return null;
     }
