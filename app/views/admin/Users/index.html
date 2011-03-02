@@ -45,6 +45,11 @@
       $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?user=' + selectedUser);
       $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?user=' + selectedUser);
 
+      // reloads the selected tab
+      var $tabs = $('#innerTabs').tabs();
+      var selected = $tabs.tabs('option', 'selected');
+      $tabs.tabs('load', selected);
+
     });
 
 
