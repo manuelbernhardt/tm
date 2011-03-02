@@ -19,17 +19,20 @@ import play.mvc.With;
 @Restrict(UnitRole.ADMIN)
 public class Users extends TMController {
 
+    @Restrict(UnitRole.ADMIN)
     public static void index() {
         List<Auth> users = Auth.findAll();
         render(users);
     }
 
+    @Restrict(UnitRole.ADMIN)
     public static void create(User user) {
         user.authentication.account = getConnectedUser().authentication.account;
         user.create();
         index();
     }
 
+    @Restrict(UnitRole.ADMIN)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,

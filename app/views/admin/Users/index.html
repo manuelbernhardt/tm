@@ -23,20 +23,45 @@
     };
     #{/tabularasa.init}
   });
+
+  $(function() {
+    $("#innerTabs").tabs();
+  });
 </script>
 #{/set}
 
-<h2>Existing users</h2>
+<div class="container">
+  <div class="left">
+    <table class="display" id="tab">
+      <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="right">
 
-<table class="display" id="tab">
-  <thead>
-  <tr>
-    <th>First Name</th>
-    <th>Last Name</th>
-  </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <div id="innerTabs">
+      <ul>
+        <li><a href="#tabs-1">User details</a></li>
+        <li><a href="#tabs-2">Projects</a></li>
+        <li><a href="#tabs-3">Account</a></li>
+      </ul>
+      <div id="tabs-1">
+        #{include 'admin/Users/userDetails.html' /}
+      </div>
+      <div id="tabs-2">
+        #{include 'admin/Users/projects.html' /}
+      </div>
+      <div id="tabs-3">
+        #{include 'admin/Users/account.html' /}
+      </div>
+    </div>
+  </div>
+</div>
 
 <h2>New user</h2>
 
@@ -45,6 +70,3 @@
   Last name: <input type="text" name="user.authentication.lastName" id="user.authentication.lastName"/><br/>
   <input type="submit" value="Save!"/>
 </form>
-
-
-

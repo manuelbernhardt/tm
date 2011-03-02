@@ -26,3 +26,20 @@ h1 {
 .error {
 	color: #c00;
 }
+
+/* container stuff */
+div.container {
+	/*border: 1px solid #000000;*/
+	overflow: auto;
+	width: 100%
+}
+
+div.left {
+	width: 35%;
+	float: left;
+}
+
+div.right {
+	width: 55%;
+	float: right;
+}

@@ -33,13 +33,16 @@ public class Auth extends Model implements RoleHolder {
     public String lastName;
 
     @Email
+    @Required
+    @Column(nullable = false)
     public String email;
 
     public String phone;
 
+    @Required
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     public String getPassword() {
         return password;
     }
