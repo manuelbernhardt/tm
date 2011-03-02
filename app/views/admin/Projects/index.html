@@ -1,0 +1,47 @@
+#{extends 'admin/main.html' /}
+#{set title:'Project administration' /}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/demo_table_jui.css'}">
+#{/set}
+
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+  $(function() {
+    $("#innerTabs").tabs();
+  });
+
+  // TODO integrate tree and tree selection
+
+  // adjust the URLs of the tabs depending on the selected user
+  var anSelected = fnGetSelected(tabDataTable);
+  var tr = anSelected[0];
+  var selectedUser = $($(tr).children('td')[0]).text();
+  $('#innerTabs').tabs('url', 0, '@{admin.Users.userDetails()}?userId=' + selectedUser);
+  $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?userId=' + selectedUser);
+  $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?userId=' + selectedUser);
+
+  // reloads the selected tab
+  var $tabs = $('#innerTabs').tabs();
+  var selected = $tabs.tabs('option', 'selected');
+  $tabs.tabs('load', selected);
+
+</script>
+#{/set}
+
+<div class="container">
+  <div class="left">
+    Here will grow a tree full of nodes. Amen.
+  </div>
+  <div class="right">
+
+    <div id="innerTabs">
+      <ul>
+        <li><a href="@{admin.Projects.projectDetails()}" id="projectDetailsLink"><span>Project details</span></a></li>
+        <li><a href="@{admin.Projects.roles()}" id="rolesLink"><span>Roles</span></a></li>
+        <li><a href="@{admin.Projects.users()}" id="usersLink"><span>Users</span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
