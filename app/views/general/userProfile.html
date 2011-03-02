@@ -5,61 +5,67 @@ Please select a user
 
 #{ifErrors}
 <div class="error">
-    <h2>Oops, please correct these errors</h2>
+  <h2>Oops, please correct these errors</h2>
 </div>
 #{/ifErrors}
 
-<fieldset style="width: 50%;">
-    <legend>Profile information</legend>
+<script type="text/javascript">
+  $(function() {
+    $('#save').button();
+  });
+</script>
 
-    #{jqvalid.form id:'profileForm', action:action}
+<fieldset style="width: 70%;">
+  <legend>Profile information</legend>
 
-    #{jqvalid.field 'user.authentication.firstName'}
-    <div class="field">
-        <label for="${field.id}">First name</label>
-        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-               value="${field.value}" class="${field.errorClass}"/>
-        <span class="error">${field.error}</span>
-    </div>
-    #{/}
+  #{jqvalid.form id:'profileForm', action:action}
 
-    #{jqvalid.field 'user.authentication.lastName'}
-    <div class="field">
-        <label for="${field.id}">Last name</label>
-        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-               value="${field.value}" class="${field.errorClass}"/>
-        <span class="error">${field.error}</span>
-    </div>
-    #{/}
+  #{jqvalid.field 'user.authentication.firstName'}
+  <div class="field">
+    <label for="${field.id}">First name</label>
+    <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+           value="${field.value}" class="${field.errorClass} text ui-widget-content ui-corner-all"/>
+    <span class="error">${field.error}</span>
+  </div>
+  #{/}
 
-    #{jqvalid.field 'user.authentication.email'}
-    <div class="field">
-        <label for="${field.id}">Email</label>
-        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-               value="${field.value}" class="${field.errorClass}" size="40"/>
-        <span class="error">${field.error}</span>
-    </div>
-    #{/}
+  #{jqvalid.field 'user.authentication.lastName'}
+  <div class="field">
+    <label for="${field.id}">Last name</label>
+    <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+           value="${field.value}" class="${field.errorClass} text ui-widget-content ui-corner-all"/>
+    <span class="error">${field.error}</span>
+  </div>
+  #{/}
 
-    #{jqvalid.field 'user.authentication.phone'}
-    <div class="field">
-        <label for="${field.id}">Phone</label>
-        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-               value="${field.value}" class="${field.errorClass}"/>
-        <span class="error">${field.error}</span>
-    </div>
-    #{/}
+  #{jqvalid.field 'user.authentication.email'}
+  <div class="field">
+    <label for="${field.id}">Email</label>
+    <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+           value="${field.value}" class="${field.errorClass} text ui-widget-content ui-corner-all" size="40"/>
+    <span class="error">${field.error}</span>
+  </div>
+  #{/}
 
-    <p>
-        <input type="hidden" name="user.id" value="${user.id}"/>
-        <input type="hidden" name="user.authentication.id" value="${user.authentication.id}"/>
-        <input type="hidden" name="user.authentication.account.id" value="${user.authentication.account.id}"/>
-        <input type="submit" value="Save">
-    </p>
+  #{jqvalid.field 'user.authentication.phone'}
+  <div class="field">
+    <label for="${field.id}">Phone</label>
+    <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+           value="${field.value}" class="${field.errorClass} text ui-widget-content ui-corner-all"/>
+    <span class="error">${field.error}</span>
+  </div>
+  #{/}
 
-    #{/jqvalid.form}
+  <p>
+    <input type="hidden" name="user.id" value="${user.id}"/>
+    <input type="hidden" name="user.authentication.id" value="${user.authentication.id}"/>
+    <input type="hidden" name="user.authentication.account.id" value="${user.authentication.account.id}"/>
+    <input type="submit" value="Save" id="save">
+  </p>
 
-    #{validate /}
+  #{/jqvalid.form}
+
+  #{validate /}
 
 </fieldset>
 #{/else}

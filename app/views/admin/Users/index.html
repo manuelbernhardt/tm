@@ -25,7 +25,9 @@
       "sAjaxSource": "@{admin.Users.data()}",
       "bProcessing": true,
       "bServerSide": true,
-      "sDom": 'lfrtip<"customiseTable">'
+      "bLengthChange": false,
+      "iDisplayLength": 10,
+      "bInfo": false
     };
     #{/tabularasa.init}
 
@@ -100,5 +102,7 @@
 <form action=@{admin.Users.create()} method="POST">
   First name: <input type="text" name="user.authentication.firstName" id="user.authentication.firstName"/><br/>
   Last name: <input type="text" name="user.authentication.lastName" id="user.authentication.lastName"/><br/>
+  Email: <input type="text" name="user.authentication.email" id="user.authentication.email"/><br/>
+  Password: <input type="text" name="user.authentication.password" id="user.authentication.password"/><br/>
   <input type="submit" value="Save!"/>
 </form>
