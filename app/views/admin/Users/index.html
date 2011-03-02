@@ -41,9 +41,9 @@
       var anSelected = fnGetSelected(tabDataTable);
       var tr = anSelected[0];
       var selectedUser = $($(tr).children('td')[0]).text();
-      $('#innerTabs').tabs('url', 0, '@{admin.Users.userDetails()}?user=' + selectedUser);
-      $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?user=' + selectedUser);
-      $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?user=' + selectedUser);
+      $('#innerTabs').tabs('url', 0, '@{admin.Users.userDetails()}?userId=' + selectedUser);
+      $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?userId=' + selectedUser);
+      $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?userId=' + selectedUser);
 
       // reloads the selected tab
       var $tabs = $('#innerTabs').tabs();
