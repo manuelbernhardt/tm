@@ -31,6 +31,9 @@
     };
     #{/tabularasa.init}
 
+    // hide the id column
+    tabDataTable.fnSetColumnVis( 0, false );
+
     /* Add a click handler to the rows - this could be used as a callback */
     $("#tab tbody").click(function(event) {
       $(tabDataTable.fnSettings().aoData).each(function () {
@@ -78,6 +81,7 @@
     <table class="display" id="tab">
       <thead>
       <tr>
+        <th>ID</th>
         <th>First Name</th>
         <th>Last Name</th>
       </tr>
