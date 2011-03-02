@@ -28,17 +28,26 @@ public class Users extends TMController {
 
     public static void userDetails(Long userId) {
         String action = Router.getFullUrl("admin.Users.editUserDetails");
-        User user = User.findById(userId);
+        User user = null;
+        if (userId != null) {
+            user = User.findById(userId);
+        }
         render("/admin/Users/userDetails.html", action, user);
     }
 
     public static void projects(Long userId) {
-        User user = User.findById(userId);
+        User user = null;
+        if (userId != null) {
+            user = User.findById(userId);
+        }
         render("/admin/Users/projects.html", user);
     }
 
     public static void account(Long userId) {
-        User user = User.findById(userId);
+        User user = null;
+        if (userId != null) {
+            user = User.findById(userId);
+        }
         render("/admin/Users/account.html", user);
     }
 
