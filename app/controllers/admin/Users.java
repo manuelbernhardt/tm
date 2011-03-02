@@ -10,6 +10,7 @@ import models.general.Auth;
 import models.general.UnitRole;
 import models.tm.User;
 import play.db.jpa.GenericModel;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -25,16 +26,20 @@ public class Users extends TMController {
         render(users);
     }
 
-    public static void userDetails() {
-        render("/admin/Users/userDetails.html");
+    public static void userDetails(Long userId) {
+        String action = Router.getFullUrl("admin.Users.editUserDetails");
+        User user = User.findById(userId);
+        render("/admin/Users/userDetails.html", action, user);
     }
 
-    public static void projects() {
-        render("/admin/Users/projects.html");
+    public static void projects(Long userId) {
+        User user = User.findById(userId);
+        render("/admin/Users/projects.html", user);
     }
 
-    public static void account() {
-        render("/admin/Users/account.html");
+    public static void account(Long userId) {
+        User user = User.findById(userId);
+        render("/admin/Users/account.html", user);
     }
 
 
