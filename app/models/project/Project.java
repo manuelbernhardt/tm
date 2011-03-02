@@ -1,5 +1,6 @@
 package models.project;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,13 +14,16 @@ import models.general.AccountProduct;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "account_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})})
 public class Project extends AccountModel {
+
+    public String name;
 
     @ManyToOne
     public AccountProduct product;
 
-    public String name;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
+    public ProjectCategory projectCategory;
 
     public Project() {
 
