@@ -9,14 +9,14 @@ Please select a user
 </div>
 #{/ifErrors}
 
-<fieldset style="width: 30%;">
+<fieldset style="width: 50%;">
     <legend>Profile information</legend>
 
     #{jqvalid.form id:'profileForm', action:action}
 
     #{jqvalid.field 'user.authentication.firstName'}
     <div class="field">
-        <label for="${field.id}">First name: </label>
+        <label for="${field.id}">First name</label>
         <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
                value="${field.value}" class="${field.errorClass}"/>
         <span class="error">${field.error}</span>
@@ -25,7 +25,25 @@ Please select a user
 
     #{jqvalid.field 'user.authentication.lastName'}
     <div class="field">
-        <label for="${field.id}">Last name: </label>
+        <label for="${field.id}">Last name</label>
+        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+               value="${field.value}" class="${field.errorClass}"/>
+        <span class="error">${field.error}</span>
+    </div>
+    #{/}
+
+    #{jqvalid.field 'user.authentication.email'}
+    <div class="field">
+        <label for="${field.id}">Email</label>
+        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+               value="${field.value}" class="${field.errorClass}" size="40"/>
+        <span class="error">${field.error}</span>
+    </div>
+    #{/}
+
+    #{jqvalid.field 'user.authentication.phone'}
+    <div class="field">
+        <label for="${field.id}">Phone</label>
         <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
                value="${field.value}" class="${field.errorClass}"/>
         <span class="error">${field.error}</span>

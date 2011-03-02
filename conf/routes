@@ -13,9 +13,8 @@ POST    /profile/edit                           profile.Profile.edit
 
 GET     /admin                                  admin.Users.index
 GET     /admin/users                            admin.Users.index
-POST    /admin/users/edit                       admin.Users.edit
 GET     /admin/users/data                       admin.Users.data
-
+POST    /admin/users/edit                       admin.Users.edit
 
 # Tree
 GET     /tree                                   tree.TreeController.getChildren
