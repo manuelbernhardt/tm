@@ -25,6 +25,19 @@ public class Users extends TMController {
         render(users);
     }
 
+    public static void userDetails() {
+        render("/admin/Users/userDetails.html");
+    }
+
+    public static void projects() {
+        render("/admin/Users/projects.html");
+    }
+
+    public static void account() {
+        render("/admin/Users/account.html");
+    }
+
+
     @Restrict(UnitRole.ADMIN)
     public static void create(User user) {
         user.authentication.account = getConnectedUser().authentication.account;

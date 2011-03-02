@@ -46,19 +46,10 @@
 
     <div id="innerTabs">
       <ul>
-        <li><a href="#tabs-1">User details</a></li>
-        <li><a href="#tabs-2">Projects</a></li>
-        <li><a href="#tabs-3">Account</a></li>
+        <li><a href="@{admin.Users.userDetails()}" id="userDetailsLink"><span>User details</span></a></li>
+        <li><a href="@{admin.Users.projects()}" id="projectsLink"><span>Projects</span></a></li>
+        <li><a href="@{admin.Users.account()}" id="accountLink"><span>Account</span></a></li>
       </ul>
-      <div id="tabs-1">
-        #{include 'admin/Users/userDetails.html' /}
-      </div>
-      <div id="tabs-2">
-        #{include 'admin/Users/projects.html' /}
-      </div>
-      <div id="tabs-3">
-        #{include 'admin/Users/account.html' /}
-      </div>
     </div>
   </div>
 </div>
