@@ -27,12 +27,12 @@ public class Users extends TMController {
     }
 
     public static void userDetails(Long userId) {
-        String action = Router.getFullUrl("admin.Users.editUserDetails");
+        Router.ActionDefinition action = Router.reverse("admin.Users.edit");
         User user = null;
         if (userId != null) {
             user = User.findById(userId);
         }
-        render("/admin/Users/userDetails.html", action, user);
+        render("/general/userProfile.html", action, user);
     }
 
     public static void projects(Long userId) {
@@ -56,6 +56,12 @@ public class Users extends TMController {
     public static void create(User user) {
         user.authentication.account = getConnectedUser().authentication.account;
         user.create();
+        index();
+    }
+
+    @Restrict(UnitRole.ADMIN)
+    public static void edit(User user) {
+        user.save();
         index();
     }
 

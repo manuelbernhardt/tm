@@ -7,6 +7,7 @@ import models.general.UnitRole;
 import models.tm.User;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -20,11 +21,12 @@ public class Profile extends TMController {
     @Restrict(UnitRole.USER)
     public static void index() {
         User user = getConnectedUser();
-        render(user);
+        Router.ActionDefinition action = Router.reverse("profile.Profile.edit");
+        render("/profile/Profile/index.html", action, user);
     }
 
     @Restrict(UnitRole.USER)
-    public static void editUser(@Valid User user) {
+    public static void edit(@Valid User user) {
 
         if(!user.getId().equals(getConnectedUser().getId())) {
             forbidden("You are not allowed to temper with data from another user!");
