@@ -54,6 +54,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void create(User user) {
+        // TODO validation
         user.authentication.account = getConnectedUser().authentication.account;
         user.create();
         index();
@@ -62,7 +63,8 @@ public class Users extends TMController {
     @Restrict(UnitRole.ADMIN)
     public static void edit(User user) {
         user.save();
-        index();
+        // TODO validation
+        ok();
     }
 
     @Restrict(UnitRole.ADMIN)
