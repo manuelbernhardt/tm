@@ -1,8 +1,12 @@
+#{form action:_action, id:_id}
+#{doBody /}
+#{/form}
+
 <script type="text/javascript">
   (function($) {
     $.metadata.setType('html5');
     $(document).ready(function() {
-      $('#${_arg}').validate({
+      $('#${_id}').validate({
         meta:'validate',
         submitHandler: function(form) {
           jQuery(form).ajaxSubmit({
