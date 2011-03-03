@@ -4,7 +4,6 @@ require:
     - play
     - play -> crud
     - play -> secure
-    - play -> jqvalidate 0.3
     - play -> tabularasa 0.1
     - play -> deadbolt 1.2.1
     - play -> logisimayml 1.1
