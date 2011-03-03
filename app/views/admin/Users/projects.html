@@ -1,1 +1,10 @@
-User ${user == null ? 'nobody' : user.authentication.firstName}
+#{if user == null}
+No user selected
+#{/if}
+#{else}
+
+<fieldset style="width: 90%;">
+    <legend>Projects & roles</legend>
+</fieldset>
+
+#{/else}
