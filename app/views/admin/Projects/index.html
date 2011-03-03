@@ -10,16 +10,23 @@
 
   $(function() {
     $("#innerTabs").tabs();
+
+    $("#newProject").button().click(function() {
+      $("#dialog").dialog("open");
+    });
+
+    $("#dialog").dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Create an account": function() {
+          alert("You. Did. It.");
+        }}});
+
   });
 
-  $(function() {
-    $("#newProject").button();
-    $("#newProject").click(
-      function() {
-        $("#dialog").dialog();
-      }
-    );
-	});
 
   // TODO integrate tree and tree selection
 
@@ -35,8 +42,6 @@
   var $tabs = $('#innerTabs').tabs();
   var selected = $tabs.tabs('option', 'selected');
   $tabs.tabs('load', selected);
-
-  
 
 
 </script>
@@ -61,6 +66,15 @@
   </div>
 </div>
 
-<div id="dialog" title="Basic dialog" style="display:none;" >
-	<p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+<div id="dialog" title="Create a new project">
+  <form>
+  <fieldset>
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+  </fieldset>
+  </form>
 </div>

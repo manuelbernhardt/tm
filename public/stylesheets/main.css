@@ -43,3 +43,7 @@ div.right {
 	width: 55%;
 	float: right;
 }
+
+td.sNone {
+  display: none;
+}

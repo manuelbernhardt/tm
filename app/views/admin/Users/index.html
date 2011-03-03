@@ -18,7 +18,7 @@
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
       "aoColumns": [
-        {"sName": "authentication.id"},
+        {"sName": "authentication.id", "sClass": "sNone" },
         {"sName": "authentication.firstName"},
         {"sName": "authentication.lastName"}
       ],
@@ -30,9 +30,6 @@
       "bInfo": false
     };
     #{/tabularasa.init}
-
-    // hide the id column
-    tabDataTable.fnSetColumnVis( 0, false );
 
     /* Add a click handler to the rows - this could be used as a callback */
     $("#tab tbody").click(function(event) {
@@ -54,9 +51,7 @@
       var $tabs = $('#innerTabs').tabs();
       var selected = $tabs.tabs('option', 'selected');
       $tabs.tabs('load', selected);
-
     });
-
 
     /* Get the rows which are currently selected */
     function fnGetSelected(oTableLocal) {
@@ -81,7 +76,7 @@
     <table class="display" id="tab">
       <thead>
       <tr>
-        <th>ID</th>
+        <th style="display:none;">ID</th>
         <th>First Name</th>
         <th>Last Name</th>
       </tr>
