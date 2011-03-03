@@ -11,6 +11,8 @@ GET     /defects                                Defects.index
 GET     /profile                                profile.Profile.index
 POST    /profile/edit                           profile.Profile.edit
 
+*     /admin/accounts                         module:crud
+
 GET     /admin                                  admin.Users.index
 GET     /admin/users                            admin.Users.index
 GET     /admin/users/data                       admin.Users.data
