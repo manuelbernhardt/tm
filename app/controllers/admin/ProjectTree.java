@@ -74,7 +74,7 @@ public class ProjectTree extends TMController {
                 SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
                 nodes.add(pdn);
             }
-            for (Project p : Project.<Project>findAll()) {
+            for (Project p : Project.find("from Project p where p.projectCategory is null").<Project>fetch()) {
                 SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
                 nodes.add(pn);
             }
