@@ -75,7 +75,7 @@ public class TreeController extends Controller {
         renderJSON(Tree.getGson().toJson(children));
     }
 
-    private static JsonObject makeStatus(int status, Long id) {
+    public static JsonObject makeStatus(int status, Long id) {
         JsonObject r = new JsonObject();
         r.addProperty("status", status);
         if (id != null) {

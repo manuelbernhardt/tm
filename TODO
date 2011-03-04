@@ -1,11 +1,9 @@
 == NOW ==
 
-- post mail to Play! list -> normal that form binding not automatic if no IDs are passed?
-
 - form validation (ajax + controller)
   - test validation degradation (i.e. without javascript)
-  - implement all rules for jquery validation:
-    - make a custom fasttag -> re-use code of jqvalidate, but generate the whole validate string instead
+
+- implement the change in Play binding that will make our life with forms much easier.
 
 == Model
 

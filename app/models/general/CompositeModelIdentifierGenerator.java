@@ -13,6 +13,8 @@ import play.db.jpa.JPA;
  * If we are successful this will have to be rewritten (as it can't work in a clustered environment),
  * or a special Hibernate identifier generator will have to be used.
  *
+ * FIXME hook this into a cleaning up mechanism of Play if possible
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class CompositeModelIdentifierGenerator {

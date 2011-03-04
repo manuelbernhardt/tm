@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.deadbolt.Deadbolt;
+import models.general.Account;
 import models.general.Auth;
 import models.project.Project;
 import models.tm.User;
@@ -44,6 +45,10 @@ public class TMController extends Controller {
 
         }
         return null;
+    }
+
+    public static Account getUserAccount() {
+        return getConnectedUser().authentication.account;
     }
 
     /**

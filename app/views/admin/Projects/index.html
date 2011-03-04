@@ -42,17 +42,11 @@
   var $tabs = $('#innerTabs').tabs();
   var selected = $tabs.tabs('option', 'selected');
   $tabs.tabs('load', selected);
-
-
 </script>
 #{/set}
-
 <div class="container">
   <div class="left">
-    <button id="newProject">New project</button>
-
-    <p>
-      Here will grow a tree full of nodes. Amen.</p>
+    #{include 'admin/Projects/projectTree.html'/}
   </div>
   <div class="right">
 
