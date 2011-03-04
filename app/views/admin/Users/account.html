@@ -3,8 +3,27 @@ No user selected
 #{/if}
 #{else}
 
-<fieldset style="width: 90%;">
-    <legend>Account roles</legend>
+<fieldset>
+    <legend>Administration roles</legend>
+
+    <form name="adminRoles">
+
+    <div class="field">
+        <label for="${field.id}">First name</label>
+        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
+               value="${field.value}" class="${field.errorClass}"/>
+        <span class="error">${field.error}</span>
+    </div>
+
+    <p>
+        <input type="hidden" name="user.id" value="${user.id}"/>
+        <input type="hidden" name="user.authentication.id" value="${user.authentication.id}"/>
+        <input type="hidden" name="user.authentication.account.id" value="${user.authentication.account.id}"/>
+        <input type="submit" value="Save">
+    </p>
+
+    </form>
+
 </fieldset>
 
 #{/else}
