@@ -27,8 +27,7 @@
 
   });
 
-
-  // TODO integrate tree and tree selection
+  // TODO integrate tree selection
 
   // adjust the URLs of the tabs depending on the selected user
   var anSelected = fnGetSelected(tabDataTable);
@@ -44,12 +43,12 @@
   $tabs.tabs('load', selected);
 </script>
 #{/set}
+
 <div class="container">
   <div class="left">
     #{include 'admin/Projects/projectTree.html'/}
   </div>
   <div class="right">
-
     <div id="innerTabs">
       <ul>
         <li><a href="@{admin.Projects.projectDetails()}" id="projectDetailsLink"><span>Project details</span></a></li>
