@@ -9,6 +9,7 @@ import javax.persistence.UniqueConstraint;
 import models.general.Account;
 import models.general.AccountModel;
 import models.general.AccountProduct;
+import org.bouncycastle.util.Strings;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -18,6 +19,8 @@ import models.general.AccountProduct;
 public class Project extends AccountModel {
 
     public String name;
+
+    public String description;
 
     @ManyToOne
     public AccountProduct product;
