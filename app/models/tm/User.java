@@ -42,7 +42,7 @@ public class User extends Model implements RoleHolder {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
 
         if(isApplicationAdmin) {
-            res.add(UnitRole.admin());
+            res.add(UnitRole.role(UnitRole.ADMIN));
         }
 
         for (Role r : projectRoles) {

@@ -64,7 +64,7 @@ public class Auth extends Model implements RoleHolder {
     }
 
     private void setApplicationRoles(List<UnitRole> res) {
-        res.add(UnitRole.user());
+        res.add(UnitRole.role(UnitRole.USER));
     }
 
     private void setAccountRoles(List<UnitRole> res) {

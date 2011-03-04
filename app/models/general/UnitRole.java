@@ -18,6 +18,10 @@ public class UnitRole implements models.deadbolt.Role {
         this.name = name;
     }
 
+    public static UnitRole role(String role) {
+        return new UnitRole(role);
+    }
+
     @Override
     public boolean equals(Object o) {
         return o instanceof UnitRole && ((UnitRole)o).getRoleName().equals(this.getRoleName());
@@ -26,14 +30,6 @@ public class UnitRole implements models.deadbolt.Role {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
-    }
-
-    public static UnitRole user() {
-        return new UnitRole(USER);
-    }
-
-    public static UnitRole admin() {
-        return new UnitRole(ADMIN);
     }
 }
 
