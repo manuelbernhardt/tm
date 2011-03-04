@@ -24,15 +24,17 @@ public class CompositeModelIdentifierGenerator {
     public static Long getNextNaturalIdentifier(Class<? extends CompositeModel> clazz) {
         AtomicLong counter = counters.get(clazz);
         if(counter == null) {
-            Query query = JPA.em().createQuery("select count(*) from " + clazz.getSimpleName() + " m group by m.id");
+            Query query = JPA.em().createQuery("select count(*) from " + clazz.getSimpleName() + " m");
             List r = query.getResultList();
             if(r.isEmpty()) {
                 counter = new AtomicLong(0l);
             } else {
                 Long count = (Long) r.get(0);
                 counter = new AtomicLong(count + 1);
-                counters.put(clazz, counter);
             }
+            counters.put(clazz, counter);
+//            System.out.println("Initializing natural ID counter for class '" + clazz.getSimpleName() + "' with value " + counter.get());
+
         }
         return counter.getAndIncrement();
     }

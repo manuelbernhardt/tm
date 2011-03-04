@@ -39,16 +39,12 @@ public class ProjectTree extends TMController {
 
         if (type.equals(PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
-            if (category == null) {
-                error("Project category for id " + parentId + " not found");
-            } else {
-                Project project = new Project();
-                project.account = getUserAccount();
-                project.name = name;
-                project.projectCategory = category;
-                project.save();
-                renderJSON(TreeController.makeStatus(1, project.id).toString());
-            }
+            Project project = new Project();
+            project.account = getUserAccount();
+            project.name = name;
+            project.projectCategory = category;
+            project.save();
+            renderJSON(TreeController.makeStatus(1, project.id).toString());
         } else if (type.equals(CATEGORY)) {
             ProjectCategory category = new ProjectCategory();
             category.name = name;

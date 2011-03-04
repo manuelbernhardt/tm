@@ -9,7 +9,6 @@ import javax.persistence.UniqueConstraint;
 import models.general.Account;
 import models.general.AccountModel;
 import models.general.AccountProduct;
-import org.bouncycastle.util.Strings;
 import play.data.validation.MaxSize;
 
 /**
@@ -27,7 +26,7 @@ public class Project extends AccountModel {
     @ManyToOne
     public AccountProduct product;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
     public ProjectCategory projectCategory;
 
     public Project() {
