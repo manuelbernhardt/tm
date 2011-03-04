@@ -1,0 +1,8 @@
+#{forms.field field:_field, baseObject:_baseObject}
+<div class="field">
+    <label for="${field.id}">${_label}</label>
+    <textarea id="${field.id}" cols="48" rows="5" data-validate="${field.validationData}" type="text" name="${field.name}"
+           class="${field.errorClass}">${field.value}</textarea>
+    <span class="error">${field.error}</span>
+</div>
+#{/}

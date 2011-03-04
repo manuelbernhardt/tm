@@ -10,6 +10,7 @@ import models.general.Account;
 import models.general.AccountModel;
 import models.general.AccountProduct;
 import org.bouncycastle.util.Strings;
+import play.data.validation.MaxSize;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -20,6 +21,7 @@ public class Project extends AccountModel {
 
     public String name;
 
+    @MaxSize(5000)
     public String description;
 
     @ManyToOne

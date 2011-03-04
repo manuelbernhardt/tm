@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.CRUD;
 import groovy.lang.Closure;
 import play.data.validation.Email;
 import play.data.validation.Max;
@@ -18,7 +19,9 @@ import play.data.validation.Range;
 import play.data.validation.Required;
 import play.data.validation.URL;
 import play.data.validation.Validation;
+import play.db.Model;
 import play.i18n.Messages;
+import play.libs.F;
 import play.mvc.Scope;
 import play.templates.FastTags;
 import play.templates.GroovyTemplate;
@@ -55,21 +58,17 @@ public class FormTags extends FastTags {
         Object obj = args.get("baseObject");
         if (obj != null) {
             if (pieces.length > 1) {
-                for (int i = 1; i < pieces.length; i++) {
                     try {
-                        Field f = obj.getClass().getField(pieces[i]);
-                        if (i == (pieces.length - 1)) {
-
-                            field.put("validationData", buildValidationDataString(f));
+                        F.Tuple<Field, Object> fo = getField(pieces, obj);
+                        if (fo != null) {
+                            field.put("validationData", buildValidationDataString(fo._1));
 
                             try {
-                                Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(f.getName()));
+                                Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(fo._1.getName()));
                                 field.put("value", getter.invoke(obj, new Object[0]));
                             } catch (NoSuchMethodException e) {
-                                field.put("value", f.get(obj).toString());
+                                field.put("value", fo._1.get(fo._2).toString());
                             }
-                        } else {
-                            obj = f.get(obj);
                         }
                     } catch (Exception e) {
                         // if there is a problem reading the field we dont set any value
@@ -78,8 +77,47 @@ public class FormTags extends FastTags {
             } else {
                 field.put("value", obj);
             }
-        }
         body.setProperty("field", field);
+        body.call();
+    }
+
+    private static F.Tuple<Field, Object> getField(String[] pieces, Object baseObject) throws NoSuchFieldException, IllegalAccessException {
+        if (pieces.length > 1) {
+            for (int i = 1; i < pieces.length; i++) {
+                Field f = baseObject.getClass().getField(pieces[i]);
+                if (i == (pieces.length - 1)) {
+                    return new F.Tuple<Field, Object>(f, baseObject);
+                } else {
+                    baseObject = f.get(baseObject);
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void _type(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
+        String path = args.get("field").toString();
+        String[] pieces = path.split("\\.");
+        Object obj = args.get("baseObject");
+        if (obj != null) {
+            if (pieces.length > 1) {
+                try {
+                    F.Tuple<Field, Object> fo = getField(pieces, obj);
+                    if (fo != null) {
+                        Model.Property property = new Model.Property();
+                        property.field = fo._1;
+                        property.isGenerated = false;
+                        CRUD.ObjectType.ObjectField type = new CRUD.ObjectType.ObjectField(property);
+                        body.setProperty("type", type.type);
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                body.setProperty("type", obj.getClass().getName());
+            }
+        }
         body.call();
     }
 

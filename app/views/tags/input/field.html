@@ -1,3 +1,12 @@
 <!-- Here will come the type-based switch -->
 
-#{input.textField field:_field, label:_label, baseObject:_baseObject /}
+#{forms.type baseObject:_baseObject, field:_field}
+#{if type == 'text'}
+  #{input.textField field:_field, label:_label, baseObject:_baseObject /}
+#{/if}
+#{if type == 'longtext'}
+  #{input.longtextField field:_field, label:_label, baseObject:_baseObject /}
+#{/if}
+
+
+#{/forms.type}
