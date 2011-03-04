@@ -162,6 +162,24 @@
         });
       });
     });
+
+    $("#projectTree").bind("select_node.jstree", function (e, data) {
+      if (data.inst._get_type(data.rslt.obj) == "default") {
+        var project = data.rslt.obj.attr("id");
+
+        $('#innerTabs').tabs('url', 0, '@{admin.Project.projectDetails()}?projectId=' + project);
+        $('#innerTabs').tabs('url', 1, '@{admin.Project.roles()}?projectId=' + project);
+        $('#innerTabs').tabs('url', 2, '@{admin.Project.users()}?projectId=' + project);
+
+        // reloads the selected tab
+        var $tabs = $('#innerTabs').tabs();
+        var selected = $tabs.tabs('option', 'selected');
+        $tabs.tabs('load', selected);
+
+
+      }
+    });
+
   });
 </script>
 
