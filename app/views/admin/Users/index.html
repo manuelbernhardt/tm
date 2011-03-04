@@ -15,6 +15,7 @@
   });
 
   $(document).ready(function() {
+
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
       "aoColumns": [
@@ -31,18 +32,34 @@
     };
     #{/tabularasa.init}
 
-    /* Add a click handler to the rows - this could be used as a callback */
     $("#tab tbody").click(function(event) {
       $(tabDataTable.fnSettings().aoData).each(function () {
         $(this.nTr).removeClass('row_selected');
       });
       $(event.target.parentNode).addClass('row_selected');
 
-
-      // adjus the URLs of the tabs depending on the selected user
       var anSelected = fnGetSelected(tabDataTable);
       var tr = anSelected[0];
       var selectedUser = $($(tr).children('td')[0]).text();
+      fnReloadTabs(selectedUser);
+    });
+
+    // select a user if one was selected
+    if ('${selectedUser}'.length > 0) {
+      $(tabDataTable.fnSettings().aoData).each(function () {
+        var nTr = $(this.nTr)[0];
+        if ($($(nTr).children('td')[0]).text() == '${selectedUser}') {
+          $(this.nTr).addClass('row_selected');
+        }
+      });
+
+      fnReloadTabs(${selectedUser});
+    }
+    
+
+
+    function fnReloadTabs(selectedUser) {
+      // adjust the URLs of the tabs depending on the selected user
       $('#innerTabs').tabs('url', 0, '@{admin.Users.userDetails()}?userId=' + selectedUser);
       $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?userId=' + selectedUser);
       $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?userId=' + selectedUser);
@@ -51,7 +68,7 @@
       var $tabs = $('#innerTabs').tabs();
       var selected = $tabs.tabs('option', 'selected');
       $tabs.tabs('load', selected);
-    });
+    }
 
     /* Get the rows which are currently selected */
     function fnGetSelected(oTableLocal) {
