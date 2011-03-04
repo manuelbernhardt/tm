@@ -21,6 +21,9 @@ import models.tree.JSTreeNode;
  */
 public class ProjectTree extends TMController {
 
+    public static final String CATEGORY = "category";
+    public static final String PROJECT = "default";
+
     private static Gson gson;
 
     static {
@@ -30,12 +33,11 @@ public class ProjectTree extends TMController {
         b.registerTypeAdapter(SimpleNode.class, jsTreeNodeSerializer);
         gson = b.create();
     }
-    
+
 
     public static void create(String treeId, Long parentId, Long position, String name, String type) {
 
-        // project
-        if (type.equals("default")) {
+        if (type.equals(PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
             if (category == null) {
                 error("Project category for id " + parentId + " not found");
@@ -47,8 +49,7 @@ public class ProjectTree extends TMController {
                 project.save();
                 renderJSON(TreeController.makeStatus(1, project.id).toString());
             }
-
-        } else if (type.equals("category")) {
+        } else if (type.equals(CATEGORY)) {
             ProjectCategory category = new ProjectCategory();
             category.name = name;
             category.account = getUserAccount();
@@ -67,28 +68,31 @@ public class ProjectTree extends TMController {
 
     public static void getChildren(String treeId, Long id, String type) {
         if (id == -1) {
-            List<ProjectCategory> pcs = ProjectCategory.findAll();
-            List<SimpleNode> cats = new ArrayList<SimpleNode>();
-            for (ProjectCategory pc : pcs) {
+            List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
+            for (ProjectCategory pc : ProjectCategory.<ProjectCategory>findAll()) {
                 ChildProducer producer = new CategoryChildProducer();
-                SimpleNode pdn = new SimpleNode(pc.id, pc.name, "category", true, true, producer);
-                cats.add(pdn);
+                SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
+                nodes.add(pdn);
             }
-            renderJSON(gson.toJson(cats));
+            for (Project p : Project.<Project>findAll()) {
+                SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
+                nodes.add(pn);
+            }
+            renderJSON(gson.toJson(nodes));
         } else {
             ProjectCategory cat = ProjectCategory.findById(id);
-            SimpleNode pdn = new SimpleNode(cat.id, cat.name, "default", false, false, null);
+            SimpleNode pdn = new SimpleNode(cat.id, cat.name, PROJECT, false, false, null);
             renderJSON(gson.toJson(pdn));
         }
     }
 
     public static void rename(String treeId, Long id, String name, String type) {
-        if (type.equals("default")) {
+        if (type.equals(PROJECT)) {
             Project p = Project.findById(id);
             p.name = name;
             p.save();
             renderJSON(TreeController.makeStatus(1, null).toString());
-        } else if (type.equals("category")) {
+        } else if (type.equals(CATEGORY)) {
             ProjectCategory p = ProjectCategory.findById(id);
             p.name = name;
             p.save();
@@ -104,7 +108,7 @@ public class ProjectTree extends TMController {
             List<JSTreeNode> ps = new ArrayList<JSTreeNode>();
             List<Project> projects = Project.find("from Project p where p.projectCategory.id = ?", id).fetch();
             for (Project p : projects) {
-                SimpleNode pdn = new SimpleNode(p.id, p.name, "default", false, false, null);
+                SimpleNode pdn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
                 ps.add(pdn);
             }
             return ps;
