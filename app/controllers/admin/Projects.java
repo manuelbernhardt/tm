@@ -33,12 +33,20 @@ public class Projects extends TMController {
         ok();
     }
 
-    public static void roles() {
-
+    public static void roles(Long projectId) {
+        Project project = null;
+        if (projectId != null) {
+            project = Project.findById(projectId);
+        }
+        render(project);
     }
 
-    public static void users() {
-
+    public static void users(Long projectId) {
+        Project project = null;
+        if (projectId != null) {
+            project = Project.findById(projectId);
+        }
+        render(project);
     }
 
 }
