@@ -28,7 +28,7 @@ public class ProjectRoles extends TMController {
                             String sEcho,
                             Long projectId) {
         GenericModel.JPAQuery query = null;
-        query = Role.all().from(iDisplayStart == null ? 0 : iDisplayStart);
+        query = Role.find("from Role r where r.project.id = ?",projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
         List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = Role.count();
