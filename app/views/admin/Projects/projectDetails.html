@@ -18,8 +18,10 @@ No project selected
     #{input.field field:'project.description', label:'Description', baseObject:project /}
     <input type="hidden" name="project.id" value="${project.id}"/>
     <input type="hidden" name="project.account.id" value="${project.account.id}"/>
-    <input type="hidden" name="project.projectCategory.id" value="${project.projectCategory.id}"/>
-    <input type="hidden" name="project.projectCategory.account.id" value="${project.projectCategory.account.id}"/>
+    #{if project.projectCategory != null}
+      <input type="hidden" name="project.projectCategory.id" value="${project.projectCategory.id}"/>
+      <input type="hidden" name="project.projectCategory.account.id" value="${project.projectCategory.account.id}"/>
+    #{/if}
     <input type="submit" value="Save">
 
   #{/input.form}

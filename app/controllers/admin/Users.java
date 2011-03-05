@@ -9,6 +9,7 @@ import controllers.tabularasa.TableController;
 import models.general.Auth;
 import models.general.UnitRole;
 import models.tm.User;
+import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.mvc.Router;
 import play.mvc.With;
@@ -23,7 +24,8 @@ public class Users extends TMController {
     @Restrict(UnitRole.ADMIN)
     public static void index() {
         List<Auth> users = Auth.findAll();
-        render(users);
+        Long selectedUser = 2l;
+        render(users, selectedUser);
     }
 
     public static void userDetails(Long userId) {
@@ -54,6 +56,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void create(User user) {
+
         // TODO validation
         user.authentication.account = getConnectedUser().authentication.account;
         user.create();
@@ -62,8 +65,13 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void edit(User user) {
+
+        if(Validation.hasErrors()) {
+            Long selectedUser = user.getId();
+            render("@index", user, selectedUser);
+        }
+
         user.save();
-        // TODO validation
         ok();
     }
 

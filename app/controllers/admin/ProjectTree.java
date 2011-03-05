@@ -43,13 +43,13 @@ public class ProjectTree extends TMController {
             project.account = getUserAccount();
             project.name = name;
             project.projectCategory = category;
-            project.save();
+            project.save(getUserAccount());
             renderJSON(TreeController.makeStatus(1, project.id).toString());
         } else if (type.equals(CATEGORY)) {
             ProjectCategory category = new ProjectCategory();
             category.name = name;
             category.account = getUserAccount();
-            category.save();
+            category.save(getUserAccount());
             renderJSON(TreeController.makeStatus(1, category.id).toString());
         } else {
             throw new RuntimeException("Houston, we have a problem");
@@ -86,12 +86,12 @@ public class ProjectTree extends TMController {
         if (type.equals(PROJECT)) {
             Project p = Project.findById(id);
             p.name = name;
-            p.save();
+            p.save(getUserAccount());
             renderJSON(TreeController.makeStatus(1, null).toString());
         } else if (type.equals(CATEGORY)) {
             ProjectCategory p = ProjectCategory.findById(id);
             p.name = name;
-            p.save();
+            p.save(getUserAccount());
             renderJSON(TreeController.makeStatus(1, null).toString());
         } else {
             error("Error");
