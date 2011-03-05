@@ -38,11 +38,13 @@ No project selected
       $(event.target.parentNode).addClass('row_selected');
 
       var selectedRole = getSelectedRowId(tabDataTable);
-
-      // reloads the role definition
-      $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
-        $('#roleDefinition').html(data);
-      });
+      // FIXME this does get executed anyway
+      if (typeof selectedRole !== "undefined") {
+        // reloads the role definition
+        $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
+          $('#roleDefinition').html(data);
+        });
+      }
     });
 
     /* Get the rows which are currently selected */
