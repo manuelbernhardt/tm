@@ -26,17 +26,27 @@ public class ProjectRoles extends TMController {
                             String sColumns,
                             String sEcho,
                             Long projectId) {
-        GenericModel.JPAQuery query = null;
-        query = Role.find("from Role r where r.project.id = ?",projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
-        List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
-        long totalRecords = Role.count();
-        TableController.renderJSON(roles, Role.class, totalRecords, sColumns, sEcho);
+        if(projectId == null) {
+            error();
+        } else {
+            GenericModel.JPAQuery query = null;
+            query = Role.find("from Role r where r.project.id = ?",projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
+
+            List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
+            long totalRecords = Role.count();
+            TableController.renderJSON(roles, Role.class, totalRecords, sColumns, sEcho);
+            ok();
+        }
     }
 
     public static void roleDefinition(Long roleId) {
-        Role role = Role.findById(roleId);
-        render(role);
+        if(roleId == null) {
+            error("No roleId provided");
+        } else {
+            Role role = Role.findById(roleId);
+            render(role);
+        }
     }
 
 }
