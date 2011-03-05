@@ -34,15 +34,26 @@ div.container {
 	width: 100%
 }
 
-div.left {
+div.left_table {
 	width: 35%;
 	float: left;
 }
 
-div.right {
+div.right_table {
 	width: 55%;
 	float: right;
 }
+
+div.left_tree {
+	width: 15%;
+	float: left;
+}
+
+div.right_tree {
+	width: 75%;
+	float: right;
+}
+
 
 td.sNone {
   display: none;
