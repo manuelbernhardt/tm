@@ -1,14 +1,3 @@
-== NOW ==
-
-- form validation (ajax + controller)
-  - test validation degradation (i.e. without javascript)
-
-- implement the change in Play binding that will make our life with forms much easier.
-
-== Model
-
-- unit tests for the model entities ==> Gwen?
-
 == view / javascript
 
 try out and create simplified ways of using the following widgets:
@@ -19,13 +8,6 @@ try out and create simplified ways of using the following widgets:
 - charts
 - timeline widget
 - select many (like facebook)
-
-
-== optimization (later)
-- optimize javascript loading
-- cache
-
-
 == Components ==
 
 JSTree
