@@ -20,7 +20,7 @@ No project selected
         {"sName": "id", "sClass": "sNone" },
         {"sName": "name"}
       ],
-      "sAjaxSource": "@{admin.ProjectRoles.data()}?projectId=${project.id}",
+      "sAjaxSource": '@{admin.ProjectRoles.data().add("projectId", project.id)}',
       "bProcessing": true,
       "bServerSide": true,
       "bLengthChange": false,
