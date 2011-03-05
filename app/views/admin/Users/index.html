@@ -38,9 +38,7 @@
       });
       $(event.target.parentNode).addClass('row_selected');
 
-      var anSelected = fnGetSelected(tabDataTable);
-      var tr = anSelected[0];
-      var selectedUser = $($(tr).children('td')[0]).text();
+      var selectedUser = getSelectedRowId(tabDataTable);
       fnReloadTabs(selectedUser);
     });
 
@@ -55,8 +53,6 @@
 
       fnReloadTabs(${selectedUser});
     }
-    
-
 
     function fnReloadTabs(selectedUser) {
       // adjust the URLs of the tabs depending on the selected user
@@ -69,20 +65,6 @@
       var selected = $tabs.tabs('option', 'selected');
       $tabs.tabs('load', selected);
     }
-
-    /* Get the rows which are currently selected */
-    function fnGetSelected(oTableLocal) {
-      var aReturn = new Array();
-      var aTrs = oTableLocal.fnGetNodes();
-
-      for (var i = 0; i < aTrs.length; i++) {
-        if ($(aTrs[i]).hasClass('row_selected')) {
-          aReturn.push(aTrs[i]);
-        }
-      }
-      return aReturn;
-    }
-
   });
 
 </script>
