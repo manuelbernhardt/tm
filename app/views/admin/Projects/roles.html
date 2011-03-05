@@ -5,7 +5,7 @@ No project selected
 
 #{ifErrors}
 <div class="error">
-    <h2>Oops, please correct these errors</h2>
+  <h2>Oops, please correct these errors</h2>
 </div>
 #{/ifErrors}
 
@@ -13,104 +13,104 @@ No project selected
 
 <script type="text/javascript">
 
-    $(function() {
+  $(function() {
     $("#roleTabs").tabs();
-    });
+  });
 
-    $(document).ready(function() {
+  $(document).ready(function() {
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
-    "aoColumns": [
-    {"sName": "id", "sClass": "sNone" },
-    {"sName": "name"},
-    ],
-    "sAjaxSource": "@{admin.ProjectRoles.data()}?projectId=${project.id}",
-    "bProcessing": true,
-    "bServerSide": true,
-    "bLengthChange": false,
-    "iDisplayLength": 10,
-    "bInfo": false,
-    "bFilter":false
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone" },
+        {"sName": "name"}
+      ],
+      "sAjaxSource": "@{admin.ProjectRoles.data()}?projectId=${project.id}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bLengthChange": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "bFilter":false
     };
     #{/tabularasa.init}
 
     /* Add a click handler to the rows - this could be used as a callback */
     $("#tab tbody").click(function(event) {
-    $(tabDataTable.fnSettings().aoData).each(function () {
-    $(this.nTr).removeClass('row_selected');
-    });
-    $(event.target.parentNode).addClass('row_selected');
+      $(tabDataTable.fnSettings().aoData).each(function () {
+        $(this.nTr).removeClass('row_selected');
+      });
+      $(event.target.parentNode).addClass('row_selected');
 
-    // reloads the selected tab
-    var $tabs = $('#innerTabs').tabs();
-    var selected = $tabs.tabs('option', 'selected');
-    $tabs.tabs('load', selected);
+      // reloads the selected tab
+      var $tabs = $('#innerTabs').tabs();
+      var selected = $tabs.tabs('option', 'selected');
+      $tabs.tabs('load', selected);
     });
 
     /* Get the rows which are currently selected */
     function fnGetSelected(oTableLocal) {
-    var aReturn = new Array();
-    var aTrs = oTableLocal.fnGetNodes();
+      var aReturn = new Array();
+      var aTrs = oTableLocal.fnGetNodes();
 
-    for (var i = 0; i < aTrs.length; i++) {
-    if ($(aTrs[i]).hasClass('row_selected')) {
-    aReturn.push(aTrs[i]);
-    }
-    }
-    return aReturn;
+      for (var i = 0; i < aTrs.length; i++) {
+        if ($(aTrs[i]).hasClass('row_selected')) {
+          aReturn.push(aTrs[i]);
+        }
+      }
+      return aReturn;
     }
 
-    });
+  });
 
 </script>
 
 
 <div class="container">
-    <div class="left">
-        <table id="tab" class="display">
-            <thead>
-            <tr>
-                <th>Role</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+  <div class="left">
+    <table id="tab" class="display">
+      <thead>
+      <tr>
+        <th>Role</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="right">
+    <div id="roleTabs">
+      <ul>
+        <li><a href="#tabs-1">Requirements</a></li>
+        <li><a href="#tabs-2">Test Approach</a></li>
+        <li><a href="#tabs-3">Test Preparation</a></li>
+      </ul>
+      <div id="tabs-1">
+        <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec
+          sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem.
+          Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula
+          eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam
+          molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum.
+          Phasellus ipsum. Nunc tristique tempus lectus.</p>
+      </div>
+      <div id="tabs-2">
+        <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id
+          nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros
+          molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula
+          in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis.
+          Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat.
+          Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod
+          felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+      </div>
+      <div id="tabs-3">
+        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel
+          vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class
+          aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.
+          Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium.
+          Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+      </div>
     </div>
 
-    <div class="right">
-        <div id="roleTabs">
-            <ul>
-                <li><a href="#tabs-1">Requirements</a></li>
-                <li><a href="#tabs-2">Test Approach</a></li>
-                <li><a href="#tabs-3">Test Preparation</a></li>
-            </ul>
-            <div id="tabs-1">
-                <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec
-                    sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem.
-                    Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula
-                    eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam
-                    molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum.
-                    Phasellus ipsum. Nunc tristique tempus lectus.</p>
-            </div>
-            <div id="tabs-2">
-                <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id
-                    nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros
-                    molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula
-                    in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis.
-                    Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat.
-                    Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod
-                    felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
-            </div>
-            <div id="tabs-3">
-                <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel
-                    vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class
-                    aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.
-                    Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium.
-                    Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-            </div>
-        </div>
-
-    </div>
+  </div>
 </div>
 </div>
 
