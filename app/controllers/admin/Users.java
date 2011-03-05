@@ -56,8 +56,11 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void create(User user) {
+        if(Validation.hasErrors()) {
+            // TODO add some flash message
+            render("@index", user);
+        }
 
-        // TODO validation
         user.authentication.account = getConnectedUser().authentication.account;
         user.create();
         index();
@@ -65,12 +68,12 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void edit(User user) {
-
         if(Validation.hasErrors()) {
+            // TODO test if this works
+            // display a message at least with the validation errors?
             Long selectedUser = user.getId();
             render("@index", user, selectedUser);
         }
-
         user.save();
         ok();
     }
