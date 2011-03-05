@@ -14,46 +14,45 @@ h1 {
 }
 
 .field {
-	clear: both;
-	margin-bottom: 2px;
+  clear: both;
+  margin-bottom: 2px;
 }
 
 .infos {
-	color: #666;
-	margin-bottom: 5px;
+  color: #666;
+  margin-bottom: 5px;
 }
 
 .error {
-	color: #c00;
+  color: #c00;
 }
 
 /* container stuff */
 div.container {
-	/*border: 1px solid #000000;*/
-	overflow: auto;
-	width: 100%
+/*border: 1px solid #000000;*/
+  overflow: auto;
+  width: 100%
 }
 
 div.left_table {
-	width: 35%;
-	float: left;
+  width: 35%;
+  float: left;
 }
 
 div.right_table {
-	width: 55%;
-	float: right;
+  width: 55%;
+  float: right;
 }
 
 div.left_tree {
-	width: 15%;
-	float: left;
+  width: 15%;
+  float: left;
 }
 
 div.right_tree {
-	width: 75%;
-	float: right;
+  width: 75%;
+  float: right;
 }
-
 
 td.sNone {
   display: none;
