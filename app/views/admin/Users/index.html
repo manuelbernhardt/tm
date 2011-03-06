@@ -28,7 +28,20 @@
       "bServerSide": true,
       "bLengthChange": false,
       "iDisplayLength": 10,
-      "bInfo": false
+      "bInfo": false,
+      "fnDrawCallback": function() {
+        // select a user if one was selected
+        if ('${selectedUser}'.length > 0) {
+          $(tabDataTable.fnSettings().aoData).each(function () {
+            var nTr = $(this.nTr)[0];
+            if ($($(nTr).children('td')[0]).text() == '${selectedUser}') {
+              $(this.nTr).addClass('row_selected');
+            }
+          });
+
+          fnReloadTabs(${selectedUser});
+        }
+      }
     };
     #{/tabularasa.init}
 
@@ -41,18 +54,6 @@
       var selectedUser = getSelectedRowId(tabDataTable);
       fnReloadTabs(selectedUser);
     });
-
-    // select a user if one was selected
-    if ('${selectedUser}'.length > 0) {
-      $(tabDataTable.fnSettings().aoData).each(function () {
-        var nTr = $(this.nTr)[0];
-        if ($($(nTr).children('td')[0]).text() == '${selectedUser}') {
-          $(this.nTr).addClass('row_selected');
-        }
-      });
-
-      fnReloadTabs(${selectedUser});
-    }
 
     function fnReloadTabs(selectedUser) {
       // adjust the URLs of the tabs depending on the selected user
