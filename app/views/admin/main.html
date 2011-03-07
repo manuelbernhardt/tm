@@ -12,7 +12,7 @@
   #{tabs id:'tabs'}
     #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
     #{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
-    <li class="ui-state-default ui-corner-top"><a href="#ui-tabs-5"><span>Account & Settings</span></a></li>
+    #{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
   #{/tabs}
   #{tabContent}
     #{doLayout /}
