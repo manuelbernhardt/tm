@@ -8,7 +8,6 @@ general.Auth(gwenAuth):
     password: gwen
     account: oxiras
 
-
 general.Auth(manuAuth):
     firstName: Manuel
     lastName: Bernhardt
@@ -16,8 +15,63 @@ general.Auth(manuAuth):
     password: manu
     account: oxiras
 
+general.Auth(nathalieAuth):
+    firstName: Nathalie
+    lastName: Van Haaster
+    email: nathalie@example.com
+    password: nathalie
+    account: oxiras
+
+general.Auth(vroniAuth):
+    firstName: Vroni
+    lastName: Bodmann
+    email: vroni@example.com
+    password: vroni
+    account: oxiras
+
+project.ProjectCategory(ProjectCategory1):
+    name: Europe
+    account: oxiras
+
+project.ProjectCategory(ProjectCategory2):
+    name: America
+    account: oxiras
+
+project.Project(Project1):
+    name: Project 1
+    account: oxiras
+    projectCategory: ProjectCategory1
+
+project.Project(Project2):
+    name: Project 2
+    account: oxiras
+    projectCategory: ProjectCategory1
+
+project.Role(P2TestLead):
+    name: Test Lead
+    project: Project2
+
+project.Role(P2TestDesigner):
+    name: Test Designer
+    project: Project2
+
+project.Role(P2ViewOnly):
+    name: View only
+    project: Project2
+
 tm.User(gwen):
     authentication: gwenAuth
+    isApplicationAdmin: true
+    isActiveProject: Project2
 
 tm.User(manu):
     authentication: manuAuth
+    isApplicationAdmin: true
+
+tm.User(nathalie):
+    authentication: nathalieAuth
+
+tm.User(vroni):
+    authentication: vroniAuth
+
+
