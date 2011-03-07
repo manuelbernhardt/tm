@@ -9,8 +9,10 @@
       $('#${_id}').validate({
         meta:'validate',
         submitHandler: function(form) {
-          jQuery(form).ajaxSubmit({
-            target: "#result"
+          jQuery(form).ajaxSubmit(function() {
+            if(typeof ${_id}SubmissionCallback !== 'undefined') {
+              ${_id}SubmissionCallback();
+            }
           });
         }
       });

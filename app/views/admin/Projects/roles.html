@@ -9,8 +9,6 @@ No project selected
 </div>
 #{/ifErrors}
 
-<script src="@{'/public/javascripts/jquery.dataTables.min.js'}" type="text/javascript" charset="utf-8"></script>
-
 <script type="text/javascript">
 
   $(document).ready(function() {
@@ -39,7 +37,7 @@ No project selected
 
       var selectedRole = getSelectedRowId(tabDataTable);
       // FIXME this does get executed anyway
-      if (typeof selectedRole !== "undefined") {
+      if (typeof selectedRole !== 'undefined') {
         // reloads the role definition
         $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
           $('#roleDefinition').html(data);
@@ -89,6 +87,11 @@ No project selected
 <h2>New role</h2>
 
 #{input.form action:@admin.ProjectRoles.create(), id:'roleCreateForm'}
+<script type="text/javascript">
+  function roleCreateFormSubmissionCallback() {
+    $("#tab").dataTable().fnDraw();
+  }
+</script>
 
 Name <input type="text" name="role.name" id="roleName"/>
 <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
