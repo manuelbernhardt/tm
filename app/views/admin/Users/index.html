@@ -97,10 +97,16 @@
 
 <h2>New user</h2>
 
-<form action=@{admin.Users.create()} method="POST">
-  First name: <input type="text" name="user.authentication.firstName" id="user.authentication.firstName"/><br/>
-  Last name: <input type="text" name="user.authentication.lastName" id="user.authentication.lastName"/><br/>
-  Email: <input type="text" name="user.authentication.email" id="user.authentication.email"/><br/>
-  Password: <input type="text" name="user.authentication.password" id="user.authentication.password"/><br/>
+#{input.form action:@admin.Users.create(), id:'userCreateForm'}
+  <script type="text/javascript">
+    function userCreateFormSubmissionCallback() {
+      $("#tab").dataTable().fnDraw();
+    }
+  </script>
+
+  #{input.field field:'user.authentication.firstName', label:'First Name', baseClass:'models.tm.User' /}
+  #{input.field field:'user.authentication.lastName', label:'Last Name', baseClass:'models.tm.User' /}
+  #{input.field field:'user.authentication.email', label:'Email', baseClass:'models.tm.User' /}
+  #{input.field field:'user.authentication.password', label:'Password', baseClass:'models.tm.User' /}
   <input type="submit" value="Save!"/>
-</form>
+#{/input.form}

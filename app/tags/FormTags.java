@@ -20,6 +20,8 @@ import play.data.validation.Required;
 import play.data.validation.URL;
 import play.data.validation.Validation;
 import play.db.Model;
+import play.exceptions.TagInternalException;
+import play.exceptions.TemplateExecutionException;
 import play.i18n.Messages;
 import play.libs.F;
 import play.mvc.Scope;
@@ -56,29 +58,64 @@ public class FormTags extends FastTags {
         field.put("errorClass", field.get("error") != null ? "hasError" : "");
         String[] pieces = path.split("\\.");
         Object obj = args.get("baseObject");
+        String baseClass = (String) args.get("baseClass");
+
         if (obj != null) {
             if (pieces.length > 1) {
-                    try {
-                        F.Tuple<Field, Object> fo = getField(pieces, obj);
-                        if (fo != null) {
-                            field.put("validationData", buildValidationDataString(fo._1));
+                try {
+                    F.Tuple<Field, Object> fo = getField(pieces, obj);
+                    if (fo != null) {
+                        field.put("validationData", buildValidationDataString(fo._1));
 
-                            try {
-                                Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(fo._1.getName()));
-                                field.put("value", getter.invoke(obj, new Object[0]));
-                            } catch (NoSuchMethodException e) {
-                                field.put("value", fo._1.get(fo._2).toString());
-                            }
+                        try {
+                            Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(fo._1.getName()));
+                            field.put("value", getter.invoke(obj, new Object[0]));
+                        } catch (NoSuchMethodException e) {
+                            field.put("value", fo._1.get(fo._2).toString());
                         }
-                    } catch (Exception e) {
-                        // if there is a problem reading the field we dont set any value
                     }
+                } catch (Exception e) {
+                    // if there is a problem reading the field we dont set any value
                 }
             } else {
                 field.put("value", obj);
             }
+        } else {
+            Class baseClazz = null;
+            if (baseClass != null) {
+                baseClazz = getBaseClass(template, fromLine, baseClass);
+
+                try {
+                    Field f = getField(pieces, baseClazz);
+                    if (f != null) {
+                        field.put("validationData", buildValidationDataString(f));
+                    }
+                } catch (NoSuchFieldException e) {
+                    String message = "Can't find field in path '" + path + "' with baseClass '" + baseClass + "': " + e.getMessage();
+                    throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
+                } catch (Exception e) {
+                    String message = "Internal error: could not build validation string: " + e.getMessage();
+                    throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
+                }
+
+            } else {
+                throw new TemplateExecutionException(template.template, fromLine, "Can't compute a field when no baseObject or baseClass is given", new TagInternalException("Can't compute a field when no baseObject or baseClass is given"));
+            }
+
+        }
         body.setProperty("field", field);
         body.call();
+    }
+
+    private static Class getBaseClass(GroovyTemplate.ExecutableTemplate template, int fromLine, String baseClass) {
+        Class baseClazz;
+        try {
+            baseClazz = Class.forName(baseClass);
+        } catch (ClassNotFoundException cnfe) {
+            String message = "Could not find class " + baseClass;
+            throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
+        }
+        return baseClazz;
     }
 
     private static F.Tuple<Field, Object> getField(String[] pieces, Object baseObject) throws NoSuchFieldException, IllegalAccessException {
@@ -95,27 +132,54 @@ public class FormTags extends FastTags {
         return null;
     }
 
+    private static Field getField(String[] pieces, Class baseClass) throws NoSuchFieldException {
+        if (pieces.length > 1) {
+            for (int i = 1; i < pieces.length; i++) {
+                // TODO improve this so it uses the accessor (getter, or direct field access)
+                // this needs a rewrite of the type introspection to use a member instead of a field.
+                Field f = baseClass.getField(pieces[i]);
+                if (i == pieces.length - 1) {
+                    return f;
+                } else {
+                    baseClass = f.getType();
+                }
+            }
+        }
+        return null;
+    }
+
     public static void _type(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
         String path = args.get("field").toString();
         String[] pieces = path.split("\\.");
         Object obj = args.get("baseObject");
-        if (obj != null) {
+        String baseClass = (String) args.get("baseClass");
+        Class clazz = null;
+        if(obj != null) {
+            clazz = obj.getClass();
+        } else if(baseClass != null) {
+            clazz = getBaseClass(template, fromLine, baseClass);
+        } else {
+            String message = "No baseObject nor baseClass passed";
+            throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
+        }
+        if (clazz != null) {
             if (pieces.length > 1) {
                 try {
-                    F.Tuple<Field, Object> fo = getField(pieces, obj);
-                    if (fo != null) {
+                    Field f = getField(pieces, clazz);
+                    if (f != null) {
                         Model.Property property = new Model.Property();
-                        property.field = fo._1;
+                        property.field = f;
                         property.isGenerated = false;
                         CRUD.ObjectType.ObjectField type = new CRUD.ObjectType.ObjectField(property);
                         body.setProperty("type", type.type);
                     }
-                } catch(Exception e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    String message = "Cannot compute field '" + path + "' of class '" + clazz.getName() + "'";
+                    throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
                 }
 
             } else {
-                body.setProperty("type", obj.getClass().getName());
+                body.setProperty("type", clazz.getName());
             }
         }
         body.call();
