@@ -62,16 +62,18 @@ project.Role(P2ViewOnly):
 tm.User(gwen):
     authentication: gwenAuth
     isApplicationAdmin: true
-    isActiveProject: Project2
+    activeProject: Project2
 
 tm.User(manu):
     authentication: manuAuth
     isApplicationAdmin: true
+    activeProject: Project2
 
 tm.User(nathalie):
     authentication: nathalieAuth
+    activeProject: Project1
 
 tm.User(vroni):
     authentication: vroniAuth
-
+    activeProject: Project1
 
