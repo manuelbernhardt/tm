@@ -87,7 +87,6 @@ public class Users extends TMController {
                             String sSearch) {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
-            // TODO look into criteria API to make this in a more convenient fashion
             String sLike = "%" + sSearch + "%";
             query = User.find("from User u where u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
         } else {
@@ -97,6 +96,4 @@ public class Users extends TMController {
         long totalRecords = User.count();
         TableController.renderJSON(people, User.class, totalRecords, sColumns, sEcho);
     }
-
-
 }
