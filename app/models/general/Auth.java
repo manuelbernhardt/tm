@@ -41,7 +41,7 @@ public class Auth extends Model implements RoleHolder {
 
     @Required
     @Column(nullable = false)
-    private String password;
+    public String password;
 
     public String getPassword() {
         return password;

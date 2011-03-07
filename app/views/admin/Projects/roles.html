@@ -24,7 +24,7 @@ No project selected
       "bLengthChange": false,
       "iDisplayLength": 10,
       "bInfo": false,
-      "bFilter":false
+      "bFilter": false
     };
     #{/tabularasa.init}
 
@@ -93,7 +93,7 @@ No project selected
   }
 </script>
 
-Name <input type="text" name="role.name" id="roleName"/>
+#{input.field field:'role.name', label:'Name', baseClass:'models.project.Role' /}
 <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
 <input type="submit" value="Create"/>
 
