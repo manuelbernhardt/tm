@@ -62,19 +62,29 @@ public class ProjectTree extends TMController {
     public static void remove(String treeId, Long id) {
     }
 
+
+
     public static void getChildren(String treeId, Long id, String type) {
         if (id == -1) {
-            List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-            for (ProjectCategory pc : ProjectCategory.<ProjectCategory>findAll()) {
-                ChildProducer producer = new CategoryChildProducer();
-                SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
-                nodes.add(pdn);
-            }
-            for (Project p : Project.find("from Project p where p.projectCategory is null").<Project>fetch()) {
-                SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
-                nodes.add(pn);
-            }
-            renderJSON(gson.toJson(nodes));
+            // virtual root node
+            ChildProducer rootChildProducer = new ChildProducer() {
+                public List<JSTreeNode> produce(Long id) {
+                    List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
+                    ChildProducer producer = new CategoryChildProducer();
+                    for (ProjectCategory pc : ProjectCategory.<ProjectCategory>findAll()) {
+                        SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
+                        nodes.add(pdn);
+                    }
+                    for (Project p : Project.find("from Project p where p.projectCategory is null").<Project>fetch()) {
+                        SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
+                        nodes.add(pn);
+                    }
+                    return nodes;
+                }
+            };
+
+            SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
+            renderJSON(gson.toJson(root));
         } else {
             ProjectCategory cat = ProjectCategory.findById(id);
             SimpleNode pdn = new SimpleNode(cat.id, cat.name, PROJECT, false, false, null);
