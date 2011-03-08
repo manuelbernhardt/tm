@@ -32,6 +32,7 @@ public class User extends Model implements RoleHolder {
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public List<Project> projects;
 
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public Project activeProject;
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
