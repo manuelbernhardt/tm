@@ -35,6 +35,7 @@ public class Defects extends TMController {
 
     public static void create(Defect defect) {
         defect.project = getActiveProject();
+        defect.submittedBy = getConnectedUser();
         defect.create();
         index();
     }

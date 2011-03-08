@@ -29,23 +29,23 @@ general.Auth(vroniAuth):
     password: vroni
     account: oxiras
 
-project.ProjectCategory(ProjectCategory1):
+project.ProjectCategory(europeProjCat):
     name: Europe
     account: oxiras
 
-project.ProjectCategory(ProjectCategory2):
+project.ProjectCategory(americaProjCat):
     name: America
     account: oxiras
 
 project.Project(Project1):
     name: Project 1
     account: oxiras
-    projectCategory: ProjectCategory1
+    projectCategory: europeProjCat
 
 project.Project(Project2):
     name: Project 2
     account: oxiras
-    projectCategory: ProjectCategory1
+    projectCategory: europeProjCat
 
 project.Role(P2TestLead):
     name: Test Lead
@@ -77,3 +77,29 @@ tm.User(vroni):
     authentication: vroniAuth
     activeProject: Project1
 
+project.Defect(Defect1):
+    project: Project2
+    title: The application does not start
+    submittedBy: gwen
+    assignedTo: manu
+
+project.Defect(Defect2):
+    project: Project1
+    title: Test for naturalID
+    submittedBy: nathalie
+
+project.Defect(Defect3):
+    project: Project2
+    title: Issue with tabularasa
+    submittedBy: manu
+    assignedTo: manu
+
+project.Defect(Defect4):
+    project: Project1
+    title: Test for naturalID 2
+    submittedBy: vroni
+
+project.Defect(Defect5):
+    project: Project1
+    title: Test for naturalID 3
+    submittedBy: nathalie
