@@ -1,8 +1,3 @@
-#{set 'moreStyles'}
-<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jstree/style.css'}">
-#{/set}
-
-<script src="@{'/public/javascripts/jstree/jquery.jstree.js'}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
   $(function () {
     $("#create_category").click(function () {
@@ -89,7 +84,7 @@
                           }
                         }
                     });
-    #{jstree.common id:"projectTree", controller:"TMTreeController" /}
+    #{tree.common id:"projectTree", controller:"TMTreeController" /}
 
     $("#projectTree").bind("select_node.jstree", function (e, data) {
       if (data.inst._get_type(data.rslt.obj) == "default") {
@@ -103,8 +98,6 @@
         var $tabs = $('#innerTabs').tabs();
         var selected = $tabs.tabs('option', 'selected');
         $tabs.tabs('load', selected);
-
-
       }
     });
 

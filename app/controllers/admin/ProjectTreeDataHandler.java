@@ -47,7 +47,6 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
             SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
             l.add(root);
         } else {
-            ProjectCategory cat = ProjectCategory.findById(id);
             l.addAll(producer.produce(id));
         }
         return l;

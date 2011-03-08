@@ -12,7 +12,7 @@ GET     /defects/data                           Defects.data
 GET     /profile                                profile.Profile.index
 POST    /profile/edit                           profile.Profile.edit
 
-*     /admin/accounts                         module:crud
+*       /admin/accounts                         module:crud
 
 GET     /admin/users                            admin.Users.index
 GET     /admin                                  admin.Users.index
@@ -21,12 +21,7 @@ POST    /admin/users/edit                       admin.Users.edit
 GET     /admin/projects                         admin.Projects.index
 GET     /admin/projectRoles/data                admin.ProjectRoles.data
 
-# Tree
-GET     /tree                                   tree.TreeController.getChildren
-POST    /tree/create                            tree.TreeController.create
-POST    /tree/rename                            tree.TreeController.rename
-POST    /tree/move                              tree.TreeController.move
-DELETE  /tree/remove                            tree.TreeController.remove
+*       /tree                                   module:tree
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
