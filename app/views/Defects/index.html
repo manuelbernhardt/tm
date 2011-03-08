@@ -1,16 +1,81 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
-Everything is broken. Let's break some more.
+#{set 'moreStyles'}
+<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/demo_table_jui.css'}">
+#{/set}
 
-<h2>Existing defects</h2>
-#{list items:defects, as:'defect'}
-${defect.title}<br/>
-#{/list}
+#{set 'moreScripts'}
+<script src="@{'/public/javascripts/jquery.dataTables.min.js'}" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+    $(function() {
+    $("#innerTabs").tabs();
+    });
+
+    $(document).ready(function() {
+
+    #{tabularasa.init tableId:'tab'}
+    var tabParameters = {
+    "aoColumns": [
+    {"sName": "id", "sClass": "sNone" },
+    {"sName": "naturalId"},
+    {"sName": "submittedBy"},
+    {"sName": "assignedTo"},
+    {"sName": "title"},
+    {"sName": "status"}
+    ],
+    "sAjaxSource": "@{Defects.data()}",
+    "bProcessing": true,
+    "bServerSide": true,
+    "bLengthChange": false,
+    "iDisplayLength": 10,
+    "bInfo": false,
+    "oLanguage": {
+    "sZeroRecords": "No defects submitted yet"
+    },
+    "fnDrawCallback": function() {
+    // select a user if one was selected
+    if ('${selectedDefect}'.length > 0) {
+    $(tabDataTable.fnSettings().aoData).each(function () {
+    var nTr = $(this.nTr)[0];
+    if ($($(nTr).children('td')[0]).text() == '${selectedDefect}') {
+    $(this.nTr).addClass('row_selected');
+    }
+    });
+
+    fnReloadTabs(${selectedDefect});
+    }
+    }
+    };
+    #{/tabularasa.init}
+
+    });
+
+</script>
+#{/set}
+
+<div class="container">
+    <div>
+        <table class="display" id="tab">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Submitted by</th>
+                <th>Assigned to</th>
+                <th>Title</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
 
 <h2>New defect</h2>
 
 <form action=@{Defects.create()} method="POST">
-  Title: <input type="text" name="defect.title" id="defect.title"/>
-  <input type="submit" value="Save!"/>
+    Title: <input type="text" name="defect.title" id="defect.title"/>
+    <input type="submit" value="Save!"/>
 </form>

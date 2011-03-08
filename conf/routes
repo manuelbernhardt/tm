@@ -8,6 +8,7 @@
 GET     /                                       Dashboard.index
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
+GET     /defects/data                           Defects.data
 GET     /profile                                profile.Profile.index
 POST    /profile/edit                           profile.Profile.edit
 
