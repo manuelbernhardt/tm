@@ -32,16 +32,16 @@ public class TreeTest extends UnitTest {
         DRIVE = TestTree.getNodeType("drive");
         FOLDER = TestTree.getNodeType("folder");
 
-        c = t.createNode(-1l, 0l, "C", DRIVE);
-        data = t.createNode(c.getId(), 0l, "Data", FOLDER);
-        games = t.createNode(c.getId(), 0l, "Games", FOLDER);
-        admin = t.createNode(data.getId(), 0l, "Admin", FOLDER);
-        letters = t.createNode(data.getId(), 0l, "Letters", FOLDER);
+        c = t.create(-1l, 0l, "C", DRIVE);
+        data = t.create(c.getId(), 0l, "Data", FOLDER);
+        games = t.create(c.getId(), 0l, "Games", FOLDER);
+        admin = t.create(data.getId(), 0l, "Admin", FOLDER);
+        letters = t.create(data.getId(), 0l, "Letters", FOLDER);
 
-        d = t.createNode(-1l, 0l, "D", DRIVE);
-        movies = t.createNode(d.getId(), 0l, "Movies", FOLDER);
-        starwars = t.createNode(movies.getId(), 0l, "Starwars", FOLDER);
-        matrix = t.createNode(movies.getId(), 0l, "The Matrix", FOLDER);
+        d = t.create(-1l, 0l, "D", DRIVE);
+        movies = t.create(d.getId(), 0l, "Movies", FOLDER);
+        starwars = t.create(movies.getId(), 0l, "Starwars", FOLDER);
+        matrix = t.create(movies.getId(), 0l, "The Matrix", FOLDER);
     }
 
     @After
@@ -58,9 +58,9 @@ public class TreeTest extends UnitTest {
 
     @Test
     public void removeRecursively() {
-        GenericTreeNode root = t.createNode(-1l, 0l, "Root", DRIVE);
-        GenericTreeNode child1 = t.createNode(root.getId(), 0l, "Child 1", FOLDER);
-        GenericTreeNode child2 = t.createNode(child1.getId(), 0l, "child 2", FOLDER);
+        GenericTreeNode root = t.create(-1l, 0l, "Root", DRIVE);
+        GenericTreeNode child1 = t.create(root.getId(), 0l, "Child 1", FOLDER);
+        GenericTreeNode child2 = t.create(child1.getId(), 0l, "child 2", FOLDER);
 
         assertEquals(1, t.getChildren(root.getId(), FOLDER).size());
         assertEquals(1, t.getChildren(child1.getId(), FOLDER).size());
@@ -80,7 +80,7 @@ public class TreeTest extends UnitTest {
 
     @Test
     public void rename() {
-        t.rename(starwars.getId(), "Star Wars");
+        t.rename(starwars.getId(), "Star Wars", null);
         // usually this is done by the controller
         JPA.em().clear();
         assertEquals("Star Wars", t.getChildren(movies.getId(), FOLDER).get(0).getName());

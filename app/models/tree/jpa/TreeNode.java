@@ -14,6 +14,7 @@ import controllers.tree.AbstractTree;
 import controllers.tree.JPATreeStorage;
 import controllers.tree.NodeType;
 import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import models.tree.Node;
 import play.db.jpa.Model;
 
@@ -26,8 +27,8 @@ import play.db.jpa.Model;
 public class TreeNode extends Model implements GenericTreeNode {
 
     public String name;
-    public transient NodeType type;
-    public String typeName;
+    public transient NodeType nodeType;
+    public String type;
     public boolean opened;
     public int level;
 
@@ -57,23 +58,23 @@ public class TreeNode extends Model implements GenericTreeNode {
         this.abstractNode = (AbstractNode) n;
     }
 
-    public NodeType getType() {
-        return type;
+    public NodeType getNodeType() {
+        return nodeType;
     }
 
-    public void setType(NodeType type) {
-        this.type = type;
+    public void setNodeType(NodeType type) {
+        this.nodeType = type;
     }
 
     public GenericTreeNode getParent() {
-        if(this.threadRoot.getId() == this.getId()) {
+        if (this.threadRoot.getId() == this.getId()) {
             return this;
         } else {
             return find("from TreeNode n where level = ? and ? like concat(path, '%')", level - 1, path).first();
         }
     }
 
-    public List<? extends GenericTreeNode> getChildren() {
+    public List<JSTreeNode> getChildren() {
         return JPATreeStorage.getChildren(level, path, threadRoot);
     }
 
@@ -109,15 +110,23 @@ public class TreeNode extends Model implements GenericTreeNode {
         this.threadRoot = (TreeNode) threadRoot;
     }
 
+    public boolean isContainer() {
+        return nodeType.isContainer();
+    }
+
+    public String getType() {
+        return type;
+    }
+
     @PrePersist
     public void doSave() {
-        if(type != null) {
-            this.typeName = type.getName();
+        if (nodeType != null) {
+            this.type = nodeType.getName();
         }
     }
 
     @PostLoad
     public void doLoad() {
-        this.type = AbstractTree.getNodeType(this.typeName);
+        this.nodeType = AbstractTree.getNodeType(this.type);
     }
 }

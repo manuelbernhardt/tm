@@ -3,9 +3,12 @@ package controllers.tree;
 import java.util.List;
 
 import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import models.tree.Node;
 
 /**
+ * Abstract storage for trees, allowing the use of more storage engines in order to store trees.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public abstract class TreeStorage {
@@ -22,7 +25,7 @@ public abstract class TreeStorage {
 
     public abstract GenericTreeNode getTreeNode(Long id);
 
-    public abstract List<GenericTreeNode> getChildren(Long parentId);
+    public abstract List<JSTreeNode> getChildren(Long parentId);
 
     public abstract void remove(Long id, boolean removeObject);
 
@@ -32,16 +35,17 @@ public abstract class TreeStorage {
 
     public abstract void copy(Long id, Long target, boolean copyObject, NodeType[] objectTypes);
 
-    /** the rules for creating the path should be the same as in the TreeStorage **/
+    /**
+     * the rules for creating the path should be the same as in the TreeStorage *
+     */
     public String computePath(GenericTreeNode parent, Long id, String name) {
         String path = "";
 
         // if it's not a null parent and if it's not a thread root
-        if(parent != null && parent.getId() != id) {
+        if (parent != null && parent.getId() != id) {
             path += parent.getPath();
             path += "___";
         }
-        path += name;
         path += id;
         return path;
     }

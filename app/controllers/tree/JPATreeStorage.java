@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import models.tree.Node;
 import models.tree.jpa.AbstractNode;
 import models.tree.jpa.TreeNode;
@@ -15,6 +16,9 @@ import play.db.jpa.JPABase;
 import play.db.jpa.Model;
 
 /**
+ * JPA implementation of the TreeStorage
+ * FIXME copying trees is broken, the tree information (paths) need to be re-computed recursively when copying hierarchies.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class JPATreeStorage extends TreeStorage {
@@ -78,7 +82,7 @@ public class JPATreeStorage extends TreeStorage {
     }
 
     @Override
-    public List<GenericTreeNode> getChildren(Long parentId) {
+    public List<JSTreeNode> getChildren(Long parentId) {
         if (parentId == null || parentId == -1) {
             return TreeNode.find("from TreeNode n where n.threadRoot = n").fetch();
         } else {
@@ -87,7 +91,7 @@ public class JPATreeStorage extends TreeStorage {
         }
     }
 
-    public static List<GenericTreeNode> getChildren(Integer parentLevel, String parentPath, TreeNode parentThreadRoot) {
+    public static List<JSTreeNode> getChildren(Integer parentLevel, String parentPath, TreeNode parentThreadRoot) {
         return TreeNode.find("from TreeNode n where n.level = ? and n.path like ? and n.threadRoot = ?", parentLevel + 1, parentPath + "%", parentThreadRoot).fetch();
     }
 
@@ -123,7 +127,13 @@ public class JPATreeStorage extends TreeStorage {
         TreeNode parent = TreeNode.findById(target);
         Integer delta = parent.getLevel() - node.getLevel() + 1;
         String oldPath = node.getPath();
-        String newPath = parent.getThreadRoot().getId().equals(parent.getId()) ? parent.getPath() + "___" : parent.getPath();
+        String newPath = parent.getThreadRoot().getId().equals(parent.getId()) ? parent.getPath() + "___" : parent.getPath(); // FIXME "___"
+
+        // at this point we do not know yet what will be the ID of the newly inserted rows so we have to update the path afterwards with the correct ID
+        // in order to identify which rows need to be updated, we prepend a unique transaction ID to the path
+        String copyTransactionId = System.currentTimeMillis() + "###" + id + "###";
+        newPath = copyTransactionId + newPath;
+
         Integer oldPathLength = node.getParent().getPath().length();
         String pathLike = oldPath + "%";
 
@@ -152,6 +162,42 @@ public class JPATreeStorage extends TreeStorage {
 
         query.executeUpdate();
 
+
+        // FIXME recompute the paths per level
+        // fetch the IDs for each level (until max(level) where path startsWith copyTransactionId)
+        // for each level
+        //   path = path(level -1) + id where path startsWith copyTransactionId
+        // remove copyTransactionId
+        /*
+        Map<Integer, List<Long>> nodes = new HashMap<Integer, List<Long>>();
+        Query toUpdate = JPA.em().createNativeQuery("select n.level, n.id from TreeNode n where n.level like ? order by level asc");
+        toUpdate.setParameter(1, copyTransactionId + "%");
+        List<Object[]> toUpdateIds = (List<Object[]>) toUpdate.getResultList();
+        for(Object[] levelIds : toUpdateIds) {
+            Integer level = (Integer) levelIds[0];
+            List<Long> ids = nodes.get(level);
+            if(ids == null) {
+                ids = new ArrayList<Long>();
+                nodes.put(level, ids);
+            }
+            ids.add((Long)levelIds[1]);
+        }
+        Integer max = query("select max(level) from TreeNode n where n.path like ? group by n.level", Integer.class, copyTransactionId + "%");
+        String parentPath = parent.getPath() + "___";
+        for(int i = 0; id < max; i++) {
+            
+            updateQuery("update TreeNode set path = substring(concat(?, id), ?) where path like ?", parentPath, copyTransactionId.length() + 1, copyTransactionId);
+
+        }
+        */
+
+        // now, update the paths that are for the moment incorrect
+        Query pathQuery = JPA.em().createNativeQuery("update TreeNode set path = concat(substring(path, ?, length(path) - ? - locate('___', reverse(path)) + 1), id) where path like ?");
+        pathQuery.setParameter(1, copyTransactionId.length() + 1);
+        pathQuery.setParameter(2, copyTransactionId.length());
+        pathQuery.setParameter(3, copyTransactionId + "%");
+        pathQuery.executeUpdate();
+
         if (copyObject) {
             // fetch all (type, (AbstractNode, TreeNode)) where TreeNode-s are the freshly copied nodes (they still point to the original AbstractNode)
             Map<String, Map<Long, Long>> nodeIdsByType = new HashMap<String, Map<Long, Long>>();
@@ -172,7 +218,7 @@ public class JPATreeStorage extends TreeStorage {
             for (NodeType type : types) {
                 Map<Long, Long> copyIds = new HashMap<Long, Long>();
                 Map<Long, Long> i = nodeIdsByType.get(type.getName());
-                if(i != null) {
+                if (i != null) {
                     try {
                         Query q = JPA.em().createQuery("from " + type.getNodeClass().getSimpleName() + " n where n.id in (:ids)");
                         q.setParameter("ids", i.keySet());

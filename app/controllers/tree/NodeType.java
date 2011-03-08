@@ -3,6 +3,8 @@ package controllers.tree;
 import models.tree.Node;
 
 /**
+ * Type of a node, to be used when implementing an {@link AbstractTree}
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class NodeType {

@@ -7,19 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import models.tree.Node;
 
 /**
+ * Base class for persistent trees. It is meant to offer support for more than one storage engine (for now, only JPA is supported).
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public abstract class AbstractTree {
+public abstract class AbstractTree implements TreeDataHandler {
 
     protected static Map<String, NodeType> nodeTypes = new HashMap<String, NodeType>();
     protected static Map<Class, NodeType> nodeTypesByClass = new HashMap<Class, NodeType>();
 
     /**
      * Registers a new {@link NodeType}. This method should be used when implementing {@link #getNodes()}
-     * @param nodeClass the Class of the tree node (must implement GenericTreeNode or extend a convenience class such as {@link models.tree.jpa.AbstractNode})
+     *
+     * @param nodeClass   the Class of the tree node (must implement GenericTreeNode or extend a convenience class such as {@link models.tree.jpa.AbstractNode})
      * @param isContainer whether this node can be a container of other nodes (i.e. a non-leaf node)
      * @return a registered {@link NodeType}
      */
@@ -61,6 +65,7 @@ public abstract class AbstractTree {
 
     /**
      * The qualifier for this tree
+     *
      * @return a qualifier for the tree, unique for all the application.
      */
     public abstract String getName();
@@ -68,6 +73,7 @@ public abstract class AbstractTree {
     /**
      * Retuns all the possible node types for this tree.<br>
      * Register a type with {@link #type(Class, boolean)}
+     *
      * @return an Array of {@link NodeType}
      */
     protected abstract NodeType[] getNodes();
@@ -80,13 +86,24 @@ public abstract class AbstractTree {
      */
     protected abstract NodeType getRootType();
 
-    public GenericTreeNode createNode(Long parentId, Long position, String name, NodeType type) {
+    public List<? extends JSTreeNode> getChildren(Long parentId) {
+        return storage.getChildren(parentId);
+    }
+
+    public Long create(Long parentId, Long position, String name, String type) {
+        NodeType nt = null;
+        if (type == null) {
+            nt = getRootType();
+        } else {
+            nt = getNodeType(type);
+        }
+
         try {
             GenericTreeNode node = storage.getNewGenericTreeNode();
-            populateTreeNode(node, parentId, name, type);
+            populateTreeNode(node, parentId, name, nt);
             node = storage.create(node);
 
-            Node object = createObjectNode(name, type);
+            Node object = createObjectNode(name, nt);
             object = storage.create(object);
 
             node.setNode(object);
@@ -95,20 +112,17 @@ public abstract class AbstractTree {
             node.setPath(storage.computePath(storage.getTreeNode(parentId), node.getId(), node.getName()));
             node = storage.update(node);
 
-            return node;
+            return node.getId();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void remove(Long id) throws Exception {
-        // TODO make configurable
-        storage.remove(id, true);
-    }
-
-    public void rename(Long id, String name) {
+    public boolean rename(Long id, String name, String type) {
+        // FIXME return false if error
         storage.rename(id, name);
+        return true;
     }
 
     public void copy(Long id, Long target, Long position) {
@@ -118,6 +132,14 @@ public abstract class AbstractTree {
     public void move(Long id, Long target, Long position) {
         storage.move(id, target);
     }
+
+    public boolean remove(Long id) throws Exception {
+        // TODO make configurable
+        // FIXME return false if error
+        storage.remove(id, true);
+        return true;
+    }
+
 
     private Node createObjectNode(String name, NodeType type) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Constructor c = type.getNodeClass().getDeclaredConstructor();
@@ -131,7 +153,7 @@ public abstract class AbstractTree {
         if (parent == null && parentId != -1) {
             throw new RuntimeException("Could not find parent node with ID " + parentId);
         }
-        if(parent == null) {
+        if (parent == null) {
             n.setLevel(0);
             n.setThreadRoot(n);
         } else {
@@ -139,7 +161,7 @@ public abstract class AbstractTree {
             n.setThreadRoot(parent.getThreadRoot());
         }
         n.setName(name);
-        n.setType(type);
+        n.setNodeType(type);
 
         // TODO configurable
         n.setOpen(false);
@@ -147,9 +169,5 @@ public abstract class AbstractTree {
 
     public GenericTreeNode getNode(Long id) {
         return storage.getTreeNode(id);
-    }
-
-    public List<GenericTreeNode> getChildren(Long parentId, NodeType type) {
-        return storage.getChildren(parentId);
     }
 }

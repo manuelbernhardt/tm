@@ -3,6 +3,8 @@ package models.tree;
 import java.util.List;
 
 /**
+ * Representation of a JSTree node.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public interface JSTreeNode {

@@ -1,4 +1,4 @@
-package controllers.simpletree;
+package controllers.tree;
 
 import java.util.List;
 

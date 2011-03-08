@@ -3,29 +3,24 @@ package controllers.tree;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import play.mvc.Controller;
 
 /**
+ * Generic controller for tree operations.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class TreeController extends Controller {
 
     public static void create(String treeId, Long parentId, Long position, String name, String type) {
 
-        NodeType nt = null;
-        if (type == null) {
-            nt = Tree.getTree(treeId).getRootType();
-        } else {
-            nt = AbstractTree.getNodeType(type);
-        }
-
-        GenericTreeNode node = Tree.getTree(treeId).createNode(parentId, position, name, nt);
+        Long node = Tree.getTree(treeId).create(parentId, position, name, type);
         JsonObject status = null;
         if (node == null) {
             status = makeStatus(0, null);
         } else {
-            status = makeStatus(1, node.getId());
+            status = makeStatus(1, node);
         }
         renderJSON(status.toString());
     }
@@ -40,14 +35,14 @@ public class TreeController extends Controller {
         renderJSON(makeStatus(1, null).toString());
     }
 
-    public static void rename(String treeId, Long id, String name) {
-        try {
-            Tree.getTree(treeId).rename(id, name);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void rename(String treeId, Long id, String name, String type) {
+        boolean renamed;
+        renamed = Tree.getTree(treeId).rename(id, name, type);
+        if (renamed) {
+            renderJSON(makeStatus(1, null).toString());
+        } else {
             renderJSON(makeStatus(0, null).toString());
         }
-        renderJSON(makeStatus(1, null).toString());
     }
 
     public static void move(String treeId, Long id, Long target, Long position, String name, boolean copy) {
@@ -64,14 +59,8 @@ public class TreeController extends Controller {
         renderJSON(makeStatus(1, null).toString());
     }
 
-    public static void getChildren(String treeId, Long id, String type) {
-        List<? extends GenericTreeNode> children = null;
-        if (type == null) {
-            children = Tree.getTree(treeId).getChildren(id, Tree.getTree(treeId).getRootType());
-        } else {
-            children = Tree.getTree(treeId).getNode(id).getChildren();
-        }
-        System.out.println("Children: " + children);
+    public static void getChildren(String treeId, Long id) {
+        List<? extends JSTreeNode> children = Tree.getTree(treeId).getChildren(id);
         renderJSON(Tree.getGson().toJson(children));
     }
 

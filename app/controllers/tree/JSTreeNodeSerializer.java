@@ -1,4 +1,4 @@
-package controllers.simpletree;
+package controllers.tree;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -13,8 +13,10 @@ import com.google.gson.JsonSerializer;
 import models.tree.JSTreeNode;
 
 /**
-* @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
-*/
+ * Serializer for JSTree nodes
+ *
+ * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
+ */
 public class JSTreeNodeSerializer implements JsonSerializer<JSTreeNode> {
 
     public JsonElement serialize(JSTreeNode node, Type type, JsonSerializationContext context) {
@@ -24,10 +26,10 @@ public class JSTreeNodeSerializer implements JsonSerializer<JSTreeNode> {
         if (node.isContainer()) {
             List<JSTreeNode> c = node.getChildren();
             JsonArray children = new JsonArray();
-            if (node.isOpen()) {
+            if (node.isOpen() && !c.isEmpty()) {
                 // render full children
-                o.add("children", context.serialize(node.getChildren()));
-            } else {
+                o.add("children", context.serialize(c));
+            } else if (!c.isEmpty()) {
                 // render "closed" children
                 for (JSTreeNode n : c) {
                     JsonObject child = new JsonObject();

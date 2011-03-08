@@ -5,7 +5,7 @@ import models.general.UnitRole;
 
 public class Approach extends TMController {
 
-    @Restrict(UnitRole.APPROACHVIEW)
+    @Restrict(UnitRole.USER)
     public static void index() {
         render();
     }
