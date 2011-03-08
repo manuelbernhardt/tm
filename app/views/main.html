@@ -1,7 +1,7 @@
 #{extends 'header.html' /}
 
 <div style="text-align:right;">
-   ${project == null ? 'No active project' : project}
+   ${activeProject == null ? '' : activeProject.name}
    |
    <a href="@{admin.Users.index}"><span>Administration</span></a>
    |

@@ -25,6 +25,7 @@ public class TMController extends Controller {
             Auth a = Auth.find("byEmail", Security.connected()).first();
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
+            renderArgs.put("activeProject", getActiveProject());
         }
     }
 
@@ -57,8 +58,8 @@ public class TMController extends Controller {
      */
     public static Project getActiveProject() {
         // TODO freaking cache this or we have an extra query each time we create a project-related entity!
-        if(session.get("project") != null) {
-            Long id = Long.valueOf(session.get("project"));
+        if(session.get("activeProject") != null) {
+            Long id = Long.valueOf(session.get("activeProject"));
             if(id != null) {
                 return Project.findById(id);
             }

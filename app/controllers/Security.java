@@ -17,7 +17,7 @@ public class Security extends Secure.Security {
         // we really want to keep the user session as thin as possible as it is sent at each request
         session.put("account", u.authentication.account.getId());
         if(u.activeProject != null) {
-            session.put("project", u.activeProject);
+            session.put("activeProject", u.activeProject.getId());
         }
     }
 
