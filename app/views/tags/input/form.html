@@ -1,4 +1,6 @@
 #{form action:_action, id:_id}
+%{_body.setProperty('baseClass', _baseClass); }%
+%{_body.setProperty('baseObject', _baseObject); }%
 #{doBody /}
 #{/form}
 
@@ -13,7 +15,9 @@
             if(typeof ${_id}SubmissionCallback !== 'undefined') {
               ${_id}SubmissionCallback();
             }
+            #{if _baseClass != null}
             jQuery(form).clearForm();
+            #{/if}
           });
         }
       });

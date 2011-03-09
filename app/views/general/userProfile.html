@@ -12,12 +12,12 @@ No user selected
 <fieldset style="width: 90%;">
     <legend>Profile information</legend>
 
-  #{input.form action:action, id:'profileForm'}
+  #{input.form action:action, id:'profileForm', baseObject:user}
 
-    #{input.field field:'user.authentication.firstName', label:'First Name', baseObject:user /}
-    #{input.field field:'user.authentication.lastName', label:'Last Name', baseObject:user /}
-    #{input.field field:'user.authentication.email', label:'Email', baseObject:user /}
-    #{input.field field:'user.authentication.phone', label:'Phone', baseObject:user /}
+    #{input.field field:'user.authentication.firstName', label:'First Name' /}
+    #{input.field field:'user.authentication.lastName', label:'Last Name' /}
+    #{input.field field:'user.authentication.email', label:'Email' /}
+    #{input.field field:'user.authentication.phone', label:'Phone' /}
     <input type="hidden" name="user.id" value="${user.id}"/>
     <input type="hidden" name="user.authentication.id" value="${user.authentication.id}"/>
     <input type="hidden" name="user.authentication.account.id" value="${user.authentication.account.id}"/>

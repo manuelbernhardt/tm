@@ -1,11 +1,17 @@
-<!-- Here will come the type-based switch -->
+%{
+  def formBaseClass = _caller.baseClass;
+  def baseClass = _baseClass ? _baseClass : formBaseClass;
+  def formBaseObject = _caller.baseObject;
+  def baseObject = _baseObject ? _baseObject : formBaseObject;
+}%
 
-#{forms.type baseObject:_baseObject, baseClass:_baseClass, field:_field}
+<!-- Here will come the type-based switch -->
+#{forms.type baseObject:baseObject, baseClass:baseClass, field:_field}
 #{if type == 'text'}
-  #{input.textField field:_field, label:_label, baseObject:_baseObject, baseClass:_baseClass /}
+  #{input.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/if}
 #{if type == 'longtext'}
-  #{input.longtextField field:_field, label:_label, baseObject:_baseObject, baseClass:_baseClass /}
+  #{input.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/if}
 
 
