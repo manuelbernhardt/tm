@@ -29,4 +29,9 @@ public class Role extends ProjectModel {
         return res;
     }
 
+    public static List<Role> findByProject(Long id) {
+        return Role.find("from Role r where r.project.id = ?", id).fetch();
+    }
+
+    
 }

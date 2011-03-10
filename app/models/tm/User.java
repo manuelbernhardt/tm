@@ -8,6 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
+import models.general.Account;
 import models.general.Auth;
 import models.general.UnitRole;
 import models.project.Project;
@@ -59,5 +60,13 @@ public class User extends Model implements RoleHolder {
         }
 
         return res;
+    }
+
+    public boolean isInAccount(Account account) {
+        return authentication.account.getId().equals(account.getId());
+    }
+
+    public static List<User> findByAccount(Long accountId) {
+        return User.find("from User u where u.authentication.account.id = ?", accountId).fetch();
     }
 }

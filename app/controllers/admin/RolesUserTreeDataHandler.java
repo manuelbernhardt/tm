@@ -24,7 +24,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         final RoleChildProducer roleChildProducer = new RoleChildProducer();
         if (parentId == -1) {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
-            List<Role> roles = Role.find("from Role r where r.project.id = ?", Long.parseLong(args[0])).fetch();
+            List<Role> roles = Role.findByProject(Long.parseLong(args[0]));
             for (Role r : roles) {
                 JSTreeNode roleNode = new SimpleNode(r.id, r.name, "role", true, true, roleChildProducer);
                 res.add(roleNode);
@@ -60,7 +60,6 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
             List<User> users = User.find("select u from User u, Role r where r in elements(u.projectRoles) and r.id = ?", id).fetch();
             for (User u : users) {
-                System.out.println("********************* " + u);
                 JSTreeNode n = new SimpleNode(u.id, u.getFullName(), "default", false, false, null);
                 res.add(n);
             }

@@ -1,11 +1,14 @@
 package controllers.admin;
 
-import controllers.CRUD;
+import java.util.List;
+
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
 import models.project.Project;
+import models.project.Role;
+import models.tm.User;
 import play.mvc.With;
 
 /**
@@ -14,10 +17,12 @@ import play.mvc.With;
 @With(Deadbolt.class)
 public class Projects extends TMController {
 
+    @Restrict(UnitRole.ADMIN)
     public static void index() {
         render();
     }
 
+    @Restrict(UnitRole.ADMIN)
     public static void projectDetails(Long projectId) {
         Project project = null;
         if (projectId != null) {
@@ -33,6 +38,7 @@ public class Projects extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.ADMIN)
     public static void roles(Long projectId) {
         Project project = null;
         if (projectId != null) {
@@ -41,12 +47,39 @@ public class Projects extends TMController {
         render(project);
     }
 
+    @Restrict(UnitRole.ADMIN)
     public static void users(Long projectId) {
         Project project = null;
         if (projectId != null) {
             project = Project.findById(projectId);
         }
-        render(project);
+        List<Role> projectRoles = Role.findByProject(projectId);
+        List<User> accountUsers = User.findByAccount(getUserAccount().getId());
+        render(project, projectRoles, accountUsers);
+    }
+
+    @Restrict(UnitRole.ADMIN)
+    public static void assignUserRole(Long roleId, Long userId) {
+
+        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
+            error("Wrong parameters passed");
+        }
+        Role role = Role.findById(roleId);
+        User user = User.findById(userId);
+        if (role == null || user == null) {
+            notFound();
+        } else {
+            if (!role.isInAccount(getUserAccount()) || !user.isInAccount(getUserAccount())) {
+                unauthorized();
+            }
+            if(!user.projectRoles.contains(role)) {
+                user.projectRoles.add(role);
+                user.save();
+            }
+
+            ok();
+        }
+
     }
 
 }
