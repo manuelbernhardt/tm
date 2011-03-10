@@ -25,8 +25,8 @@ public class TMTreeController extends TMController {
         TreeController.move(treeId, id, target, position, name, copy);
     }
 
-    public static void getChildren(String treeId, Long id) {
-        TreeController.getChildren(treeId, id);
+    public static void getChildren(String treeId, Long id, String... args) {
+        TreeController.getChildren(treeId, id, args);
     }
 
 }

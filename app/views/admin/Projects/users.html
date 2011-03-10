@@ -3,4 +3,65 @@ No project selected
 #{/if}
 #{else}
 
+<div id="treeDiv">
+  <div id="rolesUserTree" class="tree"></div>
+</div>
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+    $("#rolesUserTree")
+            .jstree({
+                        "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+
+                        "json_data" : {
+                          "ajax" : {
+                            "url" : "@{TMTreeController.getChildren()}",
+                            "data" : function (n) {
+                              return {
+                                "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+                                "treeId" : "rolesUserTree",
+                                "args" : "${project.id}"
+                              };
+                            }
+                          }
+                        },
+                        "types" : {
+                          "max_depth" : -2,
+                          "max_children" : -2,
+                          "types" : {
+                            "default" : { // user
+                              "valid_children" : "none",
+                              "icon" : {
+                                "image" : "@{'public/images/jstree/file.png'}" // TODO user icon
+                              }
+                            },
+                            "role" : {
+                              "valid_children" : [ "default" ],
+                              "icon" : {
+                                "image" : "@{'public/images/jstree/folder.png'}" // TODO role icon
+                              },
+                              "start_drag" : false,
+                              "move_node" : false,
+                              "delete_node" : false,
+                              "remove" : false
+                            }
+                          }
+                        },
+                        "hotkeys": {
+                          "Ctrl+x" : function() {
+                            this.cut(null)
+                          },
+                          "Ctrl+v" : function() {
+                            this.paste(null)
+                          }
+                        }
+                    });
+    #{tree.common id:"rolesUserTree", controller:"TMTreeController" /}
+
+  });
+
+
+</script>
+
 #{/else}

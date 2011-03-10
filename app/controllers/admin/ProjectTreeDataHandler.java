@@ -25,7 +25,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return "projectTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long id) {
+    public List<? extends JSTreeNode> getChildren(Long id, String[] args) {
         List<JSTreeNode> l = new ArrayList<JSTreeNode>();
         final ChildProducer producer = new CategoryChildProducer();
         if (id == -1) {
@@ -44,7 +44,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
                     return nodes;
                 }
             };
-            SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
+            controllers.tree.SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
             l.add(root);
         } else {
             l.addAll(producer.produce(id));

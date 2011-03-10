@@ -9,7 +9,7 @@
   });
 
   <!-- JavaScript necessary for the tree -->
-  $(function () {
+  $(document).ready(function () {
     var tree = $("#projectTree")
             .jstree({
                         // the list of plugins to include
@@ -90,12 +90,12 @@
       if (data.inst._get_type(data.rslt.obj) == "default") {
         var project = data.rslt.obj.attr("id");
 
-        $('#innerTabs').tabs('url', 0, '@{admin.Projects.projectDetails()}?projectId=' + project);
-        $('#innerTabs').tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + project);
-        $('#innerTabs').tabs('url', 2, '@{admin.Projects.users()}?projectId=' + project);
+        var $tabs = $('#innerTabs').tabs();
+        $tabs.tabs('url', 0, '@{admin.Projects.projectDetails()}?projectId=' + project);
+        $tabs.tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + project);
+        $tabs.tabs('url', 2, '@{admin.Projects.users()}?projectId=' + project);
 
         // reloads the selected tab
-        var $tabs = $('#innerTabs').tabs();
         var selected = $tabs.tabs('option', 'selected');
         $tabs.tabs('load', selected);
       }
