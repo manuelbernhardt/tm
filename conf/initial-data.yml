@@ -50,14 +50,48 @@ project.Project(Project2):
 project.Role(P2TestLead):
     name: Test Lead
     project: Project2
+    unitRoles:
+         - reqView
+         - reqCreate
+         - reqEdit
+         - reqDelete
+         - approachView
+         - approachCreate
+         - approachEdit
+         - approachDelete
+         - testPrepView
+         - testPrepCreate
+         - testPrepEdit
+         - testPrepDelete
+         - testExecView
+         - testExecCreate
+         - testExecEdit
+         - testExecDelete
+         - defectView
+         - defectCreate
+         - defectEdit
+         - defectDelete
 
 project.Role(P2TestDesigner):
     name: Test Designer
     project: Project2
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testPrepCreate
+         - testPrepEdit
+         - testPrepDelete
 
 project.Role(P2ViewOnly):
     name: View only
     project: Project2
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testExecView
+         - defectView
 
 tm.User(gwen):
     authentication: gwenAuth
