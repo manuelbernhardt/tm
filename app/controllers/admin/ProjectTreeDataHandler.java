@@ -52,7 +52,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return l;
     }
 
-    public Long create(Long parentId, Long position, String name, String type) {
+    public Long create(Long parentId, Long position, String name, String type, Long id) {
         Account userAccount = TMController.getUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
@@ -102,7 +102,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         // TODO
     }
 
-    public boolean remove(Long id, String type) throws Exception {
+    public boolean remove(Long id, Long parentId, String type) throws Exception {
         // TODO
         return false;
     }

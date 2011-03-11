@@ -58,29 +58,4 @@ public class Projects extends TMController {
         List<User> accountUsers = User.findByAccount(getUserAccount().getId());
         render(project, projectRoles, accountUsers);
     }
-
-    @Restrict(UnitRole.ADMIN)
-    public static void assignUserRole(Long roleId, Long userId) {
-
-        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
-            error("Wrong parameters passed");
-        }
-        Role role = Role.findById(roleId);
-        User user = User.findById(userId);
-        if (role == null || user == null) {
-            notFound();
-        } else {
-            checkInAccount(role);
-            checkInAccount(user);
-
-            if(!user.projectRoles.contains(role)) {
-                user.projectRoles.add(role);
-                user.save();
-            }
-
-            ok();
-        }
-
-    }
-
 }

@@ -6,6 +6,7 @@ No project selected
 
 <div id="treeDiv">
   <button id="assign-user">Assign role to user</button>
+  <button id="unassign-user">Remove assignment</button>
   <div id="rolesUserTree" class="tree"></div>
 </div>
 
@@ -48,21 +49,9 @@ No project selected
           var valid = v.form();
 
           if (valid) {
-            $.ajax({
-              type: "POST",
-              async: false,
-              url: '@{admin.Projects.assignUserRole()}',
-              context: $(this),
-              data: ({roleId: selectedRoleId, userId: selectedUserId}),
-              success: function(data) {
-                jQuery.jstree._reference('#rolesUserTree').refresh();
-                $(this).dialog("close");
-              },
-              failure: function(data) {
-                // TODO better alert!
-                alert("Internal error: could not assign user to role");
-              }
-            });
+            var name = $('#users option:selected').text();
+            $("#rolesUserTree").jstree("create", null, "last", {attr: {"id": selectedUserId, "rel":"default"}, data: name}, null, true);
+            $(this).dialog("close");
           }
 
         },
@@ -77,6 +66,20 @@ No project selected
             .button()
             .click(function() {
       $("#assign-dialog").dialog("open");
+    });
+
+    $("#unassign-user")
+            .button()
+            .click(function() {
+
+      var $tree = jQuery.jstree._reference('#rolesUserTree');
+      var selectedNode = $tree.get_selected();
+      if ($tree._get_type(selectedNode) == "default") {
+        var selectedUserId = selectedNode.attr("id");
+        var selectedRoleId = $tree._get_parent(selectedNode).attr("id");
+        $tree.delete_node(selectedNode);
+      }
+
     });
 
     $("#rolesUserTree")

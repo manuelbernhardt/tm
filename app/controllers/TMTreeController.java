@@ -9,12 +9,12 @@ import controllers.tree.TreeController;
  */
 public class TMTreeController extends TMController {
 
-    public static void create(String treeId, Long parentId, Long position, String name, String type) {
-        TreeController.createDirect(treeId, parentId, position, name, type);
+    public static void create(String treeId, Long parentId, Long position, String name, String type, Long id) {
+        TreeController.createDirect(treeId, parentId, position, name, type, id);
     }
 
-    public static void remove(String treeId, Long id, String type) {
-        TreeController.removeDirect(treeId, id, type);
+    public static void remove(String treeId, Long id, Long parentId, String type) {
+        TreeController.removeDirect(treeId, id, parentId, type);
     }
 
     public static void rename(String treeId, Long id, String name, String type) {

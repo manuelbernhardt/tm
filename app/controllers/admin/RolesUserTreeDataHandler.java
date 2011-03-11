@@ -3,6 +3,7 @@ package controllers.admin;
 import java.util.ArrayList;
 import java.util.List;
 
+import controllers.TMController;
 import controllers.tree.ChildProducer;
 import controllers.tree.SimpleNode;
 import controllers.tree.TreeDataHandler;
@@ -36,9 +37,35 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         }
     }
 
-    public Long create(Long parentId, Long position, String name, String type) {
-        return null;
+    public Long create(Long parentId, Long position, String name, String type, Long id) {
+        return editAssignment(parentId, id, true);
     }
+
+    private static Long editAssignment(Long roleId, Long userId, boolean assign) {
+
+        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
+            return null;
+        }
+        Role role = Role.findById(roleId);
+        User user = User.findById(userId);
+        if (role == null || user == null) {
+            return null;
+        } else {
+            if (!role.isInAccount(TMController.getUserAccount()) || !user.isInAccount(TMController.getUserAccount())) {
+                return null;
+            }
+
+            if (!user.projectRoles.contains(role) && assign) {
+                user.projectRoles.add(role);
+                user.save();
+            } else if (user.projectRoles.contains(role) && !assign) {
+                user.projectRoles.remove(role);
+                user.save();
+            }
+            return userId;
+        }
+    }
+
 
     public boolean rename(Long id, String name, String type) {
         return false;
@@ -50,8 +77,13 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
     public void move(Long id, Long target, Long position) {
     }
 
-    public boolean remove(Long id, String type) throws Exception {
-        return false;
+    public boolean remove(Long id, Long parentId, String type) throws Exception {
+        try {
+            editAssignment(parentId, id, false);
+        } catch (Throwable t) {
+            return false;
+        }
+        return true;
     }
 
     private static class RoleChildProducer implements ChildProducer {
