@@ -10,23 +10,23 @@ import controllers.tree.TreeController;
 public class TMTreeController extends TMController {
 
     public static void create(String treeId, Long parentId, Long position, String name, String type) {
-        TreeController.create(treeId, parentId, position, name, type);
+        TreeController.createDirect(treeId, parentId, position, name, type);
     }
 
     public static void remove(String treeId, Long id) {
-        TreeController.remove(treeId, id);
+        TreeController.removeDirect(treeId, id);
     }
 
     public static void rename(String treeId, Long id, String name, String type) {
-        TreeController.rename(treeId, id, name, type);
+        TreeController.renameDirect(treeId, id, name, type);
     }
 
     public static void move(String treeId, Long id, Long target, Long position, String name, boolean copy) {
-        TreeController.move(treeId, id, target, position, name, copy);
+        TreeController.moveDirect(treeId, id, target, position, name, copy);
     }
 
     public static void getChildren(String treeId, Long id, String... args) {
-        TreeController.getChildren(treeId, id, args);
+        TreeController.getChildrenDirect(treeId, id, args);
     }
 
 }

@@ -21,7 +21,15 @@ POST    /admin/users/edit                       admin.Users.edit
 GET     /admin/projects                         admin.Projects.index
 GET     /admin/projectRoles/data                admin.ProjectRoles.data
 
-*       /tree                                   module:tree
+*       /                                       module:tree
+
+GET     /tmtree/{treeId}/{id}                   TMTreeController.getChildren
+POST    /tmtree/create                          TMTreeController.create
+POST    /tmtree/rename                          TMTreeController.rename
+POST    /tmtree/move                            TMTreeController.move
+DELETE  /tmtree/remove                          TMTreeController.remove
+
+
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
