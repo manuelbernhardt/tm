@@ -48,35 +48,6 @@ No project selected
       }
     });
 
-    $("#newRoleDialog").dialog({
-      autoOpen: false,
-      height: 150,
-      width: 350,
-      draggable: false,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Create role": function() {
-          var valid = $('#roleCreateForm').validate().form();
-          if (valid) {
-            $('#roleCreateForm').submit();
-            $('#newRoleDialog').dialog("close");
-          }
-        },
-        Cancel: function() {
-          $('#roleCreateForm').validate().resetForm();
-          $(this).dialog("close");
-        }
-      }
-    });
-
-    $("#createRole")
-            .button()
-            .click(function() {
-      $("#newRoleDialog").dialog("open");
-    });
-
-
   });
 
 </script>
@@ -93,33 +64,29 @@ No project selected
       <tbody></tbody>
     </table>
 
-    <button id="createRole">Create new role</button>
+    #{formDialog id:'newRoleDialog', title:'Create a role', action:@admin.ProjectRoles.create(),
+    baseClass:'models.project.Role',
+    openDialogButtonText:'Create new role', submitButtonText:'Create role'}
+
+    <script type="text/javascript">
+      function newRoleDialogSubmissionCallback() {
+        $('#newRoleDialog').dialog("close");
+        $("#tab").dataTable().fnDraw();
+      }
+    </script>
+    #{input.field field:'role.name', label:'Name' /}
+    <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
+    #{/formDialog}
+
 
   </div>
 
   <div class="right_table">
 
     <div id="roleDefinition">
-
     </div>
 
   </div>
 </div>
-
-<div id="newRoleDialog" class="modalDialog" title="Create a role">
-  #{input.form action:@admin.ProjectRoles.create(), id:'roleCreateForm', baseClass:'models.project.Role'}
-  <script type="text/javascript">
-    function roleCreateFormSubmissionCallback() {
-      $('#newRoleDialog').dialog("close");
-      $("#tab").dataTable().fnDraw();
-    }
-  </script>
-
-  #{input.field field:'role.name', label:'Name' /}
-  <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
-
-  #{/input.form}
-</div>
-
 
 #{/else}
