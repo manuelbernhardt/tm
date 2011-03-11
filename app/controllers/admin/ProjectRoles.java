@@ -54,6 +54,11 @@ public class ProjectRoles extends TMController {
             error("No roleId provided");
         } else {
             Role role = Role.findById(roleId);
+
+            if(!role.isInAccount(getUserAccount())) {
+                unauthorized();
+            }
+
             role.unitRoles.clear();
             for(String unitRole: unitRoles) {
                 role.unitRoles.add(unitRole);
