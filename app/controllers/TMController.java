@@ -2,11 +2,13 @@ package controllers;
 
 import controllers.deadbolt.Deadbolt;
 import models.general.Account;
+import models.general.AccountEntity;
 import models.general.Auth;
 import models.project.Project;
 import models.tm.User;
 import play.mvc.Before;
 import play.mvc.Controller;
+import play.mvc.Util;
 import play.mvc.With;
 
 /**
@@ -20,7 +22,7 @@ public class TMController extends Controller {
 
     @Before
     public static void setConnectedUser() {
-        if(Security.isConnected()) {
+        if (Security.isConnected()) {
             // FIXME search by account, too!
             Auth a = Auth.find("byEmail", Security.connected()).first();
             renderArgs.put("firstName", a.firstName);
@@ -30,10 +32,10 @@ public class TMController extends Controller {
     }
 
     public static User getConnectedUser() {
-        if(Security.isConnected()) {
-        // FIXME search by account, too!
-        User user = User.find("from User u where u.authentication.email = ?", Security.connected()).first();
-        return user;
+        if (Security.isConnected()) {
+            // FIXME search by account, too!
+            User user = User.find("from User u where u.authentication.email = ?", Security.connected()).first();
+            return user;
         } else {
             // TODO test this!
             flash.put("url", "GET".equals(request.method) ? request.url : "/");
@@ -54,16 +56,25 @@ public class TMController extends Controller {
 
     /**
      * Gets the active project for the connected user, <code>null</code> if none is set
+     *
      * @return the active {@see Project}
      */
     public static Project getActiveProject() {
         // TODO freaking cache this or we have an extra query each time we create a project-related entity!
-        if(session.get("activeProject") != null) {
+        if (session.get("activeProject") != null) {
             Long id = Long.valueOf(session.get("activeProject"));
-            if(id != null) {
+            if (id != null) {
                 return Project.findById(id);
             }
         }
         return null;
     }
+
+    @Util
+    protected static void checkInAccount(AccountEntity accountEntity) {
+        if (!accountEntity.isInAccount(getUserAccount())) {
+            unauthorized();
+        }
+    }
+
 }

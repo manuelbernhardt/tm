@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
 import models.general.Account;
+import models.general.AccountEntity;
 import models.general.Auth;
 import models.general.UnitRole;
 import models.project.Project;
@@ -22,7 +23,7 @@ import play.db.jpa.Model;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class User extends Model implements RoleHolder {
+public class User extends Model implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
     @Valid

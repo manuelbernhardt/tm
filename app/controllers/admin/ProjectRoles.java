@@ -30,7 +30,7 @@ public class ProjectRoles extends TMController {
         if (projectId == null) {
             error();
         } else {
-            GenericModel.JPAQuery query = null;
+            GenericModel.JPAQuery query;
             query = Role.find("from Role r where r.project.id = ?", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
             List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
@@ -55,15 +55,14 @@ public class ProjectRoles extends TMController {
         } else {
             Role role = Role.findById(roleId);
 
-            if(!role.isInAccount(getUserAccount())) {
-                unauthorized();
-            }
+            checkInAccount(role);
 
             role.unitRoles.clear();
-            for(String unitRole: unitRoles) {
+            for (int i = 0, unitRolesLength = unitRoles.length; i < unitRolesLength; i++) {
+                String unitRole = unitRoles[i];
                 role.unitRoles.add(unitRole);
             }
-           role.save();
+            role.save();
             ok();
         }
     }

@@ -69,9 +69,9 @@ public class Projects extends TMController {
         if (role == null || user == null) {
             notFound();
         } else {
-            if (!role.isInAccount(getUserAccount()) || !user.isInAccount(getUserAccount())) {
-                unauthorized();
-            }
+            checkInAccount(role);
+            checkInAccount(user);
+
             if(!user.projectRoles.contains(role)) {
                 user.projectRoles.add(role);
                 user.save();
