@@ -1,9 +1,6 @@
 #{extends 'header.html' /}
 
-<div style="text-align: right;">
-   <a href="@{Dashboard.index}"><span>Test Management</span></a>
-   | <a href="/logout"><span>Logout</span></a>
-</div>
+#{topMenu space:'profile' /}
 
 #{tabLayout}
   #{tabs id:'tabs'}

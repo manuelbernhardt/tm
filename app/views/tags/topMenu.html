@@ -1,0 +1,26 @@
+<div id="top_menu">
+
+  #{if _space == 'application'}
+  ${activeProject == null ? 'No project' : activeProject.name}
+  |
+  <a href="@{admin.Users.index}"><span>Administration</span></a>
+  |
+  <a href="@{profile.Profile.index}"><span>${_caller.firstName} ${_caller.lastName}</span></a>
+  #{/if}
+
+  #{elseif _space == 'admin'}
+  <a href="@{Dashboard.index}"><span>Test Management</span></a>
+  |
+  <a href="@{profile.Profile.index}"><span>${_caller.firstName} ${_caller.lastName}</span></a>
+  #{/elseif}
+
+  #{elseif _space == 'profile'}
+  ${activeProject == null ? 'No project' : activeProject.name}
+  |
+  <a href="@{Dashboard.index}"><span>Test Management</span></a>
+  |
+  <a href="@{admin.Users.index}"><span>Administration</span></a>
+  #{/elseif}
+  |
+  <a href="/logout"><span>Logout</span></a>
+</div>
