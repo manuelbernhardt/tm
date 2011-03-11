@@ -34,31 +34,31 @@ No role selected
     </tr>
     <tr>
       <th>Test Approach</th>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.APPROACHVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.APPROACHCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.APPROACHEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.APPROACHDELETE, selected:unitRoles /}</td>
     </tr>
     <tr>
       <th>Test Preparation</th>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTPREPVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTPREPCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTPREPEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTPREPDELETE, selected:unitRoles /}</td>
     </tr>
     <tr>
       <th>Test Execution</th>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTEXECVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTEXECCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTEXECEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTEXECDELETE, selected:unitRoles /}</td>
     </tr>
     <tr>
       <th>Defects</th>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
-      <td><input type="checkbox"/></td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.DEFECTVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.DEFECTCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.DEFECTEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.DEFECTDELETE, selected:unitRoles /}</td>
     </tr>
     <input type="hidden" name="roleId" value="${role.id}"/>
     <tr>
