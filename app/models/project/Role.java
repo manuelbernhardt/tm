@@ -1,5 +1,6 @@
 package models.project;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.ElementCollection;
@@ -19,7 +20,7 @@ public class Role extends ProjectModel {
     public String name;
 
     @ElementCollection
-    public List<String> unitRoles;
+    public List<String> unitRoles = new ArrayList<String>();
 
     public List<UnitRole> getUnitRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
