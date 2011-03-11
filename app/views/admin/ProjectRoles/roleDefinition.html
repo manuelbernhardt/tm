@@ -3,50 +3,58 @@ No role selected
 #{/if}
 #{else}
 
-<table>
-    <thead>
-    <th></th>
-    <th>View</th>
-    <th>Create</th>
-    <th>Edit</th>
-    <th>Delete</th>
-    </thead>
-    <tbody>
-    <tr>
-        <th>Requirements</th>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-    </tr>
-    <tr>
-        <th>Test Approach</th>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-    </tr>
-    <tr>
-        <th>Test Preparation</th>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-    </tr>
-    <tr>
-        <th>Test Execution</th>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-    </tr>
+<form action="@{admin.ProjectRoles.edit()}" method="post">
+    <table>
+        <thead>
+        <th></th>
+        <th>View</th>
+        <th>Create</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </thead>
+        <tbody>
         <tr>
-        <th>Defects</th>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-        <td><input type="checkbox"/></td>
-    </tr>
-    </tbody>
-</table>
+            <th>Requirements</th>
+            <td><input type="checkbox" name="hasReqView"/></td>
+            <td><input type="checkbox" name="hasReqCreate"/></td>
+            <td><input type="checkbox" name="hasReqEdit"/></td>
+            <td><input type="checkbox" name="hasReqDelete"/></td>
+        </tr>
+        <tr>
+            <th>Test Approach</th>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+        </tr>
+        <tr>
+            <th>Test Preparation</th>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+        </tr>
+        <tr>
+            <th>Test Execution</th>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+        </tr>
+        <tr>
+            <th>Defects</th>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+            <td><input type="checkbox"/></td>
+        </tr>
+        <input type="hidden" name="roleId" value="${role.id}"/>
+        <tr>
+            <td><input type="submit" value="Update"/></td>
+        </tr>
+
+        </tbody>
+    </table>
+</form>
+
 #{/else}

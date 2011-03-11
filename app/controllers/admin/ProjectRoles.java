@@ -27,11 +27,11 @@ public class ProjectRoles extends TMController {
                             String sEcho,
                             Long projectId) {
 
-        if(projectId == null) {
+        if (projectId == null) {
             error();
         } else {
             GenericModel.JPAQuery query = null;
-            query = Role.find("from Role r where r.project.id = ?",projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = Role.find("from Role r where r.project.id = ?", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
             List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
             long totalRecords = Role.count();
@@ -41,11 +41,26 @@ public class ProjectRoles extends TMController {
     }
 
     public static void roleDefinition(Long roleId) {
-        if(roleId == null) {
+        if (roleId == null) {
             error("No roleId provided");
         } else {
             Role role = Role.findById(roleId);
             render(role);
+        }
+    }
+
+    public static void edit(Long roleId, Boolean hasReqView, Boolean hasReqCreate, Boolean hasReqEdit, Boolean hasReqDelete) {
+        if (roleId == null) {
+            error("No roleId provided");
+        } else {
+            Role role = Role.findById(roleId);
+            if (hasReqView && !role.unitRoles.contains("reqView")) {
+                role.unitRoles.add("reqView");
+            } else if (!hasReqView && role.unitRoles.contains("reqView")) {
+                role.unitRoles.remove("reqView");
+            }
+            role.save();
+            roleDefinition(roleId);
         }
     }
 
