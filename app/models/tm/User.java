@@ -52,7 +52,7 @@ public class User extends Model implements RoleHolder {
         }
 
         for (Role r : projectRoles) {
-            for (UnitRole ur : r.getUnitRoles()) {
+            for (UnitRole ur : r.getAuthenticationUnitRoles()) {
                 if (!res.contains(ur)) {
                     res.add(ur);
                 }

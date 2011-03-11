@@ -1,10 +1,10 @@
 package models.project;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -20,9 +20,10 @@ public class Role extends ProjectModel {
     public String name;
 
     @ElementCollection
+    @OrderColumn
     public List<String> unitRoles = new ArrayList<String>();
 
-    public List<UnitRole> getUnitRoles() {
+    public List<UnitRole> getAuthenticationUnitRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
         for(String r : unitRoles) {
             res.add(new UnitRole(r));

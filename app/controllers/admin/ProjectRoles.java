@@ -49,19 +49,17 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    public static void edit(Long roleId, Boolean hasReqView, Boolean hasReqCreate, Boolean hasReqEdit, Boolean hasReqDelete) {
+    public static void edit(Long roleId, String[] unitRoles) {
         if (roleId == null) {
             error("No roleId provided");
         } else {
             Role role = Role.findById(roleId);
-            if (hasReqView && !role.unitRoles.contains("reqView")) {
-                role.unitRoles.add("reqView");
-            } else if (!hasReqView && role.unitRoles.contains("reqView")) {
-                role.unitRoles.remove("reqView");
+            role.unitRoles.clear();
+            for(String unitRole: unitRoles) {
+                role.unitRoles.add(unitRole);
             }
-            role.save();
-            roleDefinition(roleId);
+           role.save();
+            ok();
         }
     }
-
 }
