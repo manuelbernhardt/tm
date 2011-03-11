@@ -4,61 +4,71 @@ No role selected
 #{else}
 
 <script type="text/javascript">
-  $('#roleDetailsForm').ajaxForm();
+  $('#roleDetailsForm').ajaxForm(function() {
+    $('#flash').html("Role definition updated");
+    $('#flash').show();
+    $('#flash').fadeOut(3000, 'easeInExpo');
+  });
 </script>
 
-#{form action:@admin.ProjectRoles.edit(), id:'roleDetailsForm'}
-<table>
-  <thead>
-  <th></th>
-  <th>View</th>
-  <th>Create</th>
-  <th>Edit</th>
-  <th>Delete</th>
-  </thead>
-  <tbody>
-  <tr>
-    <th>Requirements</th>
-    <td><input type="checkbox" name="unitRoles" value="${models.general.UnitRole.REQVIEW}"/></td>
-    <td><input type="checkbox" name="unitRoles" value="${models.general.UnitRole.REQCREATE}"/></td>
-    <td><input type="checkbox" name="unitRoles" value="${models.general.UnitRole.REQEDIT}"/></td>
-    <td><input type="checkbox" name="unitRoles" value="${models.general.UnitRole.REQDELETE}"/></td>
-  </tr>
-  <tr>
-    <th>Test Approach</th>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-  </tr>
-  <tr>
-    <th>Test Preparation</th>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-  </tr>
-  <tr>
-    <th>Test Execution</th>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-  </tr>
-  <tr>
-    <th>Defects</th>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-    <td><input type="checkbox"/></td>
-  </tr>
-  <input type="hidden" name="roleId" value="${role.id}"/>
-  <tr>
-    <td><input type="submit" value="Update"/></td>
-  </tr>
+<div>
 
-  </tbody>
-</table>
-#{/form}
+  <div id="flash" style="display: none; text-align: center;"></div>
+
+  #{form action:@admin.ProjectRoles.edit(), id:'roleDetailsForm'}
+  <table>
+    <thead>
+    <th></th>
+    <th>View</th>
+    <th>Create</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    </thead>
+    <tbody>
+    <tr>
+      <th>Requirements</th>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQDELETE, selected:unitRoles /}</td>
+    </tr>
+    <tr>
+      <th>Test Approach</th>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+    </tr>
+    <tr>
+      <th>Test Preparation</th>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+    </tr>
+    <tr>
+      <th>Test Execution</th>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+    </tr>
+    <tr>
+      <th>Defects</th>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+      <td><input type="checkbox"/></td>
+    </tr>
+    <input type="hidden" name="roleId" value="${role.id}"/>
+    <tr>
+      <td><input type="submit" value="Update"/></td>
+    </tr>
+
+    </tbody>
+  </table>
+  #{/form}
+
+</div>
 
 #{/else}

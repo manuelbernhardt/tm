@@ -45,7 +45,9 @@ public class ProjectRoles extends TMController {
             error("No roleId provided");
         } else {
             Role role = Role.findById(roleId);
-            render(role);
+            checkInAccount(role);
+            List<String> unitRoles = role.unitRoles;
+            render(role, unitRoles);
         }
     }
 
