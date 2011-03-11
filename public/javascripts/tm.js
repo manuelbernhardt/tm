@@ -20,3 +20,11 @@ function fnGetSelected(oTableLocal) {
     return aReturn;
 }
 
+function removeDialogs() {
+  // bug with jQuery tabs / jQuery dialogs not disappearing after being added
+  // in fact, the dialog divs are being added to the main html tree, outside of the tab
+  // we have to remove all instances when a tab is reloaded
+  $(".assignDialog").remove();
+}
+
+

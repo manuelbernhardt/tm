@@ -8,7 +8,6 @@
     })
   });
 
-  <!-- JavaScript necessary for the tree -->
   $(document).ready(function () {
     var tree = $("#projectTree")
             .jstree({
@@ -95,10 +94,7 @@
         $tabs.tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + project);
         $tabs.tabs('url', 2, '@{admin.Projects.users()}?projectId=' + project);
 
-        // bug with jQuery tabs / jQuery dialogs not disappearing after being added
-        // in fact, the dialog divs are being added to the main html tree, outside of the tab
-        // we have to remove all instances when a tab is reloaded
-        $(".assignDialog").remove();
+        removeDialogs();
 
         // reloads the selected tab
         var selected = $tabs.tabs('option', 'selected');
