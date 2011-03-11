@@ -60,13 +60,13 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
             project.account = userAccount;
             project.name = name;
             project.projectCategory = category;
-            project.save(userAccount);
+            project.create(userAccount);
             return project.id;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = new ProjectCategory();
             category.name = name;
             category.account = userAccount;
-            category.save(userAccount);
+            category.create(userAccount);
             return category.id;
         }
         return null;
@@ -75,14 +75,20 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
     public boolean rename(Long id, String name, String type) {
         Account userAccount = TMController.getUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
-            Project p = Project.findById(id);
+            Project p = Project.<Project>findById(id);
+            if(!p.isInAccount(userAccount)) {
+                return false;
+            }
             p.name = name;
-            p.save(userAccount);
+            p.save();
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory p = ProjectCategory.findById(id);
+            if(!p.isInAccount(userAccount)) {
+                return false;
+            }
             p.name = name;
-            p.save(userAccount);
+            p.save();
             return true;
         }
         return false;
@@ -96,7 +102,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         // TODO
     }
 
-    public boolean remove(Long id) throws Exception {
+    public boolean remove(Long id, String type) throws Exception {
         // TODO
         return false;
     }

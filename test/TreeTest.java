@@ -49,7 +49,7 @@ public class TreeTest extends UnitTest {
         AbstractTree t = Tree.getTree("testTree");
         List<GenericTreeNode> drives = t.getChildren(-1l, TestTree.getNodeType("drive"));
         for(GenericTreeNode d :drives) {
-            t.remove(d.getId());
+            t.remove(d.getId(), dcd);
         }
 
         t = null;
@@ -66,7 +66,7 @@ public class TreeTest extends UnitTest {
         assertEquals(1, t.getChildren(child1.getId(), FOLDER).size());
 
         try {
-            t.remove(root.getId());
+            t.remove(root.getId(), dcd);
         } catch (Exception e) {
             fail(e.getMessage());
         }

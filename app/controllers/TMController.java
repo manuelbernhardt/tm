@@ -71,7 +71,7 @@ public class TMController extends Controller {
     }
 
     @Util
-    protected static void checkInAccount(AccountEntity accountEntity) {
+    public static void checkInAccount(AccountEntity accountEntity) {
         if (!accountEntity.isInAccount(getUserAccount())) {
             unauthorized();
         }

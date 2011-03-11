@@ -13,8 +13,8 @@ public class TMTreeController extends TMController {
         TreeController.createDirect(treeId, parentId, position, name, type);
     }
 
-    public static void remove(String treeId, Long id) {
-        TreeController.removeDirect(treeId, id);
+    public static void remove(String treeId, Long id, String type) {
+        TreeController.removeDirect(treeId, id, type);
     }
 
     public static void rename(String treeId, Long id, String name, String type) {

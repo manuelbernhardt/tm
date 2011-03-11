@@ -50,7 +50,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
     public void move(Long id, Long target, Long position) {
     }
 
-    public boolean remove(Long id) throws Exception {
+    public boolean remove(Long id, String type) throws Exception {
         return false;
     }
 

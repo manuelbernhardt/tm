@@ -33,7 +33,8 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void edit(Project project) {
-        project.save(getUserAccount());
+        checkInAccount(project);
+        project.save();
         // TODO validation
         ok();
     }
