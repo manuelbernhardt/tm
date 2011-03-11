@@ -62,7 +62,8 @@ td.sNone {
 /* styles for form elements in dialogs */
 
 .ui-dialog label, .ui-dialog input {
-  display: block;
+  display: inline;
+  margin-right: 5px;
 }
 
 .ui-dialog input.text {
@@ -78,7 +79,7 @@ td.sNone {
 }
 
 /* empty class used as CSS selector, this is a workaround for a jQuery bug */
-div.assignDialog {
+div.modalDialog {
 
 }
 

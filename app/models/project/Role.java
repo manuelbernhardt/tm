@@ -2,6 +2,7 @@ package models.project;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OrderColumn;
@@ -9,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.general.UnitRole;
+import play.data.validation.Required;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -17,6 +19,8 @@ import models.general.UnitRole;
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 public class Role extends ProjectModel {
 
+    @Column(nullable = false)
+    @Required
     public String name;
 
     @ElementCollection

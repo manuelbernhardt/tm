@@ -26,12 +26,12 @@ No project selected
       "bInfo": false,
       "bFilter":false,
       "oLanguage": {
-          "sZeroRecords": "No roles defined yet"
+        "sZeroRecords": "No roles defined yet"
       }
     };
     #{/tabularasa.init}
 
-    /* Add a click handler to the rows - this could be used as a callback */
+    /* Click listener to reload the role definition */
     $("#tab tbody").click(function(event) {
       $(tabDataTable.fnSettings().aoData).each(function () {
         $(this.nTr).removeClass('row_selected');
@@ -48,18 +48,34 @@ No project selected
       }
     });
 
-    /* Get the rows which are currently selected */
-    function fnGetSelected(oTableLocal) {
-      var aReturn = new Array();
-      var aTrs = oTableLocal.fnGetNodes();
-
-      for (var i = 0; i < aTrs.length; i++) {
-        if ($(aTrs[i]).hasClass('row_selected')) {
-          aReturn.push(aTrs[i]);
+    $("#newRoleDialog").dialog({
+      autoOpen: false,
+      height: 150,
+      width: 350,
+      draggable: false,
+      resizable: false,
+      modal: true,
+      buttons: {
+        "Create role": function() {
+          var valid = $('#roleCreateForm').validate().form();
+          if (valid) {
+            $('#roleCreateForm').submit();
+            $('#newRoleDialog').dialog("close");
+          }
+        },
+        Cancel: function() {
+          $('#roleCreateForm').validate().resetForm();
+          $(this).dialog("close");
         }
       }
-      return aReturn;
-    }
+    });
+
+    $("#createRole")
+            .button()
+            .click(function() {
+      $("#newRoleDialog").dialog("open");
+    });
+
 
   });
 
@@ -76,6 +92,9 @@ No project selected
       </thead>
       <tbody></tbody>
     </table>
+
+    <button id="createRole">Create new role</button>
+
   </div>
 
   <div class="right_table">
@@ -87,19 +106,20 @@ No project selected
   </div>
 </div>
 
-<h2>New role</h2>
+<div id="newRoleDialog" class="modalDialog" title="Create a role">
+  #{input.form action:@admin.ProjectRoles.create(), id:'roleCreateForm', baseClass:'models.project.Role'}
+  <script type="text/javascript">
+    function roleCreateFormSubmissionCallback() {
+      $('#newRoleDialog').dialog("close");
+      $("#tab").dataTable().fnDraw();
+    }
+  </script>
 
-#{input.form action:@admin.ProjectRoles.create(), id:'roleCreateForm'}
-<script type="text/javascript">
-  function roleCreateFormSubmissionCallback() {
-    $("#tab").dataTable().fnDraw();
-  }
-</script>
+  #{input.field field:'role.name', label:'Name' /}
+  <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
 
-#{input.field field:'role.name', label:'Name', baseClass:'models.project.Role' /}
-<input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
-<input type="submit" value="Create"/>
+  #{/input.form}
+</div>
 
-#{/input.form}
 
 #{/else}
