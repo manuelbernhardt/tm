@@ -6,6 +6,8 @@
       if(typeof ${_id}SubmissionCallback !== 'undefined') {
         ${_id}SubmissionCallback();
       }
+      $('#${_id}').dialog("close");
+
     }
   </script>
   #{doBody /}
