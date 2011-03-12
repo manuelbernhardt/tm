@@ -25,7 +25,7 @@
     modal: true,
     buttons: {
       "${_submitButtonText == null ? _submitButtonText : 'Submit'}": function() {
-        var valid = $('${_id}Form').validate().form();
+        var valid = $('#${_id}Form').validate().form();
         if (valid) {
           $('#${_id}Form').submit();
           $('#${_id}').dialog("close");

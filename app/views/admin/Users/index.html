@@ -13,9 +13,9 @@
   $(function() {
     $("#innerTabs").tabs();
     /*
-    $("#innerTabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-		$("#innerTabs li").removeClass('ui-corner-top').addClass('ui-corner-left');
-		*/
+     $("#innerTabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+     $("#innerTabs li").removeClass('ui-corner-top').addClass('ui-corner-left');
+     */
   });
 
   $(document).ready(function() {
@@ -34,7 +34,7 @@
       "iDisplayLength": 10,
       "bInfo": false,
       "oLanguage": {
-          "sZeroRecords": "No users defined yet"
+        "sZeroRecords": "No users defined yet"
       },
       "fnDrawCallback": function() {
         // select a user if one was selected
@@ -102,18 +102,16 @@
   </div>
 </div>
 
-<h2>New user</h2>
+#{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
+openDialogButtonText:'Create new user', submitButtonText:'Create user'}
 
-#{input.form action:@admin.Users.create(), id:'userCreateForm', baseClass:'models.tm.User'}
-  <script type="text/javascript">
-    function userCreateFormSubmissionCallback() {
-      $("#tab").dataTable().fnDraw();
-    }
-  </script>
-
-  #{input.field field:'user.authentication.firstName', label:'First Name' /}
-  #{input.field field:'user.authentication.lastName', label:'Last Name' /}
-  #{input.field field:'user.authentication.email', label:'Email' /}
-  #{input.field field:'user.authentication.password', label:'Password' /}
-  <input type="submit" value="Save!"/>
-#{/input.form}
+<script type="text/javascript">
+  function newUserDialogSubmissionCallback() {
+    $("#tab").dataTable().fnDraw();
+  }
+</script>
+#{input.field field:'user.authentication.firstName', label:'First Name' /}
+#{input.field field:'user.authentication.lastName', label:'Last Name' /}
+#{input.field field:'user.authentication.email', label:'Email' /}
+#{input.field field:'user.authentication.password', label:'Password' /}
+#{/formDialog}
