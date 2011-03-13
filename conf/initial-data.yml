@@ -29,6 +29,13 @@ general.Auth(vroniAuth):
     password: vroni
     account: oxiras
 
+general.Auth(tamaraAuth):
+    firstName: Tamara
+    lastName: Forza
+    email: tamara.forza@gmail.com
+    password: tamy
+    account: oxiras
+
 project.ProjectCategory(europeProjCat):
     name: Europe
     account: oxiras
@@ -109,6 +116,10 @@ tm.User(nathalie):
 
 tm.User(vroni):
     authentication: vroniAuth
+    activeProject: Project1
+
+tm.User(tamara):
+    authentication: tamaraAuth
     activeProject: Project1
 
 project.Defect(Defect1):
