@@ -141,25 +141,80 @@ No user selected
                     });
     #{tree.common id:"projectRolesTree", controller:"TMTreeController" /}
 
-    /*
 
     $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
-      if (data.inst._get_type(data.rslt.obj) == "role") {
-        var roleId = data.rslt.obj.attr("id");
-        // automatically select the role in the selector of the dialog
-        $('#roles').val(roleId);
-      } else {
-        // try the parent
+      if (data.inst._get_type(data.rslt.obj) == "category") {
+        var categoryId = data.rslt.obj.attr("id");
+        selectCategory(categoryId);
+        $('#categories').val(categoryId);
+      } else if (data.inst._get_type(data.rslt.obj) == "project") {
         var parent = data.inst._get_parent(data.rslt.obj);
-        if (typeof parent !== 'undefined') {
-          var roleId = parent.attr("id");
-          $('#roles').val(roleId);
+        selectCategory(parent.attr("id"));
+        setCategory(parent);
+        var projectId = data.rslt.obj.attr("id");
+        selectProject(projectId, function() {
+          $('#projects').val(projectId);
+        });
+      } else { // role
+        var roleId = data.rslt.obj.attr("id");
+        var roleParent = data.inst._get_parent(data.rslt.obj);
+        var pId = roleParent.attr("id");
+        var projectParent = data.inst._get_parent(roleParent);
+        var cId = -1;
+        if(typeof projectParent !== 'undefined') {
+          cId = projectParent.attr("id");
         }
+        selectCategory(cId, function() {
+          setCategory(projectParent);
+          selectProject(pId, function() {
+            $('#projects').val(pId);
+            $('#roles').val(roleId);
+          });
+        });
       }
     });
-      */
+
+
+    $('#categories').change(function() {
+      var category = $('#categories option:selected').val();
+      selectCategory(category);
+    });
+
+    $('#projects').change(function() {
+      var project = $('#projects option:selected').val();
+      selectProject(project);
+    });
+
+    function selectCategory(categoryId, callback) {
+      $('#projects').attr('disabled', false);
+      $('#projects').find('option').remove().end();
+      $('#projects').addOption('-1', 'Please select a project');
+      $('#roles').find('option').remove().end();
+      $('#roles').addOption('-1', 'Please select a role');
+      $('#roles').attr('disabled', true);
+      $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.authentication.account.id}'}, false, callback);
+    }
+    function selectProject(projectId, callback) {
+      $('#roles').attr('disabled', false);
+      $('#roles').find('option').remove().end();
+      $('#roles').addOption('-1', 'Please select a role');
+      $('#roles').ajaxAddOption('@{admin.Users.rolesOptions()}', {projectId: projectId}, false, callback);
+    }
+    
+
 
   });
+
+  function setCategory(parent) {
+    if (typeof parent !== 'undefined') {
+      var categoryId = parent.attr("id");
+      $('#categories').val(categoryId);
+    } else {
+      $('#categories').val(-1); // no category
+    }
+  }
+
+
 </script>
 
 <div id="assign-dialog" title="Assign a new role" class="modalDialog">
@@ -167,27 +222,26 @@ No user selected
     <fieldset>
 
       <label for="categories">Project category</label>
-      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
-      ui-corner-all", id:'categories'}
-      #{option -1} Please select a project category #{/option}
+      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text
+      ui-widget-content ui-corner-all", id:'categories'}
+      #{option -1} No category #{/option}
       #{/select}
 
       <label for="projects">Project</label>
-      #{select 'projects', items:projects, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
-      ui-corner-all", id:'projects'}
+      #{select 'projects', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
+      id:'projects'}
       #{option -1} Please select a project #{/option}
       #{/select}
 
       <label for="roles">Role</label>
-      #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
-      ui-corner-all", id:'roles'}
+      #{select 'roles', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
+      id:'roles'}
       #{option -1} Please select a role #{/option}
       #{/select}
 
     </fieldset>
   </form>
 </div>
-
 
 
 #{/else}

@@ -20,7 +20,15 @@ public class ProjectCategory extends AccountModel {
     @Required
     public String name;
 
+    public List<Project> getProjects() {
+        return projects(this);
+    }
+
     public static List<Project> projects(ProjectCategory category) {
         return Project.find("from Project p where p.projectCategory = ?", category).fetch();
+    }
+
+    public static List<ProjectCategory> findByAccount(Long id) {
+        return ProjectCategory.find("from ProjectCategory pc where pc.account.id = ?", id).<ProjectCategory>fetch();
     }
 }

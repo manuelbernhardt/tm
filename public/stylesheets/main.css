@@ -62,7 +62,7 @@ td.sNone {
 /* styles for form elements in dialogs */
 
 .ui-dialog label, .ui-dialog input {
-  display: inline;
+  display: block;
   margin-right: 5px;
 }
 
