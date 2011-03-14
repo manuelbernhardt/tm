@@ -55,9 +55,11 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
                 return null;
             }
 
-            if (!user.projectRoles.contains(role) && assign) {
+            if (assign && !user.projectRoles.contains(role)) {
                 user.projectRoles.add(role);
                 user.save();
+            } else if(assign && user.projectRoles.contains(role)) {
+                return null;
             } else if (user.projectRoles.contains(role) && !assign) {
                 user.projectRoles.remove(role);
                 user.save();
