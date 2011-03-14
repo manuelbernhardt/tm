@@ -3,8 +3,191 @@ No user selected
 #{/if}
 #{else}
 
-<fieldset>
-    <legend>Projects & roles</legend>
-</fieldset>
+<div id="treeDiv">
+  <button id="assign-role">Add new project/role assignement</button>
+  <button id="unassign-role">Remove assignment</button>
+  <div id="projectRolesTree" class="tree"></div>
+</div>
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    $("#assign-dialog").dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Assign role": function() {
+
+          var selectedProjectId = $('#projects option:selected').val();
+          var selectedRoleId = $('#roles option:selected').val();
+
+          // custom validation method for our select lists
+          $.validator.addMethod("selectNone", function(value, element) {
+            if (element.value == -1) {
+              return false;
+            }
+            return true;
+          }, "Please select an option");
+
+          // definition of the validation rules
+          var v = $("#assignForm").validate({
+            rules: {
+              projects: {selectNone: true},
+              roles: {selectNone: true}
+            },
+            messages: {
+              projects: "Please select a project",
+              roles: "Please select a role"
+            }
+          });
+
+          // programmatic validation
+          var valid = v.form();
+
+          if (valid) {
+            var name = $('#roles option:selected').text();
+            $("#rolesUserTree").jstree("create", null, "last", {attr: {"id": selectedRoleId, "rel":"default"}, data: name}, null, true);
+            $(this).dialog("close");
+          }
+
+        },
+        Cancel: function() {
+          $("#assignForm").validate().resetForm();
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $("#assign-role")
+            .button()
+            .click(function() {
+      $("#assign-dialog").dialog("open");
+    });
+
+    $("#unassign-role")
+            .button()
+            .click(function() {
+
+      var $tree = jQuery.jstree._reference('#projectRolesTree');
+      var selectedNode = $tree.get_selected();
+      if ($tree._get_type(selectedNode) == "default") {
+        var selectedRoleId = selectedNode.attr("id");
+        var selectedProjectId = $tree._get_parent(selectedNode).attr("id");
+        $tree.delete_node(selectedNode);
+      }
+
+    });
+
+    $("#projectRolesTree")
+            .jstree({
+                        "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+
+                        "json_data" : {
+                          "ajax" : {
+                            "url" : "@{TMTreeController.getChildren()}",
+                            "data" : function (n) {
+                              return {
+                                "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+                                "treeId" : "projectRolesTree",
+                                "args" : "${user.id}"
+                              };
+                            }
+                          }
+                        },
+                        "types" : {
+                          "max_depth" : -2,
+                          "max_children" : -2,
+                          "types" : {
+                            "default" : { // role
+                              "valid_children" : "none",
+                              "icon" : {
+                                "image" : "@{'public/images/jstree/file.png'}" // TODO role icon
+                              }
+                            },
+                            "category" : {
+                              "valid_children" : [ "project" ],
+                              "icon" : {
+                                "image" : "@{'public/images/jstree/folder.png'}"
+                              },
+                              "start_drag" : false,
+                              "move_node" : false,
+                              "delete_node" : false,
+                              "remove" : false
+                            },
+                            "project" : {
+                              "valid_children" : [ "default" ],
+                              "icon" : {
+                                "image" : "@{'public/images/jstree/folder.png'}" // TODO project icon
+                              },
+                              "start_drag" : false,
+                              "move_node" : false,
+                              "delete_node" : false,
+                              "remove" : false
+
+                            }
+                          }
+                        },
+                        "hotkeys": {
+                          "Ctrl+x" : function() {
+                            this.cut(null)
+                          },
+                          "Ctrl+v" : function() {
+                            this.paste(null)
+                          }
+                        }
+                    });
+    #{tree.common id:"projectRolesTree", controller:"TMTreeController" /}
+
+    /*
+
+    $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
+      if (data.inst._get_type(data.rslt.obj) == "role") {
+        var roleId = data.rslt.obj.attr("id");
+        // automatically select the role in the selector of the dialog
+        $('#roles').val(roleId);
+      } else {
+        // try the parent
+        var parent = data.inst._get_parent(data.rslt.obj);
+        if (typeof parent !== 'undefined') {
+          var roleId = parent.attr("id");
+          $('#roles').val(roleId);
+        }
+      }
+    });
+      */
+
+  });
+</script>
+
+<div id="assign-dialog" title="Assign a new role" class="modalDialog">
+  <form id="assignForm">
+    <fieldset>
+
+      <label for="categories">Project category</label>
+      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
+      ui-corner-all", id:'categories'}
+      #{option -1} Please select a project category #{/option}
+      #{/select}
+
+      <label for="projects">Project</label>
+      #{select 'projects', items:projects, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
+      ui-corner-all", id:'projects'}
+      #{option -1} Please select a project #{/option}
+      #{/select}
+
+      <label for="roles">Role</label>
+      #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
+      ui-corner-all", id:'roles'}
+      #{option -1} Please select a role #{/option}
+      #{/select}
+
+    </fieldset>
+  </form>
+</div>
+
+
 
 #{/else}

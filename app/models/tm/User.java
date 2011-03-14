@@ -31,9 +31,6 @@ public class User extends Model implements RoleHolder, AccountEntity {
 
     public boolean isApplicationAdmin;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
-    public List<Project> projects;
-
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public Project activeProject;
 
@@ -69,5 +66,16 @@ public class User extends Model implements RoleHolder, AccountEntity {
 
     public static List<User> findByAccount(Long accountId) {
         return User.find("from User u where u.authentication.account.id = ?", accountId).fetch();
+    }
+
+    public List<Project> getProjects() {
+        // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
+        List<Project> res = new ArrayList<Project>();
+        for(Role r : projectRoles) {
+            if(!res.contains(r.project)) {
+                res.add(r.project);
+            }
+        }
+        return res;
     }
 }
