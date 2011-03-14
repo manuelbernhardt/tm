@@ -30,20 +30,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         final ChildProducer producer = new CategoryChildProducer();
         if (id == -1) {
             // virtual root node
-            ChildProducer rootChildProducer = new ChildProducer() {
-                public List<JSTreeNode> produce(Long id) {
-                    List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-                    for (ProjectCategory pc : ProjectCategory.find("from ProjectCategory pc where pc.account = ?", TMController.getUserAccount()).<ProjectCategory>fetch()) {
-                        SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
-                        nodes.add(pdn);
-                    }
-                    for (Project p : Project.find("from Project p where p.projectCategory is null and p.account = ?", TMController.getUserAccount()).<Project>fetch()) {
-                        SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
-                        nodes.add(pn);
-                    }
-                    return nodes;
-                }
-            };
+            ChildProducer rootChildProducer = new ProjectsRootChildProducer(producer);
             controllers.tree.SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
             l.add(root);
         } else {
@@ -120,4 +107,24 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
     }
 
 
+    private static class ProjectsRootChildProducer implements ChildProducer {
+        private final ChildProducer producer;
+
+        public ProjectsRootChildProducer(ChildProducer producer) {
+            this.producer = producer;
+        }
+
+        public List<JSTreeNode> produce(Long id) {
+            List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
+            for (ProjectCategory pc : ProjectCategory.find("from ProjectCategory pc where pc.account = ?", TMController.getUserAccount()).<ProjectCategory>fetch()) {
+                SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
+                nodes.add(pdn);
+            }
+            for (Project p : Project.find("from Project p where p.projectCategory is null and p.account = ?", TMController.getUserAccount()).<Project>fetch()) {
+                SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
+                nodes.add(pn);
+            }
+            return nodes;
+        }
+    }
 }
