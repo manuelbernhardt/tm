@@ -4,6 +4,7 @@ import controllers.tree.AbstractTree;
 import controllers.tree.NodeType;
 import controllers.tree.Tree;
 import models.tree.GenericTreeNode;
+import models.tree.JSTreeNode;
 import models.tree.jpa.AbstractNode;
 import models.tree.jpa.TreeNode;
 import models.tree.test.Folder;
@@ -20,36 +21,36 @@ import play.test.UnitTest;
 public class TreeTest extends UnitTest {
 
     private AbstractTree t;
-    private GenericTreeNode c, data, games, admin, letters, d, movies, starwars, matrix;
+    private Long c, data, games, admin, letters, d, movies, starwars, matrix;
 
     private static NodeType DRIVE;
     private static NodeType FOLDER;
 
     @Before
     public void setUp() {
-        t = Tree.getTree("testTree");
+        t = (AbstractTree) Tree.getTree("testTree");
 
         DRIVE = TestTree.getNodeType("drive");
         FOLDER = TestTree.getNodeType("folder");
 
-        c = t.create(-1l, 0l, "C", DRIVE, jhlknhljk);
-        data = t.create(c.getId(), 0l, "Data", FOLDER, jhlknhljk);
-        games = t.create(c.getId(), 0l, "Games", FOLDER, jhlknhljk);
-        admin = t.create(data.getId(), 0l, "Admin", FOLDER, jhlknhljk);
-        letters = t.create(data.getId(), 0l, "Letters", FOLDER, jhlknhljk);
+        c = t.create(-1l, 0l, "C", DRIVE.getName(), null);
+        data = t.create(c, 0l, "Data", FOLDER.getName(), null);
+        games = t.create(c, 0l, "Games", FOLDER.getName(), null);
+        admin = t.create(data, 0l, "Admin", FOLDER.getName(), null);
+        letters = t.create(data, 0l, "Letters", FOLDER.getName(), null);
 
-        d = t.create(-1l, 0l, "D", DRIVE, jhlknhljk);
-        movies = t.create(d.getId(), 0l, "Movies", FOLDER, jhlknhljk);
-        starwars = t.create(movies.getId(), 0l, "Starwars", FOLDER, jhlknhljk);
-        matrix = t.create(movies.getId(), 0l, "The Matrix", FOLDER, jhlknhljk);
+        d = t.create(-1l, 0l, "D", DRIVE.getName(), null);
+        movies = t.create(d, 0l, "Movies", FOLDER.getName(), null);
+        starwars = t.create(movies, 0l, "Starwars", FOLDER.getName(), null);
+        matrix = t.create(movies, 0l, "The Matrix", FOLDER.getName(), null);
     }
 
     @After
     public void tearDown() throws Exception {
-        AbstractTree t = Tree.getTree("testTree");
-        List<GenericTreeNode> drives = t.getChildren(-1l, TestTree.getNodeType("drive"));
-        for(GenericTreeNode d :drives) {
-            t.remove(d.getId(), dcddc, dcd);
+        AbstractTree t = (AbstractTree) Tree.getTree("testTree");
+        List<? extends JSTreeNode> drives = t.getChildren(-1l, null);
+        for(JSTreeNode d : drives) {
+            t.remove(d.getId(), -1l, "");
         }
 
         t = null;
@@ -58,32 +59,32 @@ public class TreeTest extends UnitTest {
 
     @Test
     public void removeRecursively() {
-        GenericTreeNode root = t.create(-1l, 0l, "Root", DRIVE, jhlknhljk);
-        GenericTreeNode child1 = t.create(root.getId(), 0l, "Child 1", FOLDER, jhlknhljk);
-        GenericTreeNode child2 = t.create(child1.getId(), 0l, "child 2", FOLDER, jhlknhljk);
+        Long root = t.create(-1l, 0l, "Root", DRIVE.getName(), null);
+        Long child1 = t.create(root, 0l, "Child 1", FOLDER.getName(), null);
+        Long child2 = t.create(child1, 0l, "child 2", FOLDER.getName(), null);
 
-        assertEquals(1, t.getChildren(root.getId(), FOLDER).size());
-        assertEquals(1, t.getChildren(child1.getId(), FOLDER).size());
+        assertEquals(1, t.getChildren(root, null).size());
+        assertEquals(1, t.getChildren(child1, null).size());
 
         try {
-            t.remove(root.getId(), dcddc, dcd);
+            t.remove(root, null, null);
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
         JPA.em().clear();
 
-        assertNull(TreeNode.findById(root.getId()));
-        assertNull(TreeNode.findById(child1.getId()));
-        assertNull(TreeNode.findById(child2.getId()));
+        assertNull(TreeNode.findById(root));
+        assertNull(TreeNode.findById(child1));
+        assertNull(TreeNode.findById(child2));
     }
 
     @Test
     public void rename() {
-        t.rename(starwars.getId(), "Star Wars", null);
+        t.rename(starwars, "Star Wars", null);
         // usually this is done by the controller
         JPA.em().clear();
-        assertEquals("Star Wars", t.getChildren(movies.getId(), FOLDER).get(0).getName());
+        assertEquals("Star Wars", t.getChildren(movies, null).get(0).getName());
     }
 
     @Test
@@ -91,20 +92,20 @@ public class TreeTest extends UnitTest {
         TreeNode systemLibraries = TreeNode.findById(88l);
         TreeNode music = TreeNode.findById(81l);
 
-        Tree.getTree("testTree").copy(data.getId(), starwars.getId(), 0l);
+        Tree.getTree("testTree").copy(data, starwars, 0l);
 
         JPA.em().flush();
         JPA.em().clear();
 
-        List<GenericTreeNode> copied = Tree.getTree("testTree").getChildren(starwars.getId(), FOLDER);
+        List<? extends JSTreeNode> copied = Tree.getTree("testTree").getChildren(starwars, null);
         assertEquals(1, copied.size());
 
-        Folder original = Folder.findById(((AbstractNode)data.getNode()).getId());
-        Folder copy = Folder.findById(((AbstractNode)copied.get(0).getNode()).getId());
+        Folder original = Folder.findById(data);
+        Folder copy = Folder.findById(((AbstractNode)((GenericTreeNode)copied.get(0)).getNode()).getId());
         assertEquals(original.getName(), copy.getName());
         assertNotSame(original.getId(), copy.getId());
 
-        List<GenericTreeNode> children = Tree.getTree("testTree").getChildren(original.getId(), FOLDER);
+        List<? extends JSTreeNode> children = Tree.getTree("testTree").getChildren(original.getId(), null);
         assertEquals(2, children.size());
 
         // TODO test if children are copied too
