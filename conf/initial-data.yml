@@ -36,27 +36,42 @@ general.Auth(tamaraAuth):
     password: tamy
     account: oxiras
 
-project.ProjectCategory(europeProjCat):
-    name: Europe
+project.ProjectCategory(ProjCat2011):
+    name: 2011
     account: oxiras
 
-project.ProjectCategory(americaProjCat):
-    name: America
+project.ProjectCategory(ProjCat2012):
+    name: 2012
     account: oxiras
 
-project.Project(Project1):
-    name: Project 1
+project.Project(demenagement):
+    name: Demenagement
     account: oxiras
-    projectCategory: europeProjCat
+    projectCategory: ProjCat2011
 
-project.Project(Project2):
-    name: Project 2
+project.Project(testManagementApplication):
+    name: Test Management Application
     account: oxiras
-    projectCategory: europeProjCat
+    projectCategory: ProjCat2011
 
-project.Role(P2TestLead):
+project.Project(monde):
+    name: Conquir le monde
+    account: oxiras
+    projectCategory: ProjCat2012
+
+project.Role(demViewOnly):
+    name: View only
+    project: demenagement
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testExecView
+         - defectView
+
+project.Role(tmTestLead):
     name: Test Lead
-    project: Project2
+    project: testManagementApplication
     unitRoles:
          - reqView
          - reqCreate
@@ -79,9 +94,9 @@ project.Role(P2TestLead):
          - defectEdit
          - defectDelete
 
-project.Role(P2TestDesigner):
+project.Role(tmTestDesigner):
     name: Test Designer
-    project: Project2
+    project: testManagementApplication
     unitRoles:
          - reqView
          - approachView
@@ -90,9 +105,19 @@ project.Role(P2TestDesigner):
          - testPrepEdit
          - testPrepDelete
 
-project.Role(P2ViewOnly):
+project.Role(tmTestExecution):
+    name: Test Execution
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - approachView
+         - testExecView
+         - testExecCreate
+         - testExecEdit
+
+project.Role(tmViewOnly):
     name: View only
-    project: Project2
+    project: testManagementApplication
     unitRoles:
          - reqView
          - approachView
@@ -103,48 +128,62 @@ project.Role(P2ViewOnly):
 tm.User(gwen):
     authentication: gwenAuth
     isApplicationAdmin: true
-    activeProject: Project2
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestLead
+       - demViewOnly
 
 tm.User(manu):
     authentication: manuAuth
     isApplicationAdmin: true
-    activeProject: Project2
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestDesigner
+       - tmViewOnly
+       - demViewOnly
 
 tm.User(nathalie):
     authentication: nathalieAuth
-    activeProject: Project1
+    activeProject: demenagement
+    projectRoles:
+       - demViewOnly
 
 tm.User(vroni):
     authentication: vroniAuth
-    activeProject: Project1
+    activeProject: demenagement
+    projectRoles:
+       - demViewOnly
 
 tm.User(tamara):
     authentication: tamaraAuth
-    activeProject: Project1
+    activeProject: testManagementApplication
+    projectRoles:
+       - demViewOnly
+       - tmTestExecution
 
 project.Defect(Defect1):
-    project: Project2
+    project: testManagementApplication
     title: The application does not start
     submittedBy: gwen
     assignedTo: manu
 
 project.Defect(Defect2):
-    project: Project1
+    project: demenagement
     title: Test for naturalID
     submittedBy: nathalie
 
 project.Defect(Defect3):
-    project: Project2
+    project: testManagementApplication
     title: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
 
 project.Defect(Defect4):
-    project: Project1
-    title: Test for naturalID 2
+    project: demenagement
+    title: Box is not at the right place
     submittedBy: vroni
 
 project.Defect(Defect5):
-    project: Project1
-    title: Test for naturalID 3
+    project: demenagement
+    title: Old couch is still not removed
     submittedBy: nathalie
