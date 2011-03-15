@@ -116,8 +116,9 @@ No project selected
     });
     #{tree.common id:"rolesUserTree", controller:"TMTreeController" /}
 
+    /** Selection handler **/
     $("#rolesUserTree").bind("select_node.jstree", function (e, data) {
-      if (data.inst._get_type(data.rslt.obj) == "role") {
+      if (isSelectedNodeType(data, "role")) {
         var roleId = data.rslt.obj.attr("id");
         // automatically select the role in the selector of the dialog
         $('#roles').val(roleId);

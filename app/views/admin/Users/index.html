@@ -9,7 +9,6 @@
 <script src="@{'/public/javascripts/jquery.dataTables.min.js'}" type="text/javascript" charset="utf-8"></script>
 
 <script type="text/javascript">
-
   $(function() {
     $("#innerTabs").tabs({
       select: function() {
@@ -36,7 +35,7 @@
       "oLanguage": {
         "sZeroRecords": "No users defined yet"
       },
-        // select a user if one was selected server-side (via the controller)
+      // select a user if one was selected server-side (via the controller)
       "fnDrawCallback": function() {
         if ('${selectedUser}'.length > 0) {
           $(tabDataTable.fnSettings().aoData).each(function () {
@@ -45,7 +44,7 @@
               $(this.nTr).addClass('row_selected');
             }
           });
-          fnReloadTabs(${selectedUser});
+          reloadTabs(${selectedUser});
         }
       }
     };
@@ -58,22 +57,13 @@
       });
       $(event.target.parentNode).addClass('row_selected');
 
-      removeDialogs();
-
       var selectedUser = getSelectedRowId(tabDataTable);
-      fnReloadTabs(selectedUser);
+      reloadTabs(selectedUser);
     });
 
-    function fnReloadTabs(selectedUser) {
-      // adjust the URLs of the tabs depending on the selected user
-      $('#innerTabs').tabs('url', 0, '@{admin.Users.userDetails()}?userId=' + selectedUser);
-      $('#innerTabs').tabs('url', 1, '@{admin.Users.projects()}?userId=' + selectedUser);
-      $('#innerTabs').tabs('url', 2, '@{admin.Users.account()}?userId=' + selectedUser);
-
-      // reloads the selected tab
-      var $tabs = $('#innerTabs').tabs();
-      var selected = $tabs.tabs('option', 'selected');
-      $tabs.tabs('load', selected);
+    function reloadTabs(selectedUser) {
+      var links = ['@{admin.Users.userDetails()}', '@{admin.Users.projects()}', '@{admin.Users.account()}'];
+      selectTab(links, selectedUser, 'user', $('#innerTabs'));
     }
   });
 

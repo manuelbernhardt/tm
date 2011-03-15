@@ -1,112 +1,84 @@
 <script type="text/javascript">
-  $(function () {
-    $("#create_category").click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}});
-    })
-    $("#create_project").click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
-    })
-  });
-
   $(document).ready(function () {
-    var tree = $("#projectTree")
-            .jstree({
-                        // the list of plugins to include
-                        "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
+    var tree = $("#projectTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
 
-                        // Plugin configuration
-
-                        "json_data" : {
-                          "ajax" : {
-                            "url" : "@{TMTreeController.getChildren()}",
-                            // this function is executed in the instance's scope (this refers to the tree instance)
-                            // the parameter is the node being loaded (may be -1, 0, or undefined when loading the root nodes)
-                            "data" : function (n) {
-                              // the result is fed to the AJAX request `data` option
-                              return {
-                                "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
-                                "treeId" : "projectTree"
-                              };
-                            }
-                          }
-                        },
-                        "types" : {
-                          // I set both options to -2, as I do not need depth and children count checking
-                          // Those two checks may slow jstree a lot, so use only when needed
-                          "max_depth" : -2,
-                          "max_children" : -2,
-                          // I want only `drive` nodes to be root nodes
-                          // This will prevent moving or creating any other type as a root node
-//                          "valid_children" : [ "folder", "default", "root" ],
-                          "types" : {
-                            // The default type
-                            "default" : {
-                              // I want this type to have no children (so only leaf nodes)
-                              // In my case - those are files
-                              "valid_children" : "none",
-                              // If we specify an icon for the default type it WILL OVERRIDE the theme icons
-                              "icon" : {
-                                "image" : "@{'public/images/jstree/file.png'}"
-                              }
-                            },
-                            "category" : {
-                              "valid_children" : [ "default" ],
-                              "icon" : {
-                                "image" : "@{'public/images/jstree/folder.png'}"
-                              },
-                              "start_drag" : false,
-                              "move_node" : false,
-                              "delete_node" : true,
-                              "remove" : true
-                            },
-                            "root" : {
-                              "valid_children" : [ "default", "category" ],
-                              "icon" : {
-                                "image" : "@{'public/images/jstree/folder.png'}"
-                              },
-                              "start_drag" : false,
-                              "move_node" : false,
-                              "delete_node" : false,
-                              "remove" : false
-                            }
-                          }
-                        },
-                        "hotkeys": {
-                          "Ctrl+x" : function() {
-                            this.cut(null)
-                          },
-                          "Ctrl+v" : function() {
-                            this.paste(null)
-                          },
-                          "Ctrl+n" : function() {
-                            this.create_node(null, "after", {attr:{"rel":"category"}});
-                          }
-                        }
-                    });
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "projectTree"
+            };
+          }
+        }
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : {
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for project
+            }
+          },
+          "category" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+          },
+          "root" : {
+            "valid_children" : [ "default", "category" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+          }
+        }
+      },
+      "hotkeys": {
+        "Ctrl+x" : function() {
+          this.cut(null)
+        },
+        "Ctrl+v" : function() {
+          this.paste(null)
+        },
+        "Ctrl+n" : function() {
+          this.create_node(null, "after", {attr:{"rel":"category"}});
+        }
+      }
+    });
     #{tree.common id:"projectTree", controller:"TMTreeController" /}
 
+    /** Selection listener **/
     $("#projectTree").bind("select_node.jstree", function (e, data) {
-      if (data.inst._get_type(data.rslt.obj) == "default") {
-        var projectId = data.rslt.obj.attr("id").replace("node_", "");
+      var tabLinks = ['@{admin.Projects.projectDetails()}', '@{admin.Projects.roles()}', '@{admin.Projects.users()}'];
+      treeNodeSelectionHandler(tabLinks, 'default', 'project', $('#innerTabs'), data);
+    });
 
-        var $tabs = $('#innerTabs').tabs();
-        $tabs.tabs('url', 0, '@{admin.Projects.projectDetails()}?projectId=' + projectId);
-        $tabs.tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + projectId);
-        $tabs.tabs('url', 2, '@{admin.Projects.users()}?projectId=' + projectId);
+    /** Button initialisation **/
+    $("#create_category").click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}});
+    });
 
-        removeDialogs();
-
-        // reloads the selected tab
-        var selected = $tabs.tabs('option', 'selected');
-        $tabs.tabs('load', selected);
-      }
+    $("#create_project").click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
     });
 
   });
 </script>
 
+<div id="projectTree" class="tree"></div>
 
 <input type="button" id="create_category" value="New project category"/>
 <input type="button" id="create_project" value="New project"/>
-
-<div id="projectTree" class="tree"></div>
