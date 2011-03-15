@@ -1,7 +1,7 @@
 <div id="top_menu">
 
   #{if _space == 'application'}
-  ${activeProject == null ? 'No project' : activeProject.name}
+  ${_caller.activeProject == null ? 'No project' : _caller.activeProject.name}
   |
   <a href="@{admin.Users.index}"><span>Administration</span></a>
   |
