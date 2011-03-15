@@ -49,8 +49,14 @@ No project selected
           var valid = v.form();
 
           if (valid) {
+
+            // select the role node in the tree as we may have only selected it through the form
+            var $tree = jQuery.jstree._reference('#rolesUserTree');
+            var roleNode = $('#rolesUserTree li[id=' + selectedRoleId + '][rel="role"]');
+            $tree.select_node(roleNode);
+
             var name = $('#users option:selected').text();
-            $("#rolesUserTree").jstree("create", null, "last", {attr: {"rel":"default"}, data: name, metadata: {args: {userId: selectedUserId}}}, null, true);
+            $("#rolesUserTree").jstree("create", null, "last", {attr: {"rel":"default"}, data: name, metadata: {args: {userId: selectedUserId, roleId: selectedRoleId}}}, null, true);
             $(this).dialog("close");
           }
 

@@ -39,7 +39,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
     }
 
     public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
-        return editAssignment(parentId, Long.parseLong(args.get("userId")), true);
+        return editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
     }
 
     public static Long editAssignment(Long roleId, Long userId, boolean assign) {
