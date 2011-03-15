@@ -90,7 +90,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         // TODO
     }
 
-    public boolean remove(Long id, Long parentId, String type) throws Exception {
+    public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         // TODO
         return false;
     }

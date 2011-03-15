@@ -80,7 +80,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
     public void move(Long id, Long target, Long position) {
     }
 
-    public boolean remove(Long id, Long parentId, String type) throws Exception {
+    public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         try {
             editAssignment(parentId, id, false);
         } catch (Throwable t) {

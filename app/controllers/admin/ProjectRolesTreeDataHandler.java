@@ -20,6 +20,7 @@ import models.tree.JSTreeNode;
  */
 public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
+    public static final String ROLE = "default";
     public static final String CATEGORY = "category";
     public static final String PROJECT = "project";
 
@@ -46,7 +47,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
             // produce project categories and "loose" projects
             List<JSTreeNode> rootNodes = new ArrayList<JSTreeNode>();
-            Map<ProjectCategory, JSTreeNode> categories = new HashMap<ProjectCategory,JSTreeNode>();
+            Map<ProjectCategory, JSTreeNode> categories = new HashMap<ProjectCategory, JSTreeNode>();
             Map<Project, JSTreeNode> projects = new HashMap<Project, JSTreeNode>();
             for (Project p : u.getProjects()) {
                 ProjectCategory pc = p.projectCategory;
@@ -82,8 +83,9 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
     public void move(Long id, Long target, Long position) {
     }
 
-    public boolean remove(Long id, Long parentId, String type) throws Exception {
-        return false;
+    public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
+        Long r = RolesUserTreeDataHandler.editAssignment(id, Long.parseLong(args.get("userId")), false);
+        return r != null;
     }
 
     private static class CategoryChildProducer implements ChildProducer {
@@ -109,8 +111,6 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
     }
 
     private static class ProjectChildProducer implements ChildProducer {
-
-        public static final String ROLE = "role";
 
         private final User user;
 

@@ -66,21 +66,16 @@ $(document).ready(function () {
     }
   });
 
-  $("#assign-role")
-          .button()
-          .click(function() {
+  $("#assign-role").button().click(function() {
     $("#assign-dialog").dialog("open");
   });
 
-  $("#unassign-role")
-          .button()
-          .click(function() {
-
+  $("#unassign-role").button().click(function() {
     var $tree = jQuery.jstree._reference('#projectRolesTree');
     var selectedNode = $tree.get_selected();
     if ($tree._get_type(selectedNode) == "default") {
       var selectedRoleId = selectedNode.attr("id");
-      var selectedUserId = ${user.id};
+      selectedNode.data("args", {userId: "${user.id}"});
       $tree.delete_node(selectedNode);
     }
 
