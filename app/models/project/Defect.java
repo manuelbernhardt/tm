@@ -15,7 +15,7 @@ import models.tm.User;
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 public class Defect extends ProjectModel {
 
-    public String title;
+    public String name;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public User assignedTo;
