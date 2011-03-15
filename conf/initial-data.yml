@@ -55,7 +55,7 @@ project.Project(testManagementApplication):
     projectCategory: ProjCat2011
 
 project.Project(monde):
-    name: Conquir le monde
+    name: Conquérir le monde
     account: oxiras
     projectCategory: ProjCat2012
 
