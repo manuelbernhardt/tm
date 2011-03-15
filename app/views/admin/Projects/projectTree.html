@@ -87,12 +87,12 @@
 
     $("#projectTree").bind("select_node.jstree", function (e, data) {
       if (data.inst._get_type(data.rslt.obj) == "default") {
-        var project = data.rslt.obj.attr("id");
+        var projectId = data.rslt.obj.attr("id").replace("node_", "");
 
         var $tabs = $('#innerTabs').tabs();
-        $tabs.tabs('url', 0, '@{admin.Projects.projectDetails()}?projectId=' + project);
-        $tabs.tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + project);
-        $tabs.tabs('url', 2, '@{admin.Projects.users()}?projectId=' + project);
+        $tabs.tabs('url', 0, '@{admin.Projects.projectDetails()}?projectId=' + projectId);
+        $tabs.tabs('url', 1, '@{admin.Projects.roles()}?projectId=' + projectId);
+        $tabs.tabs('url', 2, '@{admin.Projects.users()}?projectId=' + projectId);
 
         removeDialogs();
 
