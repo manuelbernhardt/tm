@@ -3,13 +3,6 @@ No project selected
 #{/if}
 #{else}
 
-
-<div id="treeDiv">
-  <button id="assign-user">Assign role to user</button>
-  <button id="unassign-user">Remove assignment</button>
-  <div id="rolesUserTree" class="tree"></div>
-</div>
-
 <script type="text/javascript">
 
   $(document).ready(function () {
@@ -21,19 +14,11 @@ No project selected
       modal: true,
       buttons: {
         "Assign role": function() {
+          registerSelectNoneValidator();
 
           var selectedRoleId = $('#roles option:selected').val();
           var selectedUserId = $('#users option:selected').val();
 
-          // custom validation method for our select lists
-          $.validator.addMethod("selectNone", function(value, element) {
-            if (element.value == -1) {
-              return false;
-            }
-            return true;
-          }, "Please select an option");
-
-          // definition of the validation rules
           var v = $("#assignForm").validate({
             rules: {
               users: {selectNone: true},
@@ -55,6 +40,7 @@ No project selected
             var roleNode = $('#rolesUserTree li[id=' + selectedRoleId + '][rel="role"]');
             $tree.select_node(roleNode);
 
+            // create the assignment by adding a node to the tree
             var name = $('#users option:selected').text();
             $("#rolesUserTree").jstree("create", null, "last", {attr: {"rel":"default"}, data: name, metadata: {args: {userId: selectedUserId, roleId: selectedRoleId}}}, null, true);
             $(this).dialog("close");
@@ -68,16 +54,11 @@ No project selected
       }
     });
 
-    $("#assign-user")
-            .button()
-            .click(function() {
+    $("#assign-user").button().click(function() {
       $("#assign-dialog").dialog("open");
     });
 
-    $("#unassign-user")
-            .button()
-            .click(function() {
-
+    $("#unassign-user").button().click(function() {
       var $tree = jQuery.jstree._reference('#rolesUserTree');
       var selectedNode = $tree.get_selected();
       if ($tree._get_type(selectedNode) == "default") {
@@ -85,56 +66,54 @@ No project selected
         var selectedRoleId = $tree._get_parent(selectedNode).attr("id");
         $tree.delete_node(selectedNode);
       }
-
     });
 
-    $("#rolesUserTree")
-            .jstree({
-                        "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+    $("#rolesUserTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
 
-                        "json_data" : {
-                          "ajax" : {
-                            "url" : "@{TMTreeController.getChildren()}",
-                            "data" : function (n) {
-                              return {
-                                "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
-                                "treeId" : "rolesUserTree",
-                                "args" : {"projectId": "${project.id}"}
-                              };
-                            }
-                          }
-                        },
-                        "types" : {
-                          "max_depth" : -2,
-                          "max_children" : -2,
-                          "types" : {
-                            "default" : { // user
-                              "valid_children" : "none",
-                              "icon" : {
-                                "image" : "@{'public/images/jstree/file.png'}" // TODO user icon
-                              }
-                            },
-                            "role" : {
-                              "valid_children" : [ "default" ],
-                              "icon" : {
-                                "image" : "@{'public/images/jstree/folder.png'}" // TODO role icon
-                              },
-                              "start_drag" : false,
-                              "move_node" : false,
-                              "delete_node" : false,
-                              "remove" : false
-                            }
-                          }
-                        },
-                        "hotkeys": {
-                          "Ctrl+x" : function() {
-                            this.cut(null)
-                          },
-                          "Ctrl+v" : function() {
-                            this.paste(null)
-                          }
-                        }
-                    });
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "rolesUserTree",
+              "args" : {"projectId": "${project.id}"}
+            };
+          }
+        }
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : { // user
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO user icon
+            }
+          },
+          "role" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO role icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+          }
+        }
+      },
+      "hotkeys": {
+        "Ctrl+x" : function() {
+          this.cut(null)
+        },
+        "Ctrl+v" : function() {
+          this.paste(null)
+        }
+      }
+    });
     #{tree.common id:"rolesUserTree", controller:"TMTreeController" /}
 
     $("#rolesUserTree").bind("select_node.jstree", function (e, data) {
@@ -155,6 +134,13 @@ No project selected
   });
 </script>
 
+
+<div id="treeDiv">
+  <button id="assign-user">Assign role to user</button>
+  <button id="unassign-user">Remove assignment</button>
+  <div id="rolesUserTree" class="tree"></div>
+</div>
+
 <div id="assign-dialog" title="Assign a role to a user" class="modalDialog">
   <form id="assignForm">
     <fieldset>
@@ -173,6 +159,4 @@ No project selected
     </fieldset>
   </form>
 </div>
-
-
 #{/else}

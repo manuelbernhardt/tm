@@ -21,10 +21,21 @@ function fnGetSelected(oTableLocal) {
 }
 
 function removeDialogs() {
-  // bug with jQuery tabs / jQuery dialogs not disappearing after being added
-  // in fact, the dialog divs are being added to the main html tree, outside of the tab
-  // we have to remove all instances when a tab is reloaded
-  $(".modalDialog").remove();
+    // bug with jQuery tabs / jQuery dialogs not disappearing after being added
+    // in fact, the dialog divs are being added to the main html tree, outside of the tab
+    // we have to remove all instances when a tab is reloaded
+    $(".modalDialog").remove();
 }
+
+/* custom validation method for our select lists */
+function registerSelectNoneValidator() {
+    $.validator.addMethod("selectNone", function(value, element) {
+        if (element.value == -1) {
+            return false;
+        }
+        return true;
+    }, "Please select an option");
+}
+
 
 

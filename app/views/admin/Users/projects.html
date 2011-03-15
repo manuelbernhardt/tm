@@ -3,12 +3,6 @@ No user selected
 #{/if}
 #{else}
 
-<div id="treeDiv">
-  <button id="assign-role">Add new project/role assignement</button>
-  <button id="unassign-role">Remove assignment</button>
-  <div id="projectRolesTree" class="tree"></div>
-</div>
-
 <script type="text/javascript">
 
 $(document).ready(function () {
@@ -20,19 +14,11 @@ $(document).ready(function () {
     modal: true,
     buttons: {
       "Assign role": function() {
+        registerSelectNoneValidator();
 
         var selectedProjectId = $('#projects option:selected').val();
         var selectedRoleId = $('#roles option:selected').val();
 
-        // custom validation method for our select lists
-        $.validator.addMethod("selectNone", function(value, element) {
-          if (element.value == -1) {
-            return false;
-          }
-          return true;
-        }, "Please select an option");
-
-        // definition of the validation rules
         var v = $("#assignForm").validate({
           rules: {
             projects: {selectNone: true},
@@ -49,15 +35,12 @@ $(document).ready(function () {
 
         if (valid) {
           var name = $('#roles option:selected').text();
-
-          $("#projectRolesTree").jstree("create", null, "last",
-          {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
+          $("#projectRolesTree").jstree("create", null, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
           var treeContainer = $("#projectRolesTree");
           jQuery.jstree._reference(treeContainer).refresh();
           jQuery.jstree._reference(treeContainer).deselect_all();
           $(this).dialog("close");
         }
-
       },
       Cancel: function() {
         $("#assignForm").validate().resetForm();
@@ -78,78 +61,79 @@ $(document).ready(function () {
       selectedNode.data("args", {userId: "${user.id}"});
       $tree.delete_node(selectedNode);
     }
-
   });
 
-  $("#projectRolesTree")
-          .jstree({
-                      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+  $("#projectRolesTree").jstree({
+    "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
 
-                      "json_data" : {
-                        "ajax" : {
-                          "url" : "@{TMTreeController.getChildren()}",
-                          "data" : function (n) {
-                            return {
-                              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
-                              "treeId" : "projectRolesTree",
-                              "args" : {"userId": "${user.id}"}
-                            };
-                          }
-                        }
-                      },
-                      "types" : {
-                        "max_depth" : -2,
-                        "max_children" : -2,
-                        "types" : {
-                          "default" : { // role
-                            "valid_children" : "none",
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/file.png'}" // TODO role icon
-                            }
-                          },
-                          "category" : {
-                            "valid_children" : [ "project" ],
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/folder.png'}"
-                            },
-                            "start_drag" : false,
-                            "move_node" : false,
-                            "delete_node" : false,
-                            "remove" : false
-                          },
-                          "project" : {
-                            "valid_children" : [ "default" ],
-                            "icon" : {
-                              "image" : "@{'public/images/jstree/folder.png'}" // TODO project icon
-                            },
-                            "start_drag" : false,
-                            "move_node" : false,
-                            "delete_node" : false,
-                            "remove" : false
+    "json_data" : {
+      "ajax" : {
+        "url" : "@{TMTreeController.getChildren()}",
+        "data" : function (n) {
+          return {
+            "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+            "treeId" : "projectRolesTree",
+            "args" : {"userId": "${user.id}"}
+          };
+        }
+      }
+    },
+    "types" : {
+      "max_depth" : -2,
+      "max_children" : -2,
+      "types" : {
+        "default" : { // role
+          "valid_children" : "none",
+          "icon" : {
+            "image" : "@{'public/images/jstree/file.png'}" // TODO role icon
+          }
+        },
+        "category" : {
+          "valid_children" : [ "project" ],
+          "icon" : {
+            "image" : "@{'public/images/jstree/folder.png'}"
+          },
+          "start_drag" : false,
+          "move_node" : false,
+          "delete_node" : false,
+          "remove" : false
+        },
+        "project" : {
+          "valid_children" : [ "default" ],
+          "icon" : {
+            "image" : "@{'public/images/jstree/folder.png'}" // TODO project icon
+          },
+          "start_drag" : false,
+          "move_node" : false,
+          "delete_node" : false,
+          "remove" : false
 
-                          }
-                        }
-                      },
-                      "ui": {
-                        "select_limit": 1
-                      },
-                      "hotkeys": {
-                        "Ctrl+x" : function() {
-                          this.cut(null)
-                        },
-                        "Ctrl+v" : function() {
-                          this.paste(null)
-                        }
-                      }
-                  });
+        }
+      }
+    },
+    "ui": {
+      "select_limit": 1
+    },
+    "hotkeys": {
+      "Ctrl+x" : function() {
+        this.cut(null)
+      },
+      "Ctrl+v" : function() {
+        this.paste(null)
+      }
+    }
+  });
   #{tree.common id:"projectRolesTree", controller:"TMTreeController" /}
 
 
+  // pre-select assingment form fields based on what we select in the tree
   $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
+    // category selected
     if (data.inst._get_type(data.rslt.obj) == "category") {
       var categoryId = data.rslt.obj.attr("id");
       selectCategory(categoryId);
       $('#categories').val(categoryId);
+      // project selected
     } else if (data.inst._get_type(data.rslt.obj) == "project") {
       var parent = data.inst._get_parent(data.rslt.obj);
       selectCategory(parent.attr("id"));
@@ -158,7 +142,8 @@ $(document).ready(function () {
       selectProject(projectId, function() {
         $('#projects').val(projectId);
       });
-    } else { // role
+      // role selected
+    } else {
       var roleId = data.rslt.obj.attr("id");
       var roleParent = data.inst._get_parent(data.rslt.obj);
       var pId = roleParent.attr("id");
@@ -177,7 +162,7 @@ $(document).ready(function () {
     }
   });
 
-
+  // run ajax callbacks to update the selects
   $('#categories').change(function() {
     var category = $('#categories option:selected').val();
     selectCategory(category);
@@ -187,26 +172,24 @@ $(document).ready(function () {
     var project = $('#projects option:selected').val();
     selectProject(project);
   });
-
-  function selectCategory(categoryId, callback) {
-    $('#projects').attr('disabled', false);
-    $('#projects').find('option').remove().end();
-    $('#projects').addOption('-1', 'Please select a project');
-    $('#roles').find('option').remove().end();
-    $('#roles').addOption('-1', 'Please select a role');
-    $('#roles').attr('disabled', true);
-    $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.authentication.account.id}'}, false, callback);
-  }
-
-  function selectProject(projectId, callback) {
-    $('#roles').attr('disabled', false);
-    $('#roles').find('option').remove().end();
-    $('#roles').addOption('-1', 'Please select a role');
-    $('#roles').ajaxAddOption('@{admin.Users.rolesOptions()}', {projectId: projectId}, false, callback);
-  }
-
-
 });
+
+function selectCategory(categoryId, callback) {
+  $('#projects').attr('disabled', false);
+  $('#projects').find('option').remove().end();
+  $('#projects').addOption('-1', 'Please select a project');
+  $('#roles').find('option').remove().end();
+  $('#roles').addOption('-1', 'Please select a role');
+  $('#roles').attr('disabled', true);
+  $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.authentication.account.id}'}, false, callback);
+}
+
+function selectProject(projectId, callback) {
+  $('#roles').attr('disabled', false);
+  $('#roles').find('option').remove().end();
+  $('#roles').addOption('-1', 'Please select a role');
+  $('#roles').ajaxAddOption('@{admin.Users.rolesOptions()}', {projectId: projectId}, false, callback);
+}
 
 function setCategory(parent) {
   if (typeof parent !== 'undefined') {
@@ -216,9 +199,13 @@ function setCategory(parent) {
     $('#categories').val(-1); // no category
   }
 }
-
-
 </script>
+
+<div id="treeDiv">
+  <button id="assign-role">Add new project/role assignement</button>
+  <button id="unassign-role">Remove assignment</button>
+  <div id="projectRolesTree" class="tree"></div>
+</div>
 
 <div id="assign-dialog" title="Assign a new role" class="modalDialog">
   <form id="assignForm">
