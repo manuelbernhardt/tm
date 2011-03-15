@@ -2,6 +2,7 @@ package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import controllers.TMController;
 import controllers.tree.ChildProducer;
@@ -20,12 +21,12 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         return "rolesUserTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long parentId, final String[] args) {
+    public List<? extends JSTreeNode> getChildren(Long parentId, final Map<String, String> args) {
 
         final RoleChildProducer roleChildProducer = new RoleChildProducer();
         if (parentId == -1) {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
-            List<Role> roles = Role.findByProject(Long.parseLong(args[0]));
+            List<Role> roles = Role.findByProject(Long.parseLong(args.get("projectId")));
             for (Role r : roles) {
                 JSTreeNode roleNode = new SimpleNode(r.id, r.name, "role", true, true, roleChildProducer);
                 res.add(roleNode);
@@ -37,11 +38,11 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         }
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Long id) {
-        return editAssignment(parentId, id, true);
+    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
+        return editAssignment(parentId, Long.parseLong(args.get("userId")), true);
     }
 
-    private static Long editAssignment(Long roleId, Long userId, boolean assign) {
+    public static Long editAssignment(Long roleId, Long userId, boolean assign) {
 
         if (roleId == null || userId == null || roleId == -1 || userId == -1) {
             return null;
@@ -58,7 +59,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
             if (assign && !user.projectRoles.contains(role)) {
                 user.projectRoles.add(role);
                 user.save();
-            } else if(assign && user.projectRoles.contains(role)) {
+            } else if (assign && user.projectRoles.contains(role)) {
                 return null;
             } else if (user.projectRoles.contains(role) && !assign) {
                 user.projectRoles.remove(role);

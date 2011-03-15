@@ -11,11 +11,11 @@
 <script type="text/javascript">
 
   $(function() {
-    $("#innerTabs").tabs();
-    /*
-     $("#innerTabs").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-     $("#innerTabs li").removeClass('ui-corner-top').addClass('ui-corner-left');
-     */
+    $("#innerTabs").tabs({
+      select: function() {
+        removeDialogs();
+      }
+    });
   });
 
   $(document).ready(function() {
@@ -36,8 +36,8 @@
       "oLanguage": {
         "sZeroRecords": "No users defined yet"
       },
+        // select a user if one was selected server-side (via the controller)
       "fnDrawCallback": function() {
-        // select a user if one was selected
         if ('${selectedUser}'.length > 0) {
           $(tabDataTable.fnSettings().aoData).each(function () {
             var nTr = $(this.nTr)[0];
@@ -45,18 +45,20 @@
               $(this.nTr).addClass('row_selected');
             }
           });
-
           fnReloadTabs(${selectedUser});
         }
       }
     };
     #{/tabularasa.init}
 
+    /** handle user selection in table **/
     $("#tab tbody").click(function(event) {
       $(tabDataTable.fnSettings().aoData).each(function () {
         $(this.nTr).removeClass('row_selected');
       });
       $(event.target.parentNode).addClass('row_selected');
+
+      removeDialogs();
 
       var selectedUser = getSelectedRowId(tabDataTable);
       fnReloadTabs(selectedUser);

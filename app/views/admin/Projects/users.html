@@ -50,7 +50,7 @@ No project selected
 
           if (valid) {
             var name = $('#users option:selected').text();
-            $("#rolesUserTree").jstree("create", null, "last", {attr: {"id": selectedUserId, "rel":"default"}, data: name}, null, true);
+            $("#rolesUserTree").jstree("create", null, "last", {attr: {"rel":"default"}, data: name, metadata: {args: {userId: selectedUserId}}}, null, true);
             $(this).dialog("close");
           }
 
@@ -93,7 +93,7 @@ No project selected
                               return {
                                 "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
                                 "treeId" : "rolesUserTree",
-                                "args" : "${project.id}"
+                                "args" : {"projectId": "${project.id}"}
                               };
                             }
                           }

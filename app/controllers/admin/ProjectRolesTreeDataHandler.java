@@ -27,10 +27,10 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
         return "projectRolesTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long parentId, String[] args) {
+    public List<? extends JSTreeNode> getChildren(Long parentId, Map<String, String> args) {
 
         if (parentId == -1) {
-            Long userId = Long.parseLong(args[0]);
+            Long userId = Long.parseLong(args.get("userId"));
             User u = User.findById(userId);
             if (u == null) {
                 // TODO logging
@@ -68,8 +68,8 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
         return null;
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Long id) {
-        return null;
+    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
+        return RolesUserTreeDataHandler.editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
     }
 
     public boolean rename(Long id, String name, String type) {

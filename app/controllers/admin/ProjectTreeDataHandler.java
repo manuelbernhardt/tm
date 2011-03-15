@@ -2,6 +2,7 @@ package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import controllers.TMController;
 import controllers.tree.ChildProducer;
@@ -25,7 +26,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return "projectTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long id, String[] args) {
+    public List<? extends JSTreeNode> getChildren(Long id, Map<String, String> args) {
         List<JSTreeNode> l = new ArrayList<JSTreeNode>();
         final ChildProducer producer = new CategoryChildProducer();
         if (id == -1) {
@@ -39,7 +40,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return l;
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Long id) {
+    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
         Account userAccount = TMController.getUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
