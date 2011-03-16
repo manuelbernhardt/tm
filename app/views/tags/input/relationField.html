@@ -1,8 +1,8 @@
 #{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass}
 <div class="field">
-    <label for="${field.id}">${_label}</label>
+    <label for="${_field}">${_label}</label>
 
-  <select id="${field.id}" name="${pName}">
+  <select id="${_field}" name="${_field}.id">
       #{ifnot _objectField.required}
           <option value="">(None)</option>
       #{/ifnot}
