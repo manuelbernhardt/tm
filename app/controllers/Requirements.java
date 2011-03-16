@@ -12,6 +12,8 @@ import play.data.validation.Validation;
  */
 public class Requirements extends TMController {
 
+    public static final String REQUIREMENT_TREE = "requirementTree";
+
     public static void index() {
         render();
     }
@@ -47,7 +49,7 @@ public class Requirements extends TMController {
     private static Requirement getRequirement(Long requirementId) {
         Requirement requirement = null;
         if(requirementId != null) {
-            TreeNode n = TreeNode.findById(requirementId);
+            TreeNode n = TreeNode.find(requirementId, REQUIREMENT_TREE);
             if(n != null) {
                 requirement = Requirement.findById(n.getNodeId());
                 checkInAccount(requirement);
