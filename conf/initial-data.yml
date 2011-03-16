@@ -54,8 +54,8 @@ project.Project(testManagementApplication):
     account: oxiras
     projectCategory: ProjCat2011
 
-project.Project(monde):
-    name: Conquérir le monde
+project.Project(world):
+    name: Conquer the world
     account: oxiras
     projectCategory: ProjCat2012
 
@@ -161,29 +161,68 @@ tm.User(tamara):
        - demViewOnly
        - tmTestExecution
 
-project.Defect(Defect1):
+project.RequirementType(functional):
     project: testManagementApplication
-    title: The application does not start
+    position: 1
+    type: Functional
+
+project.RequirementType(technical):
+    project: testManagementApplication
+    position: 2
+    type: Technical
+
+project.RequirementFolder(functionalReqFolder):
+    project: testManagementApplication
+    name: Requirement management
+
+project.Requirement(functionalReq1):
+    project: testManagementApplication
+    name: List requirements (tree)
+    type: functional
+
+project.Requirement(functionalReq2):
+    project: testManagementApplication
+    name: Display requirement details
+    type: functional
+
+project.Requirement(functionalReq3):
+    project: testManagementApplication
+    name: Display entities linked to requirement
+    type: functional
+
+project.RequirementFolder(crossConcernsFolder):
+    project: testManagementApplication
+    name: Cross concerns
+
+project.Requirement(technicalReq1):
+    project: testManagementApplication
+    name: Datatables need to be sortable
+    type: technical
+
+project.Defect(defect1):
+    project: testManagementApplication
+    name: The application does not start
     submittedBy: gwen
     assignedTo: manu
 
-project.Defect(Defect2):
+project.Defect(defect2):
     project: demenagement
-    title: Test for naturalID
+    name: Test for naturalID
     submittedBy: nathalie
 
-project.Defect(Defect3):
+project.Defect(defect3):
     project: testManagementApplication
-    title: Issue with tabularasa
+    name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
 
-project.Defect(Defect4):
+project.Defect(defect4):
     project: demenagement
-    title: Box is not at the right place
+    name: Box is not at the right place
     submittedBy: vroni
 
-project.Defect(Defect5):
+project.Defect(defect5):
     project: demenagement
-    title: Old couch is still not removed
+    name: Old couch is still not removed
     submittedBy: nathalie
+
