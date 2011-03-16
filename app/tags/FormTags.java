@@ -148,15 +148,15 @@ public class FormTags extends FastTags {
         return null;
     }
 
-    public static void _type(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
+    public static void _objectField(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
         String path = args.get("field").toString();
         String[] pieces = path.split("\\.");
         Object obj = args.get("baseObject");
         String baseClass = (String) args.get("baseClass");
         Class clazz = null;
-        if(obj != null) {
+        if (obj != null) {
             clazz = obj.getClass();
-        } else if(baseClass != null) {
+        } else if (baseClass != null) {
             clazz = getBaseClass(template, fromLine, baseClass);
         } else {
             String message = "No baseObject nor baseClass passed";
@@ -167,11 +167,29 @@ public class FormTags extends FastTags {
                 try {
                     Field f = getField(pieces, clazz);
                     if (f != null) {
-                        Model.Property property = new Model.Property();
-                        property.field = f;
-                        property.isGenerated = false;
-                        CRUD.ObjectType.ObjectField type = new CRUD.ObjectType.ObjectField(property);
-                        body.setProperty("type", type.type);
+                        Model.Property property = null;
+                        if (Model.class.isAssignableFrom(f.getDeclaringClass())) {
+                            Model.Factory factory = Model.Manager.factoryFor((Class<? extends Model>) f.getDeclaringClass());
+                            // TODO probably we should be caching this...?
+                            for (Model.Property p : factory.listProperties()) {
+                                if (p.name.equals(f.getName())) {
+                                    property = p;
+                                    break;
+                                }
+                            }
+                            if (property == null) {
+                                throw new Exception();
+                            }
+
+                        } else {
+                            property = new Model.Property();
+                            property.field = f;
+                            property.isGenerated = false;
+
+                        }
+                        CRUD.ObjectType.ObjectField objectField = new CRUD.ObjectType.ObjectField(property);
+                        body.setProperty("objectField", objectField);
+                        body.setProperty("fieldType", objectField.type);
                     }
                 } catch (Exception e) {
                     String message = "Cannot compute field '" + path + "' of class '" + clazz.getName() + "'";
@@ -179,7 +197,7 @@ public class FormTags extends FastTags {
                 }
 
             } else {
-                body.setProperty("type", clazz.getName());
+                body.setProperty("fieldType", clazz.getName());
             }
         }
         body.call();

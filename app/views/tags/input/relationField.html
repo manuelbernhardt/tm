@@ -1,0 +1,23 @@
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass}
+<div class="field">
+    <label for="${field.id}">${_label}</label>
+
+  <select id="${field.id}" name="${pName}">
+      #{ifnot _objectField.required}
+          <option value=""></option>
+      #{/ifnot}
+      #{else}
+          <option value="">Select a value</option>
+      #{/else}
+      %{ _objectField.choices.each() { }%
+      %{
+          selected = false
+          if(_baseObject) {
+              selected = (it._key().toString() == field.value._key().toString())
+          }
+      }%
+      <option value="${it._key()}" ${selected ? 'selected="true"'.raw() : ''}>${it}</option>
+      %{ } }%
+  </select>
+</div>
+#{/}

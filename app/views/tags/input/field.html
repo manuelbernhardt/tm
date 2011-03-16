@@ -5,14 +5,17 @@
   def baseObject = _baseObject ? _baseObject : formBaseObject;
 }%
 
-<!-- Here will come the type-based switch -->
-#{forms.type baseObject:baseObject, baseClass:baseClass, field:_field}
-#{if type == 'text'}
+#{forms.objectField baseObject:baseObject, baseClass:baseClass, field:_field}
+#{if objectField.type == 'text'}
   #{input.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/if}
-#{if type == 'longtext'}
+#{if objectField.type == 'longtext'}
   #{input.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+#{/if}
+#{if objectField.type == 'relation'}
+  #{input.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField /}
 #{/if}
 
 
-#{/forms.type}
+
+#{/forms.objectField}
