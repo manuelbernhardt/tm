@@ -24,10 +24,7 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void projectDetails(Long projectId) {
-        Project project = null;
-        if (projectId != null) {
-            project = Project.findById(projectId);
-        }
+        Project project = getProject(projectId);
         render(project);
     }
 
@@ -41,21 +38,24 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void roles(Long projectId) {
-        Project project = null;
-        if (projectId != null) {
-            project = Project.findById(projectId);
-        }
+        Project project = getProject(projectId);
         render(project);
     }
 
     @Restrict(UnitRole.ADMIN)
     public static void users(Long projectId) {
-        Project project = null;
-        if (projectId != null) {
-            project = Project.findById(projectId);
-        }
+        Project project = getProject(projectId);
         List<Role> projectRoles = Role.findByProject(projectId);
         List<User> accountUsers = User.findByAccount(getUserAccount().getId());
         render(project, projectRoles, accountUsers);
     }
+
+    private static Project getProject(Long projectId) {
+        Project project = null;
+        if (projectId != null) {
+            project = Project.findById(projectId);
+        }
+        return project;
+    }
+
 }
