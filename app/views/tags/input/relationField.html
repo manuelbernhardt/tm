@@ -4,10 +4,10 @@
 
   <select id="${field.id}" name="${pName}">
       #{ifnot _objectField.required}
-          <option value=""></option>
+          <option value="">(None)</option>
       #{/ifnot}
       #{else}
-          <option value="">Select a value</option>
+          <option value="">(Select a value)</option>
       #{/else}
       %{ _objectField.choices.each() { }%
       %{
