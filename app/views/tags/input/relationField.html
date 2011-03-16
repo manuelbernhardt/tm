@@ -12,8 +12,8 @@
       %{ _objectField.choices.each() { }%
       %{
           selected = false
-          if(_baseObject) {
-              selected = (it._key().toString() == field.value._key().toString())
+          if(_baseObject != null) {
+              selected = field.value != null && (it._key().toString() == field.value._key().toString())
           }
       }%
       <option value="${it._key()}" ${selected ? 'selected="true"'.raw() : ''}>${it}</option>
