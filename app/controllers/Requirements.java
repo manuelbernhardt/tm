@@ -2,6 +2,8 @@ package controllers;
 
 import models.project.Requirement;
 import models.tree.jpa.TreeNode;
+import play.data.validation.Valid;
+import play.data.validation.Validation;
 
 /**
  * TODO security
@@ -22,6 +24,21 @@ public class Requirements extends TMController {
     public static void linked(Long requirementId) {
         Requirement requirement = getRequirement(requirementId);
         render(requirement);
+    }
+
+    public static void edit(@Valid Requirement requirement) {
+
+        checkInAccount(requirement);
+
+        if(Validation.hasErrors()) {
+            // TODO not the right thing to do, I suppose, since we do an AJAX call
+            render("@index", requirement);
+        }
+
+        requirement.save();
+
+        ok();
+
     }
 
     /**

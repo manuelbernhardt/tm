@@ -2,6 +2,24 @@
 No requirement selected
 #{/if}
 #{else}
-${requirement.name}
+
+#{input.form action:@Requirements.edit(), id:'requirementForm', baseObject:requirement}
+
+#{input.field field:'requirement.name', label:'Name' /}
+#{input.field field:'requirement.description', label:'Description' /}
+<input type="hidden" name="requirement.id" value="${requirement.id}"/>
+#{if requirement.type != null}
+<input type="hidden" name="requirement.type.id" value="${requirement.type.id}"/>
+#{/if}
+<input type="hidden" name="requirement.project.id" value="${requirement.project.id}"/>
+<input type="hidden" name="requirement.project.account.id" value="${requirement.project.account.id}"/>
+<input type="hidden" name="requirement.project.projectCategory.id" value="${requirement.project.projectCategory.id}"/>
+<input type="hidden" name="requirement.project.projectCategory.account.id"
+       value="${requirement.project.projectCategory.account.id}"/>
+
+<input type="submit" value="Save">
+
+#{/input.form}
+
 
 #{/else}
