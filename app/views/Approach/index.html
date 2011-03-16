@@ -1,28 +1,4 @@
 #{extends 'main.html' /}
 #{set title:'Test approach' /}
 
-<!-- the tree container (notice NOT an UL node) -->
-
-<div id="actions">
-  <input type="button" id="create_drive" value="Create drive"/>
-  <input type="button" id="create_folder" value="Create folder"/>
-  <input type="button" id="remove" value="Remove"/>
-</div>
-
-#{tree id:'testTree' /}
-
-<script type="text/javascript">
-
-  $(function () {
-    $("#create_drive").click(function () {
-      $("#testTree").jstree("create", null, "last", {attr:{"rel":"drive"}});
-    })
-    $("#create_folder").click(function () {
-      $("#testTree").jstree("create", null, "last", {attr:{"rel":"folder"}});
-    })
-    $("#remove").click(function () {
-      $("#testTree").jstree("remove", null);
-    })
-  });
-
-</script>
+Approach
