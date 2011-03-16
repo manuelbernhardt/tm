@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.User;
+import models.tree.Node;
 import play.data.validation.MaxSize;
 
 /**
@@ -14,7 +15,7 @@ import play.data.validation.MaxSize;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
-public class Requirement extends ProjectModel {
+public class Requirement extends ProjectModel implements Node {
 
     public String name;
 
@@ -26,5 +27,16 @@ public class Requirement extends ProjectModel {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public User createdBy;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        // TODO
+        return super.clone();
+    }
+
 
 }

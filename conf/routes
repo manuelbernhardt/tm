@@ -6,6 +6,7 @@
 *       /                                       module:secure
 
 GET     /                                       Dashboard.index
+GET     /requirements                           Requirements.index
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data
@@ -20,7 +21,7 @@ GET     /admin/users/data                       admin.Users.data
 POST    /admin/users/edit                       admin.Users.edit
 GET     /admin/projects                         admin.Projects.index
 GET     /admin/projectRoles/data                admin.ProjectRoles.data
-POST     /admin/projectRoles/edit                admin.ProjectRoles.edit
+POST    /admin/projectRoles/edit                admin.ProjectRoles.edit
 
 *       /                                       module:tree
 
