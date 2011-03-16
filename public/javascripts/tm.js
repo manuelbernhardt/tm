@@ -71,7 +71,7 @@ function selectTab(tabLinks, selectedId, selectionType, tabsContainer) {
  * @param types the types to check against
  */
 function isSelectedNodeType(data, types) {
-    return $.contains(types, data.inst._get_type(data.rslt.obj));
+    return $.inArray(data.inst._get_type(data.rslt.obj), types) > -1;
 }
 
 /**
