@@ -2,17 +2,38 @@
 #{set title:'Requirements' /}
 
 
-<div id="actions">
-  <input type="button" id="create_folder" value="Create folder"/>
-  <input type="button" id="create_requirement" value="Create requirement"/>
-  <input type="button" id="remove" value="Remove"/>
+<div class="container">
+  <div class="left_tree">
+    <div id="actions">
+      <input type="button" id="create_folder" value="Create folder"/>
+      <input type="button" id="create_requirement" value="Create requirement"/>
+      <input type="button" id="remove" value="Remove"/>
+    </div>
+    <div id="requirementTree" class="tree"></div>
+  </div>
+  <div class="right_tree">
+    <div id="innerTabs">
+      <ul>
+        <li><a href="@{Requirements.requirementDetails()}" id="details"><span>Requirement details</span></a></li>
+        <li><a href="@{Requirements.linked()}" id="linked"><span>Linked entities</span></a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 
-<div id="requirementTree" class="tree"></div>
 
+#{set 'moreScripts'}
 <script type="text/javascript">
 
   $(document).ready(function () {
+    $(function() {
+      $("#innerTabs").tabs({
+        select: function() {
+          removeDialogs();
+        }
+      });
+    });
+
     var tree = $("#requirementTree").jstree({
       "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
 
@@ -61,9 +82,17 @@
         }
       }
     });
-    
+
     #{tree.common id:"requirementTree", controller:"TMTreeController" /}
 
+    /** Selection listener **/
+    $("#requirementTree").bind("select_node.jstree", function (e, data) {
+      var tabLinks = ['@{Requirements.requirementDetails()}', '@{Requirements.linked()}'];
+      treeNodeSelectionHandler(tabLinks, ['default', 'requirement'], 'requirement', $('#innerTabs'), data);
+    });
+
+
+    /** button initialisation **/
     $(function () {
       $("#create_folder").click(function () {
         $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
@@ -79,3 +108,4 @@
   });
 
 </script>
+#{/set}

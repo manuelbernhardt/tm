@@ -33,13 +33,13 @@ function fnGetSelected(oTableLocal) {
  * Selection handler for "tree menus".
  *
  * @param tabLinks array of links in the order of the tabs on the page
- * @param selectionNodeType type of the node that can be selected in the menu
+ * @param selectionNodeTypes types of the nodes that can be selected in the menu
  * @param selectionType type of the object that is selected (used for the URL query parameter name)
  * @param tabsContainer DOM node containing the tabs
  * @param data jsTree data object of the selection callback
  */
-function treeNodeSelectionHandler(tabLinks, selectionNodeType, selectionType, tabsContainer, data) {
-    if (isSelectedNodeType(data, selectionNodeType)) {
+function treeNodeSelectionHandler(tabLinks, selectionNodeTypes, selectionType, tabsContainer, data) {
+    if (isSelectedNodeType(data, selectionNodeTypes)) {
         var selectedId = data.rslt.obj.attr("id").replace("node_", "");
         selectTab(tabLinks, selectedId, selectionType, tabsContainer);
     }
@@ -68,10 +68,10 @@ function selectTab(tabLinks, selectedId, selectionType, tabsContainer) {
 /**
  * Checks whether a tree node is of the given type
  * @param data the jsTree data object from a callback
- * @param type the type to check agains
+ * @param types the types to check against
  */
-function isSelectedNodeType(data, type) {
-    return data.inst._get_type(data.rslt.obj) == type;
+function isSelectedNodeType(data, types) {
+    return $.contains(types, data.inst._get_type(data.rslt.obj));
 }
 
 /**

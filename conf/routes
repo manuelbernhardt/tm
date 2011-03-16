@@ -7,6 +7,8 @@
 
 GET     /                                       Dashboard.index
 GET     /requirements                           Requirements.index
+GET     /requirements/{requirementId}/details   Requirements.requirementDetails
+GET     /requirements/{requirementId}/linked    Requirements.linked
 GET     /approach                               Approach.index
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data
@@ -20,7 +22,7 @@ GET     /admin                                  admin.Users.index
 GET     /admin/users/data                       admin.Users.data
 POST    /admin/users/edit                       admin.Users.edit
 GET     /admin/projects                         admin.Projects.index
-GET     /admin/projectRoles/data                admin.ProjectRoles.data
+GET     /admin/projectRoles/{projectId}/data    admin.ProjectRoles.data
 POST    /admin/projectRoles/edit                admin.ProjectRoles.edit
 
 *       /                                       module:tree
