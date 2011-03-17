@@ -13,6 +13,8 @@ import models.tree.Node;
  */
 public class RequirementTree extends AbstractTree {
 
+    public static final String REQUIREMENT_TREE = "requirementTree";
+
     @Override
     public String getName() {
         return "requirementTree";
