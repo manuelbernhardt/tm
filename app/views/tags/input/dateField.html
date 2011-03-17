@@ -2,7 +2,7 @@
 <div class="field">
   <label for="${field.id}">${_label}</label>
   <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-         value="${field.value?.format('dd/MM/yyyy')}" class="${field.errorClass}"/>
+         value="${field.value?.format(play.Play.configuration.getProperty('date.format'))}" class="${field.errorClass}"/>
   <span class="error">${field.error}</span>
 </div>
 <script type="text/javascript">
