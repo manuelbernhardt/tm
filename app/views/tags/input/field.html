@@ -9,13 +9,18 @@
 #{if objectField.type == 'text'}
   #{input.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/if}
-#{if objectField.type == 'longtext'}
+#{elseif objectField.type == 'longtext'}
   #{input.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
-#{/if}
-#{if objectField.type == 'relation'}
+#{/elseif}
+#{elseif objectField.type == 'relation'}
   #{input.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField /}
-#{/if}
-
+#{/elseif}
+#{elseif objectField.type == 'date'}
+  #{input.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+#{/elseif}
+#{else}
+  Problem with the hyperspace flux compensator
+#{/else}
 
 
 #{/forms.objectField}
