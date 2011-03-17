@@ -1,7 +1,6 @@
 package controllers;
 
 import models.project.Requirement;
-import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 
@@ -27,18 +26,13 @@ public class Requirements extends TMController {
     }
 
     public static void edit(@Valid Requirement requirement) {
-
         checkInAccount(requirement);
-
         if(Validation.hasErrors()) {
-            // TODO not the right thing to do, I suppose, since we do an AJAX call
-            render("@index", requirement);
+            // TODO handle validation errors in view somehow
+            error();
         }
-
         requirement.save();
-
         ok();
-
     }
 
     /**
@@ -47,11 +41,8 @@ public class Requirements extends TMController {
     private static Requirement getRequirement(Long requirementId) {
         Requirement requirement = null;
         if(requirementId != null) {
-            TreeNode n = TreeNode.find(requirementId, RequirementTree.REQUIREMENT_TREE);
-            if(n != null) {
-                requirement = Requirement.findById(n.getNodeId());
+                requirement = Requirement.findById(requirementId);
                 checkInAccount(requirement);
-            }
         }
         return requirement;
     }
