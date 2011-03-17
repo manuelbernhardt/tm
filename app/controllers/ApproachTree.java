@@ -13,6 +13,8 @@ import models.tree.Node;
  */
 public class ApproachTree extends AbstractTree {
 
+    public static final String APPROACH_TREE = "approachTree";
+
     @Override
     public String getName() {
         return "approachTree";

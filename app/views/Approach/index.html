@@ -12,7 +12,7 @@
     <div id="approachTree" class="tree"></div>
   </div>
   <div class="right_tree">
-    Some thing
+    <div id="cycleDetails">No cycle selected</div>
   </div>
 </div>
 
@@ -21,6 +21,7 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
+
 
     var tree = $("#approachTree").jstree({
       "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
@@ -75,7 +76,11 @@
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
-      // TODO
+      if(isSelectedNodeType(data, ['default', 'approachTestCycle'])) {
+        $.get('@{Approach.cycleDetails()}', { cycleId: getSelectedNode(data) }, function(data) {
+          $('#cycleDetails').html(data);
+        });
+      }
     });
 
 

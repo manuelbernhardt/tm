@@ -40,7 +40,7 @@ function fnGetSelected(oTableLocal) {
  */
 function treeNodeSelectionHandler(tabLinks, selectionNodeTypes, selectionType, tabsContainer, data) {
     if (isSelectedNodeType(data, selectionNodeTypes)) {
-        var selectedId = data.rslt.obj.attr("id").replace("node_", "");
+        var selectedId = getSelectedNode(data);
         selectTab(tabLinks, selectedId, selectionType, tabsContainer);
     }
 }
@@ -73,6 +73,16 @@ function selectTab(tabLinks, selectedId, selectionType, tabsContainer) {
 function isSelectedNodeType(data, types) {
     return $.inArray(data.inst._get_type(data.rslt.obj), types) > -1;
 }
+
+/**
+ * Gets the selected tree node
+ * @param data the jsTree callback data
+ */
+function getSelectedNode(data) {
+    var selectedId = data.rslt.obj.attr("id").replace("node_", "");
+    return selectedId;
+}
+
 
 /**
  * Remove all jQuery dialogs in the DOM tree. This is a bug of jQuery, which adds parts of the dialog
