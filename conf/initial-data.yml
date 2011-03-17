@@ -199,6 +199,64 @@ project.Requirement(technicalReq1):
     name: Datatables need to be sortable
     type: technical
 
+tree.jpa.TreeNode(requirementTreeNode1):
+    level: 0
+    name: Requirement management
+    nodeId: 1
+    opened: false
+    path: 1
+    treeId: requirementTree
+    type: requirementFolder
+
+tree.jpa.TreeNode(requirementTreeNode2):
+    level: 1
+    name: List requirements (tree)
+    nodeId: 1
+    opened: false
+    path: '1___2'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode3):
+    level: 1
+    name: Display requirement details
+    nodeId: 2
+    opened: false
+    path: '1___3'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode4):
+    level: 1
+    name: Display entities linked to requirement
+    nodeId: 3
+    opened: false
+    path: '1___4'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode5):
+    level: 0
+    name: Cross concerns
+    nodeId: 2
+    opened: false
+    path: 5
+    treeId: requirementTree
+    type: requirementFolder
+
+tree.jpa.TreeNode(requirementTreeNode6):
+    level: 1
+    name: Datatables need to be sortable
+    nodeId: 4
+    opened: false
+    path: '5___6'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode4
+
 project.Defect(defect1):
     project: testManagementApplication
     name: The application does not start
