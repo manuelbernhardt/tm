@@ -255,7 +255,7 @@ tree.jpa.TreeNode(requirementTreeNode6):
     path: '5___6'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode4
+    threadRoot: requirementTreeNode5
 
 project.Defect(defect1):
     project: testManagementApplication
