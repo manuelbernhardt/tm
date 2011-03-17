@@ -203,7 +203,7 @@ tree.jpa.TreeNode(requirementTreeNode1):
     level: 0
     name: Requirement management
     nodeId: 1
-    opened: false
+    opened: true
     path: 1
     treeId: requirementTree
     type: requirementFolder
@@ -256,6 +256,87 @@ tree.jpa.TreeNode(requirementTreeNode6):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode5
+
+project.ApproachRelease(releaseProto):
+    project: testManagementApplication
+    name: Proto
+
+project.ApproachTestCycle(unitTest):
+    project: testManagementApplication
+    name: Unit test
+
+project.ApproachTestCycle(systemTest):
+    project: testManagementApplication
+    name: System Test
+
+project.ApproachTestCycle(userAcceptanceTest):
+    project: testManagementApplication
+    name: User Acceptance test
+
+project.ApproachRelease(releaseBeta):
+    project: testManagementApplication
+    name: Beta
+
+project.ApproachRelease(releaseV1):
+    project: testManagementApplication
+    name: V1
+
+tree.jpa.TreeNode(requirementTreeNode7):
+    level: 0
+    name: Proto
+    nodeId: 1
+    opened: true
+    path: 7
+    treeId: approachTree
+    type: approachRelease
+
+tree.jpa.TreeNode(requirementTreeNode8):
+    level: 1
+    name: Unit Test
+    nodeId: 1
+    opened: false
+    path: '7___8'
+    treeId: approachTree
+    type: approachTestCycle
+    threadRoot: requirementTreeNode7
+
+tree.jpa.TreeNode(requirementTreeNode9):
+    level: 1
+    name: System Test
+    nodeId: 1
+    opened: false
+    path: '7___9'
+    treeId: approachTree
+    type: approachTestCycle
+    threadRoot: requirementTreeNode7
+
+tree.jpa.TreeNode(requirementTreeNode10):
+    level: 1
+    name: User Acceptance Test
+    nodeId: 1
+    opened: false
+    path: '7___10'
+    treeId: approachTree
+    type: approachTestCycle
+    threadRoot: requirementTreeNode7
+
+tree.jpa.TreeNode(requirementTreeNode11):
+    level: 0
+    name: Beta
+    nodeId: 1
+    opened: true
+    path: 7
+    treeId: approachTree
+    type: approachRelease
+
+tree.jpa.TreeNode(requirementTreeNode12):
+    level: 0
+    name: V1
+    nodeId: 1
+    opened: true
+    path: 7
+    treeId: approachTree
+    type: approachRelease
 
 project.Defect(defect1):
     project: testManagementApplication
