@@ -1,0 +1,21 @@
+#{if release == null}
+No release selected
+#{/if}
+#{else}
+#{box release.name+' details'}
+
+#{input.form action:@Approach.editRelease(), id:'releaseForm', baseObject:release}
+
+  #{input.field field:'release.name', label:'Name' /}
+
+  <input type="hidden" name="release.id" value="${release.id}"/>
+  <input type="hidden" name="release.project.id" value="${release.project.id}"/>
+  <input type="hidden" name="release.project.account.id" value="${release.project.account.id}"/>
+  <input type="hidden" name="release.project.projectCategory.id" value="${release.project.projectCategory.id}"/>
+  <input type="hidden" name="release.project.projectCategory.account.id" value="${release.project.projectCategory.account.id}"/>
+  <input type="submit" value="Save">
+
+#{/input.form}
+
+#{/box}
+#{/else}

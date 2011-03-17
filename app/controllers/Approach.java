@@ -2,6 +2,7 @@ package controllers;
 
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
+import models.project.ApproachRelease;
 import models.project.ApproachTestCycle;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -20,7 +21,14 @@ public class Approach extends TMController {
     }
 
     @Restrict(UnitRole.USER)
-    public static void edit(@Valid ApproachTestCycle cycle) {
+    public static void releaseDetails(Long releaseId) {
+        ApproachRelease release = getRelease(releaseId);
+        render(release);
+    }
+
+
+    @Restrict(UnitRole.USER)
+    public static void editCycle(@Valid ApproachTestCycle cycle) {
         checkInAccount(cycle);
         if (Validation.hasErrors()) {
             // TODO return validation errors, somehow
@@ -30,10 +38,18 @@ public class Approach extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.USER)
+    public static void editRelease(@Valid ApproachRelease release) {
+        checkInAccount(release);
+        if (Validation.hasErrors()) {
+            // TODO return validation errors, somehow
+            error();
+        }
+        release.save();
+        ok();
+    }
 
-    /**
-     * Resolves an ApproachTestCycle given a TreeNode id
-     */
+
     private static ApproachTestCycle getCycle(Long cycleId) {
         ApproachTestCycle cycle = null;
         if (cycleId != null) {
@@ -41,6 +57,15 @@ public class Approach extends TMController {
             checkInAccount(cycle);
         }
         return cycle;
+    }
+
+    private static ApproachRelease getRelease(Long releaseId) {
+        ApproachRelease release = null;
+        if (releaseId != null) {
+            release = ApproachRelease.findById(releaseId);
+            checkInAccount(release);
+        }
+        return release;
     }
 
 

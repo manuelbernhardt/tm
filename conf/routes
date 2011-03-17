@@ -11,6 +11,9 @@ GET     /requirements/{requirementId}/details   Requirements.requirementDetails
 GET     /requirements/{requirementId}/linked    Requirements.linked
 GET     /approach                               Approach.index
 GET     /approach/{cycleId}/details             Approach.cycleDetails
+GET     /approach/{releaseId}/details           Approach.releaseDetails
+POST    /approach/editCycle                     Approach.editCycle
+POST    /approach/editRelease                   Approach.editRelease
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data
 GET     /profile                                profile.Profile.index

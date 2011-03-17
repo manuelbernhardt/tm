@@ -12,7 +12,7 @@
     <div id="approachTree" class="tree"></div>
   </div>
   <div class="right_tree">
-    <div id="cycleDetails">No cycle selected</div>
+    <div id="details">No cycle selected</div>
   </div>
 </div>
 
@@ -78,7 +78,11 @@
     $("#approachTree").bind("select_node.jstree", function (e, data) {
       if(isSelectedNodeType(data, ['default', 'approachTestCycle'])) {
         $.get('@{Approach.cycleDetails()}', { cycleId: getSelectedNode(data) }, function(data) {
-          $('#cycleDetails').html(data);
+          $('#details').html(data);
+        });
+      } else if(isSelectedNodeType(data, ['approachRelease'])) {
+        $.get('@{Approach.releaseDetails()}', { releaseId: getSelectedNode(data) }, function(data) {
+          $('#details').html(data);
         });
       }
     });
