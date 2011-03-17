@@ -325,7 +325,7 @@ tree.jpa.TreeNode(requirementTreeNode11):
     name: Beta
     nodeId: 1
     opened: true
-    path: 7
+    path: 11
     treeId: approachTree
     type: approachRelease
 
@@ -334,7 +334,7 @@ tree.jpa.TreeNode(requirementTreeNode12):
     name: V1
     nodeId: 1
     opened: true
-    path: 7
+    path: 12
     treeId: approachTree
     type: approachRelease
 
