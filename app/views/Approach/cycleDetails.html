@@ -6,7 +6,26 @@ No cycle selected
 <div class="ui-widget ui-corner-all">
   <div class="ui-widget-header">${cycle.name} details</div>
   <div class="ui-widget-content">
-    Content of the Box
+
+#{input.form action:@Approach.edit(), id:'approachForm', baseObject:cycle}
+
+  #{input.field field:'cycle.name', label:'Name' /}
+  #{input.field field:'cycle.description', label:'Description' /}
+  #{input.field field:'cycle.fromDate', label:'From' /}
+  #{input.field field:'cycle.toDate', label:'To' /}
+
+  <input type="hidden" name="cycle.id" value="${cycle.id}"/>
+  <input type="hidden" name="cycle.project.id" value="${cycle.project.id}"/>
+  <input type="hidden" name="cycle.project.account.id" value="${cycle.project.account.id}"/>
+  <input type="hidden" name="cycle.project.projectCategory.id" value="${cycle.project.projectCategory.id}"/>
+  <input type="hidden" name="cycle.project.projectCategory.account.id" value="${cycle.project.projectCategory.account.id}"/>
+  <input type="submit" value="Save">
+
+#{/input.form}
+
+
+
+
   </div>
 </div>
 
