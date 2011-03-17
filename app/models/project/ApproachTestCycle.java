@@ -1,18 +1,19 @@
 package models.project;
 
-import play.data.validation.MaxSize;
-
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import java.util.Date;
+
+import models.tree.Node;
+import play.data.validation.MaxSize;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class ApproachTestCycle extends ProjectModel {
+public class ApproachTestCycle extends ProjectModel implements Node {
 
     public String name;
 
@@ -23,4 +24,12 @@ public class ApproachTestCycle extends ProjectModel {
 
     public Date toDate;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

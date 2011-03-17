@@ -1,4 +1,98 @@
 #{extends 'main.html' /}
 #{set title:'Test approach' /}
 
-Approach
+
+<div class="container">
+  <div class="left_tree">
+    <div id="actions">
+      <input type="button" id="create_release" value="Create release"/>
+      <input type="button" id="create_cycle" value="Create cycle"/>
+      <input type="button" id="remove" value="Remove"/>
+    </div>
+    <div id="approachTree" class="tree"></div>
+  </div>
+  <div class="right_tree">
+    Some thing
+  </div>
+</div>
+
+
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    var tree = $("#approachTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
+
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "approachTree"
+            };
+          }
+        }
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : {
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for test cycle
+            }
+          },
+          "approachRelease" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO icon for release
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+          }
+        }
+      },
+      "hotkeys": {
+        "Ctrl+x" : function() {
+          this.cut(null)
+        },
+        "Ctrl+v" : function() {
+          this.paste(null)
+        },
+        "Ctrl+n" : function() {
+          this.create_node(null, "after", {attr:{"rel":"default"}});
+        }
+      }
+    });
+
+    #{tree.common id:"approachTree", controller:"TMTreeController" /}
+
+    /** Selection listener **/
+    $("#approachTree").bind("select_node.jstree", function (e, data) {
+      // TODO
+    });
+
+
+    /** button initialisation **/
+    $(function () {
+      $("#create_release").click(function () {
+        $("#approachTree").jstree("create", null, "last", {attr:{"rel":"approachRelease"}});
+      })
+      $("#create_cycle").click(function () {
+        $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+      })
+      $("#remove").click(function () {
+        $("#approachTree").jstree("remove", null);
+      })
+    });
+
+  });
+
+</script>
+#{/set}
