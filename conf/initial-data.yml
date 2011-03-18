@@ -264,14 +264,20 @@ project.ApproachRelease(releaseProto):
 project.ApproachTestCycle(unitTest):
     project: testManagementApplication
     name: Unit test
+    fromDate: 2011-03-01
+    toDate: 2011-03-12
 
 project.ApproachTestCycle(systemTest):
     project: testManagementApplication
     name: System Test
+    fromDate: 2011-03-15
+    toDate: 2011-03-19
 
 project.ApproachTestCycle(userAcceptanceTest):
     project: testManagementApplication
     name: User Acceptance test
+    fromDate: 2011-03-22
+    toDate: 2011-03-25
 
 project.ApproachRelease(releaseBeta):
     project: testManagementApplication
