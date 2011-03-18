@@ -303,7 +303,7 @@ tree.jpa.TreeNode(requirementTreeNode8):
 tree.jpa.TreeNode(requirementTreeNode9):
     level: 1
     name: System Test
-    nodeId: 1
+    nodeId: 2
     opened: false
     path: '7___9'
     treeId: approachTree
@@ -313,7 +313,7 @@ tree.jpa.TreeNode(requirementTreeNode9):
 tree.jpa.TreeNode(requirementTreeNode10):
     level: 1
     name: User Acceptance Test
-    nodeId: 1
+    nodeId: 3
     opened: false
     path: '7___10'
     treeId: approachTree
@@ -323,7 +323,7 @@ tree.jpa.TreeNode(requirementTreeNode10):
 tree.jpa.TreeNode(requirementTreeNode11):
     level: 0
     name: Beta
-    nodeId: 1
+    nodeId: 2
     opened: true
     path: 11
     treeId: approachTree
@@ -332,7 +332,7 @@ tree.jpa.TreeNode(requirementTreeNode11):
 tree.jpa.TreeNode(requirementTreeNode12):
     level: 0
     name: V1
-    nodeId: 1
+    nodeId: 3
     opened: true
     path: 12
     treeId: approachTree
