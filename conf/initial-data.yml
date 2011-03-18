@@ -264,14 +264,20 @@ project.ApproachRelease(releaseProto):
 project.ApproachTestCycle(unitTest):
     project: testManagementApplication
     name: Unit test
+    fromDate: 2011-03-01
+    toDate: 2011-03-12
 
 project.ApproachTestCycle(systemTest):
     project: testManagementApplication
     name: System Test
+    fromDate: 2011-03-15
+    toDate: 2011-03-19
 
 project.ApproachTestCycle(userAcceptanceTest):
     project: testManagementApplication
     name: User Acceptance test
+    fromDate: 2011-03-22
+    toDate: 2011-03-25
 
 project.ApproachRelease(releaseBeta):
     project: testManagementApplication
@@ -303,7 +309,7 @@ tree.jpa.TreeNode(requirementTreeNode8):
 tree.jpa.TreeNode(requirementTreeNode9):
     level: 1
     name: System Test
-    nodeId: 1
+    nodeId: 2
     opened: false
     path: '7___9'
     treeId: approachTree
@@ -313,7 +319,7 @@ tree.jpa.TreeNode(requirementTreeNode9):
 tree.jpa.TreeNode(requirementTreeNode10):
     level: 1
     name: User Acceptance Test
-    nodeId: 1
+    nodeId: 3
     opened: false
     path: '7___10'
     treeId: approachTree
@@ -323,7 +329,7 @@ tree.jpa.TreeNode(requirementTreeNode10):
 tree.jpa.TreeNode(requirementTreeNode11):
     level: 0
     name: Beta
-    nodeId: 1
+    nodeId: 2
     opened: true
     path: 11
     treeId: approachTree
@@ -332,7 +338,7 @@ tree.jpa.TreeNode(requirementTreeNode11):
 tree.jpa.TreeNode(requirementTreeNode12):
     level: 0
     name: V1
-    nodeId: 1
+    nodeId: 3
     opened: true
     path: 12
     treeId: approachTree
