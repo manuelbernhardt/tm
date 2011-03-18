@@ -63,7 +63,7 @@
     /** Selection listener **/
     $("#projectTree").bind("select_node.jstree", function (e, data) {
       var tabLinks = ['@{admin.Projects.projectDetails()}', '@{admin.Projects.roles()}', '@{admin.Projects.users()}'];
-      treeNodeSelectionHandler(tabLinks, 'default', 'project', $('#innerTabs'), data);
+      treeNodeSelectionHandler(tabLinks, ['default'], 'project', $('#innerTabs'), data);
     });
 
     /** Button initialisation **/

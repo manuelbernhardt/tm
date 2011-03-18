@@ -79,8 +79,7 @@ function isSelectedNodeType(data, types) {
  * @param data the jsTree callback data
  */
 function getSelectedNode(data) {
-    var selectedId = data.rslt.obj.attr("id").replace("node_", "");
-    return selectedId;
+    return data.rslt.obj.attr("id").replace("node_", "");
 }
 
 /**
