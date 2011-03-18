@@ -1,10 +1,11 @@
-<div id="${_id}" class="modalDialog" title="${_title}">
+<div id="${_id}" ${(_dnd != null && _dnd) ? '' : 'class="modalDialog"'} title="${_title}">
   #{input.form action:_action, id:_id + 'Form', baseClass:_baseClass}
   %{_body.setProperty('baseClass', _baseClass); }%
   <script type="text/javascript">
     function ${_id}FormSubmissionCallback() {
-      if(typeof ${_id}SubmissionCallback !== 'undefined') {
-        ${_id}SubmissionCallback();
+      if (typeof ${_id}SubmissionCallback !== 'undefined') {
+        ${_id}
+        SubmissionCallback();
       }
       $('#${_id}').dialog("close");
 
@@ -17,36 +18,36 @@
 <button id="${_id}SubmitButton">${_openDialogButtonText}</button>
 
 <script type="text/javascript">
-
-  $('#${_id}').dialog({
-    autoOpen: false,
-    //height: 150,
-    //width: 350,
-    draggable: false,
-    resizable: false,
-    modal: true,
-    buttons: {
-      "${_submitButtonText == null ? _submitButtonText : 'Submit'}": function() {
-        var valid = $('#${_id}Form').validate().form();
-        if (valid) {
-          $('#${_id}Form').submit();
-          $('#${_id}').dialog("close");
-        }
-      },
-      Cancel: function() {
-        $('#${_id}Form').validate().resetForm();
-        $(this).dialog("close");
-      }
-    }
-  });
-
-
   $(document).ready(function() {
+    $('#${_id}').dialog({
+      autoOpen: false,
+      //height: 150,
+      //width: 350,
+      draggable: false,
+      resizable: false,
+      modal: true,
+      buttons: {
+        "${_submitButtonText == null ? _submitButtonText : 'Submit'}": function() {
+          var valid = $('#${_id}Form').validate().form();
+          if (valid) {
+            $('#${_id}Form').submit();
+            $('#${_id}').dialog("close");
+          }
+        },
+        Cancel: function() {
+          $('#${_id}Form').validate().resetForm();
+          $(this).dialog("close");
+        }
+      }
+    });
+
+
     $("#${_id}SubmitButton")
             .button()
             .click(function() {
       $("#${_id}").dialog("open");
     });
   });
+
 
 </script>
