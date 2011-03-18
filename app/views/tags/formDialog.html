@@ -4,11 +4,9 @@
   <script type="text/javascript">
     function ${_id}FormSubmissionCallback() {
       if (typeof ${_id}SubmissionCallback !== 'undefined') {
-        ${_id}
-        SubmissionCallback();
+        ${_id}SubmissionCallback();
       }
       $('#${_id}').dialog("close");
-
     }
   </script>
   #{doBody /}
@@ -48,6 +46,4 @@
       $("#${_id}").dialog("open");
     });
   });
-
-
 </script>
