@@ -75,6 +75,10 @@
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
     });
 
+    $("#remove").click(function () {
+      $("#projectTree").jstree("remove", null);
+    });
+
   });
 </script>
 
@@ -82,3 +86,4 @@
 
 <input type="button" id="create_category" value="New project category"/>
 <input type="button" id="create_project" value="New project"/>
+<input type="button" id="remove" value="Remove"/>

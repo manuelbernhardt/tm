@@ -64,7 +64,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         Account userAccount = TMController.getUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             Project p = Project.<Project>findById(id);
-            if(!p.isInAccount(userAccount)) {
+            if (!p.isInAccount(userAccount)) {
                 return false;
             }
             p.name = name;
@@ -72,7 +72,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory p = ProjectCategory.findById(id);
-            if(!p.isInAccount(userAccount)) {
+            if (!p.isInAccount(userAccount)) {
                 return false;
             }
             p.name = name;
@@ -91,7 +91,15 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        // TODO
+        if (type.equals(ProjectTreeDataHandler.PROJECT)) {
+            Project project = Project.findById(id);
+            project.delete();
+            return true;
+        } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
+            ProjectCategory category = ProjectCategory.findById(id);
+            category.delete();
+            return true;
+        }
         return false;
     }
 
