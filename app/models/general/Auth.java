@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
 import play.data.validation.Email;
+import play.data.validation.Password;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 import play.libs.Crypto;
@@ -44,6 +45,7 @@ public class Auth extends Model implements RoleHolder {
     public String phone;
 
     @Required
+    @Password
     @Column(nullable = false)
     public String password;
 

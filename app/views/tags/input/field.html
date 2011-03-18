@@ -18,6 +18,9 @@
 #{elseif objectField.type == 'date'}
   #{input.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/elseif}
+#{elseif objectField.type == 'password'}
+  #{input.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+#{/elseif}
 #{else}
   Problem with the hyperspace flux compensator
 #{/else}
