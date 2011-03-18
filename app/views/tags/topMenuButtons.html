@@ -1,0 +1,57 @@
+<button id="userButton">${_firstName} ${_lastName}</button>
+<ul>
+  <li><a href="@{profile.Profile.index}">Profile</a></li>
+  <li><a href="/logout">Logout</a></li>
+</ul>
+
+<button id="adminButton">Admin</button>
+<ul>
+  <li><a href="@{admin.Users.index()}">Users</a></li>
+  <li><a href="@{admin.Projects.index()}">Projects</a></li>
+</ul>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    var adminButton = $("#adminButton").button({
+      icons: {
+        primary: "ui-icon-gear",
+        secondary: "ui-icon-triangle-1-s"
+      },
+      text: false
+    });
+    var userButton = $("#userButton").button({
+      icons: {
+        primary: "ui-icon-person",
+        secondary: "ui-icon-triangle-1-s"
+      }
+    });
+
+    var buttons = [$('#adminButton'), $('#userButton')];
+    $.each(buttons,
+            function() {
+              var menu = $(this).next().menu({
+                select: function(event, ui) {
+                  $(this).hide();
+                  document.location = ui.item.children()[0].href;
+                }
+              });
+              menu.hide();
+              $(this).click(function(event) {
+                var menu = $(this).next();
+                if (menu.is(":visible")) {
+                  menu.hide();
+                  return false;
+                }
+                menu.menu("blur").show().position({
+                  my: "left top",
+                  at: "left bottom",
+                  of: this
+                });
+                $(document).one("click", function() {
+                  menu.hide();
+                });
+                return false;
+              })
+            });
+  });
+</script>
