@@ -20,6 +20,8 @@ public class TestScriptStep extends ProjectModel {
 
     public Integer position;
 
+    public String name;
+
     @MaxSize(5000)
     public String description;
 
