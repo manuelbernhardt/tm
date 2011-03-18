@@ -83,6 +83,19 @@ function getSelectedNode(data) {
     return selectedId;
 }
 
+/**
+ * Get a node within a tree by matching its type and ID
+ *
+ * FIXME fetch the objectId, somehow
+ *
+ * @param treeId the DOM ID of the tree
+ * @param type the type of the node
+ * @param nodeId the id of the object (it's not the DOM ID)
+ */
+function getTreeNode(treeId, type, nodeId) {
+    return $('#' + treeId + ' li[id=node_' +  nodeId + '][rel=' + type + ']');
+}
+
 
 /**
  * Remove all jQuery dialogs in the DOM tree. This is a bug of jQuery, which adds parts of the dialog

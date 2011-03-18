@@ -1,6 +1,7 @@
 package controllers;
 
 import models.project.Requirement;
+import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 
@@ -41,7 +42,11 @@ public class Requirements extends TMController {
     private static Requirement getRequirement(Long requirementId) {
         Requirement requirement = null;
         if(requirementId != null) {
-                requirement = Requirement.findById(requirementId);
+                TreeNode node = TreeNode.find(requirementId, RequirementTree.REQUIREMENT_TREE);
+                if(node == null) {
+                    return null;
+                }
+                requirement = Requirement.findById(node.nodeId);
                 checkInAccount(requirement);
         }
         return requirement;

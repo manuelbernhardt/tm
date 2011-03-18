@@ -5,6 +5,12 @@ No release selected
 #{box release.name+' details'}
 
 #{input.form action:@Approach.editRelease(), id:'releaseForm', baseObject:release}
+<script type="text/javascript">
+  function releaseFormSubmissionCallback() {
+//    jQuery.jstree._reference('approachTree').refresh(getTreeNode('approachTree', 'approachRelease', '${release.id}'));
+  }
+</script>
+
 
   #{input.field field:'release.name', label:'Name' /}
 

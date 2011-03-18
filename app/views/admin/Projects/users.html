@@ -37,7 +37,7 @@ No project selected
 
             // select the role node in the tree as we may have only selected it through the form
             var $tree = jQuery.jstree._reference('#rolesUserTree');
-            var roleNode = $('#rolesUserTree li[id=' + selectedRoleId + '][rel="role"]');
+            var roleNode = getTreeNode(selectedRoleId);
             $tree.select_node(roleNode);
 
             // create the assignment by adding a node to the tree

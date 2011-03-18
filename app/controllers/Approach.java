@@ -4,6 +4,7 @@ import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
 import models.project.ApproachRelease;
 import models.project.ApproachTestCycle;
+import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 
@@ -53,7 +54,11 @@ public class Approach extends TMController {
     private static ApproachTestCycle getCycle(Long cycleId) {
         ApproachTestCycle cycle = null;
         if (cycleId != null) {
-            cycle = ApproachTestCycle.findById(cycleId);
+            TreeNode node = TreeNode.find(cycleId, ApproachTree.APPROACH_TREE);
+            if(node == null) {
+                return null;
+            }
+            cycle = ApproachTestCycle.findById(node.nodeId);
             checkInAccount(cycle);
         }
         return cycle;
@@ -62,7 +67,11 @@ public class Approach extends TMController {
     private static ApproachRelease getRelease(Long releaseId) {
         ApproachRelease release = null;
         if (releaseId != null) {
-            release = ApproachRelease.findById(releaseId);
+            TreeNode node = TreeNode.find(releaseId, ApproachTree.APPROACH_TREE);
+            if (node == null) {
+                return null;
+            }
+            release = ApproachRelease.findById(node.nodeId);
             checkInAccount(release);
         }
         return release;
