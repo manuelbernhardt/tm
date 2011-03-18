@@ -9,6 +9,8 @@ No role selected
     $('#flash').show();
     $('#flash').fadeOut(3000, 'easeInExpo');
   });
+  $('#roleSubmit').button();
+
 </script>
 
 <div>
@@ -62,7 +64,7 @@ No role selected
     </tr>
     <input type="hidden" name="roleId" value="${role.id}"/>
     <tr>
-      <td><input type="submit" value="Update"/></td>
+      <td><input id="roleSubmit" type="submit" value="Update"/></td>
     </tr>
 
     </tbody>
