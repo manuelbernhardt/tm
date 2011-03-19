@@ -10,7 +10,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class TestInstanceStatus extends ProjectModel {
+public class TestStatusExecution extends ProjectModel {
 
     public Integer position;
     public String status;

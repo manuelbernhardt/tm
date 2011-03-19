@@ -18,6 +18,6 @@ public class TestInstance extends ProjectModel {
     public ApproachTestCycle testCycle;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-    public TestInstanceStatus status;
+    public TestStatusExecution executionStatus;
 
 }
