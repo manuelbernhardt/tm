@@ -9,11 +9,19 @@ GET     /                                       Dashboard.index
 GET     /requirements                           Requirements.index
 GET     /requirements/{requirementId}/details   Requirements.requirementDetails
 GET     /requirements/{requirementId}/linked    Requirements.linked
+
 GET     /approach                               Approach.index
 GET     /approach/{cycleId}/details             Approach.cycleDetails
 GET     /approach/{releaseId}/details           Approach.releaseDetails
 POST    /approach/editCycle                     Approach.editCycle
 POST    /approach/editRelease                   Approach.editRelease
+
+GET     /preparation                            Preparation.index
+GET     /preparation/content/{scriptId}         Preparation.content
+GET     /preparation/{scriptId}/details         Preparation.scriptDetails
+GET     /preparation/{scriptId}/steps           Preparation.steps
+GET     /preparation/{scriptId}/linked          Preparation.linked
+
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data
 GET     /profile                                profile.Profile.index

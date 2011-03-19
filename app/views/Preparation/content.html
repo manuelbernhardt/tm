@@ -1,0 +1,37 @@
+#{if script == null}
+No script selected
+#{/if}
+#{else}
+
+#{box 'Test Script "'+script.name+'"'}
+<div id="detailsTabs">
+  <ul>
+    <li><a href="@{Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+    <li><a href="@{Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
+    <li><a href="@{Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a></li>
+  </ul>
+</div>
+
+#{/box}
+
+        <br/>
+        <br/>
+
+#{box 'Add to cycle, assign, schedule, set test data'}
+#{/box}
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#detailsTabs").tabs({
+      select: function() {
+        removeDialogs();
+      }
+    });
+
+  });
+</script>
+
+
+#{/else}

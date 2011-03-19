@@ -1,0 +1,108 @@
+#{extends 'main.html' /}
+#{set title:'Test preparation' /}
+
+
+<div class="container">
+  <div class="left_tree">
+    <div id="actions">
+      <input type="button" id="create_folder" value="Add folder"/>
+      <input type="button" id="create_script" value="Add Test Script"/>
+      <input type="button" id="remove" value="Remove"/>
+    </div>
+    #{box 'Test Script Repository'}
+    <div id="repositoryTree" class="tree"></div>
+    #{/box}
+  </div>
+  <div class="right_tree">
+    <div id="details">No script selected</div>
+  </div>
+</div>
+
+
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+
+    var tree = $("#repositoryTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
+
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "repositoryTree"
+            };
+          }
+        }
+      },
+      "ui" : {
+        "select_limit": 1
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : {
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for test script
+            }
+          },
+          "testScriptFolder" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO icon for release
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+          }
+        }
+      },
+      "hotkeys": {
+        "Ctrl+x" : function() {
+          this.cut(null)
+        },
+        "Ctrl+v" : function() {
+          this.paste(null)
+        },
+        "Ctrl+n" : function() {
+          this.create_node(null, "after", {attr:{"rel":"default"}});
+        }
+      }
+    });
+
+    #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
+
+    /** Selection listener **/
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+      if(isSelectedNodeType(data, ['default', 'testScript'])) {
+        $.get('@{Preparation.content()}', { nodeId: getSelectedNode(data) }, function(data) {
+          $('#details').html(data);
+        });
+      }
+    });
+
+
+    /** button initialisation **/
+    $(function () {
+      $("#create_folder").click(function () {
+        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"testScriptFolder"}});
+      })
+      $("#create_script").click(function () {
+        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+      })
+      $("#remove").click(function () {
+        $("#repositoryTree").jstree("remove", null);
+      })
+    });
+
+  });
+
+</script>
+#{/set}
