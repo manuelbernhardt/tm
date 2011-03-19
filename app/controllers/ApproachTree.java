@@ -16,11 +16,6 @@ public class ApproachTree extends AbstractTree {
     public static final String APPROACH_TREE = "approachTree";
 
     @Override
-    public String getName() {
-        return "approachTree";
-    }
-
-    @Override
     protected NodeType[] getNodes() {
         return new NodeType[]{type(ApproachRelease.class, true), type(ApproachTestCycle.class, false)};
     }

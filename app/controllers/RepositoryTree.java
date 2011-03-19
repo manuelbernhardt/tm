@@ -16,11 +16,6 @@ public class RepositoryTree extends AbstractTree {
     public static final String REPOSITORY_TREE = "repositoryTree";
 
     @Override
-    public String getName() {
-        return "repositoryTree";
-    }
-
-    @Override
     protected NodeType[] getNodes() {
         return new NodeType[] {type(TestScript.class, false), type(TestScriptFolder.class, true)};
     }

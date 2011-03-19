@@ -16,11 +16,6 @@ public class RequirementTree extends AbstractTree {
     public static final String REQUIREMENT_TREE = "requirementTree";
 
     @Override
-    public String getName() {
-        return "requirementTree";
-    }
-
-    @Override
     protected NodeType[] getNodes() {
         return new NodeType[]{type(RequirementFolder.class, true), type(Requirement.class, false)};
     }
