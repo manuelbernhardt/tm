@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.TMController;
-import controllers.tree.ChildProducer;
-import controllers.tree.SimpleNode;
-import controllers.tree.TreeDataHandler;
+import tree.simple.ChildProducer;
+import tree.JSTreeNode;
+import tree.simple.SimpleNode;
+import tree.TreeDataHandler;
 import models.general.Account;
 import models.project.Project;
 import models.project.ProjectCategory;
-import models.tree.JSTreeNode;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -32,7 +32,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         if (id == -1) {
             // virtual root node
             ChildProducer rootChildProducer = new ProjectsRootChildProducer(producer);
-            controllers.tree.SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
+            SimpleNode root = new SimpleNode(0l, "Projects", "root", true, true, rootChildProducer);
             l.add(root);
         } else {
             l.addAll(producer.produce(id));

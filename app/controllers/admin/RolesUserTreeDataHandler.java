@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.TMController;
-import controllers.tree.ChildProducer;
-import controllers.tree.SimpleNode;
-import controllers.tree.TreeDataHandler;
+import tree.simple.ChildProducer;
+import tree.JSTreeNode;
+import tree.simple.SimpleNode;
+import tree.TreeDataHandler;
 import models.project.Role;
 import models.tm.User;
-import models.tree.JSTreeNode;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

@@ -2,11 +2,11 @@ package controllers;
 
 import java.util.Map;
 
-import controllers.tree.AbstractTree;
-import controllers.tree.NodeType;
+import tree.persistent.AbstractTree;
+import tree.persistent.NodeType;
 import models.project.ApproachRelease;
 import models.project.ApproachTestCycle;
-import models.tree.Node;
+import tree.persistent.Node;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

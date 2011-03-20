@@ -2,11 +2,11 @@ package controllers;
 
 import java.util.Map;
 
-import controllers.tree.AbstractTree;
-import controllers.tree.NodeType;
+import tree.persistent.AbstractTree;
+import tree.persistent.Node;
+import tree.persistent.NodeType;
 import models.project.Requirement;
 import models.project.RequirementFolder;
-import models.tree.Node;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

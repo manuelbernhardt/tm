@@ -5,9 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import controllers.tree.AbstractTree;
-import models.tree.Node;
 import play.data.validation.Required;
+import tree.persistent.Node;
+import tree.persistent.NodeName;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -18,12 +18,8 @@ public class RequirementFolder extends ProjectModel implements Node {
 
     @Column(nullable = false)
     @Required
+    @NodeName
     public String name;
-
-    public void setName(String name) {
-        this.name = name;
-        AbstractTree.rename(this, name);
-    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

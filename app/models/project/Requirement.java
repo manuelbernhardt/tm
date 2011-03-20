@@ -6,10 +6,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import controllers.tree.AbstractTree;
 import models.tm.User;
-import models.tree.Node;
 import play.data.validation.MaxSize;
+import tree.persistent.Node;
+import tree.persistent.NodeName;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -18,6 +18,7 @@ import play.data.validation.MaxSize;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
 public class Requirement extends ProjectModel implements Node {
 
+    @NodeName
     public String name;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
@@ -28,11 +29,6 @@ public class Requirement extends ProjectModel implements Node {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public User createdBy;
-
-    public void setName(String name) {
-        this.name = name;
-        AbstractTree.rename(this, name);
-    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
