@@ -48,7 +48,9 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
                     cycleList = new ArrayList<TestCycle>();
                     releases.put(r, cycleList);
                 }
-                cycleList.add(c);
+                if(!cycleList.contains(c)) {
+                    cycleList.add(c);
+                }
             }
             ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
 
@@ -59,9 +61,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             }
             return result;
         } else {
-            // cycles
-            List<JSTreeNode> children = cycleChildProducer.produce(parentId);
-            return children;
+            return null;
         }
     }
 
@@ -104,7 +104,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             ti.project = script.project;
             ti.testCycle = cycle;
             ti.script = script;
-            ti.name = "Test instance " + (Instance.count() + 1) + " for test script " + script.name;
+            ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1) + " for test script " + script.name;
             boolean created = ti.create();
             if (!created) {
                 // TODO log error
