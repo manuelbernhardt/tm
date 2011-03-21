@@ -28,7 +28,7 @@ var tree = $("#approachTree").jstree({
           "image" : "@{'public/images/jstree/file.png'}" // TODO icon for test cycle
         }
       },
-      "approachRelease" : {
+      "release" : {
         "valid_children" : [ "default" ],
         "icon" : {
           "image" : "@{'public/images/jstree/folder.png'}" // TODO icon for release

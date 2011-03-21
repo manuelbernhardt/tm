@@ -36,7 +36,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             }
             final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
             for (TestCycle c : cycles) {
-                TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "approachRelease").first();
+                TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "release").first();
                 Release r = Release.findById(n.getParent().getNodeId());
                 List<TestCycle> cycleList = releases.get(r);
                 if (cycleList == null) {
@@ -54,14 +54,14 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
                         for (Release parent : releases.keySet()) {
                             if (parent.getId().equals(id)) {
                                 for (TestCycle c : releases.get(parent)) {
-                                    children.add(new SimpleNode(c.getId(), c.name, "approachTestCycle", false, false, null));
+                                    children.add(new SimpleNode(c.getId(), c.name, "testCycle", false, false, null));
                                 }
                             }
                         }
                         return children;
                     }
                 };
-                SimpleNode rNode = new SimpleNode(r.getId(), r.name, "approachRelease", true, true, p);
+                SimpleNode rNode = new SimpleNode(r.getId(), r.name, "release", true, true, p);
                 result.add(rNode);
             }
             return result;
@@ -86,7 +86,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
     public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
 
-        if (type.equals("approachTestCycle")) {
+        if (type.equals("testCycle")) {
             String cycleNodeId = args.get("cycleNodeId");
             String scriptId = args.get("scriptId");
             if (cycleNodeId == null || scriptId == null) {

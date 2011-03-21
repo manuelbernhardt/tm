@@ -29,7 +29,7 @@
     $("#remove_cycle").click(function () {
       var $tree = jQuery.jstree._reference('#scriptCycleTree');
       var selectedNode = $tree.get_selected();
-      if (isSelectedNodeOfType($tree, selectedNode, ['default', 'approachTestCycle'])) {
+      if (isSelectedNodeOfType($tree, selectedNode, ['default', 'testCycle'])) {
         selectedNode.data("args", {scriptId: "${script.id}"});
         $tree.delete_node(selectedNode);
       }
@@ -47,7 +47,7 @@
           var treeContainer = $("#approachTree");
           var $tree = jQuery.jstree._reference(treeContainer);
           var selectedNode = $tree.get_selected();
-          if($tree._get_type(selectedNode) == 'approachTestCycle') {
+          if($tree._get_type(selectedNode) == 'testCycle') {
             valid = true;
           } else {
             // display validation error or message somehow
@@ -57,7 +57,7 @@
           if (valid) {
             var name = selectedNode.text();
             alert(name);
-            $("#scriptCycleTree").jstree("create", null, "last", {attr: {"rel": "approachTestCycle"}, data: name, metadata: {args: {cycleNodeId: selectedNode.attr('id').replace('node_', ''), scriptId: "${script.id}"}}}, null, true);
+            $("#scriptCycleTree").jstree("create", null, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: selectedNode.attr('id').replace('node_', ''), scriptId: "${script.id}"}}}, null, true);
             var cycleTreeContainer = $("#scriptCycleTree");
             jQuery.jstree._reference(cycleTreeContainer).refresh();
             jQuery.jstree._reference(cycleTreeContainer).deselect_all();

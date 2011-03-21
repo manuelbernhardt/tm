@@ -27,11 +27,11 @@
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
-      if(isSelectedNodeType(data, ['default', 'approachTestCycle'])) {
+      if(isSelectedNodeType(data, ['default', 'testCycle'])) {
         $.get('@{Approach.cycleDetails()}', { cycleId: getSelectedNode(data) }, function(data) {
           $('#details').html(data);
         });
-      } else if(isSelectedNodeType(data, ['approachRelease'])) {
+      } else if(isSelectedNodeType(data, ['release'])) {
         $.get('@{Approach.releaseDetails()}', { releaseId: getSelectedNode(data) }, function(data) {
           $('#details').html(data);
         });
@@ -41,7 +41,7 @@
 
     /** button initialisation **/
     $("#create_release").click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"approachRelease"}});
+      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"release"}});
     })
     $("#create_cycle").click(function () {
       $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}});

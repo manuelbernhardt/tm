@@ -294,7 +294,7 @@ tree.jpa.TreeNode(requirementTreeNode7):
     opened: true
     path: 7
     treeId: approachTree
-    type: approachRelease
+    type: release
 
 tree.jpa.TreeNode(requirementTreeNode8):
     level: 1
@@ -303,7 +303,7 @@ tree.jpa.TreeNode(requirementTreeNode8):
     opened: false
     path: '7___8'
     treeId: approachTree
-    type: approachTestCycle
+    type: testCycle
     threadRoot: requirementTreeNode7
 
 tree.jpa.TreeNode(requirementTreeNode9):
@@ -313,7 +313,7 @@ tree.jpa.TreeNode(requirementTreeNode9):
     opened: false
     path: '7___9'
     treeId: approachTree
-    type: approachTestCycle
+    type: testCycle
     threadRoot: requirementTreeNode7
 
 tree.jpa.TreeNode(requirementTreeNode10):
@@ -323,7 +323,7 @@ tree.jpa.TreeNode(requirementTreeNode10):
     opened: false
     path: '7___10'
     treeId: approachTree
-    type: approachTestCycle
+    type: testCycle
     threadRoot: requirementTreeNode7
 
 tree.jpa.TreeNode(requirementTreeNode11):
@@ -333,7 +333,7 @@ tree.jpa.TreeNode(requirementTreeNode11):
     opened: true
     path: 11
     treeId: approachTree
-    type: approachRelease
+    type: release
 
 tree.jpa.TreeNode(requirementTreeNode12):
     level: 0
@@ -342,7 +342,7 @@ tree.jpa.TreeNode(requirementTreeNode12):
     opened: true
     path: 12
     treeId: approachTree
-    type: approachRelease
+    type: release
 
 project.Defect(defect1):
     project: testManagementApplication
