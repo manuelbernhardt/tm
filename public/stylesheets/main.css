@@ -59,9 +59,18 @@ td.sNone {
   display: none;
 }
 
+/* styles for form elements */
+form label {
+	display:block;
+	float:left;
+	width:100px;
+	text-align:right;
+	margin:6px 5px 0px 0px;
+}
+
 /* styles for form elements in dialogs */
 
-.ui-dialog label, .ui-dialog input {
+.ui-dialog input {
   display: block;
   margin-right: 5px;
 }
