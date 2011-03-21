@@ -36,6 +36,13 @@ general.Auth(tamaraAuth):
     password: tamy
     account: oxiras
 
+general.Auth(christianAuth):
+    firstName: Christian
+    lastName: Carlsen
+    email: christian@example.com
+    password: christian
+    account: oxiras
+
 project.ProjectCategory(ProjCat2011):
     name: 2011
     account: oxiras
@@ -160,6 +167,13 @@ tm.User(tamara):
     projectRoles:
        - demViewOnly
        - tmTestExecution
+
+tm.User(christian):
+    authentication: christianAuth
+    isApplicationAdmin: true
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestLead
 
 project.RequirementType(functional):
     project: testManagementApplication
@@ -287,7 +301,7 @@ project.approach.Release(releaseV1):
     project: testManagementApplication
     name: V1
 
-tree.jpa.TreeNode(requirementTreeNode7):
+tree.jpa.TreeNode(approachTreeNode7):
     level: 0
     name: Proto
     nodeId: 1
@@ -296,7 +310,7 @@ tree.jpa.TreeNode(requirementTreeNode7):
     treeId: approachTree
     type: release
 
-tree.jpa.TreeNode(requirementTreeNode8):
+tree.jpa.TreeNode(approachTreeNode8):
     level: 1
     name: Unit Test
     nodeId: 1
@@ -304,9 +318,9 @@ tree.jpa.TreeNode(requirementTreeNode8):
     path: '7___8'
     treeId: approachTree
     type: testCycle
-    threadRoot: requirementTreeNode7
+    threadRoot: approachTreeNode7
 
-tree.jpa.TreeNode(requirementTreeNode9):
+tree.jpa.TreeNode(approachTreeNode9):
     level: 1
     name: System Test
     nodeId: 2
@@ -314,9 +328,9 @@ tree.jpa.TreeNode(requirementTreeNode9):
     path: '7___9'
     treeId: approachTree
     type: testCycle
-    threadRoot: requirementTreeNode7
+    threadRoot: approachTreeNode7
 
-tree.jpa.TreeNode(requirementTreeNode10):
+tree.jpa.TreeNode(approachTreeNode10):
     level: 1
     name: User Acceptance Test
     nodeId: 3
@@ -324,9 +338,9 @@ tree.jpa.TreeNode(requirementTreeNode10):
     path: '7___10'
     treeId: approachTree
     type: testCycle
-    threadRoot: requirementTreeNode7
+    threadRoot: approachTreeNode7
 
-tree.jpa.TreeNode(requirementTreeNode11):
+tree.jpa.TreeNode(approachTreeNode11):
     level: 0
     name: Beta
     nodeId: 2
@@ -335,7 +349,7 @@ tree.jpa.TreeNode(requirementTreeNode11):
     treeId: approachTree
     type: release
 
-tree.jpa.TreeNode(requirementTreeNode12):
+tree.jpa.TreeNode(approachTreeNode12):
     level: 0
     name: V1
     nodeId: 3
@@ -343,6 +357,102 @@ tree.jpa.TreeNode(requirementTreeNode12):
     path: 12
     treeId: approachTree
     type: release
+
+project.test.ScriptFolder(testScriptFolderAdmin):
+    project: testManagementApplication
+    name: Administration
+
+project.test.ScriptFolder(testScriptFolderAdminUsers):
+    project: testManagementApplication
+    name: Users
+
+project.test.ScriptFolder(testScriptFolderAdminProjects):
+    project: testManagementApplication
+    name: Projects
+
+project.test.Script(testScriptAdminProjectsCreate):
+    project: testManagementApplication
+    name: Create new project
+
+project.test.Script(testScriptAdminProjectsEdit):
+    project: testManagementApplication
+    name: Edit project details
+
+project.test.ScriptFolder(testScriptFolderRequirements):
+    project: testManagementApplication
+    name: Requirements
+
+project.test.Script(testScriptRequirement1):
+    project: testManagementApplication
+    name: Register new requirement
+
+tree.jpa.TreeNode(repositoryTreeNode13):
+    level: 0
+    name: Administration
+    nodeId: 1
+    opened: true
+    path: 13
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode14):
+    level: 1
+    name: Users
+    nodeId: 2
+    opened: true
+    path: '13___14'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode15):
+    level: 1
+    name: Projects
+    nodeId: 3
+    opened: true
+    path: '13___15'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode16):
+    level: 2
+    name: Create new project
+    nodeId: 1
+    opened: true
+    path: '13___15___16'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode17):
+    level: 2
+    name: Edit project details
+    nodeId: 2
+    opened: true
+    path: '13___15___17'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode18):
+    level: 0
+    name: Requirement Management
+    nodeId: 4
+    opened: true
+    path: 18
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode19):
+    level: 1
+    name: Register new requirement
+    nodeId: 3
+    opened: true
+    path: '18___19'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode18
 
 project.Defect(defect1):
     project: testManagementApplication
