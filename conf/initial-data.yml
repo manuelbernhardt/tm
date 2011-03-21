@@ -358,6 +358,102 @@ tree.jpa.TreeNode(approachTreeNode12):
     treeId: approachTree
     type: release
 
+project.test.ScriptFolder(testScriptFolderAdmin):
+    project: testManagementApplication
+    name: Administration
+
+project.test.ScriptFolder(testScriptFolderAdminUsers):
+    project: testManagementApplication
+    name: Users
+
+project.test.ScriptFolder(testScriptFolderAdminProjects):
+    project: testManagementApplication
+    name: Projects
+
+project.test.Script(testScriptAdminProjectsCreate):
+    project: testManagementApplication
+    name: Create new project
+
+project.test.Script(testScriptAdminProjectsEdit):
+    project: testManagementApplication
+    name: Edit project details
+
+project.test.ScriptFolder(testScriptFolderRequirements):
+    project: testManagementApplication
+    name: Requirements
+
+project.test.Script(testScriptRequirement1):
+    project: testManagementApplication
+    name: Register new requirement
+
+tree.jpa.TreeNode(repositoryTreeNode13):
+    level: 0
+    name: Administration
+    nodeId: 1
+    opened: true
+    path: 13
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode14):
+    level: 1
+    name: Users
+    nodeId: 2
+    opened: true
+    path: '13___14'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode15):
+    level: 1
+    name: Projects
+    nodeId: 3
+    opened: true
+    path: '13___15'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode16):
+    level: 2
+    name: Create new project
+    nodeId: 1
+    opened: true
+    path: '13___15___16'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode17):
+    level: 2
+    name: Edit project details
+    nodeId: 2
+    opened: true
+    path: '13___15___17'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode18):
+    level: 0
+    name: Requirement Management
+    nodeId: 4
+    opened: true
+    path: 18
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode19):
+    level: 1
+    name: Register new requirement
+    nodeId: 3
+    opened: true
+    path: '18___19'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode18
+
 project.Defect(defect1):
     project: testManagementApplication
     name: The application does not start
