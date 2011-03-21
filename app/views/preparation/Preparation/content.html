@@ -4,12 +4,11 @@ No script selected
 #{else}
 
 #{box 'Test Script "'+script.name+'"'}
-<div id="detailsTabs">
+<div id="scriptDetailsTabs">
   <ul>
-    <li><a href="@{Preparation.scriptDetails('scriptId': script.id)}"
-           id="scriptDetailsLink"><span>Description</span></a></li>
-    <li><a href="@{Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
-    <li><a href="@{Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
+    <li><a href="@{preparation.Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+    <li><a href="@{preparation.Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
+    <li><a href="@{preparation.Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
     </li>
   </ul>
 </div>
@@ -20,15 +19,21 @@ No script selected
 <br/>
 
 #{box 'Add to cycle, assign, schedule, set test data'}
-#{include 'Preparation/cycleAssignDialog.html' /}
-<div id="scriptCycleTree" class="tree"></div>
+<div class="left_tree">
+  #{include 'preparation/Preparation/cycleAssignDialog.html' /}
+  <div id="scriptCycleTree" class="tree"></div>
+</div>
+<div class="right_tree">
+  <div id="instanceDetails">No test instance selected</div>
+</div>
+
 
 #{/box}
 
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $("#detailsTabs").tabs({
+    $("#scriptDetailsTabs").tabs({
       select: function() {
         removeDialogs();
       }
@@ -80,6 +85,9 @@ No script selected
       }
     });
     #{tree.common id:"scriptCycleTree", controller:"TMTreeController" /}
+
+    #{tree.selectionListener treeId:"scriptCycleTree", type:"instance", types:["default", "instance"], action:@preparation.Instances.content(), targetId:"instanceDetails" /}
+
 
   });
 </script>

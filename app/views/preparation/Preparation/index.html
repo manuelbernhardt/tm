@@ -14,7 +14,7 @@
     #{/box}
   </div>
   <div class="right_tree">
-    <div id="details">No script selected</div>
+    <div id="scriptDetails">No script selected</div>
   </div>
 </div>
 
@@ -79,15 +79,7 @@
 
     #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
 
-    /** Selection listener **/
-    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
-      if(isSelectedNodeType(data, ['default', 'script'])) {
-        $.get('@{Preparation.content()}', { nodeId: getSelectedNode(data) }, function(data) {
-          $('#details').html(data);
-        });
-      }
-    });
-
+    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@preparation.Preparation.content(), targetId:"scriptDetails" /}
 
     /** button initialisation **/
     $(function () {
