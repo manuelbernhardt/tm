@@ -1,1 +1,63 @@
-Steps
+#{if script == null}
+No script selected
+#{/if}
+#{else}
+
+#{formDialog id:'newStepDialog', title:'Create a step', action:@preparation.Preparation.createStep(), baseClass:'models.project.test.ScriptStep',
+openDialogButtonText:'Create new script step', submitButtonText:'Create step', width: 500, height: 500}
+
+<script type="text/javascript">
+  function newStepDialogSubmissionCallback() {
+    $("#stepTable").dataTable().fnDraw();
+  }
+</script>
+#{input.field field:'step.name', label:'Name' /}
+#{input.field field:'step.position', label:'Position' /}
+#{input.field field:'step.description', label:'Description' /}
+#{input.field field:'step.expectedResult', label:'Expected result' /}
+<input type="hidden" name="scriptId" value="${script.id}" />
+#{/formDialog}
+
+<table class="display" id="stepTable">
+  <thead>
+  <tr>
+    <th>Nr</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Expected results</th>
+  </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+
+    #{tabularasa.init tableId:'stepTable'}
+    var stepTableParameters = {
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone" },
+        {"sName": "position"},
+        {"sName": "name"},
+        {"sName": "description"},
+        {"sName": "expectedResult"}
+      ],
+      "sAjaxSource": "@{preparation.Preparation.stepData('scriptId': script.id)}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bFilter": false,
+      "bSort": false,
+      "bLengthChange": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "oLanguage": {
+        "sZeroRecords": "No steps defined yet"
+      }
+    };
+    #{/tabularasa.init}
+
+  });
+</script>
+#{/else}

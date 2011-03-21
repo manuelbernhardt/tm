@@ -21,8 +21,11 @@
 #{elseif objectField.type == 'password'}
   #{input.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
 #{/elseif}
+#{elseif objectField.type == 'number'}
+  #{input.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+#{/elseif}
 #{else}
-  Problem with the hyperspace flux compensator
+  Problem with the hyperspace flux compensator, syonic variable type is '${objectField.type}'
 #{/else}
 
 

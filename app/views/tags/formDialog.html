@@ -19,8 +19,8 @@
   $(document).ready(function() {
     $('#${_id}').dialog({
       autoOpen: false,
-      //height: auto,
-      width: 350,
+      width: ${_width != null ? _width : '350' },
+      height: ${height != null ? _height : '\'auto\'' },
       draggable: false,
       resizable: false,
       modal: true,

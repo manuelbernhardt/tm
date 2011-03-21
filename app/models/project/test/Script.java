@@ -1,5 +1,6 @@
 package models.project.test;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -32,5 +33,9 @@ public class Script extends ProjectModel implements Node {
     public Object clone() throws CloneNotSupportedException {
         // TODO
         return super.clone();
+    }
+
+    public List<ScriptStep> getSteps() {
+        return ScriptStep.find("from ScriptStep step where step.script = ?", this).<ScriptStep>fetch();
     }
 }
