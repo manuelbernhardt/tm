@@ -2,11 +2,11 @@ package controllers;
 
 import java.util.Map;
 
+import models.project.test.Script;
+import models.project.test.ScriptFolder;
 import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
-import models.project.TestScript;
-import models.project.TestScriptFolder;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -17,35 +17,35 @@ public class RepositoryTree extends AbstractTree {
 
     @Override
     protected NodeType[] getNodes() {
-        return new NodeType[] {type(TestScript.class, false), type(TestScriptFolder.class, true)};
+        return new NodeType[] {type(Script.class, false), type(ScriptFolder.class, true)};
     }
 
     @Override
     protected NodeType getDefaultType() {
-        return getNodeType(TestScript.class);
+        return getNodeType(Script.class);
     }
 
     @Override
     protected NodeType getRootType() {
-        return getNodeType(TestScriptFolder.class);
+        return getNodeType(ScriptFolder.class);
     }
 
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
-        if(type.getNodeClass().equals(TestScriptFolder.class)) {
-            TestScriptFolder folder = new TestScriptFolder();
+        if(type.getNodeClass().equals(ScriptFolder.class)) {
+            ScriptFolder folder = new ScriptFolder();
             folder.name = name;
             folder.project = TMController.getActiveProject();
             return folder;
         }
 
-        if(type.getNodeClass().equals(TestScript.class)) {
-            TestScript testScript = new TestScript();
-            testScript.name = name;
-            testScript.project = TMController.getActiveProject();
-            testScript.createdBy = TMController.getConnectedUser();
-            return testScript;
+        if(type.getNodeClass().equals(Script.class)) {
+            Script script = new Script();
+            script.name = name;
+            script.project = TMController.getActiveProject();
+            script.createdBy = TMController.getConnectedUser();
+            return script;
         }
 
         return null;

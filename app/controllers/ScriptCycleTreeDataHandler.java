@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.project.ApproachRelease;
-import models.project.ApproachTestCycle;
-import models.project.TestInstance;
-import models.project.TestScript;
+import models.project.approach.Release;
+import models.project.approach.TestCycle;
+import models.project.test.Instance;
+import models.project.test.Script;
 import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
@@ -28,32 +28,32 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
         if (parentId == -1) {
 
-            TestScript script = getScript(args.get("scriptId"));
-            List<TestInstance> instances = TestInstance.find("from TestInstance i where i.testScript = ?", script).fetch();
-            List<ApproachTestCycle> cycles = new ArrayList<ApproachTestCycle>();
-            for (TestInstance testInstance : instances) {
-                cycles.add(testInstance.testCycle);
+            Script script = getScript(args.get("scriptId"));
+            List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
+            List<TestCycle> cycles = new ArrayList<TestCycle>();
+            for (Instance instance : instances) {
+                cycles.add(instance.testCycle);
             }
-            final Map<ApproachRelease, List<ApproachTestCycle>> releases = new HashMap<ApproachRelease, List<ApproachTestCycle>>();
-            for (ApproachTestCycle c : cycles) {
+            final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
+            for (TestCycle c : cycles) {
                 TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "approachRelease").first();
-                ApproachRelease r = ApproachRelease.findById(n.getParent().getNodeId());
-                List<ApproachTestCycle> cycleList = releases.get(r);
+                Release r = Release.findById(n.getParent().getNodeId());
+                List<TestCycle> cycleList = releases.get(r);
                 if (cycleList == null) {
-                    cycleList = new ArrayList<ApproachTestCycle>();
+                    cycleList = new ArrayList<TestCycle>();
                     releases.put(r, cycleList);
                 }
                 cycleList.add(c);
             }
 
             List<JSTreeNode> result = new ArrayList<JSTreeNode>();
-            for (ApproachRelease r : releases.keySet()) {
+            for (Release r : releases.keySet()) {
                 ChildProducer p = new ChildProducer() {
                     public List<JSTreeNode> produce(Long id) {
                         List<JSTreeNode> children = new ArrayList<JSTreeNode>();
-                        for (ApproachRelease parent : releases.keySet()) {
+                        for (Release parent : releases.keySet()) {
                             if (parent.getId().equals(id)) {
-                                for (ApproachTestCycle c : releases.get(parent)) {
+                                for (TestCycle c : releases.get(parent)) {
                                     children.add(new SimpleNode(c.getId(), c.name, "approachTestCycle", false, false, null));
                                 }
                             }
@@ -70,11 +70,11 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         return null;
     }
 
-    private TestScript getScript(String sId) {
+    private Script getScript(String sId) {
         if (sId == null) {
             return null;
         }
-        TestScript ts = TestScript.findById(Long.parseLong(sId));
+        Script ts = Script.findById(Long.parseLong(sId));
         if (ts == null) {
             return null;
         }
@@ -97,22 +97,22 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             if (cycleNode == null) {
                 return null;
             }
-            ApproachTestCycle cycle = ApproachTestCycle.findById(cycleNode.nodeId);
-            TestScript script = TestScript.findById(Long.parseLong(scriptId));
+            TestCycle cycle = TestCycle.findById(cycleNode.nodeId);
+            Script script = Script.findById(Long.parseLong(scriptId));
             if (cycle == null || script == null) {
                 return null;
             }
             if (!cycle.isInAccount(TMController.getUserAccount()) || !script.isInAccount(TMController.getUserAccount())) {
                 return null;
             }
-            TestInstance ti = TestInstance.find(script, cycle);
+            Instance ti = Instance.find(script, cycle);
             if (ti != null) {
                 return null;
             }
-            ti = new TestInstance();
+            ti = new Instance();
             ti.project = script.project;
             ti.testCycle = cycle;
-            ti.testScript = script;
+            ti.script = script;
             ti.name = script.name;
             boolean created = ti.create();
             if (!created) {
@@ -140,15 +140,15 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         if (scriptId == null) {
             return false;
         }
-        TestScript script = TestScript.findById(Long.parseLong(scriptId));
+        Script script = Script.findById(Long.parseLong(scriptId));
         if (script == null || !script.isInAccount(TMController.getUserAccount())) {
             return false;
         }
-        ApproachTestCycle cycle = ApproachTestCycle.findById(id);
+        TestCycle cycle = TestCycle.findById(id);
         if (cycle == null || !cycle.isInAccount(TMController.getUserAccount())) {
             return false;
         }
-        TestInstance ti = TestInstance.find(script, cycle);
+        Instance ti = Instance.find(script, cycle);
         try {
             ti.delete();
         } catch (Throwable t) {

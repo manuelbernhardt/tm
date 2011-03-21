@@ -1,6 +1,6 @@
 package controllers;
 
-import models.project.TestScript;
+import models.project.test.Script;
 import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -15,26 +15,26 @@ public class Preparation extends TMController {
     }
 
     public static void content(Long nodeId) {
-        TestScript script = getFromNode(nodeId);
+        Script script = getFromNode(nodeId);
         render(script);
     }
 
     public static void scriptDetails(Long scriptId) {
-        TestScript script = getTestScript(scriptId);
+        Script script = getTestScript(scriptId);
         render(script);
     }
 
     public static void steps(Long scriptId) {
-        TestScript script = getTestScript(scriptId);
+        Script script = getTestScript(scriptId);
         render(script);
     }
 
     public static void linked(Long scriptId) {
-        TestScript script = getTestScript(scriptId);
+        Script script = getTestScript(scriptId);
         render(script);
     }
 
-    public static void editScript(@Valid TestScript script) {
+    public static void editScript(@Valid Script script) {
         checkInAccount(script);
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
@@ -45,11 +45,11 @@ public class Preparation extends TMController {
 
     }
 
-    private static TestScript getTestScript(Long scriptId) {
+    private static Script getTestScript(Long scriptId) {
         if (scriptId == null) {
             return null;
         }
-        TestScript script = TestScript.findById(scriptId);
+        Script script = Script.findById(scriptId);
         if (script == null) {
             notFound();
         }
@@ -57,7 +57,7 @@ public class Preparation extends TMController {
         return script;
     }
 
-    private static TestScript getFromNode(Long nodeId) {
+    private static Script getFromNode(Long nodeId) {
         if (nodeId == null) {
             return null;
         }
@@ -65,7 +65,7 @@ public class Preparation extends TMController {
         if (node == null) {
             notFound();
         }
-        TestScript script = TestScript.findById(node.nodeId);
+        Script script = Script.findById(node.nodeId);
         if (script == null) {
             notFound();
         }

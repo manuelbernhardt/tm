@@ -257,33 +257,33 @@ tree.jpa.TreeNode(requirementTreeNode6):
     type: requirement
     threadRoot: requirementTreeNode5
 
-project.ApproachRelease(releaseProto):
+project.Release(releaseProto):
     project: testManagementApplication
     name: Proto
 
-project.ApproachTestCycle(unitTest):
+project.TestCycle(unitTest):
     project: testManagementApplication
     name: Unit test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
-project.ApproachTestCycle(systemTest):
+project.TestCycle(systemTest):
     project: testManagementApplication
     name: System Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
-project.ApproachTestCycle(userAcceptanceTest):
+project.TestCycle(userAcceptanceTest):
     project: testManagementApplication
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
-project.ApproachRelease(releaseBeta):
+project.Release(releaseBeta):
     project: testManagementApplication
     name: Beta
 
-project.ApproachRelease(releaseV1):
+project.Release(releaseV1):
     project: testManagementApplication
     name: V1
 

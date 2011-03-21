@@ -2,10 +2,10 @@ package controllers;
 
 import java.util.Map;
 
+import models.project.approach.Release;
+import models.project.approach.TestCycle;
 import tree.persistent.AbstractTree;
 import tree.persistent.NodeType;
-import models.project.ApproachRelease;
-import models.project.ApproachTestCycle;
 import tree.persistent.Node;
 
 /**
@@ -17,31 +17,31 @@ public class ApproachTree extends AbstractTree {
 
     @Override
     protected NodeType[] getNodes() {
-        return new NodeType[]{type(ApproachRelease.class, true), type(ApproachTestCycle.class, false)};
+        return new NodeType[]{type(Release.class, true), type(TestCycle.class, false)};
     }
 
     @Override
     protected NodeType getDefaultType() {
-        return getNodeType(ApproachTestCycle.class);
+        return getNodeType(TestCycle.class);
     }
 
     @Override
     protected NodeType getRootType() {
-        return getNodeType(ApproachRelease.class);
+        return getNodeType(Release.class);
     }
 
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
-        if(type.getNodeClass().equals(ApproachTestCycle.class)) {
-            ApproachTestCycle cycle = new ApproachTestCycle();
+        if(type.getNodeClass().equals(TestCycle.class)) {
+            TestCycle cycle = new TestCycle();
             cycle.name = name;
             cycle.project = TMController.getActiveProject();
             return cycle;
         }
 
-        if(type.getNodeClass().equals(ApproachRelease.class)) {
-            ApproachRelease release = new ApproachRelease();
+        if(type.getNodeClass().equals(Release.class)) {
+            Release release = new Release();
             release.name = name;
             release.project = TMController.getActiveProject();
             return release;
