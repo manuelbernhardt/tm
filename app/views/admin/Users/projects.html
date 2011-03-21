@@ -57,7 +57,6 @@ $(document).ready(function () {
     var $tree = jQuery.jstree._reference('#projectRolesTree');
     var selectedNode = $tree.get_selected();
     if ($tree._get_type(selectedNode) == "default") {
-      var selectedRoleId = selectedNode.attr("id");
       selectedNode.data("args", {userId: "${user.id}"});
       $tree.delete_node(selectedNode);
     }
