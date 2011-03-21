@@ -6,20 +6,24 @@ No script selected
 #{box 'Test Script "'+script.name+'"'}
 <div id="detailsTabs">
   <ul>
-    <li><a href="@{Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+    <li><a href="@{Preparation.scriptDetails('scriptId': script.id)}"
+           id="scriptDetailsLink"><span>Description</span></a></li>
     <li><a href="@{Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
-    <li><a href="@{Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a></li>
+    <li><a href="@{Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
+    </li>
   </ul>
 </div>
 
 #{/box}
 
-        <br/>
-        <br/>
+<br/>
+<br/>
 
 #{box 'Add to cycle, assign, schedule, set test data'}
-#{/box}
+#{include 'Preparation/cycleAssignDialog.html' /}
+<div id="scriptCycleTree" class="tree"></div>
 
+#{/box}
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -29,6 +33,47 @@ No script selected
         removeDialogs();
       }
     });
+
+
+    $("#scriptCycleTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "scriptCycleTree",
+              "args" : {"scriptId": "${script.id}"}
+            };
+          }
+        }
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : {
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO cycle icon
+            }
+          },
+          "approachRelease" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO release icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+          }
+        }
+      }
+    });
+    #{tree.common id:"scriptCycleTree", controller:"TMTreeController" /}
 
   });
 </script>

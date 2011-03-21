@@ -18,6 +18,7 @@ public class ProjectModel extends CompositeModel implements AccountEntity {
     public Project project;
 
     public boolean isInAccount(Account account) {
+        // TODO add logging here
         return project.account.getId().equals(account.getId());
     }
 }

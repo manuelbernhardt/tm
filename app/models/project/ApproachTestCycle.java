@@ -6,7 +6,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import play.data.validation.MaxSize;
-import play.db.jpa.JPABase;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
 
@@ -30,11 +29,5 @@ public class ApproachTestCycle extends ProjectModel implements Node {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
-    }
-
-    @Override
-    public <T extends JPABase> T save() {
-        System.out.println("calling save!!!!!!");
-        return super.save();
     }
 }

@@ -1,6 +1,10 @@
 package models.project;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -19,5 +23,9 @@ public class TestInstance extends ProjectModel {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public TestStatusExecution executionStatus;
+
+    public static TestInstance find(TestScript script, ApproachTestCycle cycle) {
+        return TestInstance.find("from TestInstance i where i.testScript = ? and i.testCycle = ?", script, cycle).first();
+    }
 
 }
