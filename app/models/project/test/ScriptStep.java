@@ -1,6 +1,7 @@
 package models.project.test;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -8,6 +9,8 @@ import javax.persistence.UniqueConstraint;
 
 import models.project.ProjectModel;
 import play.data.validation.MaxSize;
+import play.data.validation.Min;
+import play.data.validation.Required;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -19,8 +22,13 @@ public class ScriptStep extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public Script script;
 
+    @Column(nullable = false)
+    @Required
+    @Min(0)
     public Integer position;
 
+    @Column(nullable = false)
+    @Required
     public String name;
 
     @MaxSize(5000)
