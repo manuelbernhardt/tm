@@ -20,15 +20,20 @@ import tree.simple.SimpleNode;
  */
 public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
+    public static final String INSTANCE = "default";
+    public static final String TEST_CYCLE = "testCycle";
+    public static final String RELEASE = "release";
+
     public String getName() {
         return "scriptCycleTree";
     }
 
     public List<? extends JSTreeNode> getChildren(Long parentId, Map<String, String> args) {
+        Script script = getScript(args.get("scriptId"));
+        final CycleChildProducer cycleChildProducer = new CycleChildProducer(script);
 
         if (parentId == -1) {
-
-            Script script = getScript(args.get("scriptId"));
+            // releases
             List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
             List<TestCycle> cycles = new ArrayList<TestCycle>();
             for (Instance instance : instances) {
@@ -36,7 +41,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             }
             final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
             for (TestCycle c : cycles) {
-                TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "release").first();
+                TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "testCycle").first();
                 Release r = Release.findById(n.getParent().getNodeId());
                 List<TestCycle> cycleList = releases.get(r);
                 if (cycleList == null) {
@@ -45,29 +50,19 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
                 }
                 cycleList.add(c);
             }
+            ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
 
             List<JSTreeNode> result = new ArrayList<JSTreeNode>();
             for (Release r : releases.keySet()) {
-                ChildProducer p = new ChildProducer() {
-                    public List<JSTreeNode> produce(Long id) {
-                        List<JSTreeNode> children = new ArrayList<JSTreeNode>();
-                        for (Release parent : releases.keySet()) {
-                            if (parent.getId().equals(id)) {
-                                for (TestCycle c : releases.get(parent)) {
-                                    children.add(new SimpleNode(c.getId(), c.name, "testCycle", false, false, null));
-                                }
-                            }
-                        }
-                        return children;
-                    }
-                };
-                SimpleNode rNode = new SimpleNode(r.getId(), r.name, "release", true, true, p);
+                SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
                 result.add(rNode);
             }
             return result;
+        } else {
+            // cycles
+            List<JSTreeNode> children = cycleChildProducer.produce(parentId);
+            return children;
         }
-
-        return null;
     }
 
     private Script getScript(String sId) {
@@ -105,11 +100,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             if (!cycle.isInAccount(TMController.getUserAccount()) || !script.isInAccount(TMController.getUserAccount())) {
                 return null;
             }
-            Instance ti = Instance.find(script, cycle);
-            if (ti != null) {
-                return null;
-            }
-            ti = new Instance();
+            Instance ti = new Instance();
             ti.project = script.project;
             ti.testCycle = cycle;
             ti.script = script;
@@ -144,17 +135,56 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         if (script == null || !script.isInAccount(TMController.getUserAccount())) {
             return false;
         }
-        TestCycle cycle = TestCycle.findById(id);
-        if (cycle == null || !cycle.isInAccount(TMController.getUserAccount())) {
+        Instance instance = Instance.findById(id);
+        if (instance == null || !instance.isInAccount(TMController.getUserAccount())) {
             return false;
         }
-        Instance ti = Instance.find(script, cycle);
         try {
-            ti.delete();
+            instance.delete();
         } catch (Throwable t) {
             t.printStackTrace();
             return false;
         }
         return true;
     }
+
+    private static class ReleaseChildProducer implements ChildProducer {
+        private final Map<Release, List<TestCycle>> releases;
+        private final CycleChildProducer cycleChildProducer;
+
+        public ReleaseChildProducer(Map<Release, List<TestCycle>> releases, CycleChildProducer cycleChildProducer) {
+            this.releases = releases;
+            this.cycleChildProducer = cycleChildProducer;
+        }
+
+        public List<JSTreeNode> produce(Long id) {
+            List<JSTreeNode> children = new ArrayList<JSTreeNode>();
+            for (Release parent : releases.keySet()) {
+                if (parent.getId().equals(id)) {
+                    for (TestCycle c : releases.get(parent)) {
+                        children.add(new SimpleNode(c.getId(), c.name, TEST_CYCLE, true, true, cycleChildProducer));
+                    }
+                }
+            }
+            return children;
+        }
+    }
+
+    private static final class CycleChildProducer implements ChildProducer {
+        private final Script script;
+
+        private CycleChildProducer(Script script) {
+            this.script = script;
+        }
+
+        public List<JSTreeNode> produce(Long id) {
+            List<JSTreeNode> children = new ArrayList<JSTreeNode>();
+            List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle.id = ?", script, id).<Instance>fetch();
+            for (Instance instance : instances) {
+                children.add(new SimpleNode(instance.getId(), instance.name, INSTANCE, false, false, null));
+            }
+            return children;
+        }
+    }
+
 }

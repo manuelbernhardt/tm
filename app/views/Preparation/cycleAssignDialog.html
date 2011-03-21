@@ -29,9 +29,10 @@
     $("#remove_cycle").click(function () {
       var $tree = jQuery.jstree._reference('#scriptCycleTree');
       var selectedNode = $tree.get_selected();
-      if (isSelectedNodeOfType($tree, selectedNode, ['default', 'testCycle'])) {
+      if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
         selectedNode.data("args", {scriptId: "${script.id}"});
         $tree.delete_node(selectedNode);
+        refreshCycleTree();
       }
     });
 
@@ -56,11 +57,8 @@
 
           if (valid) {
             var name = selectedNode.text();
-            alert(name);
             $("#scriptCycleTree").jstree("create", null, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: selectedNode.attr('id').replace('node_', ''), scriptId: "${script.id}"}}}, null, true);
-            var cycleTreeContainer = $("#scriptCycleTree");
-            jQuery.jstree._reference(cycleTreeContainer).refresh();
-            jQuery.jstree._reference(cycleTreeContainer).deselect_all();
+            refreshCycleTree();
             $(this).dialog("close");
           }
         },
@@ -69,6 +67,12 @@
         }
       }
     });
+
+    function refreshCycleTree() {
+      var cycleTreeContainer = $("#scriptCycleTree");
+      jQuery.jstree._reference(cycleTreeContainer).refresh();
+      jQuery.jstree._reference(cycleTreeContainer).deselect_all();
+    }
 
   });
 </script>

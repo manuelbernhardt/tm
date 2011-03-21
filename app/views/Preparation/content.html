@@ -57,11 +57,17 @@ No script selected
           "default" : {
             "valid_children" : "none",
             "icon" : {
-              "image" : "@{'public/images/jstree/file.png'}" // TODO cycle icon
+              "image" : "@{'public/images/jstree/file.png'}" // TODO instance icon
+            }
+          },
+          "testCycle" : {
+            "valid_children" : [ "instance" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO cycle icon
             }
           },
           "release" : {
-            "valid_children" : [ "default" ],
+            "valid_children" : [ "testCycle" ],
             "icon" : {
               "image" : "@{'public/images/jstree/folder.png'}" // TODO release icon
             },

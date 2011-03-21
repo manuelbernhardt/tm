@@ -52,8 +52,8 @@
               "image" : "@{'public/images/jstree/file.png'}" // TODO icon for test script
             }
           },
-          "testScriptFolder" : {
-            "valid_children" : [ "default", "testScriptFolder" ],
+          "scriptFolder" : {
+            "valid_children" : [ "default", "scriptFolder" ],
             "icon" : {
               "image" : "@{'public/images/jstree/folder.png'}" // TODO icon for release
             },
@@ -81,7 +81,7 @@
 
     /** Selection listener **/
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
-      if(isSelectedNodeType(data, ['default', 'testScript'])) {
+      if(isSelectedNodeType(data, ['default', 'script'])) {
         $.get('@{Preparation.content()}', { nodeId: getSelectedNode(data) }, function(data) {
           $('#details').html(data);
         });
@@ -92,7 +92,7 @@
     /** button initialisation **/
     $(function () {
       $("#create_folder").click(function () {
-        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"testScriptFolder"}});
+        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}});
       })
       $("#create_script").click(function () {
         $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}});
