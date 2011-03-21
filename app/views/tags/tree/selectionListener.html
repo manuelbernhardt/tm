@@ -1,0 +1,8 @@
+$("#${_treeId}").bind("select_node.jstree", function (e, data) {
+  if(isSelectedNodeType(data, [#{list items:_types, as:'type'}"${type}"${type_isLast ? '' : ','}#{/list}])) {
+    removeDialogs();
+    $.get('${_action}', { ${_type}Id: getSelectedNode(data) }, function(data) {
+      $('#${_targetId}').html(data);
+    });
+  }
+});

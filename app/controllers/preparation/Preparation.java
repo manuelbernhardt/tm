@@ -1,5 +1,7 @@
-package controllers;
+package controllers.preparation;
 
+import controllers.RepositoryTree;
+import controllers.TMController;
 import models.project.test.Script;
 import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
@@ -14,8 +16,8 @@ public class Preparation extends TMController {
         render();
     }
 
-    public static void content(Long nodeId) {
-        Script script = getFromNode(nodeId);
+    public static void content(Long scriptNodeId) {
+        Script script = getFromNode(scriptNodeId);
         render(script);
     }
 
