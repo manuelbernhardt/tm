@@ -41,6 +41,11 @@ public class User extends Model implements RoleHolder, AccountEntity {
         return authentication.firstName + " " + authentication.lastName;
     }
 
+    @Override
+    public String toString() {
+        return getFullName();
+    }
+
     // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
     public List<? extends models.deadbolt.Role> getRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();

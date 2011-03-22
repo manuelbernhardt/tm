@@ -2,6 +2,7 @@ package controllers.preparation;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonElement;
@@ -11,7 +12,7 @@ import com.google.gson.JsonSerializer;
 import controllers.TMController;
 import models.project.test.Instance;
 import models.project.test.Tag;
-import play.templates.JavaExtensions;
+import models.tm.User;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -26,15 +27,6 @@ public class Instances extends TMController {
     public static void tags(Long instanceId) {
         Instance instance = getInstance(instanceId);
         instance.refresh();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println(JavaExtensions.join(instance.tags, ", "));
         List<Tag> tags = instance.tags;
         render(instance, tags);
     }
@@ -48,8 +40,6 @@ public class Instances extends TMController {
         Instance instance = getInstance(instanceId);
         render(instance);
     }
-
-
 
     public static void allTags(Long instanceId, String term) {
         Instance instance = getInstance(instanceId);
@@ -77,6 +67,26 @@ public class Instances extends TMController {
         ok();
     }
 
+    public static void editSchedule(Long instanceId, Long responsibleId, Date plannedExecution) {
+        Instance instance = getInstance(instanceId);
+        User responsible = User.<User>findById(responsibleId);
+        checkInAccount(responsible);
+        instance.responsible = responsible;
+        instance.plannedExecution = plannedExecution;
+        instance.save();
+        ok();
+    }
+
+    /**
+     * Renders all users in the active project
+     *
+     * We may want to move this someplace else.
+     */
+    public static void allUsers() {
+        List<User> users = User.find("from User u where u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", getUserAccount(), getActiveProject()).<User>fetch();
+        renderJSON(users, userSerializer);
+    }
+
     private static Instance getInstance(Long instanceId) {
         if (instanceId == null) {
             return null;
@@ -89,7 +99,9 @@ public class Instances extends TMController {
         return instance;
     }
 
+    // TODO generify by making an interface for the autocompletable entities
     private static final TagSerializer tagSerializer = new TagSerializer();
+    private static final UserSerializer userSerializer = new UserSerializer();
 
     private static class TagSerializer implements JsonSerializer<Tag> {
         public JsonElement serialize(Tag tag, Type type, JsonSerializationContext context) {
@@ -97,6 +109,16 @@ public class Instances extends TMController {
             object.addProperty("id", tag.id);
             object.addProperty("label", tag.name);
             object.addProperty("value", tag.name);
+            return object;
+        }
+    }
+
+    private static class UserSerializer implements JsonSerializer<User> {
+        public JsonElement serialize(User user, Type type, JsonSerializationContext context) {
+            JsonObject object = new JsonObject();
+            object.addProperty("id", user.id);
+            object.addProperty("label", user.getFullName());
+            object.addProperty("value", user.id);
             return object;
         }
     }

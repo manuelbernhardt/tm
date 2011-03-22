@@ -1,5 +1,6 @@
 package models.project.test;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.UniqueConstraint;
 
 import models.project.ProjectModel;
 import models.project.approach.TestCycle;
+import models.tm.User;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -28,6 +30,11 @@ public class Instance extends ProjectModel {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public StatusExecution executionStatus;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
+    public User responsible;
+
+    public Date plannedExecution;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
