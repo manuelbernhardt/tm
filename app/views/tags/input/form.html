@@ -9,6 +9,15 @@
   (function($) {
     $.metadata.setType('html5');
     $(document).ready(function() {
+        <!-- add a listener to re-enable the submit if form has changed -->
+        $('#${_id} :input[type!="submit"][type!="hidden"]').each(function(index, item) {
+          $(item).focus(function() {
+            var b = $('#${_id}_submit');
+            if(b.button("option", "disabled")) {
+              b.button('enable');
+            }
+          });
+        });
       $('#${_id}').validate({
         meta:'validate',
         submitHandler: function(form) {
@@ -17,8 +26,9 @@
               ${_id}SubmissionCallback();
             }
             #{if _baseClass != null}
-            jQuery(form).clearForm();
+              jQuery(form).clearForm();
             #{/if}
+            $('#${_id}_submit').button('disable');
           });
         }
       });
