@@ -1,4 +1,4 @@
-<input id="${formId}_submit" type="submit" value="${_arg == null ? 'Save' : _arg}">
+<input id="${_caller.formId}_submit" type="submit" value="${_arg == null ? 'Save' : _arg}">
 <script type="text/javascript">
-$('#${formId}_submit').button();
+$('#${_caller.formId}_submit').button();
 </script>
