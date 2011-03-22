@@ -478,29 +478,57 @@ tree.jpa.TreeNode(repositoryTreeNode19):
     type: script
     threadRoot: repositoryTreeNode18
 
+project.test.Tag(administrationTag):
+    project: testManagementApplication
+    name: Administration
+
+project.test.Tag(usersTag):
+    project: testManagementApplication
+    name: Users
+
+project.test.Tag(projectsTag):
+    project: testManagementApplication
+    name: Projects
+
+project.test.Tag(requirementsTag):
+    project: testManagementApplication
+    name: Requirements
+
 project.test.Instance(createNewProject1):
     project: testManagementApplication
     name: Create new project
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
+    tags:
+      - administrationTag
+      - projectsTag
 
 project.test.Instance(createNewProject2):
     project: testManagementApplication
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
+    tags:
+      - administrationTag
+      - projectsTag
 
 project.test.Instance(editProjectDetails):
     project: testManagementApplication
     name: Edit project details
     script: testScriptAdminProjectsEdit
     testCycle: systemTest
+    tags:
+      - administrationTag
+      - projectsTag
 
 project.test.Instance(registerNewRequirement):
     project: testManagementApplication
     name: Register new requirement
     script: testScriptRequirement1
     testCycle: userAcceptanceTest
+    tags:
+      - administrationTag
+      - requirementsTag
 
 project.Defect(defect1):
     project: testManagementApplication
