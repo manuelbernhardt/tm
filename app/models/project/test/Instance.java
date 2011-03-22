@@ -3,6 +3,7 @@ package models.project.test;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -27,6 +28,9 @@ public class Instance extends ProjectModel {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public StatusExecution executionStatus;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Tag> tags;
 
     public static List<Instance> find(Script script, TestCycle cycle) {
         return Instance.find("from Instance i where i.script = ? and i.testCycle = ?", script, cycle).fetch();

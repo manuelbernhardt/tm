@@ -72,7 +72,7 @@ form label {
 /* styles for form elements in dialogs */
 
 .ui-dialog input {
-  display: block;
+  display: inline;
   margin-right: 5px;
 }
 

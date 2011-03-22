@@ -1,1 +1,30 @@
-Tags
+<form id="tagsForm" action="@{preparation.Instances.addTags()}" method="post">
+  <input name="tags" id="tags" value="${tags.join(',')}"/>
+  <input type="hidden" name="instanceId" value="${instance.id}" />
+  <button id="saveButton">Save</button>
+</form>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#tags').tagsInput({
+      'autocomplete_url': "@{preparation.Instances.allTags("instanceId" : instance.id)}",
+      'autocomplete': {minLength: 0},
+      'height':'100px',
+      'width':'400px',
+      'defaultText':'add a tag'
+    });
+
+    /** TODO figure out if we can make this work on change as well **/
+    $('#tags_tagsinput').focus(function() {
+      $('#saveButton').button('enable');
+    });
+
+    $('#tagsForm').ajaxForm(function() {
+      $('#saveButton').button('disable');
+    });
+
+    $('#saveButton').button();
+
+  });
+</script>
