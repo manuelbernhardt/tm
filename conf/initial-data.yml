@@ -454,6 +454,30 @@ tree.jpa.TreeNode(repositoryTreeNode19):
     type: script
     threadRoot: repositoryTreeNode18
 
+project.test.Instance(createNewProject1):
+    project: testManagementApplication
+    name: Create new project
+    script: testScriptAdminProjectsCreate
+    testCycle: systemTest
+
+project.test.Instance(createNewProject2):
+    project: testManagementApplication
+    name: Create new project (2)
+    script: testScriptAdminProjectsCreate
+    testCycle: systemTest
+
+project.test.Instance(editProjectDetails):
+    project: testManagementApplication
+    name: Edit project details
+    script: testScriptAdminProjectsEdit
+    testCycle: systemTest
+
+project.test.Instance(registerNewRequirement):
+    project: testManagementApplication
+    name: Register new requirement
+    script: testScriptRequirement1
+    testCycle: userAcceptanceTest
+
 project.Defect(defect1):
     project: testManagementApplication
     name: The application does not start
