@@ -10,7 +10,14 @@ No project selected
 #{/ifErrors}
 
 #{input.form action:@admin.Projects.edit(), id:'projectForm'}
+  <script type="text/javascript">
+    function projectFormSubmissionCallback() {
+      var treeContainer = $("#projectTree");
+      jQuery.jstree._reference(treeContainer).refresh();
+      jQuery.jstree._reference(treeContainer).deselect_all();
+    }
 
+  </script>
   #{input.field field:'project.name', label:'Name', baseObject:project /}
   #{input.field field:'project.description', label:'Description', baseObject:project /}
   <input type="hidden" name="project.id" value="${project.id}"/>

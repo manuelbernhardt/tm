@@ -56,14 +56,6 @@ No project selected
 
 <div class="container">
   <div class="left_table">
-    <table id="tab" class="display">
-      <thead>
-      <tr>
-        <th>Role</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
 
     #{formDialog id:'newRoleDialog', title:'Create a role', action:@admin.ProjectRoles.create(),
     baseClass:'models.project.Role',
@@ -78,6 +70,14 @@ No project selected
     <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
     #{/formDialog}
 
+    <table id="tab" class="display">
+      <thead>
+      <tr>
+        <th>Role</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
   </div>
 

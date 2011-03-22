@@ -3,6 +3,31 @@ No project selected
 #{/if}
 #{else}
 
+<div id="treeDiv">
+  <button id="assign_user">Role</button>
+  <button id="unassign_user">Remove</button>
+  <div id="rolesUserTree" class="tree"></div>
+</div>
+
+<div id="assign-dialog" title="Assign a role to a user" class="modalDialog">
+  <form id="assignForm">
+    <fieldset>
+
+      <label for="roles">Role</label>
+      #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
+      ui-corner-all", id:'roles'}
+      #{option -1} Please select a role #{/option}
+      #{/select}
+
+      <label for="users">User</label>
+      #{select 'users', items:accountUsers, valueProperty:'id', labelProperty:'fullName', class:"text ui-widget-content
+      ui-corner-all", id:'users'}
+      #{option -1} Please select a user #{/option}
+      #{/select}
+    </fieldset>
+  </form>
+</div>
+
 <script type="text/javascript">
 
   $(document).ready(function () {
@@ -54,11 +79,11 @@ No project selected
       }
     });
 
-    $("#assign-user").button().click(function() {
+    $("#assign_user").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
       $("#assign-dialog").dialog("open");
     });
 
-    $("#unassign-user").button().click(function() {
+    $("#unassign_user").button({icons: {primary: 'ui-icon-minus'}}).click(function() {
       var $tree = jQuery.jstree._reference('#rolesUserTree');
       var selectedNode = $tree.get_selected();
       if ($tree._get_type(selectedNode) == "default") {
@@ -137,30 +162,4 @@ No project selected
 
   });
 </script>
-
-
-<div id="treeDiv">
-  <button id="assign-user">Assign role to user</button>
-  <button id="unassign-user">Remove assignment</button>
-  <div id="rolesUserTree" class="tree"></div>
-</div>
-
-<div id="assign-dialog" title="Assign a role to a user" class="modalDialog">
-  <form id="assignForm">
-    <fieldset>
-
-      <label for="roles">Role</label>
-      #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
-      ui-corner-all", id:'roles'}
-      #{option -1} Please select a role #{/option}
-      #{/select}
-
-      <label for="users">User</label>
-      #{select 'users', items:accountUsers, valueProperty:'id', labelProperty:'fullName', class:"text ui-widget-content
-      ui-corner-all", id:'users'}
-      #{option -1} Please select a user #{/option}
-      #{/select}
-    </fieldset>
-  </form>
-</div>
 #{/else}
