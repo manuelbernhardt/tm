@@ -69,7 +69,7 @@ No project selected
     });
 
     $("#rolesUserTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
 
       "json_data" : {
         "ajax" : {
@@ -82,6 +82,9 @@ No project selected
             };
           }
         }
+      },
+      "themeroller": {
+        "item": ""
       },
       "types" : {
         "max_depth" : -2,

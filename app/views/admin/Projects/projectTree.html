@@ -1,7 +1,7 @@
 <script type="text/javascript">
   $(document).ready(function () {
     var tree = $("#projectTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
 
       "json_data" : {
         "ajax" : {
@@ -13,6 +13,9 @@
             };
           }
         }
+      },
+      "themeroller": {
+        "item": ""
       },
       "types" : {
         "max_depth" : -2,

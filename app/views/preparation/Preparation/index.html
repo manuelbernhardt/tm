@@ -26,7 +26,7 @@
 
 
     var tree = $("#repositoryTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themes" ],
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
 
       "json_data" : {
         "ajax" : {
@@ -41,6 +41,9 @@
       },
       "ui" : {
         "select_limit": 1
+      },
+      "themeroller": {
+        "item": ""
       },
       "types" : {
         "max_depth" : -2,

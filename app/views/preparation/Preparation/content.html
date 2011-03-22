@@ -41,7 +41,7 @@ No script selected
 
 
     $("#scriptCycleTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themes" ],
+      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
 
       "json_data" : {
         "ajax" : {
@@ -54,6 +54,9 @@ No script selected
             };
           }
         }
+      },
+      "themeroller": {
+        "item": ""
       },
       "types" : {
         "max_depth" : -2,
