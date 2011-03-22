@@ -1,6 +1,8 @@
-#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass}
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
 <div class="field">
     <label for="${_field}">${_label}</label>
+
+#{if !_autoComplete}
 
   <select id="${_field}" name="${_field}.id">
       #{ifnot _objectField.required}
@@ -19,5 +21,10 @@
       <option value="${it._key()}" ${selected ? 'selected="true"'.raw() : ''}>${it}</option>
       %{ } }%
   </select>
+#{/if}
+#{elseif _autoComplete}
+  Hyperspace multiflux problem in secondary plasma matrix
+#{/elseif}
+
 </div>
 #{/}

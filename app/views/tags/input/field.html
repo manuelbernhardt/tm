@@ -7,22 +7,22 @@
 
 #{forms.objectField baseObject:baseObject, baseClass:baseClass, field:_field}
 #{if objectField.type == 'text'}
-  #{input.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+  #{input.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/if}
 #{elseif objectField.type == 'longtext'}
-  #{input.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+  #{input.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/elseif}
-#{elseif objectField.type == 'relation'}
-  #{input.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField /}
+#{elseif objectField.type == 'relation' && (_autoComplete != null && _autoComplete)}
+  #{input.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField, name: _name, autoComplete: _autoComplete != null && _autoComplete /}
 #{/elseif}
 #{elseif objectField.type == 'date'}
-  #{input.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+  #{input.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/elseif}
 #{elseif objectField.type == 'password'}
-  #{input.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+  #{input.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/elseif}
 #{elseif objectField.type == 'number'}
-  #{input.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass /}
+  #{input.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/elseif}
 #{else}
   Problem with the hyperspace flux compensator, syonic variable type is '${objectField.type}'

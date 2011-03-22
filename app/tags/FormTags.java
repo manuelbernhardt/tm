@@ -50,7 +50,8 @@ public class FormTags extends FastTags {
     public static void _field(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
         Map<String, Object> field = new HashMap<String, Object>();
         String path = args.get("field").toString();
-        field.put("name", path);
+        // make it possible to override the name... should be more generic
+        field.put("name", args.get("name") == null ? path : args.get("name"));
         field.put("id", path.replace('.', '_'));
         field.put("flash", Scope.Flash.current().get(path));
         field.put("flashArray", field.get("flash") != null && !field.get("flash").toString().isEmpty() ? field.get("flash").toString().split(",") : new String[0]);
