@@ -1,3 +1,7 @@
+#{if instance == null}
+No test instance selected
+#{/if}
+#{else}
 <form id="tagsForm" action="@{preparation.Instances.addTags()}" method="post">
   <input name="tags" id="tags" value="${tags.join(',')}"/>
   <input type="hidden" name="instanceId" value="${instance.id}" />
@@ -28,3 +32,4 @@
 
   });
 </script>
+#{/else}
