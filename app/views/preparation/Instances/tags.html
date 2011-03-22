@@ -12,14 +12,13 @@ No test instance selected
   $(document).ready(function() {
 
     $('#tags').tagsInput({
-      'autocomplete_url': "@{preparation.Instances.allTags("instanceId" : instance.id)}",
+      'autocomplete_url': "@{preparation.Instances.allTags('instanceId' : instance.id)}",
       'autocomplete': {minLength: 0},
       'height':'100px',
       'width':'400px',
       'defaultText':'add a tag'
     });
 
-    /** TODO figure out if we can make this work on change as well **/
     $('#tags_tagsinput').focus(function() {
       $('#saveButton').button('enable');
     });
