@@ -4,6 +4,11 @@ No requirement selected
 #{else}
 
 #{input.form action:@Requirements.edit(), id:'requirementForm', baseObject:requirement}
+  <script type="text/javascript">
+    function requirementFormSubmissionCallback() {
+      refreshTree('requirementTree');
+    }
+  </script>
 
   #{input.field field:'requirement.name', label:'Name' /}
   #{input.field field:'requirement.description', label:'Description' /}

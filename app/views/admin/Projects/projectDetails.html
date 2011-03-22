@@ -12,9 +12,7 @@ No project selected
 #{input.form action:@admin.Projects.edit(), id:'projectForm'}
   <script type="text/javascript">
     function projectFormSubmissionCallback() {
-      var treeContainer = $("#projectTree");
-      jQuery.jstree._reference(treeContainer).refresh();
-      jQuery.jstree._reference(treeContainer).deselect_all();
+      refreshTree('projectTree');
     }
 
   </script>

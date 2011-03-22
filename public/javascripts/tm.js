@@ -106,6 +106,31 @@ function getTreeNode(treeId, type, nodeId) {
     return $('#' + treeId + ' li[id=node_' + nodeId + '][rel=' + type + ']');
 }
 
+/**
+ * Refreshes the active tree node, for trees with the UI plugin (all of them until now)
+ *
+ * FIXME THIS DOES NOT WORK (see with jsTree folks)
+ *
+ * @param treeId the ID of the tree
+ */
+function refreshActiveTreeNode(treeId) {
+    var treeContainer = $("#" + treeId);
+    var $tree = jQuery.jstree._reference(treeContainer);
+    var _selected = $tree.get_selected();
+    alert(_selected);
+    $tree.refresh(_selected);
+}
+
+/**
+ * Refreshes a tree
+ * @param treeId the ID of the tree container
+ */
+function refreshTree(treeId) {
+  var treeContainer = $("#" + treeId);
+  jQuery.jstree._reference(treeContainer).refresh();
+  jQuery.jstree._reference(treeContainer).deselect_all();
+}
+
 
 /**
  * Remove all jQuery dialogs in the DOM tree. This is a bug of jQuery, which adds parts of the dialog
@@ -131,28 +156,4 @@ function registerSelectNoneValidator() {
         }
         return true;
     }, "Please select an option");
-}
-
-
-/** menu stuff **/
-
-function jsddm_open() {
-    jsddm_canceltimer();
-    jsddm_close();
-    ddmenuitem = $(this).find('ul').eq(0).css('visibility', 'visible');
-}
-
-function jsddm_close() {
-    if (ddmenuitem) ddmenuitem.css('visibility', 'hidden');
-}
-
-function jsddm_timer() {
-    closetimer = window.setTimeout(jsddm_close, menutimeout);
-}
-
-function jsddm_canceltimer() {
-    if (closetimer) {
-        window.clearTimeout(closetimer);
-        closetimer = null;
-    }
 }
