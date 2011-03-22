@@ -5,9 +5,19 @@ body {
 }
 
 div.tree {
-  width: 250px;
+  min-width: 250px;
+  width: auto;
   min-height: 400px;
   overflow: auto;
+}
+
+.box-header {
+  padding: 0px 0px 0px 5px;
+}
+
+.box-content {
+  overflow: hidden;
+  padding: 5px 5px 5px 5px;
 }
 
 h1 {
@@ -62,11 +72,11 @@ td.sNone {
 
 /* styles for form elements */
 form label {
-	display:block;
-	float:left;
-	width:100px;
-	text-align:right;
-	margin:6px 5px 0px 0px;
+  display: block;
+  float: left;
+  width: 100px;
+  text-align: right;
+  margin: 6px 5px 0px 0px;
 }
 
 /* styles for form elements in dialogs */
@@ -154,5 +164,5 @@ div#top_menu {
 /* modified buttons */
 .ui-button .ui-button-text {
   font-size: 12px;
-  text-transform:capitalize;
+  text-transform: capitalize;
 }
