@@ -68,10 +68,11 @@ public class Instances extends TMController {
                 t.project = instance.project;
                 t.create();
             }
-            tagList.add(t);
+            if(!tagList.contains(t)) {
+                tagList.add(t);
+            }
         }
-        instance.tags.clear();
-        instance.tags.addAll(tagList);
+        instance.tags = tagList;
         instance.save();
         ok();
     }

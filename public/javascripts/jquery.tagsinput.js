@@ -74,7 +74,7 @@
 	
 	jQuery.fn.tagsInput = function(options) { 
 	
-		var settings = jQuery.extend({defaultText:'add a tag',width:'300px',height:'100px','hide':true,'delimiter':',',autocomplete:{autoFocus: true}},options);
+		var settings = jQuery.extend({defaultText:'add a tag',width:'300px',height:'100px','hide':true,'delimiter':',',autocomplete:{autoFocus: false}},options);
 	
 		this.each(function() { 
 			if (settings.hide) { 
@@ -132,8 +132,16 @@
 			if (settings.autocomplete_url != undefined) {
 
                 var realInput = $(data.real_input);
+                var fakeInput = $(data.fake_input);
                 var autocompleteSettings = jQuery.extend(settings.autocomplete, {
-                    source: settings.autocomplete_url,
+                    source: function(request, response) {
+                        lastXhr = $.getJSON(settings.autocomplete_url, request, function( data, status, xhr ) {
+                            if ( xhr === lastXhr ) {
+                                fakeInput.attr('autocomplete', 'true');
+                                response( data );
+                            }
+                        });
+                    },
                     select: function(event, ui) {
                         d = ui.item.value + "";
                         realInput.addTag(d,{focus:true});
@@ -141,11 +149,9 @@
                     }
                 });
 
-                $(data.fake_input).autocomplete(autocompleteSettings);
-
-				$(data.fake_input).bind('blur',data,function(event) { 
-					if ($(event.data.fake_input).val() != $(event.data.fake_input).attr('default')) {
-						$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:false});						
+				$(data.fake_input).bind('blur',data,function(event) {
+					if ($(event.data.fake_input).val() != $(event.data.fake_input).attr('default') && ($(event.data.fake_input).attr('autocomplete') == undefined) ) {
+						$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:false});
 					}
 
 					$(event.data.fake_input).val($(event.data.fake_input).attr('default'));
@@ -153,7 +159,8 @@
 					return false;
 				});
 	
-		
+                $(data.fake_input).autocomplete(autocompleteSettings);
+
 			} else {
 	
 					// if a user tabs out of the field, create a new tag
