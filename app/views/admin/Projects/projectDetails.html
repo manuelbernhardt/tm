@@ -9,22 +9,18 @@ No project selected
 </div>
 #{/ifErrors}
 
-<fieldset>
-    <legend>Project details</legend>
+#{input.form action:@admin.Projects.edit(), id:'projectForm'}
 
-  #{input.form action:@admin.Projects.edit(), id:'projectForm'}
-
-    #{input.field field:'project.name', label:'Name', baseObject:project /}
-    #{input.field field:'project.description', label:'Description', baseObject:project /}
-    <input type="hidden" name="project.id" value="${project.id}"/>
-    <input type="hidden" name="project.account.id" value="${project.account.id}"/>
-    #{if project.projectCategory != null}
-      <input type="hidden" name="project.projectCategory.id" value="${project.projectCategory.id}"/>
-      <input type="hidden" name="project.projectCategory.account.id" value="${project.projectCategory.account.id}"/>
-    #{/if}
+  #{input.field field:'project.name', label:'Name', baseObject:project /}
+  #{input.field field:'project.description', label:'Description', baseObject:project /}
+  <input type="hidden" name="project.id" value="${project.id}"/>
+  <input type="hidden" name="project.account.id" value="${project.account.id}"/>
+  #{if project.projectCategory != null}
+    <input type="hidden" name="project.projectCategory.id" value="${project.projectCategory.id}"/>
+    <input type="hidden" name="project.projectCategory.account.id" value="${project.projectCategory.account.id}"/>
+  #{/if}
   #{input.submit /}
 
-  #{/input.form}
+#{/input.form}
 
-</fieldset>
 #{/else}

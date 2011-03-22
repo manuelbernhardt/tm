@@ -1,3 +1,10 @@
+<button id="create_category">Project Category</button>
+<button id="create_project">Project</button>
+<button id="remove">Remove</button>
+
+<div id="projectTree" class="tree"></div>
+
+
 <script type="text/javascript">
   $(document).ready(function () {
     var tree = $("#projectTree").jstree({
@@ -70,23 +77,17 @@
     });
 
     /** Button initialisation **/
-    $("#create_category").click(function () {
+    $("#create_category").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}});
     });
 
-    $("#create_project").click(function () {
+    $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
     });
 
-    $("#remove").click(function () {
+    $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       $("#projectTree").jstree("remove", null);
     });
 
   });
 </script>
-
-<div id="projectTree" class="tree"></div>
-
-<input type="button" id="create_category" value="New project category"/>
-<input type="button" id="create_project" value="New project"/>
-<input type="button" id="remove" value="Remove"/>
