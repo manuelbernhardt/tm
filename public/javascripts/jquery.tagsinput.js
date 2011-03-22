@@ -133,32 +133,30 @@
 
                 var realInput = $(data.real_input);
                 var fakeInput = $(data.fake_input);
+                var initialData = $(data);
                 var autocompleteSettings = jQuery.extend(settings.autocomplete, {
-                    source: function(request, response) {
-                        lastXhr = $.getJSON(settings.autocomplete_url, request, function( data, status, xhr ) {
-                            if ( xhr === lastXhr ) {
-                                fakeInput.attr('autocomplete', 'true');
-                                response( data );
-                            }
-                        });
-                    },
-                    select: function(event, ui) {
-                        d = ui.item.value + "";
-                        realInput.addTag(d,{focus:true});
-                        return false;
-                    }
+                    source: settings.autocomplete_url
                 });
 
-				$(data.fake_input).bind('blur',data,function(event) {
-					if ($(event.data.fake_input).val() != $(event.data.fake_input).attr('default') && ($(event.data.fake_input).attr('autocomplete') == undefined) ) {
-						$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:false});
-					}
+                // add a tag when selected in the suggestions menu
+                $(data.fake_input).bind('autocompleteselect', data, function(event, ui) {
+                    d = ui.item.value + "";
+                    realInput.addTag(d,{focus:true});
+                    return false;
+                });
 
-					$(event.data.fake_input).val($(event.data.fake_input).attr('default'));
-					$(event.data.fake_input).css('color','#666666');
-					return false;
-				});
-	
+                // do not add what is typed as long as the menu is open
+                $(data.fake_input).bind('autocompleteopen', data, function(event, ui) {
+                    $(data.fake_input).unbind('blur');
+
+                });
+                $(data.fake_input).bind('autocompletclose', data, function(event, ui) {
+                    $(data.fake_input).bind('blur', data, function(event) { tagOnBlurHandler(event); } );
+                });
+
+                // add a tag of what has been entered when the input looses focus
+				$(data.fake_input).bind('blur', data, function(event) { tagOnBlurHandler(event); } );
+
                 $(data.fake_input).autocomplete(autocompleteSettings);
 
 			} else {
@@ -185,7 +183,16 @@
 		return this;
 	
 	};
-	
+
+    function tagOnBlurHandler   (event) {
+        if ($(event.data.fake_input).val() != $(event.data.fake_input).attr('default')) {
+            $(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:false});
+        }
+
+        $(event.data.fake_input).val($(event.data.fake_input).attr('default'));
+        $(event.data.fake_input).css('color','#666666');
+        return false;
+    }
 	
 	jQuery.fn.tagsInput.updateTagsField = function(obj,tagslist) { 
 		
