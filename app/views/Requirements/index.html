@@ -1,13 +1,12 @@
 #{extends 'main.html' /}
 #{set title:'Requirements' /}
 
-
 <div class="container">
   <div class="left_tree">
     <div id="actions">
-      <input type="button" id="create_folder" value="Create folder"/>
-      <input type="button" id="create_requirement" value="Create requirement"/>
-      <input type="button" id="remove" value="Remove"/>
+      <button id="create_folder">Folder</button>
+      <button id="create_requirement">Requirement</button>
+      <button id="remove">Remove</button>
     </div>
     <div id="requirementTree" class="tree"></div>
   </div>
@@ -26,12 +25,15 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
-    $(function() {
-      $("#innerTabs").tabs({
-        select: function() {
-          removeDialogs();
-        }
-      });
+    $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
+    $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});
+    $('#remove').button({icons: {primary: 'ui-icon-minus'}});
+
+
+    $("#innerTabs").tabs({
+      select: function() {
+        removeDialogs();
+      }
     });
 
     var tree = $("#requirementTree").jstree({

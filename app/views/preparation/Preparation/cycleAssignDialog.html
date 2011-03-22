@@ -1,14 +1,12 @@
 <div id="actions">
-  <input type="button" id="assign_cycle" value="Cycle"/>
-  <input type="button" id="remove_cycle" value="Remove"/>
+  <button id="assign_cycle">Cycle</button>
+  <button id="remove_cycle">Remove</button>
 </div>
 
 
 <div id="assign_dialog" title="Assign script to cycle">
   <form id="assignForm">
-
     <div id="approachTree" class="tree"></div>
-
   </form>
 </div>
 
@@ -16,15 +14,11 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    var assignButton = $("#assign_cycle").button({
-      icons: { primary: "ui-icon-person" }, text: true
-    });
-    assignButton.click(function() {
+    $("#assign_cycle").button({icons: {primary: "ui-icon-plus"}}).click(function() {
       $("#assign_dialog").dialog("open");
     });
 
-    var removeButton = $("#remove_cycle").button();
-    removeButton.click(function () {
+    $("#remove_cycle").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       var $tree = jQuery.jstree._reference('#scriptCycleTree');
       var selectedNode = $tree.get_selected();
       if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {

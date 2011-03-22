@@ -49,11 +49,11 @@ $(document).ready(function () {
     }
   });
 
-  $("#assign-role").button().click(function() {
+  $("#assign-role").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
     $("#assign-dialog").dialog("open");
   });
 
-  $("#unassign-role").button().click(function() {
+  $("#unassign-role").button({icons: {primary: 'ui-icon-minus'}}).click(function() {
     var $tree = jQuery.jstree._reference('#projectRolesTree');
     var selectedNode = $tree.get_selected();
     if ($tree._get_type(selectedNode) == "default") {
@@ -204,8 +204,8 @@ function setCategory(parent) {
 </script>
 
 <div id="treeDiv">
-  <button id="assign-role">Add new project/role assignement</button>
-  <button id="unassign-role">Remove assignment</button>
+  <button id="assign-role">Role assignement</button>
+  <button id="unassign-role">Remove</button>
   <div id="projectRolesTree" class="tree"></div>
 </div>
 

@@ -5,9 +5,9 @@
 <div class="container">
   <div class="left_tree">
     <div id="actions">
-      <input type="button" id="create_release" value="Create release"/>
-      <input type="button" id="create_cycle" value="Create cycle"/>
-      <input type="button" id="remove" value="Remove"/>
+      <button id="create_release">Release</button>
+      <button id="create_cycle">Cycle</button>
+      <button id="remove">Remove</button>
     </div>
     <div id="approachTree" class="tree"></div>
   </div>
@@ -40,13 +40,15 @@
 
 
     /** button initialisation **/
-    $("#create_release").click(function () {
+
+
+    $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#approachTree").jstree("create", null, "last", {attr:{"rel":"release"}});
     })
-    $("#create_cycle").click(function () {
+    $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}});
     })
-    $("#remove").click(function () {
+    $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       $("#approachTree").jstree("remove", null);
     })
 

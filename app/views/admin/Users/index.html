@@ -66,6 +66,20 @@
 
 <div class="container">
   <div class="left_table">
+
+    #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
+    openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
+      <script type="text/javascript">
+        function newUserDialogSubmissionCallback() {
+          $("#tab").dataTable().fnDraw();
+        }
+      </script>
+      #{input.field field:'user.authentication.firstName', label:'First Name' /}
+      #{input.field field:'user.authentication.lastName', label:'Last Name' /}
+      #{input.field field:'user.authentication.email', label:'Email' /}
+      #{input.field field:'user.authentication.password', label:'Password' /}
+    #{/formDialog}
+
     <table class="display" id="tab">
       <thead>
       <tr>
@@ -87,17 +101,3 @@
     </div>
   </div>
 </div>
-
-#{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
-openDialogButtonText:'Create new user', submitButtonText:'Create user', dnd:true}
-
-<script type="text/javascript">
-  function newUserDialogSubmissionCallback() {
-    $("#tab").dataTable().fnDraw();
-  }
-</script>
-#{input.field field:'user.authentication.firstName', label:'First Name' /}
-#{input.field field:'user.authentication.lastName', label:'Last Name' /}
-#{input.field field:'user.authentication.email', label:'Email' /}
-#{input.field field:'user.authentication.password', label:'Password' /}
-#{/formDialog}

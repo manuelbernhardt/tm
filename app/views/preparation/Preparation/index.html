@@ -5,12 +5,12 @@
 <div class="container">
   <div class="left_tree">
     <div id="actions">
-      <input type="button" id="create_folder" value="Add folder"/>
-      <input type="button" id="create_script" value="Add Test Script"/>
-      <input type="button" id="remove" value="Remove"/>
+      <button id="create_folder">Folder</button>
+      <button id="create_script">Test Script</button>
+      <button id="remove">Remove</button>
     </div>
     #{box 'Test Script Repository'}
-    <div id="repositoryTree" class="tree"></div>
+    <div id="repositoryTree" class="tree" style="border-style:none;"></div>
     #{/box}
   </div>
   <div class="right_tree">
@@ -86,13 +86,13 @@
 
     /** button initialisation **/
     $(function () {
-      $("#create_folder").click(function () {
+      $("#create_folder").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
         $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}});
       })
-      $("#create_script").click(function () {
+      $("#create_script").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
         $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}});
       })
-      $("#remove").click(function () {
+      $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
         $("#repositoryTree").jstree("remove", null);
       })
     });

@@ -31,8 +31,10 @@ public class Users extends TMController {
     @Restrict(UnitRole.ADMIN)
     public static void index() {
         List<Auth> users = Auth.findAll();
-        Long selectedUser = 2l;
-        render(users, selectedUser);
+        // this is how we'd select a user by default
+//        Long selectedUser = 2l;
+//        render(users, selectedUser);
+        render(users);
     }
 
     @Restrict(UnitRole.ADMIN)
@@ -51,11 +53,15 @@ public class Users extends TMController {
         User user = null;
         if (userId != null) {
             user = User.findById(userId);
-            checkInAccount(user);
-            List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.authentication.account.getId());
-            render("/admin/Users/projects.html", user, projectCategories);
+            if (user == null) {
+                notFound();
+            } else {
+                checkInAccount(user);
+                List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.authentication.account.getId());
+                render("/admin/Users/projects.html", user, projectCategories);
+            }
         } else {
-            error("No userId provided");
+            render("/admin/Users/projects.html");
         }
     }
 
@@ -141,7 +147,7 @@ public class Users extends TMController {
             error();
         } else {
             Project p = Project.findById(projectId);
-            if(p == null) {
+            if (p == null) {
                 notFound();
             }
             checkInAccount(p);
