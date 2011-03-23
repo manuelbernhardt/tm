@@ -499,6 +499,8 @@ project.test.Instance(createNewProject1):
     name: Create new project
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
+    responsible: manu
+    plannedExecution: 2011-03-18
     tags:
       - administrationTag
       - projectsTag
@@ -508,6 +510,8 @@ project.test.Instance(createNewProject2):
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
+    responsible: christian
+    plannedExecution: 2011-03-18
     tags:
       - administrationTag
       - projectsTag
@@ -517,6 +521,8 @@ project.test.Instance(editProjectDetails):
     name: Edit project details
     script: testScriptAdminProjectsEdit
     testCycle: systemTest
+    responsible: gwen
+    plannedExecution: 2011-03-19
     tags:
       - administrationTag
       - projectsTag
@@ -526,6 +532,8 @@ project.test.Instance(registerNewRequirement):
     name: Register new requirement
     script: testScriptRequirement1
     testCycle: userAcceptanceTest
+    responsible: christian
+    plannedExecution: 2011-03-19
     tags:
       - administrationTag
       - requirementsTag
