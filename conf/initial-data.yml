@@ -535,7 +535,6 @@ project.test.Instance(registerNewRequirement):
     responsible: christian
     plannedExecution: 2011-03-19
     tags:
-      - administrationTag
       - requirementsTag
 
 project.Defect(defect1):
