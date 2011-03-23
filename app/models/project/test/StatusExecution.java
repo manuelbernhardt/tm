@@ -15,6 +15,6 @@ import models.project.ProjectModel;
 public class StatusExecution extends ProjectModel {
 
     public Integer position;
-    public String status;
+    public String name;
 
 }
