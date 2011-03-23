@@ -3,33 +3,32 @@ No script selected
 #{/if}
 #{else}
 
-#{box 'Test Script "'+script.name+'"'}
-<div id="scriptDetailsTabs">
-  <ul>
-    <li><a href="@{preparation.Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
-    <li><a href="@{preparation.Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
-    <li><a href="@{preparation.Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
-    </li>
-  </ul>
+<div id="accordion">
+  <h3><a href="#">Test Script "${script.name}"</a></h3>
+  <div id="scriptDetailsTabs">
+    <ul>
+      <li><a href="@{preparation.Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+      <li><a href="@{preparation.Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
+      <li><a href="@{preparation.Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
+      </li>
+    </ul>
+  </div>
+  <h3><a href="#">Test execution preparation</a></h3>
+  <div>
+    <div class="left_tree">
+      #{include 'preparation/Preparation/cycleAssignDialog.html' /}
+      <div id="scriptCycleTree" class="tree"></div>
+    </div>
+    <div class="right_tree">
+      <div id="instanceDetails">No test instance selected</div>
+    </div>
+  </div>
 </div>
-
-#{/box}
-
-<br/>
-<br/>
-
-#{box 'Add to cycle, assign, schedule, set test data'}
-  <div class="left_tree">
-    #{include 'preparation/Preparation/cycleAssignDialog.html' /}
-    <div id="scriptCycleTree" class="tree"></div>
-  </div>
-  <div class="right_tree">
-    <div id="instanceDetails">No test instance selected</div>
-  </div>
-#{/box}
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    $('#accordion').accordion({ autoHeight: false });
 
     $("#scriptDetailsTabs").tabs({
       select: function() {
