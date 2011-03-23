@@ -104,7 +104,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             ti.project = script.project;
             ti.testCycle = cycle;
             ti.script = script;
-            ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1) + " for test script " + script.name;
+            ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
             boolean created = ti.create();
             if (!created) {
                 // TODO log error
