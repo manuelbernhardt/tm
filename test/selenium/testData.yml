@@ -1,0 +1,566 @@
+general.Account(oxiras):
+    name: Oxiras ApS
+
+general.Auth(gwenAuth):
+    firstName: Gwenael
+    lastName: Alizon
+    email: gwenael.alizon@oxiras.com
+    password: gwen
+    account: oxiras
+
+general.Auth(manuAuth):
+    firstName: Manuel
+    lastName: Bernhardt
+    email: manuel.bernhardt@oxiras.com
+    password: manu
+    account: oxiras
+
+general.Auth(nathalieAuth):
+    firstName: Nathalie
+    lastName: Van Haaster
+    email: nathalie@example.com
+    password: nathalie
+    account: oxiras
+
+general.Auth(vroniAuth):
+    firstName: Vroni
+    lastName: Bodmann
+    email: vroni@example.com
+    password: vroni
+    account: oxiras
+
+general.Auth(tamaraAuth):
+    firstName: Tamara
+    lastName: Forza
+    email: tamara.forza@gmail.com
+    password: tamy
+    account: oxiras
+
+general.Auth(christianAuth):
+    firstName: Christian
+    lastName: Carlsen
+    email: christian@example.com
+    password: christian
+    account: oxiras
+
+project.ProjectCategory(ProjCat2011):
+    name: 2011
+    account: oxiras
+
+project.ProjectCategory(ProjCat2012):
+    name: 2012
+    account: oxiras
+
+project.Project(demenagement):
+    name: Demenagement
+    account: oxiras
+    projectCategory: ProjCat2011
+
+project.Project(testManagementApplication):
+    name: Test Management Application
+    account: oxiras
+    projectCategory: ProjCat2011
+
+project.Project(world):
+    name: Conquer the world
+    account: oxiras
+    projectCategory: ProjCat2012
+
+project.Role(demViewOnly):
+    name: View only
+    project: demenagement
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testExecView
+         - defectView
+
+project.Role(tmTestLead):
+    name: Test Lead
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - reqCreate
+         - reqEdit
+         - reqDelete
+         - approachView
+         - approachCreate
+         - approachEdit
+         - approachDelete
+         - testPrepView
+         - testPrepCreate
+         - testPrepEdit
+         - testPrepDelete
+         - testExecView
+         - testExecCreate
+         - testExecEdit
+         - testExecDelete
+         - defectView
+         - defectCreate
+         - defectEdit
+         - defectDelete
+
+project.Role(tmTestDesigner):
+    name: Test Designer
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testPrepCreate
+         - testPrepEdit
+         - testPrepDelete
+
+project.Role(tmTestExecution):
+    name: Test Execution
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - approachView
+         - testExecView
+         - testExecCreate
+         - testExecEdit
+
+project.Role(tmViewOnly):
+    name: View only
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - approachView
+         - testPrepView
+         - testExecView
+         - defectView
+
+tm.User(gwen):
+    authentication: gwenAuth
+    isApplicationAdmin: true
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestLead
+       - demViewOnly
+
+tm.User(manu):
+    authentication: manuAuth
+    isApplicationAdmin: true
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestDesigner
+       - tmViewOnly
+       - demViewOnly
+
+tm.User(nathalie):
+    authentication: nathalieAuth
+    activeProject: demenagement
+    projectRoles:
+       - demViewOnly
+
+tm.User(vroni):
+    authentication: vroniAuth
+    activeProject: demenagement
+    projectRoles:
+       - demViewOnly
+
+tm.User(tamara):
+    authentication: tamaraAuth
+    activeProject: testManagementApplication
+    projectRoles:
+       - demViewOnly
+       - tmTestExecution
+
+tm.User(christian):
+    authentication: christianAuth
+    isApplicationAdmin: true
+    activeProject: testManagementApplication
+    projectRoles:
+       - tmTestLead
+
+project.RequirementType(functional):
+    project: testManagementApplication
+    position: 1
+    type: Functional
+
+project.RequirementType(technical):
+    project: testManagementApplication
+    position: 2
+    type: Technical
+
+project.RequirementFolder(functionalReqFolder):
+    project: testManagementApplication
+    name: Requirement management
+
+project.Requirement(functionalReq1):
+    project: testManagementApplication
+    name: List requirements (tree)
+    type: functional
+
+project.Requirement(functionalReq2):
+    project: testManagementApplication
+    name: Display requirement details
+    type: functional
+
+project.Requirement(functionalReq3):
+    project: testManagementApplication
+    name: Display entities linked to requirement
+    type: functional
+
+project.RequirementFolder(crossConcernsFolder):
+    project: testManagementApplication
+    name: Cross concerns
+
+project.Requirement(technicalReq1):
+    project: testManagementApplication
+    name: Datatables need to be sortable
+    type: technical
+
+tree.jpa.TreeNode(requirementTreeNode1):
+    level: 0
+    name: Requirement management
+    nodeId: 1
+    opened: true
+    path: 1
+    treeId: requirementTree
+    type: requirementFolder
+
+tree.jpa.TreeNode(requirementTreeNode2):
+    level: 1
+    name: List requirements (tree)
+    nodeId: 1
+    opened: false
+    path: '1___2'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode3):
+    level: 1
+    name: Display requirement details
+    nodeId: 2
+    opened: false
+    path: '1___3'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode4):
+    level: 1
+    name: Display entities linked to requirement
+    nodeId: 3
+    opened: false
+    path: '1___4'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode1
+
+tree.jpa.TreeNode(requirementTreeNode5):
+    level: 0
+    name: Cross concerns
+    nodeId: 2
+    opened: false
+    path: 5
+    treeId: requirementTree
+    type: requirementFolder
+
+tree.jpa.TreeNode(requirementTreeNode6):
+    level: 1
+    name: Datatables need to be sortable
+    nodeId: 4
+    opened: false
+    path: '5___6'
+    treeId: requirementTree
+    type: requirement
+    threadRoot: requirementTreeNode5
+
+project.approach.Release(releaseProto):
+    project: testManagementApplication
+    name: Proto
+
+project.approach.TestCycle(unitTest):
+    project: testManagementApplication
+    name: Unit test
+    fromDate: 2011-03-01
+    toDate: 2011-03-12
+
+project.approach.TestCycle(systemTest):
+    project: testManagementApplication
+    name: System Test
+    fromDate: 2011-03-15
+    toDate: 2011-03-19
+
+project.approach.TestCycle(userAcceptanceTest):
+    project: testManagementApplication
+    name: User Acceptance test
+    fromDate: 2011-03-22
+    toDate: 2011-03-25
+
+project.approach.Release(releaseBeta):
+    project: testManagementApplication
+    name: Beta
+
+project.approach.Release(releaseV1):
+    project: testManagementApplication
+    name: V1
+
+tree.jpa.TreeNode(approachTreeNode7):
+    level: 0
+    name: Proto
+    nodeId: 1
+    opened: true
+    path: 7
+    treeId: approachTree
+    type: release
+
+tree.jpa.TreeNode(approachTreeNode8):
+    level: 1
+    name: Unit Test
+    nodeId: 1
+    opened: false
+    path: '7___8'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: approachTreeNode7
+
+tree.jpa.TreeNode(approachTreeNode9):
+    level: 1
+    name: System Test
+    nodeId: 2
+    opened: false
+    path: '7___9'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: approachTreeNode7
+
+tree.jpa.TreeNode(approachTreeNode10):
+    level: 1
+    name: User Acceptance Test
+    nodeId: 3
+    opened: false
+    path: '7___10'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: approachTreeNode7
+
+tree.jpa.TreeNode(approachTreeNode11):
+    level: 0
+    name: Beta
+    nodeId: 2
+    opened: true
+    path: 11
+    treeId: approachTree
+    type: release
+
+tree.jpa.TreeNode(approachTreeNode12):
+    level: 0
+    name: V1
+    nodeId: 3
+    opened: true
+    path: 12
+    treeId: approachTree
+    type: release
+
+project.test.ScriptFolder(testScriptFolderAdmin):
+    project: testManagementApplication
+    name: Administration
+
+project.test.ScriptFolder(testScriptFolderAdminUsers):
+    project: testManagementApplication
+    name: Users
+
+project.test.ScriptFolder(testScriptFolderAdminProjects):
+    project: testManagementApplication
+    name: Projects
+
+project.test.Script(testScriptAdminProjectsCreate):
+    project: testManagementApplication
+    name: Create new project
+
+project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    position: 1
+    name: Step 1
+    description: Enter the URL /admin/projects
+    expectedResult: Projects administration page is shown
+
+project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    position: 2
+    name: Step 2
+    description: Select project category "projectCategory" and click on "New project"
+    expectedResult: A new node appears in the tree under the selected project category
+
+project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    position: 3
+    name: Step 3
+    description: Enter "projectName" and press enter
+    expectedResult: New project "projectName" is available
+
+project.test.Script(testScriptAdminProjectsEdit):
+    project: testManagementApplication
+    name: Edit project details
+
+project.test.ScriptFolder(testScriptFolderRequirements):
+    project: testManagementApplication
+    name: Requirements
+
+project.test.Script(testScriptRequirement1):
+    project: testManagementApplication
+    name: Register new requirement
+
+tree.jpa.TreeNode(repositoryTreeNode13):
+    level: 0
+    name: Administration
+    nodeId: 1
+    opened: true
+    path: 13
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode14):
+    level: 1
+    name: Users
+    nodeId: 2
+    opened: true
+    path: '13___14'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode15):
+    level: 1
+    name: Projects
+    nodeId: 3
+    opened: true
+    path: '13___15'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode16):
+    level: 2
+    name: Create new project
+    nodeId: 1
+    opened: true
+    path: '13___15___16'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode17):
+    level: 2
+    name: Edit project details
+    nodeId: 2
+    opened: true
+    path: '13___15___17'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode13
+
+tree.jpa.TreeNode(repositoryTreeNode18):
+    level: 0
+    name: Requirement Management
+    nodeId: 4
+    opened: true
+    path: 18
+    treeId: repositoryTree
+    type: scriptFolder
+
+tree.jpa.TreeNode(repositoryTreeNode19):
+    level: 1
+    name: Register new requirement
+    nodeId: 3
+    opened: true
+    path: '18___19'
+    treeId: repositoryTree
+    type: script
+    threadRoot: repositoryTreeNode18
+
+project.test.Tag(administrationTag):
+    project: testManagementApplication
+    name: Administration
+
+project.test.Tag(usersTag):
+    project: testManagementApplication
+    name: Users
+
+project.test.Tag(projectsTag):
+    project: testManagementApplication
+    name: Projects
+
+project.test.Tag(requirementsTag):
+    project: testManagementApplication
+    name: Requirements
+
+project.test.Instance(createNewProject1):
+    project: testManagementApplication
+    name: Create new project
+    script: testScriptAdminProjectsCreate
+    testCycle: systemTest
+    responsible: manu
+    plannedExecution: 2011-03-18
+    tags:
+      - administrationTag
+      - projectsTag
+
+project.test.Instance(createNewProject2):
+    project: testManagementApplication
+    name: Create new project (2)
+    script: testScriptAdminProjectsCreate
+    testCycle: systemTest
+    responsible: christian
+    plannedExecution: 2011-03-18
+    tags:
+      - administrationTag
+      - projectsTag
+
+project.test.Instance(editProjectDetails):
+    project: testManagementApplication
+    name: Edit project details
+    script: testScriptAdminProjectsEdit
+    testCycle: systemTest
+    responsible: gwen
+    plannedExecution: 2011-03-19
+    tags:
+      - administrationTag
+      - projectsTag
+
+project.test.Instance(registerNewRequirement):
+    project: testManagementApplication
+    name: Register new requirement
+    script: testScriptRequirement1
+    testCycle: userAcceptanceTest
+    responsible: christian
+    plannedExecution: 2011-03-19
+    tags:
+      - requirementsTag
+
+project.Defect(defect1):
+    project: testManagementApplication
+    name: The application does not start
+    submittedBy: gwen
+    assignedTo: manu
+
+project.Defect(defect2):
+    project: demenagement
+    name: Test for naturalID
+    submittedBy: nathalie
+
+project.Defect(defect3):
+    project: testManagementApplication
+    name: Issue with tabularasa
+    submittedBy: manu
+    assignedTo: manu
+
+project.Defect(defect4):
+    project: demenagement
+    name: Box is not at the right place
+    submittedBy: vroni
+
+project.Defect(defect5):
+    project: demenagement
+    name: Old couch is still not removed
+    submittedBy: nathalie
+

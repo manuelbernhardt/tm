@@ -1,0 +1,86 @@
+#{fixture delete:'all', load:'selenium/testData.yml' /}
+
+#{selenium 'Test 110-Admin Users'}
+
+    // Try to access the user administration area and check that it contains the expected tabs
+    open('/admin')
+    clickAndWait('//ul[@id='tabs_header']/li[1]/a/span')
+    verifyElementPresent('//a[@id='userDetailsLink']/span')
+    verifyElementPresent('//a[@id='projectsLink']/span')
+    verifyElementPresent('accountLink')
+
+    // USER DETAILS
+    // Verify content of a random raw of user table
+    verifyElementPresent('//table[@id='tab']/tbody/tr[4]/td[2]')
+    verifyText('//table[@id='tab']/tbody/tr[4]/td[2]','Vroni')
+
+    // Attempt new user creation
+    click('newUserDialogSubmitButton')
+    type('user_authentication_firstName','John')
+    type('user_authentication_lastName','Doe')
+    type('user_authentication_email','email@newUser.com')
+    type('user_authentication_password','test')
+    click('//button[@type='button']')
+
+    // Verify new user listed in user table
+    verifyText('//table[@id='tab']/tbody/tr[7]/td[2]','John')
+    verifyText('//table[@id='tab']/tbody/tr[7]/td[3]','Doe')
+
+    // Check content of user details edit form
+    click('//table[@id='tab']/tbody/tr[7]/td[2]')
+    verifyElementPresent('user_authentication_firstName')
+    verifyValue('user_authentication_firstName','John')
+    verifyElementPresent('user_authentication_lastName')
+    verifyValue('user_authentication_lastName','Doe')
+    verifyElementPresent('user_authentication_email')
+    verifyValue('user_authentication_email','email@newUser.com')
+    verifyElementPresent('user_authentication_phone')
+    verifyValue('user_authentication_phone')
+    verifyElementPresent('profileForm_submit')
+
+    // Perform user details change
+    type('user_authentication_lastName','Smith')
+    type('user_authentication_email','john@smith.com')
+    click('profileForm_submit')
+
+    // Check values are saved after form submition both in user table and user details tab
+    verifyText('//table[@id='tab']/tbody/tr[7]/td[3]','Smith')
+    verifyElementPresent('user_authentication_lastName')
+    verifyValue('user_authentication_lastName','Smith')
+
+
+    // PROJECT ROLES ASSIGNMENT
+    click('//a[@id='projectsLink']/span')
+    verifyElementPresent('assign-role')
+    verifyElementPresent('unassign-role')
+
+    // Assign role
+    click('assign-role')
+    select('categories','label=2011')
+    click('//option[@value='1']')
+    select('projects','label=Test Management Application')
+    click('//select[@id='projects']/option[3]')
+    select('roles','label=Test Lead')
+    click('//div[11]/div/button[1]')
+
+    // Verify role assignment before and after tab reload
+    verifyTextPresent('2011')
+    verifyTextPresent('Test Management Application')
+    verifyTextPresent('Test Lead')
+    click('//a[@id='userDetailsLink']/span')
+    click('//a[@id='projectsLink']/span')
+    verifyTextPresent('2011')
+    verifyTextPresent('Test Management Application')
+    verifyTextPresent('Test Lead')
+
+    // Remove role
+    click('link=Test Lead')
+    click('unassign-role')
+
+    // Verify role removal
+    verifyTextNotPresent('Test Lead')
+
+    // ACCOUNT ROLES
+    // To be added when functionality is available
+
+#{/selenium}
