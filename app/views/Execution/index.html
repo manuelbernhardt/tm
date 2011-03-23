@@ -1,0 +1,69 @@
+#{extends 'main.html' /}
+#{set title:'Test execution' /}
+
+#{box 'Filters'}
+
+Filters
+
+#{/box}
+
+<br />
+
+<div class="container ui-widget-content">
+
+  <div class="left_table">
+
+    <table class="display" id="instanceTable">
+      <thead>
+      <tr>
+        <th>Tags</th>
+        <th>Test instance</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+
+  </div>
+
+  <div class="right_table">
+    <div id="content">No test instance selected</div>
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    #{tabularasa.init tableId:'instanceTable'}
+    var instanceTableParameters = {
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone" },
+        {"sName": "tagNames"},
+        {"sName": "name"},
+        {"sName": "executionStatus.name"}
+      ],
+      "sAjaxSource": "@{Execution.data()}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bLengthChange": false,
+      "bSort": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "oLanguage": {
+        "sZeroRecords": "No test instances found"
+      }
+    };
+    #{/tabularasa.init}
+
+    handleRowSelection('instanceTable', function(selectedRowId) {
+      $.get('@{Execution.content()}', { instanceId: selectedRowId }, function(data) {
+        $('#content').html(data);
+      });
+
+    });
+
+  });
+</script>

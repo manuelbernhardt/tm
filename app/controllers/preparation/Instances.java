@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import controllers.Lookups;
 import controllers.TMController;
 import models.project.test.Instance;
 import models.project.test.Tag;
@@ -20,35 +21,35 @@ import models.tm.User;
 public class Instances extends TMController {
 
     public static void content(Long instanceId) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         render(instance);
     }
 
     public static void tags(Long instanceId) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         instance.refresh();
         List<Tag> tags = instance.tags;
         render(instance, tags);
     }
 
     public static void schedule(Long instanceId) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         render(instance);
     }
 
     public static void testData(Long instanceId) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         render(instance);
     }
 
     public static void allTags(Long instanceId, String term) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         List<Tag> tags = Tag.find("from Tag t where t.project = ? and t.name like ?", instance.project, term + "%").fetch();
         renderJSON(tags, tagSerializer);
     }
 
     public static void addTags(Long instanceId, String tags) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         List<Tag> tagList = new ArrayList<Tag>();
         for (String name : tags.split(",")) {
             Tag t = Tag.find("from Tag t where t.name = ? and t.project = ?", name, instance.project).first();
@@ -68,7 +69,7 @@ public class Instances extends TMController {
     }
 
     public static void editSchedule(Long instanceId, Long responsibleId, Date plannedExecution) {
-        Instance instance = getInstance(instanceId);
+        Instance instance = Lookups.getInstance(instanceId);
         User responsible = User.<User>findById(responsibleId);
         checkInAccount(responsible);
         instance.responsible = responsible;
@@ -85,18 +86,6 @@ public class Instances extends TMController {
     public static void allUsers() {
         List<User> users = User.find("from User u where u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", getUserAccount(), getActiveProject()).<User>fetch();
         renderJSON(users, userSerializer);
-    }
-
-    private static Instance getInstance(Long instanceId) {
-        if (instanceId == null) {
-            return null;
-        }
-        Instance instance = Instance.<Instance>findById(instanceId);
-        if (instance == null) {
-            return null;
-        }
-        checkInAccount(instance);
-        return instance;
     }
 
     // TODO generify by making an interface for the autocompletable entities

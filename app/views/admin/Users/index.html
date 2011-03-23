@@ -45,16 +45,7 @@
     };
     #{/tabularasa.init}
 
-    /** handle user selection in table **/
-    $("#tab tbody").click(function(event) {
-      $(tabDataTable.fnSettings().aoData).each(function () {
-        $(this.nTr).removeClass('row_selected');
-      });
-      $(event.target.parentNode).addClass('row_selected');
-
-      var selectedUser = getSelectedRowId(tabDataTable);
-      reloadTabs(selectedUser);
-    });
+    handleRowSelection('tab', reloadTabs);
 
     function reloadTabs(selectedUser) {
       var links = ['@{admin.Users.userDetails()}', '@{admin.Users.projects()}', '@{admin.Users.account()}'];

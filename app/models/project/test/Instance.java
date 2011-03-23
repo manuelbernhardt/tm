@@ -12,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 import models.project.ProjectModel;
 import models.project.approach.TestCycle;
 import models.tm.User;
+import play.templates.JavaExtensions;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -38,6 +39,10 @@ public class Instance extends ProjectModel {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
+
+    public String getTagNames() {
+        return JavaExtensions.join(tags, ", ");
+    }
 
     public static List<Instance> find(Script script, TestCycle cycle) {
         return Instance.find("from Instance i where i.script = ? and i.testCycle = ?", script, cycle).fetch();

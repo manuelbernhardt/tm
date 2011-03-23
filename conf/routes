@@ -17,11 +17,14 @@ POST    /approach/editCycle                     Approach.editCycle
 POST    /approach/editRelease                   Approach.editRelease
 
 GET     /preparation                            preparation.Preparation.index
-GET     /preparation/content/{scriptId}         preparation.Preparation.content
+GET     /preparation/{scriptId}/content         preparation.Preparation.content
 GET     /preparation/{scriptId}/details         preparation.Preparation.scriptDetails
 GET     /preparation/{scriptId}/steps           preparation.Preparation.steps
 GET     /preparation/{scriptId}/linked          preparation.Preparation.linked
 GET     /preparation/{instanceId}/content       preparation.Instances.content
+
+GET     /execution                              Execution.index
+GET     /content/${instanceId}                  Execution.content
 
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data

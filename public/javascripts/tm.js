@@ -3,6 +3,25 @@
 /*************/
 
 /**
+ * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)
+ * @param tableId the table ID
+ * @param handler the handler to execute on selection
+ */
+function handleRowSelection(tableId, handler) {
+  $("#" + tableId + " tbody").click(function(event) {
+      var dataTable = $("#" + tableId).dataTable();
+      $(dataTable.fnSettings().aoData).each(function () {
+      $(this.nTr).removeClass('row_selected');
+    });
+    $(event.target.parentNode).addClass('row_selected');
+
+    var selectedRowId = getSelectedRowId(dataTable);
+    handler(selectedRowId);
+  });
+}
+
+
+/**
  * Gets the ID of the currently selected row
  * @param dataTable DataTable instance
  */
