@@ -23,12 +23,12 @@ public class Execution extends TMController {
         render(instance);
     }
 
-    public static void data(String tableId,
-                            Integer iDisplayStart,
-                            Integer iDisplayLength,
-                            String sColumns,
-                            String sEcho,
-                            String sSearch) {
+    public static void instances(String tableId,
+                                 Integer iDisplayStart,
+                                 Integer iDisplayLength,
+                                 String sColumns,
+                                 String sEcho,
+                                 String sSearch) {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             // TODO
@@ -40,5 +40,4 @@ public class Execution extends TMController {
         long totalRecords = Instance.count();
         TableController.renderJSON(people, Instance.class, totalRecords, sColumns, sEcho);
     }
-
 }

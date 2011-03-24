@@ -6,7 +6,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import models.project.ProjectModel;
@@ -29,8 +32,7 @@ public class Instance extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public TestCycle testCycle;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-    public StatusExecution executionStatus;
+    public String status;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
     public User responsible;
@@ -46,6 +48,21 @@ public class Instance extends ProjectModel {
 
     public static List<Instance> find(Script script, TestCycle cycle) {
         return Instance.find("from Instance i where i.script = ? and i.testCycle = ?", script, cycle).fetch();
+    }
+
+    @Transient
+    public ExecutionStatus executionStatus;
+
+    @PostLoad
+    public void doLoad() {
+        if (status != null) {
+            this.executionStatus = ExecutionStatus.valueOf(status);
+        }
+    }
+
+    @PrePersist
+    public void doSave() {
+        this.status = executionStatus.getKey();
     }
 
 }
