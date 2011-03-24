@@ -1,6 +1,6 @@
 #{fixture delete:'all', load:'selenium/testData.yml' /}
 
-#{selenium 'Test 110-Admin Users'}
+#{selenium 'Test 1100-Admin Users Full'}
 
     // Try to access the user administration area and check that it contains the expected tabs
     open('/admin')
@@ -10,7 +10,7 @@
     verifyElementPresent('accountLink')
 
     // USER DETAILS
-    // Verify content of a random raw of user table
+    // Verify content of a random row of user table
     verifyElementPresent('//table[@id='tab']/tbody/tr[4]/td[2]')
     verifyText('//table[@id='tab']/tbody/tr[4]/td[2]','Vroni')
 
