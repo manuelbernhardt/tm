@@ -24,7 +24,6 @@ Filters
       <tbody></tbody>
     </table>
 
-
   </div>
 
   <div class="right_table">
@@ -45,11 +44,12 @@ Filters
         {"sName": "name"},
         {"sName": "executionStatus.name"}
       ],
-      "sAjaxSource": "@{Execution.data()}",
+      "sAjaxSource": "@{Execution.instances()}",
       "bProcessing": true,
       "bServerSide": true,
       "bLengthChange": false,
       "bSort": false,
+      "bFilter": false,
       "iDisplayLength": 10,
       "bInfo": false,
       "oLanguage": {
