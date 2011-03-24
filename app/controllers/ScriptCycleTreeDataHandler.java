@@ -41,14 +41,13 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             }
             final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
             for (TestCycle c : cycles) {
-                TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", c.getId(), ApproachTree.APPROACH_TREE, "testCycle").first();
-                Release r = Release.findById(n.getParent().getNodeId());
+                Release r = c.getRelease();
                 List<TestCycle> cycleList = releases.get(r);
                 if (cycleList == null) {
                     cycleList = new ArrayList<TestCycle>();
                     releases.put(r, cycleList);
                 }
-                if(!cycleList.contains(c)) {
+                if (!cycleList.contains(c)) {
                     cycleList.add(c);
                 }
             }
@@ -81,7 +80,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
     public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
 
-        if (type.equals("testCycle")) {
+        if (type.equals(ScriptCycleTreeDataHandler.TEST_CYCLE)) {
             String cycleNodeId = args.get("cycleNodeId");
             String scriptId = args.get("scriptId");
             if (cycleNodeId == null || scriptId == null) {
