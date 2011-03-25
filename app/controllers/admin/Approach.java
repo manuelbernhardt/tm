@@ -1,7 +1,11 @@
-package controllers;
+package controllers.admin;
 
+import controllers.ApproachTree;
+import controllers.Lookups;
+import controllers.TMController;
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
+import models.project.Project;
 import models.project.approach.Release;
 import models.project.approach.TestCycle;
 import models.tree.jpa.TreeNode;
@@ -11,8 +15,9 @@ import play.data.validation.Validation;
 public class Approach extends TMController {
 
     @Restrict(UnitRole.USER)
-    public static void index() {
-        render();
+    public static void cycles(Long projectId) {
+        Project project = Lookups.getProject(projectId);
+        render(project);
     }
 
     @Restrict(UnitRole.USER)

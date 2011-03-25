@@ -5,7 +5,7 @@ No cycle selected
 
 #{box cycle.name+' details'}
 
-#{input.form action:@Approach.editCycle(), id:'cycleForm', baseObject:cycle}
+#{input.form action:@admin.Approach.editCycle(), id:'cycleForm', baseObject:cycle}
   <script type="text/javascript">
     function cycleFormSubmissionCallback() {
       refreshTree('approachTree');

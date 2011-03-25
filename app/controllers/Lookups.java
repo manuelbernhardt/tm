@@ -1,10 +1,13 @@
 package controllers;
 
+import models.project.Project;
 import models.project.test.Instance;
 import models.project.test.Run;
 import play.mvc.Util;
 
 /**
+ * Lookups. There must be a way to make these methods generic.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Lookups {
@@ -36,4 +39,16 @@ public class Lookups {
     }
 
 
+    @Util
+    public static Project getProject(Long projectId) {
+        Project project = null;
+        if (projectId != null) {
+            project = Project.<Project>findById(projectId);
+        }
+        if (project == null) {
+            return null;
+        }
+        TMController.checkInAccount(project);
+        return project;
+    }
 }

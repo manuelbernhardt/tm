@@ -2,6 +2,7 @@ package controllers.admin;
 
 import java.util.List;
 
+import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
@@ -24,7 +25,7 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void projectDetails(Long projectId) {
-        Project project = getProject(projectId);
+        Project project = Lookups.getProject(projectId);
         render(project);
     }
 
@@ -38,24 +39,16 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ADMIN)
     public static void roles(Long projectId) {
-        Project project = getProject(projectId);
+        Project project = Lookups.getProject(projectId);
         render(project);
     }
 
     @Restrict(UnitRole.ADMIN)
     public static void users(Long projectId) {
-        Project project = getProject(projectId);
+        Project project = Lookups.getProject(projectId);
         List<Role> projectRoles = Role.findByProject(projectId);
         List<User> accountUsers = User.findByAccount(getUserAccount().getId());
         render(project, projectRoles, accountUsers);
-    }
-
-    private static Project getProject(Long projectId) {
-        Project project = null;
-        if (projectId != null) {
-            project = Project.findById(projectId);
-        }
-        return project;
     }
 
 }

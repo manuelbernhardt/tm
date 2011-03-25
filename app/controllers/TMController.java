@@ -27,7 +27,11 @@ public class TMController extends Controller {
             Auth a = Auth.find("byEmail", Security.connected()).first();
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
-            renderArgs.put("activeProject", getActiveProject());
+
+            if(!request.controller.startsWith("admin")) {
+                renderArgs.put("activeProject", getActiveProject());
+            }
+
         }
     }
 
@@ -60,6 +64,11 @@ public class TMController extends Controller {
      * @return the active {@see Project}
      */
     public static Project getActiveProject() {
+        
+        if(request.controller.startsWith("admin")) {
+            throw new RuntimeException("Active project can't be fetched in the admin area");
+        }
+
         // TODO freaking cache this or we have an extra query each time we create a project-related entity!
         if (session.get("activeProject") != null) {
             Long id = Long.valueOf(session.get("activeProject"));

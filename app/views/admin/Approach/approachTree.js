@@ -7,7 +7,9 @@ var tree = $("#approachTree").jstree({
       "data" : function (n) {
         return {
           "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
-          "treeId" : "approachTree"
+          "treeId" : "approachTree",
+          "args" : {"projectId": "${project.id}"}
+
         };
       }
     }

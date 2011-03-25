@@ -4,7 +4,7 @@ No release selected
 #{else}
 #{box release.name+' details'}
 
-#{input.form action:@Approach.editRelease(), id:'releaseForm', baseObject:release}
+#{input.form action:@admin.Approach.editRelease(), id:'releaseForm', baseObject:release}
 <script type="text/javascript">
   function releaseFormSubmissionCallback() {
 //    refreshActiveTreeNode('approachTree');

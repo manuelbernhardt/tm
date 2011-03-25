@@ -2,11 +2,12 @@ package controllers;
 
 import java.util.Map;
 
+import models.project.Project;
 import models.project.approach.Release;
 import models.project.approach.TestCycle;
 import tree.persistent.AbstractTree;
-import tree.persistent.NodeType;
 import tree.persistent.Node;
+import tree.persistent.NodeType;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -33,17 +34,28 @@ public class ApproachTree extends AbstractTree {
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
+        String projectId = args.get("projectId");
+        if(projectId == null) {
+            return null;
+        }
+        Project project = Project.findById(Long.parseLong(projectId));
+
+        // TODO check role as well
+        if(!project.isInAccount(TMController.getUserAccount())) {
+            return null;
+        }
+
         if(type.getNodeClass().equals(TestCycle.class)) {
             TestCycle cycle = new TestCycle();
             cycle.name = name;
-            cycle.project = TMController.getActiveProject();
+            cycle.project = project;
             return cycle;
         }
 
         if(type.getNodeClass().equals(Release.class)) {
             Release release = new Release();
             release.name = name;
-            release.project = TMController.getActiveProject();
+            release.project = project;
             return release;
         }
 

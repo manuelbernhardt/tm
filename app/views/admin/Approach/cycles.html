@@ -1,13 +1,14 @@
-#{extends 'main.html' /}
-#{set title:'Test approach' /}
-
+#{if project == null}
+No project selected
+#{/if}
+#{else}
 
 <div class="container">
   <div class="left_tree">
     <div id="actions">
       <button id="create_release">Release</button>
       <button id="create_cycle">Cycle</button>
-      <button id="remove">Remove</button>
+      <button id="remove_cycleRelease">Remove</button>
     </div>
     <div id="approachTree" class="tree"></div>
   </div>
@@ -17,22 +18,21 @@
 </div>
 
 
-#{set 'moreScripts'}
 <script type="text/javascript">
 
   $(document).ready(function () {
 
-    #{include 'Approach/approachTree.js' /}
+    #{include 'admin/Approach/approachTree.js' /}
     #{tree.common id:"approachTree", controller:"TMTreeController" /}
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
       if(isSelectedNodeType(data, ['default', 'testCycle'])) {
-        $.get('@{Approach.cycleDetails()}', { cycleId: getSelectedNode(data) }, function(data) {
+        $.get('@{admin.Approach.cycleDetails()}', { cycleId: getSelectedNode(data) }, function(data) {
           $('#details').html(data);
         });
       } else if(isSelectedNodeType(data, ['release'])) {
-        $.get('@{Approach.releaseDetails()}', { releaseId: getSelectedNode(data) }, function(data) {
+        $.get('@{admin.Approach.releaseDetails()}', { releaseId: getSelectedNode(data) }, function(data) {
           $('#details').html(data);
         });
       }
@@ -40,19 +40,18 @@
 
 
     /** button initialisation **/
-
-
     $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"release"}});
+      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, metadata: {args: {projectId: '${project.id}'}}});
     })
     $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, metadata: {args: {projectId: '${project.id}'}}});
     })
-    $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+    $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       $("#approachTree").jstree("remove", null);
     })
 
   });
 
 </script>
-#{/set}
+
+#{/else}
