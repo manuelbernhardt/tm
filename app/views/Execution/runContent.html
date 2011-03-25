@@ -1,41 +1,37 @@
-#{if instance == null}
-No test instance selected
+#{if run == null}
+No test run selected
 #{/if}
 #{else}
 
-#{box 'Test instance "'+instance.name+'"'}
-
-Test run overview
-<table class="display" id="runTable">
+<table class="display" id="runStepTable">
   <thead>
   <tr>
-    <th>Execution date</th>
-    <th>Tester</th>
+    <th>Nr</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Expected results</th>
+    <th>Actual results</th>
     <th>Status</th>
   </tr>
   </thead>
   <tbody></tbody>
 </table>
 
-<div id="runContent">
-
-</div>
-
-
-#{/box}
 
 <script type="text/javascript">
   $(document).ready(function() {
 
-    #{tabularasa.init tableId:'runTable'}
-    var runTableParameters = {
+    #{tabularasa.init tableId:'runStepTable'}
+    var runStepTableParameters = {
       "aoColumns": [
         {"sName": "id", "sClass": "sNone" },
-        {"sName": "executionDate"},
-        {"sName": "tester.fullName"},
+        {"sName": "position"},
+        {"sName": "description"},
+        {"sName": "expectedResult"},
+        {"sName": "actualResult"},
         {"sName": "executionStatus"}
       ],
-      "sAjaxSource": "@{Execution.runs('instanceId', instance.id)}",
+      "sAjaxSource": "@{Execution.runSteps('runId', run.id)}",
       "bProcessing": true,
       "bServerSide": true,
       "bLengthChange": false,
@@ -44,7 +40,7 @@ Test run overview
       "iDisplayLength": 10,
       "bInfo": false,
       "oLanguage": {
-        "sZeroRecords": "No runs performed yet"
+        "sZeroRecords": "No run steps defined"
       }
     };
     #{/tabularasa.init}
@@ -59,4 +55,6 @@ Test run overview
   });
 </script>
 
+
 #{/else}
+

@@ -1,6 +1,7 @@
 package controllers;
 
 import models.project.test.Instance;
+import models.project.test.Run;
 import play.mvc.Util;
 
 /**
@@ -20,4 +21,19 @@ public class Lookups {
         TMController.checkInAccount(instance);
         return instance;
     }
+
+    @Util
+    public static Run getRun(Long runId) {
+        if (runId == null) {
+            return null;
+        }
+        Run run = Run.<Run>findById(runId);
+        if (run == null) {
+            return null;
+        }
+        TMController.checkInAccount(run);
+        return run;
+    }
+
+
 }

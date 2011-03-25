@@ -10,7 +10,6 @@ public enum ExecutionStatus {
 
     NOT_RUN(0, "Not run"), NOT_COMPLETED(1, "Not completed"), PASSED(2, "Passed"), FAILED(3, "Failed");
 
-
     private String label;
     private Integer position;
 
@@ -29,5 +28,11 @@ public enum ExecutionStatus {
 
     public Integer getPosition() {
         return position;
+    }
+
+    @Override
+    public String toString() {
+        // this is where i18n would take place
+        return label;
     }
 }

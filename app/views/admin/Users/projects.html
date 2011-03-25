@@ -166,13 +166,15 @@ $(document).ready(function () {
 
   // run ajax callbacks to update the selects
   $('#categories').change(function() {
-    var category = $('#categories option:selected').val();
-    selectCategory(category);
+    var categoryId = $('#categories option:selected').val();
+    selectCategory(categoryId, function() {
+        setCategory(categoryId);
+      });
   });
 
   $('#projects').change(function() {
     var project = $('#projects option:selected').val();
-    selectProject(project);
+    selectProject(project, null);
   });
 });
 

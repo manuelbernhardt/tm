@@ -64,5 +64,4 @@ public class Instance extends ProjectModel {
     public void doSave() {
         this.status = executionStatus.getKey();
     }
-
 }
