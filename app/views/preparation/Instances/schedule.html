@@ -7,8 +7,8 @@ No test instance selected
 
   <label for="responsible">Assigned to</label>
   <input type="text" id="responsible" name="responsible" value="${instance.responsible != null ? instance.responsible.getFullName() : ''}">
-  #{input.field field:'instance.plannedExecution', label:'Planned execution', name:'plannedExecution' /}
   <input type="hidden" id="responsibleId" name="responsibleId" value="${instance.responsible != null ? instance.responsible.id : ''}" />
+  #{input.field field:'instance.plannedExecution', label:'Planned execution', name:'plannedExecution' /}
   <input type="hidden" name="instanceId" value="${instance.id}" />
 
   #{input.submit /}

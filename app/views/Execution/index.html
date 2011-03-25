@@ -3,22 +3,38 @@
 
 #{box 'Filters'}
 <form action="index.html">
-
-
-  <label for="cycles">Test cycle</label>
-  <select id="cycles" name="cycle">
-    <option value="" label="Select a cycle"></option>
-    #{list items:releases, as:'release'}
-    <optgroup label="${release.name}">
-      #{list items:release.getTestCycles(), as:'cycle'}
-      <option label="${cycle.name}" value="${cycle.id}"></option>
+  <div class="field">
+    <label for="cycle">Test cycle</label>
+    <select id="cycle" name="cycle">
+      <option value="" label="Select a cycle"></option>
+      #{list items:releases, as:'release'}
+      <optgroup label="${release.name}">
+        #{list items:release.getTestCycles(), as:'cycle'}
+        <option label="${cycle.name}" value="${cycle.id}"></option>
+        #{/list}
+      </optgroup>
       #{/list}
-    </optgroup>
-    #{/list}
-  </select>
-
+    </select>
+  </div>
+  <div class="field">
+    <label for="status">Status</label>
+    <select id="status" name="status">
+      <option value="" label="Select a status"></option>
+      #{list items:models.project.test.ExecutionStatus.values(), as:'s'}
+      <option label="${s}" value="${s.getKey()}"></option>
+      #{/list}
+    </select>
+  </div>
+  <div class="field">
+    <label for="responsible">Assigned to</label>
+    <select id="responsible" name="responsible">
+      <option value="" label="Select a person"></option>
+      #{list items:users, as:'user'}
+      <option label="${user.getFullName()}" value="${user.getId()}"></option>
+      #{/list}
+    </select>
+  </div>
 </form>
-
 
 #{/box}
 

@@ -8,10 +8,13 @@ import models.project.approach.Release;
 import models.project.test.Instance;
 import models.project.test.Run;
 import models.project.test.RunStep;
+import models.tm.User;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
 
 /**
+ * TODO security
+ * 
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @With(Deadbolt.class)
@@ -19,7 +22,8 @@ public class Execution extends TMController {
 
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
-        render(releases);
+        List<User> users = User.byProject(getActiveProject().getId());
+        render(releases, users);
     }
 
     public static void content(Long instanceId) {
@@ -30,7 +34,10 @@ public class Execution extends TMController {
     public static void runContent(Long runId) {
         Run run = Lookups.getRun(runId);
         render(run);
+    }
 
+    public static void allUsers() {
+      Shared.allUsers();
     }
 
     public static void instances(String tableId,

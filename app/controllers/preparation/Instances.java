@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import controllers.Lookups;
+import controllers.Shared;
 import controllers.TMController;
 import models.project.test.Instance;
 import models.project.test.Tag;
@@ -78,19 +79,12 @@ public class Instances extends TMController {
         ok();
     }
 
-    /**
-     * Renders all users in the active project
-     *
-     * We may want to move this someplace else.
-     */
     public static void allUsers() {
-        List<User> users = User.find("from User u where u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", getUserAccount(), getActiveProject()).<User>fetch();
-        renderJSON(users, userSerializer);
+        Shared.allUsers();
     }
 
     // TODO generify by making an interface for the autocompletable entities
     private static final TagSerializer tagSerializer = new TagSerializer();
-    private static final UserSerializer userSerializer = new UserSerializer();
 
     private static class TagSerializer implements JsonSerializer<Tag> {
         public JsonElement serialize(Tag tag, Type type, JsonSerializationContext context) {
@@ -101,15 +95,4 @@ public class Instances extends TMController {
             return object;
         }
     }
-
-    private static class UserSerializer implements JsonSerializer<User> {
-        public JsonElement serialize(User user, Type type, JsonSerializationContext context) {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", user.id);
-            object.addProperty("label", user.getFullName());
-            object.addProperty("value", user.id);
-            return object;
-        }
-    }
-
 }

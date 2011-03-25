@@ -69,8 +69,23 @@ public class User extends Model implements RoleHolder, AccountEntity {
         return authentication.account.getId().equals(account.getId());
     }
 
-    public static List<User> findByAccount(Long accountId) {
+    public static List<User> byAccount(Long accountId) {
         return User.find("from User u where u.authentication.account.id = ?", accountId).fetch();
+    }
+
+    public static List<User> byProject(Long projectId) {
+        // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
+        List<User> res = new ArrayList<User>();
+        Project project = Project.<Project>findById(projectId);
+        if(project == null) {
+            return null;
+        }
+        for(User u : User.byAccount(project.account.getId())) {
+            if(u.getProjects().contains(project)) {
+                res.add(u);
+            }
+        }
+        return res;
     }
 
     public List<Project> getProjects() {
