@@ -22,7 +22,7 @@ public class Execution extends TMController {
 
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
-        List<User> users = User.byProject(getActiveProject().getId());
+        List<User> users = User.listByProject(getActiveProject().getId());
         render(releases, users);
     }
 

@@ -47,7 +47,7 @@ public class Projects extends TMController {
     public static void users(Long projectId) {
         Project project = Lookups.getProject(projectId);
         List<Role> projectRoles = Role.findByProject(projectId);
-        List<User> accountUsers = User.byAccount(getUserAccount().getId());
+        List<User> accountUsers = User.listByAccount(getUserAccount().getId());
         render(project, projectRoles, accountUsers);
     }
 
