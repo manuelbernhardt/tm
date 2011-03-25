@@ -4,6 +4,7 @@ import java.util.List;
 
 import controllers.deadbolt.Deadbolt;
 import controllers.tabularasa.TableController;
+import models.project.approach.Release;
 import models.project.test.Instance;
 import models.project.test.Run;
 import models.project.test.RunStep;
@@ -17,7 +18,8 @@ import play.mvc.With;
 public class Execution extends TMController {
 
     public static void index() {
-        render();
+        List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
+        render(releases);
     }
 
     public static void content(Long instanceId) {

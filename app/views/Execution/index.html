@@ -2,12 +2,27 @@
 #{set title:'Test execution' /}
 
 #{box 'Filters'}
+<form action="index.html">
 
-Filters
+
+  <label for="cycles">Test cycle</label>
+  <select id="cycles" name="cycle">
+    <option value="" label="Select a cycle"></option>
+    #{list items:releases, as:'release'}
+    <optgroup label="${release.name}">
+      #{list items:release.getTestCycles(), as:'cycle'}
+      <option label="${cycle.name}" value="${cycle.id}"></option>
+      #{/list}
+    </optgroup>
+    #{/list}
+  </select>
+
+</form>
+
 
 #{/box}
 
-<br />
+<br/>
 
 <div class="container ui-widget-content">
 
