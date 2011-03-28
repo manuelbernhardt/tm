@@ -67,6 +67,16 @@ div.right_tree {
   float: right;
 }
 
+div.right_column {
+  float: right;
+  width: 50%;
+}
+
+div.left_column {
+  float: left;
+  width: 50%;
+}
+
 td.sNone {
   display: none;
 }
@@ -82,7 +92,7 @@ form label {
 }
 
 .formSubmit {
-  /* 100px come from the label that has a width of 100, 2px of the inputs that have a margin of 2, and 1 px of the input border */
+/* 100px come from the label that has a width of 100, 2px of the inputs that have a margin of 2, and 1 px of the input border */
   margin-left: 107px;
 }
 
