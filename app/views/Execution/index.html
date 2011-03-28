@@ -47,8 +47,8 @@
         <input id="dateFrom" type="text" name="dateFrom">
         <input id="dateTo" type="text" name="dateTo">
       </div>
+      <button id="filter">Filter</button>
     </div>
-    <button id="filter">Filter</button>
   </form>
   #{/box}
 </div>
@@ -134,6 +134,7 @@
     }
 
     handleRowSelection('instanceTable', function(selectedRowId) {
+      removeDialogs();
       $.get('@{Execution.content()}', { instanceId: selectedRowId }, function(data) {
         $('#content').html(data);
       });

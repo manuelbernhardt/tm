@@ -1,0 +1,36 @@
+#{if run == null}
+No test run selected
+#{/if}
+#{else}
+<table id="runTable">
+  <thead>
+  <th>Nr</th>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Expected results</th>
+  <th>Actual results</th>
+  <th>Status</th>
+  </thead>
+  <tbody>
+  #{list items:run.getSteps(), as:'step'}
+  <tr class="${step_parity}">
+    <td>${step.position}</td>
+    <td>${step.name}</td>
+    <td>${step.description}</td>
+    <td>${step.expectedResult}</td>
+    <td><textarea id="actualResult" name="actualResult" rows="5" cols="48">${step.actualResult}</textarea></td>
+    <td>
+      <select id="status" name="status">
+        <option value="">- pick -</option>
+        #{list items:models.project.test.ExecutionStatus.runValues(), as:'s'}
+        <option value="${s.getKey()}">${s}</option>
+        #{/list}
+      </select>
+    </td>
+  </tr>
+  #{/list}
+
+  </tbody>
+</table>
+
+#{/else}

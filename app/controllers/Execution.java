@@ -10,9 +10,13 @@ import javax.persistence.Query;
 import controllers.deadbolt.Deadbolt;
 import controllers.tabularasa.TableController;
 import models.project.approach.Release;
+import models.project.test.ExecutionStatus;
 import models.project.test.Instance;
+import models.project.test.InstanceParam;
 import models.project.test.Run;
+import models.project.test.RunParam;
 import models.project.test.RunStep;
+import models.project.test.ScriptStep;
 import models.tm.User;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
@@ -113,13 +117,15 @@ public class Execution extends TMController {
                             String sColumns,
                             String sEcho,
                             String sSearch) {
+
         Instance instance = Lookups.getInstance(instanceId);
+
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             // TODO implement the search
             query = Run.find("from Run r where r.instance = ? and r.project = ?", instance, TMController.getActiveProject());
         } else {
-            query = Run.all().from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = Run.find("from Run r where r.instance = ? and r.project = ?", instance, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<Run> runs = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = Run.count();
@@ -143,6 +149,48 @@ public class Execution extends TMController {
         List<RunStep> runSteps = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = RunStep.count();
         TableController.renderJSON(runSteps, RunStep.class, totalRecords, sColumns, sEcho);
+    }
+
+    public static void newRun(Long instanceId) {
+        Instance instance = Lookups.getInstance(instanceId);
+
+        // create the run
+        Run run = new Run();
+        run.project = instance.project;
+        run.instance = instance;
+        run.tester = getConnectedUser();
+        run.executionDate = new Date();
+        run.executionStatus = ExecutionStatus.NOT_RUN;
+        run.create();
+
+        // copy the steps
+        for(ScriptStep step : instance.script.getSteps()) {
+            RunStep runStep = new RunStep();
+            runStep.project = instance.project;
+            runStep.run = run;
+            runStep.executionStatus = ExecutionStatus.NOT_RUN;
+
+            runStep.name = step.name;
+            runStep.position = step.position;
+            runStep.description = step.description;
+            runStep.expectedResult = step.expectedResult;
+
+            runStep.create();
+        }
+
+        // copy the parameters
+        for(InstanceParam param : instance.getParams()) {
+            RunParam runParam = new RunParam();
+            runParam.project = instance.project;
+            runParam.run = run;
+
+            runParam.name = param.scriptParam.name;
+            runParam.value = param.value;
+
+            runParam.create();
+        }
+
+        render(run);
     }
 
 

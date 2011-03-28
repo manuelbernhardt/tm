@@ -3,9 +3,13 @@ No test instance selected
 #{/if}
 #{else}
 
-#{box 'Test instance "'+instance.name+'"'}
+#{box 'Runs for test instance "'+instance.name+'"'}
 
-Test run overview
+<button id="newRunButton">Run Test Instance</button>
+<div id="newRunDialog" title="New test run" class="modalDialog">
+  <div id="runDialogContent" class="box-content"><em>Loading...</em></div>
+</div>
+
 <table class="display" id="runTable">
   <thead>
   <tr>
@@ -17,15 +21,35 @@ Test run overview
   <tbody></tbody>
 </table>
 
-<div id="runContent">
-
-</div>
+<div id="runContent"></div>
 
 
 #{/box}
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    $('#newRunButton').button().click(function() {
+      $('#newRunDialog').dialog('open');
+    });
+
+    $('#newRunDialog').dialog({
+      autoOpen: false,
+      height: 600,
+      width: 800,
+      modal: true,
+      open: function(event, ui) {
+        $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
+          $('#newRunDialog').html(data);
+        });
+      },
+      buttons: {
+        "Close": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
 
     #{tabularasa.init tableId:'runTable'}
     var runTableParameters = {
@@ -35,7 +59,7 @@ Test run overview
         {"sName": "tester.fullName"},
         {"sName": "executionStatus"}
       ],
-      "sAjaxSource": "@{Execution.runs('instanceId', instance.id)}",
+      "sAjaxSource": "@{Execution.runs()}",
       "bProcessing": true,
       "bServerSide": true,
       "bLengthChange": false,
@@ -49,8 +73,12 @@ Test run overview
     };
     #{/tabularasa.init}
 
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "instanceId", "value": "${instance.id}" });
+    }
+
     handleRowSelection('runTable', function(selectedRowId) {
-      $.get('@{Execution.runContent()}', { instanceId: selectedRowId }, function(data) {
+      $.get('@{Execution.runContent()}', { runId: selectedRowId }, function(data) {
         $('#runContent').html(data);
       });
 

@@ -46,8 +46,8 @@ public class Instance extends ProjectModel {
         return JavaExtensions.join(tags, ", ");
     }
 
-    public static List<Instance> find(Script script, TestCycle cycle) {
-        return Instance.find("from Instance i where i.script = ? and i.testCycle = ?", script, cycle).fetch();
+    public List<InstanceParam> getParams() {
+        return InstanceParam.find("from InstanceParam p where p.instance = ?", this).<InstanceParam>fetch();
     }
 
     @Transient
@@ -66,4 +66,10 @@ public class Instance extends ProjectModel {
             this.status = executionStatus.getKey();
         }
     }
+
+    public static List<Instance> find(Script script, TestCycle cycle) {
+        return Instance.find("from Instance i where i.script = ? and i.testCycle = ?", script, cycle).fetch();
+    }
+
+
 }

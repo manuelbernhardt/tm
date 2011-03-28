@@ -9,7 +9,7 @@ No project selected
   <div id="rolesUserTree" class="tree"></div>
 </div>
 
-<div id="assign-dialog" title="Assign a role to a user" class="modalDialog">
+<div id="assignDialog" title="Assign a role to a user" class="modalDialog">
   <form id="assignForm">
     <fieldset>
 
@@ -32,7 +32,7 @@ No project selected
 
   $(document).ready(function () {
 
-    $("#assign-dialog").dialog({
+    $("#assignDialog").dialog({
       autoOpen: false,
       height: 300,
       width: 350,
@@ -80,7 +80,7 @@ No project selected
     });
 
     $("#assign_user").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
-      $("#assign-dialog").dialog("open");
+      $("#assignDialog").dialog("open");
     });
 
     $("#unassign_user").button({icons: {primary: 'ui-icon-minus'}}).click(function() {

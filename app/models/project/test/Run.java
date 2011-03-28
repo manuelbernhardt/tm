@@ -1,6 +1,7 @@
 package models.project.test;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -29,6 +30,10 @@ public class Run extends ProjectModel {
     public Date executionDate;
 
     public String status;
+
+    public List<RunStep> getSteps() {
+        return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();
+    }
 
     @Transient
     public ExecutionStatus executionStatus;

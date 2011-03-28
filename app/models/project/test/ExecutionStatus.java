@@ -13,6 +13,8 @@ public enum ExecutionStatus {
     private String label;
     private Integer position;
 
+    private final static ExecutionStatus[] runValues = new ExecutionStatus[]{FAILED, PASSED};
+
     ExecutionStatus(Integer position, String label) {
         this.label = label;
         this.position = position;
@@ -34,5 +36,9 @@ public enum ExecutionStatus {
     public String toString() {
         // this is where i18n would take place
         return label;
+    }
+
+    public static ExecutionStatus[] runValues() {
+        return runValues;
     }
 }
