@@ -27,6 +27,10 @@
           #{/list}
         </select>
       </div>
+      <div class="field">
+        <label for="tags">Tags</label>
+        <input id="tags" name="tags" type="text">
+      </div>
     </div>
     <div class="right_column">
       <div class="field">
@@ -82,6 +86,15 @@
       showButtonPanel: true,
       gotoCurrent: true
     });
+
+    $('#tags').tagsInput({
+      'autocomplete_url': "@{Execution.allTags()}",
+      'autocomplete': {minLength: 0},
+      'height':'30px',
+      'width':'400px',
+      'defaultText':'add a tag'
+    });
+
 
 
     #{tabularasa.init tableId:'instanceTable'}

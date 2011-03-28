@@ -40,6 +40,12 @@ public class Execution extends TMController {
       Shared.allUsers();
     }
 
+    public static void allTags(String term) {
+      Shared.allTags(getActiveProject(), term);
+    }
+
+
+
     public static void instances(String tableId,
                                  Integer iDisplayStart,
                                  Integer iDisplayLength,

@@ -1,14 +1,9 @@
 package controllers.preparation;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import controllers.Lookups;
 import controllers.Shared;
 import controllers.TMController;
@@ -45,8 +40,7 @@ public class Instances extends TMController {
 
     public static void allTags(Long instanceId, String term) {
         Instance instance = Lookups.getInstance(instanceId);
-        List<Tag> tags = Tag.find("from Tag t where t.project = ? and t.name like ?", instance.project, term + "%").fetch();
-        renderJSON(tags, tagSerializer);
+        Shared.allTags(instance.project, term);
     }
 
     public static void addTags(Long instanceId, String tags) {
@@ -83,16 +77,4 @@ public class Instances extends TMController {
         Shared.allUsers();
     }
 
-    // TODO generify by making an interface for the autocompletable entities
-    private static final TagSerializer tagSerializer = new TagSerializer();
-
-    private static class TagSerializer implements JsonSerializer<Tag> {
-        public JsonElement serialize(Tag tag, Type type, JsonSerializationContext context) {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", tag.id);
-            object.addProperty("label", tag.name);
-            object.addProperty("value", tag.name);
-            return object;
-        }
-    }
 }

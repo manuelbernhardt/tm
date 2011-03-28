@@ -3,7 +3,7 @@ No test instance selected
 #{/if}
 #{else}
 <form id="tagsForm" action="@{preparation.Instances.addTags()}" method="post">
-  <input name="tags" id="tags" value="${tags.join(',')}"/>
+  <input name="tags" id="tags" type="text" value="${tags.join(',')}"/>
   <input type="hidden" name="instanceId" value="${instance.id}" />
   <button id="saveButton">Save</button>
 </form>
