@@ -8,7 +8,7 @@ var tree = $("#approachTree").jstree({
         return {
           "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
           "treeId" : "approachTree",
-          "args" : {"projectId": "${project.id}"}
+          "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProject().getId() : project.id}"}
 
         };
       }
