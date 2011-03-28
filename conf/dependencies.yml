@@ -4,6 +4,6 @@ require:
     - play
     - play -> crud
     - play -> secure
-    - play -> tabularasa 0.1
+    - play -> tabularasa 0.2
     - play -> deadbolt 1.2.1
     - mysql -> mysql-connector-java 5.1.13
