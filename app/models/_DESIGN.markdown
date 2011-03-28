@@ -1,8 +1,3 @@
-Naming conventions
-==================
-
-- name / titles in entities have as field name "name"
-
 When creating a new model entity
 ================================
 
