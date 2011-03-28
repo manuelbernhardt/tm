@@ -14,8 +14,7 @@ public class RunParam extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public Run run;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
-    public ScriptParam param;
+    public String name;
 
     public String value;
 
