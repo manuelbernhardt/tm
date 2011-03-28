@@ -8,11 +8,11 @@
       <div class="field">
         <label for="cycle">Test cycle</label>
         <select id="cycle" name="cycle">
-          <option value="" label="Select a cycle"></option>
+          <option value="">Select a cycle</option>
           #{list items:releases, as:'release'}
           <optgroup label="${release.name}">
             #{list items:release.getTestCycles(), as:'cycle'}
-            <option label="${cycle.name}" value="${cycle.id}"></option>
+            <option value="${cycle.id}">${cycle.name}</option>
             #{/list}
           </optgroup>
           #{/list}
@@ -21,9 +21,9 @@
       <div class="field">
         <label for="status">Status</label>
         <select id="status" name="status">
-          <option value="" label="Select a status"></option>
+          <option value="">Select a status</option>
           #{list items:models.project.test.ExecutionStatus.values(), as:'s'}
-          <option label="${s}" value="${s.getKey()}"></option>
+          <option value="${s.getKey()}">${s}</option>
           #{/list}
         </select>
       </div>
@@ -36,9 +36,9 @@
       <div class="field">
         <label for="responsible">Assigned to</label>
         <select id="responsible" name="responsible">
-          <option value="" label="Select a person"></option>
+          <option value="">Select a person</option>
           #{list items:users, as:'user'}
-          <option label="${user.getFullName()}" value="${user.getId()}"></option>
+          <option value="${user.getId()}">${user.getFullName()}</option>
           #{/list}
         </select>
       </div>
