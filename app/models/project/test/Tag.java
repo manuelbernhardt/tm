@@ -1,12 +1,17 @@
 package models.project.test;
 
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.project.Project;
 import models.project.ProjectModel;
 import play.data.validation.Required;
+import play.db.jpa.JPA;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -42,5 +47,12 @@ public class Tag extends ProjectModel {
         int result = super.hashCode();
         result = 31 * result + name.hashCode();
         return result;
+    }
+
+    public static List byNamesAndProject(String[] names, Project project) {
+        Query query = JPA.em().createQuery("select t from Tag t where t.project = :project and t.name in :names");
+        query.setParameter("project", project);
+        query.setParameter("names", Arrays.asList(names));
+        return query.getResultList();
     }
 }

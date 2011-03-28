@@ -48,6 +48,7 @@
         <input id="dateTo" type="text" name="dateTo">
       </div>
     </div>
+    <button id="filter">Filter</button>
   </form>
   #{/box}
 </div>
@@ -81,7 +82,12 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $("#dateFrom, #dateTo").datepicker({
+    $('#filter').button().click(function(event) {
+      event.preventDefault();
+      $("#instanceTable").dataTable().fnDraw();
+    });
+
+    $('#dateFrom, #dateTo').datepicker({
       numberOfMonths: 3,
       showButtonPanel: true,
       gotoCurrent: true
@@ -94,7 +100,6 @@
       'width':'400px',
       'defaultText':'add a tag'
     });
-
 
 
     #{tabularasa.init tableId:'instanceTable'}
@@ -118,6 +123,15 @@
       }
     };
     #{/tabularasa.init}
+
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
+      parameters.push({"name": "status", "value": $('#status option:selected').val() });
+      parameters.push({"name": "tags", "value": $('#tags').val() });
+      parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
+      parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
+      parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+    }
 
     handleRowSelection('instanceTable', function(selectedRowId) {
       $.get('@{Execution.content()}', { instanceId: selectedRowId }, function(data) {
