@@ -37,6 +37,6 @@ public class TestCycle extends ProjectModel implements Node {
 
     public Release getRelease() {
         TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.TEST_CYCLE).first();
-        return findById(n.getParent().getNodeId());
+        return Release.findById(n.getParent().getNodeId());
     }
 }
