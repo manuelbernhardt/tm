@@ -62,6 +62,8 @@ public class Instance extends ProjectModel {
 
     @PrePersist
     public void doSave() {
-        this.status = executionStatus.getKey();
+        if (executionStatus != null) {
+            this.status = executionStatus.getKey();
+        }
     }
 }
