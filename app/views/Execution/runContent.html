@@ -26,12 +26,13 @@ No test run selected
       "aoColumns": [
         {"sName": "id", "sClass": "sNone" },
         {"sName": "position"},
+        {"sName": "name"},
         {"sName": "description"},
         {"sName": "expectedResult"},
         {"sName": "actualResult"},
         {"sName": "executionStatus"}
       ],
-      "sAjaxSource": "@{Execution.runSteps('runId', run.id)}",
+      "sAjaxSource": "@{Execution.runSteps()}",
       "bProcessing": true,
       "bServerSide": true,
       "bLengthChange": false,
@@ -45,12 +46,10 @@ No test run selected
     };
     #{/tabularasa.init}
 
-    handleRowSelection('runTable', function(selectedRowId) {
-      $.get('@{Execution.runContent()}', { instanceId: selectedRowId }, function(data) {
-        $('#runContent').html(data);
-      });
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "runId", "value": "${run.id}" });
+    }
 
-    });
 
   });
 </script>

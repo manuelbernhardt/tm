@@ -142,12 +142,12 @@ public class Execution extends TMController {
         GenericModel.JPAQuery query = null;
         // TODO implement the search
         if (sSearch != null && sSearch.length() > 0) {
-            query = RunStep.find("from RunStep s where s.run = ? and r.project = ?", run, TMController.getActiveProject());
+            query = RunStep.find("from RunStep s where s.run = ? and s.project = ?", run, TMController.getActiveProject());
         } else {
-            query = RunStep.find("from RunStep s where s.run = ? and r.project = ?").from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = RunStep.find("from RunStep s where s.run = ? and s.project = ?", run, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<RunStep> runSteps = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
-        long totalRecords = RunStep.count();
+        long totalRecords = runSteps.size();
         TableController.renderJSON(runSteps, RunStep.class, totalRecords, sColumns, sEcho);
     }
 
