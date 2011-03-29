@@ -387,7 +387,7 @@ project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     script: testScriptAdminProjectsCreate
     position: 2
     name: Step 2
-    description: Select project category "projectCategory" and click on "New project"
+    description: "Select project category \u003C\u003C\u003CprojectCategory\u003E\u003E\u003E and click on New project"
     expectedResult: A new node appears in the tree under the selected project category
 
 project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
@@ -395,8 +395,8 @@ project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     script: testScriptAdminProjectsCreate
     position: 3
     name: Step 3
-    description: Enter "projectName" and press enter
-    expectedResult: New project "projectName" is available
+    description: "Enter \u003C\u003C\u003CprojectName\u003E\u003E\u003E and press enter"
+    expectedResult: "New project \u003C\u003C\u003CprojectName\u003E\u003E\u003E is available"
 
 project.test.Script(testScriptAdminProjectsEdit):
     project: testManagementApplication

@@ -41,8 +41,8 @@ openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, 
         {"sName": "id", "sClass": "sNone" },
         {"sName": "position"},
         {"sName": "name"},
-        {"sName": "description"},
-        {"sName": "expectedResult"}
+        {"sName": "descriptionHTML", "sType": "html"},
+        {"sName": "expectedResultHTML", "sType": "html"}
       ],
       "sAjaxSource": "@{preparation.Preparation.stepData('scriptId': script.id)}",
       "bProcessing": true,

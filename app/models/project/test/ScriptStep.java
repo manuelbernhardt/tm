@@ -11,6 +11,7 @@ import models.project.ProjectModel;
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
 import play.data.validation.Required;
+import play.templates.JavaExtensions;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -36,5 +37,14 @@ public class ScriptStep extends ProjectModel {
 
     @MaxSize(5000)
     public String expectedResult;
+
+    public String getDescriptionHTML() {
+        return JavaExtensions.escapeHtml(description).toString();
+    }
+
+    public String getExpectedResultHTML() {
+        return JavaExtensions.escapeHtml(expectedResult).toString();
+    }
+
 
 }

@@ -125,12 +125,14 @@
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
-      parameters.push({"name": "status", "value": $('#status option:selected').val() });
-      parameters.push({"name": "tags", "value": $('#tags').val() });
-      parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
-      parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
-      parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+      if (tableId == 'instanceTable') {
+        parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
+        parameters.push({"name": "status", "value": $('#status option:selected').val() });
+        parameters.push({"name": "tags", "value": $('#tags').val() });
+        parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
+        parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
+        parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+      }
     }
 
     handleRowSelection('instanceTable', function(selectedRowId) {

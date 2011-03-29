@@ -6,7 +6,8 @@ No test instance selected
 #{box 'Runs for test instance "'+instance.name+'"'}
 
 <button id="newRunButton">Run Test Instance</button>
-<div id="newRunDialog" title="New test run" class="modalDialog">
+<button id="editRunButton">Edit Test Run</button>
+<div id="runDialog" title="New test run" class="modalDialog">
   <div id="runDialogContent" class="box-content"><em>Loading...</em></div>
 </div>
 
@@ -30,17 +31,21 @@ No test instance selected
   $(document).ready(function() {
 
     $('#newRunButton').button().click(function() {
-      $('#newRunDialog').dialog('open');
+      $('#runDialog').dialog('open');
     });
 
-    $('#newRunDialog').dialog({
+    $('#editRunButton').button({disabled: true}).click(function() {
+      $('#runDialog').dialog('open');
+    });
+
+    $('#runDialog').dialog({
       autoOpen: false,
       height: 600,
       width: 800,
       modal: true,
       open: function(event, ui) {
         $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
-          $('#newRunDialog').html(data);
+          $('#runDialog').html(data);
           // refresh the data table that shows the runs, as we just created a new one
           $("#runTable").dataTable().fnDraw(false);
         });
@@ -84,12 +89,15 @@ No test instance selected
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "instanceId", "value": "${instance.id}" });
+      if(tableId == 'runTable') {
+        parameters.push({"name": "instanceId", "value": "${instance.id}" });
+      }
     }
 
     handleRowSelection('runTable', function(selectedRowId) {
       $.get('@{Execution.runContent()}', { runId: selectedRowId }, function(data) {
         $('#runContent').html(data);
+        $('#editRunButton').button("enable");
       });
 
     });

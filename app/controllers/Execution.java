@@ -192,8 +192,12 @@ public class Execution extends TMController {
 
             runParam.create();
         }
+        render("execution/runExecution.html", run);
+    }
 
-        render(run);
+    public static void editRun(Long runId) {
+        Run run = Lookups.getRun(runId);
+        render("execution/runExecution.html", run);
     }
 
     public static void updateRun(Long runId) {
@@ -207,7 +211,7 @@ public class Execution extends TMController {
         for (String param : params.all().keySet()) {
             if (param.startsWith(ACTUAL_RESULT)) {
                 String id = param.substring(ACTUAL_RESULT.length());
-                RunStep step = getRun(id, run, cache);
+                RunStep step = getRunStep(id, run, cache);
                 String s = params.all().get(param)[0];
                 if (s != null && s.length() > 0) {
                     step.actualResult = s;
@@ -215,7 +219,7 @@ public class Execution extends TMController {
                 }
             } else if (param.startsWith(STATUS)) {
                 String id = param.substring(STATUS.length());
-                RunStep step = getRun(id, run, cache);
+                RunStep step = getRunStep(id, run, cache);
                 String s = params.all().get(param)[0];
                 if (s != null && s.length() > 0) {
                     try {
@@ -232,9 +236,14 @@ public class Execution extends TMController {
         // re-compute Run and Instance status
         run.updateStatus();
         run.instance.updateStatus();
+
+        ok();
     }
 
-    private static RunStep getRun(String id, Run run, Map<String, RunStep> cache) {
+    /**
+     * Gets a RunStep based on its ID, provides some caching. This method will eventually disappear.
+     */
+    private static RunStep getRunStep(String id, Run run, Map<String, RunStep> cache) {
         if (id != null && id.length() > 0) {
             RunStep step = cache.get(id);
             if (step == null) {

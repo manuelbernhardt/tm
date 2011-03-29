@@ -27,8 +27,8 @@ No test run selected
         {"sName": "id", "sClass": "sNone" },
         {"sName": "position"},
         {"sName": "name"},
-        {"sName": "description"},
-        {"sName": "expectedResult"},
+        {"sName": "descriptionHTML"},
+        {"sName": "expectedResultHTML"},
         {"sName": "actualResult"},
         {"sName": "executionStatus"}
       ],
@@ -47,7 +47,9 @@ No test run selected
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "runId", "value": "${run.id}" });
+      if (tableId == 'runStepTable') {
+        parameters.push({"name": "runId", "value": "${run.id}" });
+      }
     }
 
 

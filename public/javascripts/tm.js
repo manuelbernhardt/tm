@@ -1,6 +1,17 @@
 /*************/
 /* DataTable */
 /*************/
+/*
+$.fn.dataTableExt.ofnSearch['html'] = function ( sData ) {
+	var n = document.createElement('div');
+	n.innerHTML = sData;
+	if ( n.textContent ) {
+		return n.textContent.replace(/\n/g," ");
+	} else {
+		return n.innerText.replace(/\n/g," ");
+	}
+}
+*/
 
 /**
  * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)

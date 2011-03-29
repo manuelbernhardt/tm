@@ -1,7 +1,6 @@
 package controllers.preparation;
 
 import java.util.List;
-
 import javax.persistence.Query;
 
 import controllers.RepositoryTree;
@@ -10,6 +9,7 @@ import controllers.tabularasa.TableController;
 import models.project.test.Script;
 import models.project.test.ScriptStep;
 import models.tree.jpa.TreeNode;
+import org.apache.commons.lang.StringEscapeUtils;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
@@ -63,6 +63,11 @@ public class Preparation extends TMController {
             notFound();
         } else {
             checkInAccount(script);
+
+            // unescape HTML
+            step.description = StringEscapeUtils.unescapeHtml(step.description);
+            step.expectedResult = StringEscapeUtils.unescapeHtml(step.expectedResult);
+            
             step.project = TMController.getActiveProject();
             step.script = script;
 

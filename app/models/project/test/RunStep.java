@@ -12,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 
 import models.project.ProjectModel;
 import play.data.validation.MaxSize;
+import play.templates.JavaExtensions;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -37,6 +38,14 @@ public class RunStep extends ProjectModel {
     public String actualResult;
 
     public String status;
+
+    public String getDescriptionHTML() {
+        return JavaExtensions.escapeHtml(description).toString();
+    }
+
+    public String getExpectedResultHTML() {
+        return JavaExtensions.escapeHtml(expectedResult).toString();
+    }
 
     @Transient
     public ExecutionStatus executionStatus;
