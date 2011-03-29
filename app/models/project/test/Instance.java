@@ -8,6 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -50,6 +51,22 @@ public class Instance extends ProjectModel {
         return InstanceParam.find("from InstanceParam p where p.instance = ?", this).<InstanceParam>fetch();
     }
 
+    public List<Run> getRuns() {
+        return Run.find("from Run r where r.instance = ?", this).<Run>fetch();
+    }
+
+    public void updateStatus() {
+        // instance status = status of the last run
+        Run run = Run.find("from Run r where r.instance = ? order by r.executionDate desc", this).<Run>first();
+        if (run != null) {
+            executionStatus = run.executionStatus;
+
+            // TODO this feels like a Play bug - we should not need to invoke the PreUpdate callback manually
+            doSave();
+            save();
+        }
+    }
+
     @Transient
     public ExecutionStatus executionStatus;
 
@@ -60,6 +77,7 @@ public class Instance extends ProjectModel {
         }
     }
 
+    @PreUpdate
     @PrePersist
     public void doSave() {
         if (executionStatus != null) {

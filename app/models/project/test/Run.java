@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -35,6 +36,29 @@ public class Run extends ProjectModel {
         return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();
     }
 
+    public void updateStatus() {
+        boolean passed = true;
+        for(RunStep step : getSteps()) {
+            if(step.executionStatus == ExecutionStatus.FAILED) {
+                executionStatus = ExecutionStatus.FAILED;
+                passed = false;
+                break;
+            }
+            if(step.executionStatus == ExecutionStatus.NOT_COMPLETED || step.executionStatus == ExecutionStatus.NOT_RUN) {
+                executionStatus = ExecutionStatus.NOT_COMPLETED;
+                passed = false;
+                break;
+            }
+        }
+        if(passed) {
+            executionStatus = ExecutionStatus.PASSED;
+        }
+
+        // TODO this feels like a Play bug - we should not need to invoke the PreUpdate callback manually
+        doSave();
+        save();
+    }
+
     @Transient
     public ExecutionStatus executionStatus;
 
@@ -45,6 +69,7 @@ public class Run extends ProjectModel {
         }
     }
 
+    @PreUpdate
     @PrePersist
     public void doSave() {
         if (executionStatus != null) {

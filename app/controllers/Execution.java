@@ -31,6 +31,9 @@ import util.FilterQuery;
 @With(Deadbolt.class)
 public class Execution extends TMController {
 
+    public static final String ACTUAL_RESULT = "actualResult_";
+    public static final String STATUS = "status_";
+
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
         List<User> users = User.listByProject(getActiveProject().getId());
@@ -164,7 +167,7 @@ public class Execution extends TMController {
         run.create();
 
         // copy the steps
-        for(ScriptStep step : instance.script.getSteps()) {
+        for (ScriptStep step : instance.script.getSteps()) {
             RunStep runStep = new RunStep();
             runStep.project = instance.project;
             runStep.run = run;
@@ -179,7 +182,7 @@ public class Execution extends TMController {
         }
 
         // copy the parameters
-        for(InstanceParam param : instance.getParams()) {
+        for (InstanceParam param : instance.getParams()) {
             RunParam runParam = new RunParam();
             runParam.project = instance.project;
             runParam.run = run;
@@ -191,6 +194,67 @@ public class Execution extends TMController {
         }
 
         render(run);
+    }
+
+    public static void updateRun(Long runId) {
+        Run run = Lookups.getRun(runId);
+
+        // Play can bind Lists of entities as well, using as form input name things like step[id].status and then in the action method List<RunStep> step (make sure it's the same name - no plural!)
+        // that is, this automatic binding is sort of buggy: it generates a lot of null elements in the list and also does not pre-load the JPA entity, so this is sort of broken
+
+        // TODO rewrite this once we have proper binding
+        Map<String, RunStep> cache = new HashMap<String, RunStep>();
+        for (String param : params.all().keySet()) {
+            if (param.startsWith(ACTUAL_RESULT)) {
+                String id = param.substring(ACTUAL_RESULT.length());
+                RunStep step = getRun(id, run, cache);
+                String s = params.all().get(param)[0];
+                if (s != null && s.length() > 0) {
+                    step.actualResult = s;
+                    step.save();
+                }
+            } else if (param.startsWith(STATUS)) {
+                String id = param.substring(STATUS.length());
+                RunStep step = getRun(id, run, cache);
+                String s = params.all().get(param)[0];
+                if (s != null && s.length() > 0) {
+                    try {
+                        step.executionStatus = ExecutionStatus.valueOf(s);
+                    } catch(IllegalArgumentException iae) {
+                        // TODO logging
+                        iae.printStackTrace();
+                    }
+                    step.save();
+                }
+            }
+        }
+
+        // re-compute Run and Instance status
+        run.updateStatus();
+        run.instance.updateStatus();
+    }
+
+    private static RunStep getRun(String id, Run run, Map<String, RunStep> cache) {
+        if (id != null && id.length() > 0) {
+            RunStep step = cache.get(id);
+            if(step == null) {
+                try {
+                    Long lid = Long.parseLong(id);
+                    step = RunStep.find("from RunStep step where step.id = ? and step.project = ? and step.run = ?", lid, getActiveProject(), run).first();
+                    if (step != null) {
+                        checkInAccount(step);
+                    }
+
+
+                } catch (NumberFormatException nfe) {
+                    // TODO log this and report (security)
+                    nfe.printStackTrace();
+                }
+                cache.put(id, step);
+            }
+            return step;
+        }
+        return null;
     }
 
 

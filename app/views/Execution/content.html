@@ -41,12 +41,20 @@ No test instance selected
       open: function(event, ui) {
         $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
           $('#newRunDialog').html(data);
-          // refresh the data table that shows the runs
+          // refresh the data table that shows the runs, as we just created a new one
           $("#runTable").dataTable().fnDraw();
         });
       },
       buttons: {
-        "Close": function() {
+        "Save": function() {
+          $('#runForm').ajaxSubmit(function() {
+            $("#runTable").dataTable().fnDraw();
+            $("#instanceTable").dataTable().fnDraw();
+          });
+
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
           $(this).dialog("close");
         }
       }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -48,6 +49,7 @@ public class RunStep extends ProjectModel {
     }
 
     @PrePersist
+    @PreUpdate
     public void doSave() {
         if (executionStatus != null) {
             this.status = executionStatus.getKey();
