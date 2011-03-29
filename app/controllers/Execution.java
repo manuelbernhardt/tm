@@ -126,9 +126,9 @@ public class Execution extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             // TODO implement the search
-            query = Run.find("from Run r where r.instance = ? and r.project = ?", instance, TMController.getActiveProject());
+            query = Run.find("from Run r where r.instance = ? and r.project = ? order by r.executionDate desc", instance, TMController.getActiveProject());
         } else {
-            query = Run.find("from Run r where r.instance = ? and r.project = ?", instance, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = Run.find("from Run r where r.instance = ? and r.project = ? order by r.executionDate desc", instance, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<Run> runs = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = Run.count();
@@ -145,9 +145,9 @@ public class Execution extends TMController {
         GenericModel.JPAQuery query = null;
         // TODO implement the search
         if (sSearch != null && sSearch.length() > 0) {
-            query = RunStep.find("from RunStep s where s.run = ? and s.project = ?", run, TMController.getActiveProject());
+            query = RunStep.find("from RunStep s where s.run = ? and s.project = ? order by s.position asc", run, TMController.getActiveProject());
         } else {
-            query = RunStep.find("from RunStep s where s.run = ? and s.project = ?", run, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = RunStep.find("from RunStep s where s.run = ? and s.project = ? order by s.position asc", run, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<RunStep> runSteps = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = runSteps.size();
@@ -220,7 +220,7 @@ public class Execution extends TMController {
                 if (s != null && s.length() > 0) {
                     try {
                         step.executionStatus = ExecutionStatus.valueOf(s);
-                    } catch(IllegalArgumentException iae) {
+                    } catch (IllegalArgumentException iae) {
                         // TODO logging
                         iae.printStackTrace();
                     }
@@ -237,7 +237,7 @@ public class Execution extends TMController {
     private static RunStep getRun(String id, Run run, Map<String, RunStep> cache) {
         if (id != null && id.length() > 0) {
             RunStep step = cache.get(id);
-            if(step == null) {
+            if (step == null) {
                 try {
                     Long lid = Long.parseLong(id);
                     step = RunStep.find("from RunStep step where step.id = ? and step.project = ? and step.run = ?", lid, getActiveProject(), run).first();

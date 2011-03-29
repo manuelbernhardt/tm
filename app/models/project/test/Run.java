@@ -40,18 +40,18 @@ public class Run extends ProjectModel {
         boolean passed = true;
         for(RunStep step : getSteps()) {
             if(step.executionStatus == ExecutionStatus.FAILED) {
-                executionStatus = ExecutionStatus.FAILED;
+                this.executionStatus = ExecutionStatus.FAILED;
                 passed = false;
                 break;
             }
             if(step.executionStatus == ExecutionStatus.NOT_COMPLETED || step.executionStatus == ExecutionStatus.NOT_RUN) {
-                executionStatus = ExecutionStatus.NOT_COMPLETED;
+                this.executionStatus = ExecutionStatus.NOT_COMPLETED;
                 passed = false;
                 break;
             }
         }
         if(passed) {
-            executionStatus = ExecutionStatus.PASSED;
+            this.executionStatus = ExecutionStatus.PASSED;
         }
 
         // TODO this feels like a Play bug - we should not need to invoke the PreUpdate callback manually

@@ -63,7 +63,7 @@ No project selected
 
     <script type="text/javascript">
       function newRoleDialogSubmissionCallback() {
-        $("#tab").dataTable().fnDraw();
+        refreshTableContents("tab", false);
       }
     </script>
     #{input.field field:'role.name', label:'Name' /}

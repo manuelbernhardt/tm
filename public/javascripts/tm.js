@@ -8,18 +8,38 @@
  * @param handler the handler to execute on selection
  */
 function handleRowSelection(tableId, handler) {
-  $("#" + tableId + " tbody").click(function(event) {
-      var dataTable = $("#" + tableId).dataTable();
-      $(dataTable.fnSettings().aoData).each(function () {
-      $(this.nTr).removeClass('row_selected');
-    });
-    $(event.target.parentNode).addClass('row_selected');
+    $("#" + tableId + " tbody").click(function(event) {
+        var dataTable = $("#" + tableId).dataTable();
+        $(dataTable.fnSettings().aoData).each(function () {
+            $(this.nTr).removeClass('row_selected');
+        });
+        $(event.target.parentNode).addClass('row_selected');
 
-    var selectedRowId = getSelectedRowId(dataTable);
-    handler(selectedRowId);
-  });
+        var selectedRowId = getSelectedRowId(dataTable);
+        handler(selectedRowId);
+    });
 }
 
+/**
+ * Refreshes he contents of a table by calling fnDraw. If a partial refresh is done, the selection state is also kept
+ * @param tableId the ID of the table
+ * @param completeRefresh whether this should also re-draw pagination etc.
+ */
+function refreshTableContents(tableId, completeRefresh) {
+    var dataTable = $("#" + tableId).dataTable();
+    var selected = getSelectedRowId(dataTable);
+    if (!completeRefresh && (selected != null || selected !== 'undefined')) {
+        // this is the internal API, let's hope it won't change
+        dataTable.fnSettings().aoDrawCallback.push({
+            "fn": function () {
+                // re-select the selected row
+                fnSelectRow(dataTable, selected);
+            },
+            "sName": "user"
+        });
+    }
+    dataTable.fnDraw(completeRefresh);
+}
 
 /**
  * Gets the ID of the currently selected row
@@ -46,6 +66,25 @@ function fnGetSelected(oTableLocal) {
         }
     }
     return aReturn;
+}
+
+/**
+ * Programatically selects a row given an ID (the table must have as first column an "id" column, typically hidden)
+ * @param oTableLocal DataTable instance
+ * @param rowId the ID of the row to select
+ */
+function fnSelectRow(oTableLocal, rowId) {
+    var data = oTableLocal.fnGetData();
+    var index = -1;
+    for (var i = 0; i < data.length; i++) {
+        if ((data[i])[0] == rowId) {
+            index = i;
+            break;
+        }
+    }
+    if(index > -1) {
+        $(oTableLocal.fnGetNodes()[index]).addClass('row_selected');
+    }
 }
 
 /**
@@ -145,9 +184,9 @@ function refreshActiveTreeNode(treeId) {
  * @param treeId the ID of the tree container
  */
 function refreshTree(treeId) {
-  var treeContainer = $("#" + treeId);
-  jQuery.jstree._reference(treeContainer).refresh();
-  jQuery.jstree._reference(treeContainer).deselect_all();
+    var treeContainer = $("#" + treeId);
+    jQuery.jstree._reference(treeContainer).refresh();
+    jQuery.jstree._reference(treeContainer).deselect_all();
 }
 
 

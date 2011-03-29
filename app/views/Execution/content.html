@@ -42,16 +42,15 @@ No test instance selected
         $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
           $('#newRunDialog').html(data);
           // refresh the data table that shows the runs, as we just created a new one
-          $("#runTable").dataTable().fnDraw();
+          $("#runTable").dataTable().fnDraw(false);
         });
       },
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit(function() {
-            $("#runTable").dataTable().fnDraw();
-            $("#instanceTable").dataTable().fnDraw();
+            refreshTableContents("runTable", false);
+            refreshTableContents("instanceTable", false);
           });
-
           $(this).dialog("close");
         },
         "Cancel": function() {
@@ -69,6 +68,7 @@ No test instance selected
         {"sName": "tester.fullName"},
         {"sName": "executionStatus"}
       ],
+      "aoSorting": [[0, "desc"]],
       "sAjaxSource": "@{Execution.runs()}",
       "bProcessing": true,
       "bServerSide": true,

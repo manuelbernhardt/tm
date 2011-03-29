@@ -8,7 +8,7 @@ openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, 
 
   <script type="text/javascript">
     function newStepDialogSubmissionCallback() {
-      $("#stepTable").dataTable().fnDraw();
+      refreshTableContents("stepTable", false);
     }
   </script>
   #{input.field field:'step.name', label:'Name' /}

@@ -38,13 +38,7 @@
       "fnDrawCallback": function() {
         // select a user if one was selected
         if ('${selectedDefect}'.length > 0) {
-          $(tabDataTable.fnSettings().aoData).each(function () {
-            var nTr = $(this.nTr)[0];
-            if ($($(nTr).children('td')[0]).text() == '${selectedDefect}') {
-              $(this.nTr).addClass('row_selected');
-            }
-          });
-
+          fnSelectRow(tabDataTable, "${selectedDefect}");
           fnReloadTabs(${selectedDefect});
         }
       }

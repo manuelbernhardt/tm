@@ -12,7 +12,7 @@ No user selected
 #{input.form action:action, id:'profileForm', baseObject:user}
 <script type="text/javascript">
   function profileFormSubmissionCallback() {
-    $("#tab").dataTable().fnDraw();
+    refreshTableContents("tab", false);
   }
 </script>
 

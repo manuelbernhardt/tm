@@ -84,7 +84,7 @@
 
     $('#filter').button().click(function(event) {
       event.preventDefault();
-      $("#instanceTable").dataTable().fnDraw();
+      refreshTableContents("instanceTable", true);
     });
 
     $('#dateFrom, #dateTo').datepicker({
