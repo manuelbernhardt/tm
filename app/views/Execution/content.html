@@ -41,6 +41,8 @@ No test instance selected
       open: function(event, ui) {
         $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
           $('#newRunDialog').html(data);
+          // refresh the data table that shows the runs
+          $("#runTable").dataTable().fnDraw();
         });
       },
       buttons: {
