@@ -39,6 +39,10 @@ public class Script extends ProjectModel implements Node {
         return ScriptStep.find("from ScriptStep step where step.script = ?", this).<ScriptStep>fetch();
     }
 
+    public List<Instance> getInstances() {
+        return Instance.find("from Instance i where i.script = ?", this).<Instance>fetch();
+    }
+
     public List<ScriptParam> getParams() {
         return ScriptParam.find("from ScriptParam param where param.script = ?", this).<ScriptParam>fetch();
     }

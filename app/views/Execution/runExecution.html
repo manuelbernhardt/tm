@@ -17,7 +17,7 @@ No test run selected
   <tr class="${step_parity}">
     <td>${step.position}</td>
     <td>${step.name}</td>
-    <td>${step.description}</td>
+    <td>${step.descriptionHTML.raw()}</td>
     <td>${step.expectedResult}</td>
     <td><textarea id="actualResult" name="actualResult_${step.id}" rows="5" cols="48">${step.actualResult}</textarea></td>
     <td>
@@ -34,4 +34,8 @@ No test run selected
   </tbody>
 </table>
 </form>
+
+<script type="text/javascript">
+  $('.edit').editable('/some/where');
+</script>
 #{/else}

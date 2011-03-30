@@ -21,6 +21,13 @@ div.tree {
   padding: 5px 5px 5px 5px;
 }
 
+.editStyle {
+  display: inline;
+  font-weight: bold;
+  border-style: dashed;
+  border-width: thin;
+}
+
 h1 {
   text-align: center;
 }

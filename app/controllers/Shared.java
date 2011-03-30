@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import models.project.test.Run;
+import models.project.test.RunParam;
 import models.project.test.Script;
 import models.project.test.ScriptParam;
 
@@ -19,10 +21,14 @@ public class Shared extends TMController {
         List<String> res = new ArrayList<String>();
         Matcher matcher = parameterPattern.matcher(text);
         while (matcher.find()) {
-            String name = text.substring(matcher.start() + 3, matcher.end() - 3);
+            String name = extractParamName(text, matcher);
             res.add(name);
         }
         return res;
+    }
+
+    private static String extractParamName(String text, Matcher matcher) {
+        return text.substring(matcher.start() + 3, matcher.end() - 3);
     }
 
     /**
@@ -43,10 +49,26 @@ public class Shared extends TMController {
         return res;
     }
 
+    public static String applyClass(String text, Run run, String cssClass) {
+        Matcher matcher = parameterPattern.matcher(text);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            RunParam p = RunParam.find("from RunParam p where p.run = ? and p.name = ?", run, extractParamName(text, matcher)).<RunParam>first();
+            if (p.value == null) {
+                matcher.appendReplacement(sb, "<div id=\"" + "param_" + p.id + "\" class=\"editStyle " + cssClass + "\">enter a value</div>");
+            } else {
+                matcher.appendReplacement(sb, "<strong>" + p.value + "</strong>");
+            }
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+
+    }
+
     public static void main(String[] args) {
         String s = "this is some <<<param>>> with something";
         Matcher matcher = parameterPattern.matcher(s);
-        while(matcher.find()) {
+        while (matcher.find()) {
             System.out.println(matcher.group());
         }
         System.out.println(getParameterNames(s));

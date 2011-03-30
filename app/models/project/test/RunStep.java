@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import controllers.Shared;
 import models.project.ProjectModel;
 import play.data.validation.MaxSize;
 import play.templates.JavaExtensions;
@@ -40,7 +41,7 @@ public class RunStep extends ProjectModel {
     public String status;
 
     public String getDescriptionHTML() {
-        return JavaExtensions.escapeHtml(description).toString();
+        return Shared.applyClass(description, this.run, "edit");
     }
 
     public String getExpectedResultHTML() {

@@ -7,6 +7,8 @@ import controllers.RepositoryTree;
 import controllers.Shared;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
+import models.project.test.Instance;
+import models.project.test.InstanceParam;
 import models.project.test.Script;
 import models.project.test.ScriptParam;
 import models.project.test.ScriptStep;
@@ -78,6 +80,14 @@ public class Preparation extends TMController {
             for(ScriptParam p : scriptParameters) {
                 if(ScriptParam.count("from ScriptParam p where p.name = ? and p.script = ?", p.name, script) == 0) {
                     p.create();
+                    // propagate creation of a new param to all instances of this script
+                    for(Instance i : script.getInstances()) {
+                        InstanceParam ip = new InstanceParam();
+                        ip.project = i.project;
+                        ip.instance = i;
+                        ip.scriptParam = p;
+                        ip.create();
+                    }
                 }
             }
 
