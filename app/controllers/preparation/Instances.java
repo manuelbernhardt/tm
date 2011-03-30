@@ -5,11 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import controllers.Lookups;
-import controllers.Shared;
 import controllers.TMController;
 import models.project.test.Instance;
+import models.project.test.InstanceParam;
 import models.project.test.Tag;
 import models.tm.User;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -40,7 +41,7 @@ public class Instances extends TMController {
 
     public static void allTags(Long instanceId, String term) {
         Instance instance = Lookups.getInstance(instanceId);
-        Shared.allTags(instance.project, term);
+        Lookups.allTags(instance.project, term);
     }
 
     public static void addTags(Long instanceId, String tags) {
@@ -54,7 +55,7 @@ public class Instances extends TMController {
                 t.project = instance.project;
                 t.create();
             }
-            if(!tagList.contains(t)) {
+            if (!tagList.contains(t)) {
                 tagList.add(t);
             }
         }
@@ -73,8 +74,32 @@ public class Instances extends TMController {
         ok();
     }
 
+    public static void editData(Long instanceId) {
+        String paramValue_ = "paramValue_";
+
+        for (String p : params.all().keySet()) {
+            if (p.startsWith(paramValue_)) {
+                String id = p.substring(paramValue_.length());
+                if (StringUtils.isNotEmpty(id)) {
+                    try {
+                        Long lid = Long.parseLong(id);
+                        InstanceParam ip = InstanceParam.<InstanceParam>findById(lid);
+                        checkInAccount(ip);
+                        ip.value = (String) params.all().get(p)[0];
+                        ip.save();
+                    } catch (NumberFormatException nfe) {
+                        // TODO log
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+        }
+        ok();
+
+    }
+
     public static void allUsers() {
-        Shared.allUsers();
+        Lookups.allUsers();
     }
 
 }

@@ -8,7 +8,9 @@ import java.util.Map;
 import models.project.approach.Release;
 import models.project.approach.TestCycle;
 import models.project.test.Instance;
+import models.project.test.InstanceParam;
 import models.project.test.Script;
+import models.project.test.ScriptParam;
 import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
@@ -104,11 +106,22 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             ti.testCycle = cycle;
             ti.script = script;
             ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
+
             boolean created = ti.create();
             if (!created) {
                 // TODO log error
                 return null;
             }
+
+            // create the InstanceParams
+            for(ScriptParam param : script.getParams()) {
+                InstanceParam instanceParam = new InstanceParam();
+                instanceParam.scriptParam = param;
+                instanceParam.instance = ti;
+                instanceParam.project = param.project;
+                instanceParam.create();
+            }
+            
             return ti.getId();
         }
 

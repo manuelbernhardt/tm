@@ -1,1 +1,42 @@
-Test data
+#{if instance == null}
+No test instance selected
+#{/if}
+#{else}
+
+<form id="instanceParamForm" name="instanceParamForm" method="POST"
+      action="@{preparation.Instances.editData('instanceId': instance.id)}">
+  <table id="instanceParamTable" name="instanceParamTable" class="display">
+    <thead>
+    <th>Parameter</th>
+    <th>Value</th>
+    </thead>
+    <tbody>
+    #{list instance.getParams(), as:'param'}
+    <tr>
+      <td>${param.scriptParam.name}</td>
+      <td><input id="paramValue" name="paramValue_${param.id}" type="text" value="${param.value}"></td>
+    </tr>
+    #{/list}
+    </tbody>
+  </table>
+</form>
+<button id="saveParamsButton">Save</button>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#saveParamsButton').button().click(function() {
+      $('#instanceParamForm').ajaxSubmit(function() {
+        $('#saveParamsButton').button('disable');
+      });
+    })
+
+    $('#instanceParamForm input[type!="hidden"]').each(function(index, value) {
+      $(value).focus(function() {
+        $('#saveParamsButton').button('enable');
+      });
+    });
+  });
+</script>
+
+#{/else}

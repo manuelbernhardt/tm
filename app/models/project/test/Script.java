@@ -40,6 +40,6 @@ public class Script extends ProjectModel implements Node {
     }
 
     public List<ScriptParam> getParams() {
-        return ScriptParam.find("from ScriptParam param where param.script = ?, this").<ScriptParam>fetch();
+        return ScriptParam.find("from ScriptParam param where param.script = ?", this).<ScriptParam>fetch();
     }
 }

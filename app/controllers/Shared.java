@@ -1,61 +1,55 @@
 package controllers;
 
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import models.project.Project;
-import models.project.test.Instance;
-import models.project.test.Tag;
-import models.tm.User;
-import play.mvc.Util;
+import models.project.test.Script;
+import models.project.test.ScriptParam;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Shared extends TMController {
 
-    @Util
-    public static void allUsers() {
-        List<User> users = User.find("from User u where u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", getUserAccount(), getActiveProject()).<User>fetch();
-        renderJSON(users, userSerializer);
-    }
+    private static final Pattern parameterPattern = Pattern.compile("<<<[^>>>]*>>>");
 
-    @Util
-    public static void allTags(Project project, String term) {
-        List<Tag> tags = Tag.find("from Tag t where t.project = ? and t.name like ?", project, term + "%").fetch();
-        renderJSON(tags, tagSerializer);
-    }
-
-
-    // TODO generify these serializers
-    private static final UserSerializer userSerializer = new UserSerializer();
-
-    private static class UserSerializer implements JsonSerializer<User> {
-        public JsonElement serialize(User user, Type type, JsonSerializationContext context) {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", user.id);
-            object.addProperty("label", user.getFullName());
-            object.addProperty("value", user.id);
-            return object;
+    public static List<String> getParameterNames(String text) {
+        List<String> res = new ArrayList<String>();
+        Matcher matcher = parameterPattern.matcher(text);
+        while (matcher.find()) {
+            String name = text.substring(matcher.start() + 3, matcher.end() - 3);
+            res.add(name);
         }
+        return res;
     }
 
-    // TODO generify by making an interface for the autocompletable entities
-    private static final TagSerializer tagSerializer = new TagSerializer();
-
-    private static class TagSerializer implements JsonSerializer<Tag> {
-        public JsonElement serialize(Tag tag, Type type, JsonSerializationContext context) {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", tag.id);
-            object.addProperty("label", tag.name);
-            object.addProperty("value", tag.name);
-            return object;
+    /**
+     * Creates new {@link ScriptParam} instances without persisting them based on a text in which the parameters appear
+     *
+     * @param text the text to look for parameters, denoted with <<< >>>
+     * @return a List of non-persisted parameter instances
+     */
+    public static List<ScriptParam> getScriptParameters(String text, Script script) {
+        List<ScriptParam> res = new ArrayList<ScriptParam>();
+        for (String p : getParameterNames(text)) {
+            ScriptParam param = new ScriptParam();
+            param.project = script.project;
+            param.script = script;
+            param.name = p;
+            res.add(param);
         }
+        return res;
     }
 
+    public static void main(String[] args) {
+        String s = "this is some <<<param>>> with something";
+        Matcher matcher = parameterPattern.matcher(s);
+        while(matcher.find()) {
+            System.out.println(matcher.group());
+        }
+        System.out.println(getParameterNames(s));
+    }
 
 }

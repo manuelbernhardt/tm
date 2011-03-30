@@ -4,9 +4,11 @@ import java.util.List;
 import javax.persistence.Query;
 
 import controllers.RepositoryTree;
+import controllers.Shared;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
 import models.project.test.Script;
+import models.project.test.ScriptParam;
 import models.project.test.ScriptStep;
 import models.tree.jpa.TreeNode;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -67,7 +69,18 @@ public class Preparation extends TMController {
             // unescape HTML
             step.description = StringEscapeUtils.unescapeHtml(step.description);
             step.expectedResult = StringEscapeUtils.unescapeHtml(step.expectedResult);
-            
+
+            // create parameters
+            List<ScriptParam> scriptParameters = Shared.getScriptParameters(step.description, script);
+            scriptParameters.addAll(Shared.getScriptParameters(step.expectedResult, script));
+
+            // create only the new ones
+            for(ScriptParam p : scriptParameters) {
+                if(ScriptParam.count("from ScriptParam p where p.name = ? and p.script = ?", p.name, script) == 0) {
+                    p.create();
+                }
+            }
+
             step.project = TMController.getActiveProject();
             step.script = script;
 

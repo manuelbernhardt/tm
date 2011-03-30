@@ -51,11 +51,11 @@ public class Execution extends TMController {
     }
 
     public static void allUsers() {
-        Shared.allUsers();
+        Lookups.allUsers();
     }
 
     public static void allTags(String term) {
-        Shared.allTags(getActiveProject(), term);
+        Lookups.allTags(getActiveProject(), term);
     }
 
 
