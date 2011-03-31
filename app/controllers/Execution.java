@@ -192,12 +192,12 @@ public class Execution extends TMController {
 
             runParam.create();
         }
-        render("execution/runExecution.html", run);
+        render("runExecution.html", run);
     }
 
     public static void editRun(Long runId) {
         Run run = Lookups.getRun(runId);
-        render("execution/runExecution.html", run);
+        render("runExecution.html", run);
     }
 
     public static void updateRun(Long runId) {
