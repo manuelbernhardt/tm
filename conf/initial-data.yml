@@ -374,6 +374,16 @@ project.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
 
+project.test.ScriptParam(projectCategoryScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectCategory
+
+project.test.ScriptParam(projectNameScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectName
+
 project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
@@ -526,6 +536,30 @@ project.test.Instance(editProjectDetails):
     tags:
       - administrationTag
       - projectsTag
+
+project.test.InstanceParam(projectCategoryCreateNewProject1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProject1
+    value:
+
+project.test.InstanceParam(projectCategoryCreateNewProject2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProject2
+    value: "2011"
+
+project.test.InstanceParam(projectNameCreateNewProject1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProject1
+    value: SAP Roll-out Denmark
+
+project.test.InstanceParam(projectNameCreateNewProject2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProject2
+    value: SAP Roll-out Finland
 
 project.test.Instance(registerNewRequirement):
     project: testManagementApplication
