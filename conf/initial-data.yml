@@ -374,6 +374,16 @@ project.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
 
+project.test.ScriptParam(projectCategoryScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectCategory
+
+project.test.ScriptParam(projectNameScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectName
+
 project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
@@ -494,7 +504,7 @@ project.test.Tag(requirementsTag):
     project: testManagementApplication
     name: Requirements
 
-project.test.Instance(createNewProject1):
+project.test.Instance(createNewProjectST1):
     project: testManagementApplication
     name: Create new project
     script: testScriptAdminProjectsCreate
@@ -505,7 +515,7 @@ project.test.Instance(createNewProject1):
       - administrationTag
       - projectsTag
 
-project.test.Instance(createNewProject2):
+project.test.Instance(createNewProjectST2):
     project: testManagementApplication
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
@@ -527,6 +537,30 @@ project.test.Instance(editProjectDetails):
       - administrationTag
       - projectsTag
 
+project.test.InstanceParam(projectCategoryNewProjectST1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProjectST1
+    value:
+
+project.test.InstanceParam(projectCategoryNewProjectST2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProjectST2
+    value: "2011"
+
+project.test.InstanceParam(projectNameNewProjectST1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProjectST1
+    value: SAP Roll-out Denmark
+
+project.test.InstanceParam(projectNameNewProjectST2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProjectST2
+    value: SAP Roll-out Finland
+
 project.test.Instance(registerNewRequirement):
     project: testManagementApplication
     name: Register new requirement
@@ -536,6 +570,43 @@ project.test.Instance(registerNewRequirement):
     plannedExecution: 2011-03-19
     tags:
       - requirementsTag
+
+project.test.Run(createNewProjectST2Run1):
+    project: testManagementApplication
+    instance: createNewProjectST2
+    tester: gwen
+    executionDate: 2011-03-19 09:45:23
+    status: FAILED
+
+project.test.RunStep(createNewProjectST2Run1Step1):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 1
+    name: Step 1
+    description: Enter the URL /admin/projects
+    expectedResult: Projects administration page is shown
+    actualResult:
+    status: PASSED
+
+project.test.RunStep(createNewProjectST2Run1Step2):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 2
+    name: Step 2
+    description: "Select project category 2011 and click on New project"
+    expectedResult: A new node appears in the tree under the selected project category
+    actualResult: 
+    status: FAILED
+
+project.test.RunStep(createNewProjectST2Run1Step3):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 3
+    name: Step 3
+    description: "Enter SAP Roll-out Denmark and press enter"
+    expectedResult: "New project SAP Roll-out Denmark is available"
+    actualResult:
+    status:
 
 project.Defect(defect1):
     project: testManagementApplication
