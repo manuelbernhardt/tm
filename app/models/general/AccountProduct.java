@@ -1,7 +1,6 @@
 package models.general;
 
-import play.db.jpa.Model;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -9,12 +8,12 @@ import javax.persistence.ManyToOne;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class AccountProduct extends Model {
+public class AccountProduct extends AccountModel {
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
     public Account account;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
     public Product product;
 
     public Boolean active;
