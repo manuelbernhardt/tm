@@ -21,6 +21,11 @@ div.tree {
   padding: 5px 5px 5px 5px;
 }
 
+.parameter {
+  display: inline;
+  font-weight: bold;
+}
+
 .editStyle {
   display: inline;
   font-weight: bold;

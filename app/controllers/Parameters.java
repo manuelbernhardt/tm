@@ -9,6 +9,7 @@ import models.project.test.Run;
 import models.project.test.RunParam;
 import models.project.test.Script;
 import models.project.test.ScriptParam;
+import play.libs.Codec;
 
 /**
  * Utility class for handling Parameters in Steps.
@@ -58,7 +59,7 @@ public class Parameters {
     }
 
     /**
-     * Transform a text by adding the necessary CSS classes for edition to the recognized parameters
+     * Transform a text by adding the necessary CSS classes for edition to the recognized parameters.
      *
      * @param text the text to enhance with "editable" divs
      * @param run  the Run the texts belong to
@@ -70,14 +71,18 @@ public class Parameters {
         while (matcher.find()) {
             RunParam p = RunParam.find("from RunParam p where p.run = ? and p.name = ?", run, extractParamName(text, matcher)).<RunParam>first();
             if (p.value == null) {
-                matcher.appendReplacement(sb, "<div id=\"" + "param_" + p.id + "\" class=\"editStyle edit\">enter a value</div>");
+                matcher.appendReplacement(sb, "<div id=\"" + getParameterId(p) + "\" class=\"editStyle edit\">enter a value</div>");
             } else {
-                matcher.appendReplacement(sb, "<strong>" + p.value + "</strong>");
+                matcher.appendReplacement(sb, "<div class=\"parameter\">" + p.value + "</div>");
             }
         }
         matcher.appendTail(sb);
         return sb.toString();
 
+    }
+
+    private static String getParameterId(RunParam p) {
+        return "param_" + p.id + "_" + Codec.UUID();
     }
 
     public static void main(String[] args) {

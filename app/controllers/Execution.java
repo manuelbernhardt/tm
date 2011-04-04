@@ -33,6 +33,7 @@ public class Execution extends TMController {
 
     public static final String ACTUAL_RESULT = "actualResult_";
     public static final String STATUS = "status_";
+    public static final String PARAM = "param_";
 
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
@@ -227,6 +228,7 @@ public class Execution extends TMController {
                     } catch (IllegalArgumentException iae) {
                         // TODO logging
                         iae.printStackTrace();
+                        error();
                     }
                     step.save();
                 }
@@ -238,6 +240,34 @@ public class Execution extends TMController {
         run.instance.updateStatus();
 
         ok();
+    }
+
+    public static void updateParameter(Long runId, String id, String value) {
+        Run run = Lookups.getRun(runId);
+        if (run == null) {
+            notFound("Could not find run " + runId);
+        }
+        if (id.startsWith(PARAM)) {
+            try {
+                // param_id_UUID
+                String param = id.substring(PARAM.length());
+                param = param.substring(0, param.indexOf("_"));
+                Long pId = Long.parseLong(param);
+                RunParam runParam = Lookups.getRunParam(pId);
+                if (runParam == null) {
+                    notFound("Could not find parameter " + pId);
+                }
+                runParam.value = value;
+                runParam.save();
+                renderText(value);
+            } catch (NumberFormatException nfe) {
+                // TODO logging
+                nfe.printStackTrace();
+                error();
+            }
+        } else {
+            error("Wrong parameter id");
+        }
     }
 
     /**

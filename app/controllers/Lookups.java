@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializer;
 import models.project.Project;
 import models.project.test.Instance;
 import models.project.test.Run;
+import models.project.test.RunParam;
 import models.project.test.Tag;
 import models.tm.User;
 import play.mvc.Controller;
@@ -31,7 +32,7 @@ public class Lookups extends TMController {
         if (instance == null) {
             return null;
         }
-        TMController.checkInAccount(instance);
+        checkInAccount(instance);
         return instance;
     }
 
@@ -44,7 +45,7 @@ public class Lookups extends TMController {
         if (run == null) {
             return null;
         }
-        TMController.checkInAccount(run);
+        checkInAccount(run);
         return run;
     }
 
@@ -58,9 +59,23 @@ public class Lookups extends TMController {
         if (project == null) {
             return null;
         }
-        TMController.checkInAccount(project);
+        checkInAccount(project);
         return project;
     }
+
+    @Util
+    public static RunParam getRunParam(Long runParamId) {
+        RunParam runParam = null;
+        if (runParamId != null) {
+            runParam = RunParam.<RunParam>findById(runParamId);
+        }
+        if (runParam == null) {
+            return null;
+        }
+        checkInAccount(runParam);
+        return runParam;
+    }
+
 
     @Util
     public static void allUsers() {
@@ -71,7 +86,7 @@ public class Lookups extends TMController {
     @Util
     public static void allTags(Project project, String term) {
         List<Tag> tags = Tag.find("from Tag t where t.project = ? and t.name like ?", project, term + "%").fetch();
-        Controller.renderJSON(tags, tagSerializer);
+        renderJSON(tags, tagSerializer);
     }
 
     // TODO generify these serializers
