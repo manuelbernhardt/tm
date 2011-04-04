@@ -3,9 +3,19 @@ No script selected
 #{/if}
 #{else}
 
-#{dialog id:'newStepDialog', title:'Create a step', loadAction:@preparation.Preparation.stepDialog('scriptId': script.id),
-openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, height: 500 /}
-        
+#{dialog id:'createStepDialog', title:'Create a step', loadAction:@preparation.Preparation.stepDialog('scriptId': script.id),
+openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create', width: 500, height: 500 /}
+
+#{dialog id:'updateStepDialog', title:'Edit a step', loadAction:@preparation.Preparation.stepDialog(':scriptId', ':stepId'),
+openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'update', width: 500, height: 500}
+<script type="text/javascript">
+  function updateStepDialogLoadActionParams() {
+    return {scriptId: '${script.id}', stepId: getSelectedRowId($('#stepTable').dataTable()) }
+  }
+</script>
+#{/dialog}
+
+
 <table class="display" id="stepTable">
   <thead>
   <tr>
@@ -44,6 +54,15 @@ openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, 
       }
     };
     #{/tabularasa.init}
+
+    <!-- when no step is selected, we do not want to make edition possible -->
+    $('#updateStepDialogOpenDialogButton').button('disable');
+
+    handleRowSelection("stepTable", function() {
+      $('#updateStepDialogOpenDialogButton').button('enable');
+    });
+
+
 
   });
 </script>

@@ -1,0 +1,22 @@
+%{
+def dialogId = _baseObject!=null?_updateDialogId:_createDialogId;
+def formId = _baseObject!=null?_updateDialogId+'Form':_createDialogId+'Form';
+}%
+
+#{input.form action:_action,
+             id:formId,
+             baseClass:_baseClass,
+             baseObject:_baseObject}
+%{_body.setProperty('baseClass', _baseClass); }%
+%{_body.setProperty('baseObject', _baseObject); }%
+<script type="text/javascript">
+  function _${dialogId}SubmissionCallback() {
+    var valid = $('#${formId}').validate().form();
+    if (valid) {
+      $('#${formId}').submit();
+      $('#${dialogId}').dialog("close");
+    }
+  }
+</script>
+#{doBody/}
+#{/input.form}

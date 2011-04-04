@@ -1,16 +1,10 @@
-%{def formId = step!=null?'editStepForm':'createStepForm';}%
-#{input.form action:@preparation.Preparation.createOrUpdateStep(),
-             id:formId,
+#{dialogForm action:@preparation.Preparation.createOrUpdateStep(),
+             createDialogId:'createStepDialog',
+             updateDialogId:'updateStepDialog',
              baseClass:'models.project.test.ScriptStep',
              baseObject:step}
 <script type="text/javascript">
-  function newStepDialogSubmissionCallback() {
-    var valid = $('#${formId}').validate().form();
-    if (valid) {
-      alert("freaking valid");
-      $('#${formId}').submit();
-      $('#newStepDialog').dialog("close");
-    }
+  function ${dialogId}SubmissionCallback() {
     refreshTableContents("stepTable", false);
   }
 </script>
@@ -23,4 +17,4 @@
 #{if step != null}
 <input type="hidden" name="step.id" value="${step.id}"/>
 #{/if}
-#{/input.form}
+#{/dialogForm}

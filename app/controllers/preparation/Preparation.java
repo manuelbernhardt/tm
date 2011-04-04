@@ -61,19 +61,13 @@ public class Preparation extends TMController {
 
     public static void stepDialog(Long scriptId, Long stepId) {
         Script script = Lookups.getTestScript(scriptId);
-        render("preparation/Preparation/stepForm.html", script);
+        // TODO do this right
+        ScriptStep step = (stepId != null ? ScriptStep.<ScriptStep>findById(stepId) : null);
+        render("preparation/Preparation/stepForm.html", script, step);
 
     }
 
     public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
-        if(step.id != null) {
-            // do something
-        } else {
-            createStep(step, scriptId);
-        }
-    }
-
-    private static void createStep(@Valid ScriptStep step, Long scriptId) {
         if (scriptId == null) {
             error();
         }
@@ -106,8 +100,11 @@ public class Preparation extends TMController {
                 }
             }
 
-            step.project = TMController.getActiveProject();
-            step.script = script;
+            // for new steps only
+            if(step.id == null) {
+                step.project = TMController.getActiveProject();
+                step.script = script;
+            }
 
             // what's your favourite position?
             if(ScriptStep.count("script.id = ? and position = ?", script.getId(), step.position) > 0) {
@@ -117,10 +114,16 @@ public class Preparation extends TMController {
                 query.executeUpdate();
             }
 
-            boolean created = step.create();
-            if (!created) {
-                error();
+            // TODO is there not a "createOrUpdate"
+            if(step.id == null) {
+                boolean created = step.create();
+                if (!created) {
+                    error();
+                } else {
+                    ok();
+                }
             } else {
+                step.save();
                 ok();
             }
         }

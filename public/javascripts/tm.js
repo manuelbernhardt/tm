@@ -27,7 +27,9 @@ function handleRowSelection(tableId, handler) {
         $(event.target.parentNode).addClass('row_selected');
 
         var selectedRowId = getSelectedRowId(dataTable);
-        handler(selectedRowId);
+        if(handler !==  null) {
+            handler(selectedRowId);
+        }
     });
 }
 
