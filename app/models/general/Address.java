@@ -1,5 +1,6 @@
 package models.general;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -12,7 +13,7 @@ import play.db.jpa.Model;
 @Entity
 public class Address extends Model {
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
     public Account account;
 
     public String street1;
