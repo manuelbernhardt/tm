@@ -1,4 +1,4 @@
-<div id="${_id}" ${(_dnd != null && _dnd) ? '' : 'class="modalDialog"'} title="${_title}">
+<div id="${_id}" ${(_dnd != null && _dnd) ? '' : 'class="modalDialog"'.raw()} title="${_title}">
   #{input.form action:_action, id:_id + 'Form', baseClass:_baseClass}
   %{_body.setProperty('baseClass', _baseClass); }%
   <script type="text/javascript">
@@ -21,7 +21,7 @@
       autoOpen: false,
       width: ${_width != null ? _width : '350' },
       height: ${height != null ? _height : '\'auto\'' },
-      draggable: false,
+      draggable: true,
       resizable: false,
       modal: true,
       buttons: {

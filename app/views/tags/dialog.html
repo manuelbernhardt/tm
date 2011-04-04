@@ -1,0 +1,49 @@
+<div id="${_id}" ${(_dnd != null && _dnd) ? '' : 'class="modalDialog"'.raw()} title="${_title}"></div>
+
+#{doBody /}
+
+<button id="${_id}OpenDialogButton">${_openDialogButtonText}</button>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#${_id}').dialog({
+      autoOpen: false,
+      width: ${_width != null ? _width : '350' },
+      height: ${height != null ? _height : '\'auto\'' },
+      draggable: true,
+      resizable: false,
+      modal: true,
+      open: function(event, ui) {
+        var loadAction = #{jsAction _loadAction /}
+        var loadParams = {};
+        if (typeof ${_id}LoadActionParams !== 'undefined') {
+          loadParams = ${_id}LoadActionParams();
+        }
+        $('#${_id}').load(loadAction(loadParams, function(data) {
+          $('#${_id}').html(data);
+          if (typeof ${_id}LoadActionCallback !== 'undefined') {
+            ${_id}LoadActionCallback();
+          }
+        }));
+      },
+      buttons: {
+        "${_submitButtonText == null ? _submitButtonText : 'Submit'}": function() {
+          if (typeof ${_id}SubmissionCallback !== 'undefined') {
+            ${_id}SubmissionCallback();
+          }
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $("#${_id}OpenDialogButton")
+            .button({icons: {primary: 'ui-icon-plus'}})
+            .click(function() {
+      $("#${_id}").dialog("open");
+    });
+
+  });
+</script>

@@ -1,0 +1,26 @@
+%{def formId = step!=null?'editStepForm':'createStepForm';}%
+#{input.form action:@preparation.Preparation.createOrUpdateStep(),
+             id:formId,
+             baseClass:'models.project.test.ScriptStep',
+             baseObject:step}
+<script type="text/javascript">
+  function newStepDialogSubmissionCallback() {
+    var valid = $('#${formId}').validate().form();
+    if (valid) {
+      alert("freaking valid");
+      $('#${formId}').submit();
+      $('#newStepDialog').dialog("close");
+    }
+    refreshTableContents("stepTable", false);
+  }
+</script>
+
+#{input.field field:'step.name', label:'Name' /}
+#{input.field field:'step.position', label:'Position' /}
+#{input.field field:'step.description', label:'Description' /}
+#{input.field field:'step.expectedResult', label:'Expected result' /}
+<input type="hidden" name="scriptId" value="${script.id}"/>
+#{if step != null}
+<input type="hidden" name="step.id" value="${step.id}"/>
+#{/if}
+#{/input.form}

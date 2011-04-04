@@ -3,21 +3,9 @@ No script selected
 #{/if}
 #{else}
 
-#{formDialog id:'newStepDialog', title:'Create a step', action:@preparation.Preparation.createStep(), baseClass:'models.project.test.ScriptStep',
-openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, height: 500}
-
-  <script type="text/javascript">
-    function newStepDialogSubmissionCallback() {
-      refreshTableContents("stepTable", false);
-    }
-  </script>
-  #{input.field field:'step.name', label:'Name' /}
-  #{input.field field:'step.position', label:'Position' /}
-  #{input.field field:'step.description', label:'Description' /}
-  #{input.field field:'step.expectedResult', label:'Expected result' /}
-  <input type="hidden" name="scriptId" value="${script.id}"/>
-#{/formDialog}
-
+#{dialog id:'newStepDialog', title:'Create a step', loadAction:@preparation.Preparation.stepDialog('scriptId': script.id),
+openDialogButtonText:'Script step', submitButtonText:'Create step', width: 500, height: 500 /}
+        
 <table class="display" id="stepTable">
   <thead>
   <tr>

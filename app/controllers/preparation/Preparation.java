@@ -3,6 +3,7 @@ package controllers.preparation;
 import java.util.List;
 import javax.persistence.Query;
 
+import controllers.Lookups;
 import controllers.RepositoryTree;
 import controllers.Parameters;
 import controllers.TMController;
@@ -34,17 +35,17 @@ public class Preparation extends TMController {
     }
 
     public static void scriptDetails(Long scriptId) {
-        Script script = getTestScript(scriptId);
+        Script script = Lookups.getTestScript(scriptId);
         render(script);
     }
 
     public static void steps(Long scriptId) {
-        Script script = getTestScript(scriptId);
+        Script script = Lookups.getTestScript(scriptId);
         render(script);
     }
 
     public static void linked(Long scriptId) {
-        Script script = getTestScript(scriptId);
+        Script script = Lookups.getTestScript(scriptId);
         render(script);
     }
 
@@ -58,7 +59,21 @@ public class Preparation extends TMController {
         ok();
     }
 
-    public static void createStep(@Valid ScriptStep step, Long scriptId) {
+    public static void stepDialog(Long scriptId, Long stepId) {
+        Script script = Lookups.getTestScript(scriptId);
+        render("preparation/Preparation/stepForm.html", script);
+
+    }
+
+    public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
+        if(step.id != null) {
+            // do something
+        } else {
+            createStep(step, scriptId);
+        }
+    }
+
+    private static void createStep(@Valid ScriptStep step, Long scriptId) {
         if (scriptId == null) {
             error();
         }
@@ -108,9 +123,7 @@ public class Preparation extends TMController {
             } else {
                 ok();
             }
-
         }
-
     }
 
     public static void stepData(String tableId, Long scriptId,
@@ -125,18 +138,6 @@ public class Preparation extends TMController {
         TableController.renderJSON(steps, ScriptStep.class, totalRecords, sColumns, sEcho);
     }
 
-
-    private static Script getTestScript(Long scriptId) {
-        if (scriptId == null) {
-            return null;
-        }
-        Script script = Script.findById(scriptId);
-        if (script == null) {
-            notFound();
-        }
-        checkInAccount(script);
-        return script;
-    }
 
     private static Script getFromNode(Long nodeId) {
         if (nodeId == null) {

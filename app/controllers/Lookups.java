@@ -11,6 +11,7 @@ import models.project.Project;
 import models.project.test.Instance;
 import models.project.test.Run;
 import models.project.test.RunParam;
+import models.project.test.Script;
 import models.project.test.Tag;
 import models.tm.User;
 import play.mvc.Controller;
@@ -91,6 +92,18 @@ public class Lookups extends TMController {
 
     // TODO generify these serializers
     private static final UserSerializer userSerializer = new UserSerializer();
+
+    public static Script getTestScript(Long scriptId) {
+        if (scriptId == null) {
+            return null;
+        }
+        Script script = Script.findById(scriptId);
+        if (script == null) {
+            return null;
+        }
+        checkInAccount(script);
+        return script;
+    }
 
     private static class UserSerializer implements JsonSerializer<User> {
         public JsonElement serialize(User user, Type type, JsonSerializationContext context) {
