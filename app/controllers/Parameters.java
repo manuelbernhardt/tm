@@ -11,18 +11,26 @@ import models.project.test.Script;
 import models.project.test.ScriptParam;
 
 /**
+ * Utility class for handling Parameters in Steps.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class Shared extends TMController {
+public class Parameters {
 
     private static final Pattern parameterPattern = Pattern.compile("<<<[^>>>]*>>>");
 
+    /**
+     * Fetches the names of all parameters denoted by <<< tripe triangular brackets >>>
+     *
+     * @param text the text to search for parameters
+     * @return a list of recognized, trimmed, parameter names
+     */
     public static List<String> getParameterNames(String text) {
         List<String> res = new ArrayList<String>();
         Matcher matcher = parameterPattern.matcher(text);
         while (matcher.find()) {
             String name = extractParamName(text, matcher);
-            res.add(name);
+            res.add(name.trim());
         }
         return res;
     }
@@ -49,13 +57,20 @@ public class Shared extends TMController {
         return res;
     }
 
-    public static String applyClass(String text, Run run, String cssClass) {
+    /**
+     * Transform a text by adding the necessary CSS classes for edition to the recognized parameters
+     *
+     * @param text the text to enhance with "editable" divs
+     * @param run  the Run the texts belong to
+     * @return a HTML snipet with "editable" divs.
+     */
+    public static String applyEditClass(String text, Run run) {
         Matcher matcher = parameterPattern.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             RunParam p = RunParam.find("from RunParam p where p.run = ? and p.name = ?", run, extractParamName(text, matcher)).<RunParam>first();
             if (p.value == null) {
-                matcher.appendReplacement(sb, "<div id=\"" + "param_" + p.id + "\" class=\"editStyle " + cssClass + "\">enter a value</div>");
+                matcher.appendReplacement(sb, "<div id=\"" + "param_" + p.id + "\" class=\"editStyle edit\">enter a value</div>");
             } else {
                 matcher.appendReplacement(sb, "<strong>" + p.value + "</strong>");
             }

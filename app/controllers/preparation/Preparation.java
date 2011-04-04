@@ -4,7 +4,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import controllers.RepositoryTree;
-import controllers.Shared;
+import controllers.Parameters;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
 import models.project.test.Instance;
@@ -73,8 +73,8 @@ public class Preparation extends TMController {
             step.expectedResult = StringEscapeUtils.unescapeHtml(step.expectedResult);
 
             // create parameters
-            List<ScriptParam> scriptParameters = Shared.getScriptParameters(step.description, script);
-            scriptParameters.addAll(Shared.getScriptParameters(step.expectedResult, script));
+            List<ScriptParam> scriptParameters = Parameters.getScriptParameters(step.description, script);
+            scriptParameters.addAll(Parameters.getScriptParameters(step.expectedResult, script));
 
             // create only the new ones
             for(ScriptParam p : scriptParameters) {
