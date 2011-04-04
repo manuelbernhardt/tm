@@ -22,6 +22,8 @@ public class Address extends Model {
 
     public String postalCode;
 
+    public String city;
+
     public String country;
 
 }
