@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.TMController;
+import models.account.Account;
 import tree.simple.ChildProducer;
 import tree.JSTreeNode;
 import tree.simple.SimpleNode;
 import tree.TreeDataHandler;
-import models.general.Account;
 import models.project.Project;
 import models.project.ProjectCategory;
 

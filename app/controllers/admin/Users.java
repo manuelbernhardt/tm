@@ -8,7 +8,7 @@ import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
-import models.general.Auth;
+import models.account.Auth;
 import models.general.UnitRole;
 import models.project.Project;
 import models.project.ProjectCategory;

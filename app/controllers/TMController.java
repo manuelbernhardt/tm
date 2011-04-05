@@ -1,9 +1,9 @@
 package controllers;
 
 import controllers.deadbolt.Deadbolt;
-import models.general.Account;
-import models.general.AccountEntity;
-import models.general.Auth;
+import models.account.Account;
+import models.account.AccountEntity;
+import models.account.Auth;
 import models.project.Project;
 import models.tm.User;
 import play.mvc.Before;

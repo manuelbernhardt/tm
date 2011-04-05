@@ -1,42 +1,42 @@
-general.Account(oxiras):
+account.Account(oxiras):
     name: Oxiras ApS
 
-general.Auth(gwenAuth):
+account.Auth(gwenAuth):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-general.Auth(manuAuth):
+account.Auth(manuAuth):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
 
-general.Auth(nathalieAuth):
+account.Auth(nathalieAuth):
     firstName: Nathalie
     lastName: Van Haaster
     email: nathalie@example.com
     password: nathalie
     account: oxiras
 
-general.Auth(vroniAuth):
+account.Auth(vroniAuth):
     firstName: Vroni
     lastName: Bodmann
     email: vroni@example.com
     password: vroni
     account: oxiras
 
-general.Auth(tamaraAuth):
+account.Auth(tamaraAuth):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
     account: oxiras
 
-general.Auth(christianAuth):
+account.Auth(christianAuth):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com

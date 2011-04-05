@@ -1,4 +1,4 @@
-package models.general;
+package models.account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import models.deadbolt.RoleHolder;
+import models.general.TemporalModel;
+import models.general.UnitRole;
 import play.data.validation.Email;
 import play.data.validation.Password;
 import play.data.validation.Required;

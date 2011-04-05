@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import models.account.Account;
 import models.deadbolt.RoleHolder;
-import models.general.Account;
-import models.general.AccountEntity;
-import models.general.Auth;
+import models.account.AccountEntity;
+import models.account.Auth;
 import models.general.TemporalModel;
 import models.general.UnitRole;
 import models.project.Project;

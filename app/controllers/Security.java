@@ -1,6 +1,6 @@
 package controllers;
 
-import models.general.Auth;
+import models.account.Auth;
 import models.tm.User;
 
 public class Security extends Secure.Security {

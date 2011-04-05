@@ -5,10 +5,10 @@ import java.util.List;
 
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
+import models.account.Auth;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
-import models.general.Auth;
 import models.tm.User;
 import play.mvc.Controller;
 

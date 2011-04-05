@@ -1,8 +1,10 @@
-package models.general;
+package models.account;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import models.general.Product;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

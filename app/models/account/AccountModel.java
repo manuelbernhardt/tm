@@ -1,8 +1,10 @@
-package models.general;
+package models.account;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
+import models.general.CompositeModel;
 
 /**
  *

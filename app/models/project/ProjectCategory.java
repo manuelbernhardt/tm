@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import models.general.AccountModel;
+import models.account.AccountModel;
 import play.data.validation.Required;
 
 /**

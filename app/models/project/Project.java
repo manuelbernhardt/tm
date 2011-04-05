@@ -6,9 +6,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import models.general.Account;
-import models.general.AccountModel;
-import models.general.AccountProduct;
+import models.account.AccountModel;
+import models.account.AccountProduct;
+import models.account.Account;
 import play.data.validation.MaxSize;
 
 /**

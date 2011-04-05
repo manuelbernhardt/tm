@@ -1,7 +1,7 @@
 package controllers.admin;
 
 import controllers.CRUD;
-import models.general.Account;
+import models.account.Account;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

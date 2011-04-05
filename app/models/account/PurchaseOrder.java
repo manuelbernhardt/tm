@@ -1,8 +1,10 @@
-package models.general;
+package models.account;
 
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import models.general.TemporalModel;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

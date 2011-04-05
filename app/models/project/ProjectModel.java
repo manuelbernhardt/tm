@@ -4,8 +4,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
-import models.general.Account;
-import models.general.AccountEntity;
+import models.account.Account;
+import models.account.AccountEntity;
 import models.general.CompositeModel;
 
 /**
