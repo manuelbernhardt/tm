@@ -2,6 +2,7 @@ package models.general;
 
 import javax.persistence.Entity;
 
+import play.data.validation.Email;
 import play.db.jpa.Model;
 
 /**
@@ -11,6 +12,15 @@ import play.db.jpa.Model;
 public class Account extends Model {
 
     public String name;
+
+    public String contactFirstName;
+
+    public String contactLastName;
+
+    @Email
+    public String email;
+
+    public String phone;
 
     public Double credit;
 
