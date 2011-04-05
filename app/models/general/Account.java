@@ -3,13 +3,12 @@ package models.general;
 import javax.persistence.Entity;
 
 import play.data.validation.Email;
-import play.db.jpa.Model;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class Account extends Model {
+public class Account extends TemporalModel {
 
     public String name;
 

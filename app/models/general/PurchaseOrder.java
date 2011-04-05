@@ -4,13 +4,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class PurchaseOrder extends Model {
+public class PurchaseOrder extends TemporalModel {
 
     @ManyToOne
     public AccountProduct product;

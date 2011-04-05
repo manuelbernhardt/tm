@@ -11,7 +11,6 @@ import models.deadbolt.RoleHolder;
 import play.data.validation.Email;
 import play.data.validation.Password;
 import play.data.validation.Required;
-import play.db.jpa.Model;
 import play.libs.Crypto;
 
 /**
@@ -20,7 +19,7 @@ import play.libs.Crypto;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class Auth extends Model implements RoleHolder {
+public class Auth extends TemporalModel implements RoleHolder {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;
