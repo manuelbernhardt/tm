@@ -1,5 +1,6 @@
 package models.general;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 import play.data.validation.Email;
@@ -20,6 +21,9 @@ public class Account extends TemporalModel {
     public String email;
 
     public String phone;
+
+    @Embedded
+    public Address address;
 
     public Double credit;
 
