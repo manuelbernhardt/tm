@@ -37,20 +37,31 @@ No test run selected
 </form>
 
 <script type="text/javascript">
-  $('.edit').editable('@{Execution.updateParameter("runId": run.id)}', {
-    callback : function(value, settings) {
-      // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.
-      // if yes, update its value
-      var thisId = $(this).attr('id');
-      var paramId = thisId.substring(0, thisId.lastIndexOf('_'));
-      $('#runForm div[id^="' + paramId + '"][id!="' + thisId + '"]').each(function(index, el) {
-        if($.trim(value).length) {
-          $(el).html(value);
-        } else {
-          $(el).html("Click to edit");
-        }
-      });
+  $(document).ready(function () {
+
+    <!-- this is called by the createRun dialog in the content.html template when a created dialog is cancelled -->
+    function createRunDialogCancelCallback() {
+      // remove the newly created run
+      var deleteAction = #{jsAction @Execution.deleteRun(':runId') /}
+      $.post(deleteAction({runId: '${run.id}'}));
     }
+
+    $('.edit').editable('@{Execution.updateParameter("runId": run.id)}', {
+      callback : function(value, settings) {
+        // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.
+        // if yes, update its value
+        var thisId = $(this).attr('id');
+        var paramId = thisId.substring(0, thisId.lastIndexOf('_'));
+        $('#runForm div[id^="' + paramId + '"][id!="' + thisId + '"]').each(function(index, el) {
+          if ($.trim(value).length) {
+            $(el).html(value);
+          } else {
+            $(el).html("Click to edit");
+          }
+        });
+      }
+    });
   });
+
 </script>
 #{/else}

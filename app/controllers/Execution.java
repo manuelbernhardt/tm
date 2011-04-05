@@ -245,6 +245,20 @@ public class Execution extends TMController {
         ok();
     }
 
+    public static void deleteRun(Long runId) {
+        Run run = Lookups.getRun(runId);
+        if(run == null) {
+            notFound();
+        }
+        // TODO FIXME - do NOT delete this if another user started working on it!
+        // we may have to alter the Run creation timestamp upon edition i.e. (_before_ the postback), when the update dialog is loaded
+        
+        run.delete();
+
+        ok();
+
+    }
+
     public static void updateParameter(Long runId, String id, String value) {
         Run run = Lookups.getRun(runId);
         if (run == null) {

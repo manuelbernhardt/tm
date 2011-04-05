@@ -28,7 +28,7 @@
       },
       buttons: {
         "${_submitButtonText == null ? _submitButtonText : 'Submit'}": function() {
-          <!-- internal callback -->
+          <!-- internal callback used in combination with dialogForm -->
           if (typeof _${_id}SubmissionCallback !== 'undefined') {
             _${_id}SubmissionCallback();
           }
@@ -39,6 +39,10 @@
           $(this).dialog("close");
         },
         "Cancel": function() {
+          <!-- user-defined callback -->
+          if (typeof ${_id}CancelCallback !== 'undefined') {
+            ${_id}CancelCallback();
+          }
           $(this).dialog("close");
         }
       }

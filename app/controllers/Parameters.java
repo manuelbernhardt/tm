@@ -66,19 +66,22 @@ public class Parameters {
      * @return a HTML snipet with "editable" divs.
      */
     public static String applyEditClass(String text, Run run) {
+        return applyClass(text, run, "editStyle edit");
+    }
+
+    private static String applyClass(String text, Run run, String classes) {
         Matcher matcher = parameterPattern.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             RunParam p = RunParam.find("from RunParam p where p.run = ? and p.name = ?", run, extractParamName(text, matcher)).<RunParam>first();
             if (p.value == null) {
-                matcher.appendReplacement(sb, "<div id=\"" + getParameterId(p) + "\" class=\"editStyle edit\">enter a value</div>");
+                matcher.appendReplacement(sb, "<div id=\"" + getParameterId(p) + "\" class=\"" + classes + "\">enter a value</div>");
             } else {
                 matcher.appendReplacement(sb, "<div class=\"parameter\">" + p.value + "</div>");
             }
         }
         matcher.appendTail(sb);
         return sb.toString();
-
     }
 
     private static String getParameterId(RunParam p) {
