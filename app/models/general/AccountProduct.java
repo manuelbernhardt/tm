@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class AccountProduct extends AccountModel {
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public Product product;
 
     public Boolean active;
