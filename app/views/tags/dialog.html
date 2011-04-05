@@ -1,4 +1,4 @@
-<div id="${_id}" ${(_dnd != null && _dnd) ? '' : 'class="modalDialog"'.raw()} title="${_title}"></div>
+<div id="${_id}" class="${_class}${(_dnd != null && _dnd) ? '' : ' modalDialog'}" title="${_title}"></div>
 
 #{doBody /}
 
@@ -45,7 +45,7 @@
     });
 
     $("#${_id}OpenDialogButton")
-            .button({icons: {primary: '${_type=='create'?'ui-icon-plus':'ui-icon-pencil'}'}})
+            .button({icons: {primary: '${_type=='create'?'ui-icon-plus':'ui-icon-pencil'}'}${_openButtonDisabled?', disabled:true':''}})
             .click(function() {
       $("#${_id}").dialog("open");
     });

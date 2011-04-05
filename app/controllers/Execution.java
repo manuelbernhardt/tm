@@ -155,7 +155,7 @@ public class Execution extends TMController {
         TableController.renderJSON(runSteps, RunStep.class, totalRecords, sColumns, sEcho);
     }
 
-    public static void newRun(Long instanceId) {
+    public static void createRunDialog(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
 
         // create the run
@@ -196,13 +196,16 @@ public class Execution extends TMController {
         render("Execution/runExecution.html", run);
     }
 
-    public static void editRun(Long runId) {
+    public static void updateRunDialog(Long runId) {
         Run run = Lookups.getRun(runId);
         render("Execution/runExecution.html", run);
     }
 
     public static void updateRun(Long runId) {
         Run run = Lookups.getRun(runId);
+        if(run == null) {
+            notFound();
+        }
 
         // Play can bind Lists of entities as well, using as form input name things like step[id].status and then in the action method List<RunStep> step (make sure it's the same name - no plural!)
         // that is, this automatic binding is sort of buggy: it generates a lot of null elements in the list and also does not pre-load the JPA entity, so this is sort of broken

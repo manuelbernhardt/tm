@@ -5,11 +5,39 @@ No test instance selected
 
 #{box 'Runs for test instance "'+instance.name+'"'}
 
-<button id="newRunButton">Run Test Instance</button>
-<button id="editRunButton">Edit Test Run</button>
-<div id="runDialog" title="New test run" class="modalDialog">
-  <div id="runDialogContent" class="box-content"><em>Loading...</em></div>
-</div>
+#{dialog id:'createRunDialog', class:'box-content', height:600, width:800, loadAction:@Execution.createRunDialog(':instanceId'), submitButtonText:'Save', openDialogButtonText:'Run Test Instance'}
+<script type="text/javascript">
+  function createRunDialogLoadActionParams() {
+    return { instanceId: getSelectedRowId($('#instanceTable').dataTable()) };
+  }
+  function createRunDialogLoadActionCallback() {
+        // refresh the data table that shows the runs, as we just created a new one
+        $("#runTable").dataTable().fnDraw(false);
+  }
+  function createRunDialogSubmissionCallback() {
+    refreshTableContents("runTable", false);
+    refreshTableContents("instanceTable", false);
+  }
+</script>
+#{/dialog}
+
+#{dialog id:'updateRunDialog', class:'box-content', height:600, width:800, loadAction:@Execution.updateRunDialog(':runId'), submitButtonText:'Save', openDialogButtonText:'Edit Test Run', openButtonDisabled:true}
+<script type="text/javascript">
+  function updateRunDialogLoadActionParams() {
+    alert("etf");
+    return { runId: getSelectedRowId($('#runTable').dataTable()) };
+  }
+  function updateRunDialogLoadActionCallback() {
+        // refresh the data table that shows the runs as we may have changed some data
+        $("#runTable").dataTable().fnDraw(false);
+  }
+  function updateRunDialogSubmissionCallback() {
+    refreshTableContents("runTable", false);
+    refreshTableContents("instanceTable", false);
+  }
+</script>
+#{/dialog}
+
 
 <table class="display" id="runTable">
   <thead>
@@ -29,41 +57,6 @@ No test instance selected
 
 <script type="text/javascript">
   $(document).ready(function() {
-
-    $('#newRunButton').button().click(function() {
-      $('#runDialog').dialog('open');
-    });
-
-    $('#editRunButton').button({disabled: true}).click(function() {
-      $('#runDialog').dialog('open');
-    });
-
-    $('#runDialog').dialog({
-      autoOpen: false,
-      height: 600,
-      width: 800,
-      modal: true,
-      open: function(event, ui) {
-        $.get('@{Execution.newRun()}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) }, function(data) {
-          $('#runDialog').html(data);
-          // refresh the data table that shows the runs, as we just created a new one
-          $("#runTable").dataTable().fnDraw(false);
-        });
-      },
-      buttons: {
-        "Save": function() {
-          $('#runForm').ajaxSubmit(function() {
-            refreshTableContents("runTable", false);
-            refreshTableContents("instanceTable", false);
-          });
-          $(this).dialog("close");
-        },
-        "Cancel": function() {
-          $(this).dialog("close");
-        }
-      }
-    });
-
 
     #{tabularasa.init tableId:'runTable'}
     var runTableParameters = {
@@ -97,7 +90,7 @@ No test instance selected
     handleRowSelection('runTable', function(selectedRowId) {
       $.get('@{Execution.runContent()}', { runId: selectedRowId }, function(data) {
         $('#runContent').html(data);
-        $('#editRunButton').button("enable");
+        $('#updateRunDialogOpenDialogButton').button("enable");
       });
 
     });
