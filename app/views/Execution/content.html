@@ -24,7 +24,6 @@ No test instance selected
 #{dialog id:'updateRunDialog', class:'box-content', height:600, width:800, loadAction:@Execution.updateRunDialog(':runId'), submitButtonText:'Save', openDialogButtonText:'Edit Test Run', openButtonDisabled:true}
 <script type="text/javascript">
   function updateRunDialogLoadActionParams() {
-    alert("etf");
     return { runId: getSelectedRowId($('#runTable').dataTable()) };
   }
   function updateRunDialogLoadActionCallback() {
