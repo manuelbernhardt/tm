@@ -3,9 +3,11 @@ package models.tm;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderColumn;
 
 import models.account.Account;
 import models.deadbolt.RoleHolder;
@@ -29,10 +31,12 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     @Valid
     public Auth authentication;
 
-    public boolean isApplicationAdmin;
-
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public Project activeProject;
+
+    @ElementCollection
+    @OrderColumn
+    public List<String> accountRoles = new ArrayList<String>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
     public List<Role> projectRoles;
@@ -50,8 +54,8 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     public List<? extends models.deadbolt.Role> getRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
 
-        if(isApplicationAdmin) {
-            res.add(UnitRole.role(UnitRole.ADMIN));
+        for(String accountRole : accountRoles) {
+            res.add(UnitRole.role(accountRole));
         }
 
         for (Role r : projectRoles) {

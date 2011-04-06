@@ -134,16 +134,18 @@ project.Role(tmViewOnly):
 
 tm.User(gwen):
     authentication: gwenAuth
-    isApplicationAdmin: true
     activeProject: testManagementApplication
+    accountRoles:
+       - admin
     projectRoles:
        - tmTestLead
        - demViewOnly
 
 tm.User(manu):
     authentication: manuAuth
-    isApplicationAdmin: true
     activeProject: testManagementApplication
+    accountRoles:
+       - admin
     projectRoles:
        - tmTestDesigner
        - tmViewOnly
@@ -170,7 +172,8 @@ tm.User(tamara):
 
 tm.User(christian):
     authentication: christianAuth
-    isApplicationAdmin: true
+    accountRoles:
+       - admin
     activeProject: testManagementApplication
     projectRoles:
        - tmTestLead
