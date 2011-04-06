@@ -29,6 +29,10 @@ public class Project extends AccountModel {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true)
     public ProjectCategory projectCategory;
 
+    public Integer reservedSeats;
+
+    public Integer maxAvailableSeats;
+    
     public Project() {
 
     }
