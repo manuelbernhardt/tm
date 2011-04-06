@@ -33,10 +33,6 @@ public class Auth extends Model implements RoleHolder {
     @Required
     public String lastName;
 
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
     @Email
     @Required
     @Column(nullable = false)
@@ -48,6 +44,12 @@ public class Auth extends Model implements RoleHolder {
     @Password
     @Column(nullable = false)
     public String password;
+
+    public Boolean active;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
     public String getPassword() {
         return password;
