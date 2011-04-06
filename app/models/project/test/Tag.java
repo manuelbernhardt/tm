@@ -24,6 +24,10 @@ public class Tag extends ProjectModel {
     @Required
     public String name;
 
+    public enum TagType {REQUIREMENT, TESTSCRIPT, TESTINSTANCE, DEFECT}
+
+    public TagType type;
+
     @Override
     public String toString() {
         return name;
