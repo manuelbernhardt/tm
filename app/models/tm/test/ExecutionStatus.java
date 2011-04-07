@@ -20,10 +20,6 @@ public enum ExecutionStatus {
         this.position = position;
     }
 
-    public String getKey() {
-        return this.name();
-    }
-
     public String getLabel() {
         return label;
     }
@@ -40,5 +36,14 @@ public enum ExecutionStatus {
 
     public static ExecutionStatus[] runValues() {
         return runValues;
+    }
+
+    public static ExecutionStatus fromPosition(Integer position) {
+        for(ExecutionStatus status : ExecutionStatus.runValues()) {
+            if(status.getPosition() == position) {
+                return status;
+            }
+        }
+        throw new RuntimeException("No status for position " + position);
     }
 }

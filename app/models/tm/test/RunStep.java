@@ -37,7 +37,7 @@ public class RunStep extends ProjectModel {
     @MaxSize(5000)
     public String actualResult;
 
-    public String status;
+    public Integer status;
 
     public String getDescriptionHTML() {
         return Parameters.applyEditClass(description, this.run);
@@ -53,7 +53,7 @@ public class RunStep extends ProjectModel {
     @PostLoad
     public void doLoad() {
         if (status != null) {
-            this.executionStatus = ExecutionStatus.valueOf(status);
+            this.executionStatus = ExecutionStatus.fromPosition(status);
         }
     }
 
@@ -61,7 +61,7 @@ public class RunStep extends ProjectModel {
     @PreUpdate
     public void doSave() {
         if (executionStatus != null) {
-            this.status = executionStatus.getKey();
+            this.status = executionStatus.getPosition();
         }
     }
 

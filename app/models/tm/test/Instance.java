@@ -33,7 +33,7 @@ public class Instance extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public TestCycle testCycle;
 
-    public String status;
+    public Integer status;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
     public User responsible;
@@ -73,7 +73,7 @@ public class Instance extends ProjectModel {
     @PostLoad
     public void doLoad() {
         if (status != null) {
-            this.executionStatus = ExecutionStatus.valueOf(status);
+            this.executionStatus = ExecutionStatus.fromPosition(status);
         }
     }
 
@@ -81,7 +81,7 @@ public class Instance extends ProjectModel {
     @PrePersist
     public void doSave() {
         if (executionStatus != null) {
-            this.status = executionStatus.getKey();
+            this.status = executionStatus.getPosition();
         }
     }
 

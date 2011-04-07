@@ -33,7 +33,7 @@ public class Run extends ProjectModel {
 
     public Date executionDate;
 
-    public String status;
+    public Integer status;
 
     public List<RunStep> getSteps() {
         return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();
@@ -68,7 +68,7 @@ public class Run extends ProjectModel {
     @PostLoad
     public void doLoad() {
         if (status != null) {
-            this.executionStatus = ExecutionStatus.valueOf(status);
+            this.executionStatus = ExecutionStatus.fromPosition(status);
         }
     }
 
@@ -76,7 +76,7 @@ public class Run extends ProjectModel {
     @PrePersist
     public void doSave() {
         if (executionStatus != null) {
-            this.status = executionStatus.getKey();
+            this.status = executionStatus.getPosition();
         }
     }
 
