@@ -1,4 +1,4 @@
-package models.project;
+package models.tm;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

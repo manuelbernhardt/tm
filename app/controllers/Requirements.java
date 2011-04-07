@@ -1,6 +1,6 @@
 package controllers;
 
-import models.project.Requirement;
+import models.tm.Requirement;
 import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;

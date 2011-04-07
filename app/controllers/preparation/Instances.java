@@ -6,9 +6,9 @@ import java.util.List;
 
 import controllers.Lookups;
 import controllers.TMController;
-import models.project.test.Instance;
-import models.project.test.InstanceParam;
-import models.project.test.Tag;
+import models.tm.test.Instance;
+import models.tm.test.InstanceParam;
+import models.tm.test.Tag;
 import models.tm.User;
 import org.apache.commons.lang.StringUtils;
 

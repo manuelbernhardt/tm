@@ -4,11 +4,21 @@ No script selected
 #{else}
 
 #{dialog id:'createStepDialog', title:'Create a step', loadAction:@preparation.Preparation.stepDialog('scriptId': script.id),
-openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create', width: 500, height: 500 /}
+openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create', width: 500, height: 500}
+<script type="text/javascript">
+  function createStepDialogSubmissionCallback() {
+    refreshTableContents("stepTable", false);
+  }
+</script>
+#{/dialog}
+
 
 #{dialog id:'updateStepDialog', title:'Edit a step', loadAction:@preparation.Preparation.stepDialog(':scriptId', ':stepId'),
 openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'update', width: 500, height: 500}
 <script type="text/javascript">
+  function updateStepDialogSubmissionCallback() {
+    refreshTableContents("stepTable", false);
+  }
   function updateStepDialogLoadActionParams() {
     return {scriptId: '${script.id}', stepId: getSelectedRowId($('#stepTable').dataTable()) }
   }

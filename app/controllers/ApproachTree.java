@@ -2,9 +2,9 @@ package controllers;
 
 import java.util.Map;
 
-import models.project.Project;
-import models.project.approach.Release;
-import models.project.approach.TestCycle;
+import models.tm.Project;
+import models.tm.approach.Release;
+import models.tm.approach.TestCycle;
 import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;

@@ -1,4 +1,4 @@
-package models.project.test;
+package models.tm.test;
 
 /**
  * Execution Status for {@link Instance}, {@link Run} and {@link RunStep}.

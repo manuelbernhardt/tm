@@ -10,8 +10,8 @@ import tree.simple.ChildProducer;
 import tree.JSTreeNode;
 import tree.simple.SimpleNode;
 import tree.TreeDataHandler;
-import models.project.Project;
-import models.project.ProjectCategory;
+import models.tm.Project;
+import models.tm.ProjectCategory;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

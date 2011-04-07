@@ -1,4 +1,4 @@
-package models.project.test;
+package models.tm.test;
 
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import models.project.ProjectModel;
-import models.project.approach.TestCycle;
+import models.tm.ProjectModel;
+import models.tm.approach.TestCycle;
 import models.tm.User;
 import play.templates.JavaExtensions;
 

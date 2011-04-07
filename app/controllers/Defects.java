@@ -3,8 +3,8 @@ package controllers;
 import java.util.List;
 
 import controllers.tabularasa.TableController;
-import models.project.Defect;
-import models.project.Project;
+import models.tm.Defect;
+import models.tm.Project;
 import play.db.jpa.GenericModel;
 
 /**

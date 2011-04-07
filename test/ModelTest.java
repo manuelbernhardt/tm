@@ -1,4 +1,4 @@
-import models.project.Project;
+import models.tm.Project;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.Fixtures;

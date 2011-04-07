@@ -7,8 +7,8 @@ import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
-import models.project.Project;
-import models.project.Role;
+import models.tm.Project;
+import models.tm.Role;
 import models.tm.User;
 import play.mvc.With;
 

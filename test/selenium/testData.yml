@@ -43,30 +43,30 @@ general.Auth(christianAuth):
     password: christian
     account: oxiras
 
-project.ProjectCategory(ProjCat2011):
+tm.ProjectCategory(ProjCat2011):
     name: 2011
     account: oxiras
 
-project.ProjectCategory(ProjCat2012):
+tm.ProjectCategory(ProjCat2012):
     name: 2012
     account: oxiras
 
-project.Project(demenagement):
+tm.Project(demenagement):
     name: Demenagement
     account: oxiras
     projectCategory: ProjCat2011
 
-project.Project(testManagementApplication):
+tm.Project(testManagementApplication):
     name: Test Management Application
     account: oxiras
     projectCategory: ProjCat2011
 
-project.Project(world):
+tm.Project(world):
     name: Conquer the world
     account: oxiras
     projectCategory: ProjCat2012
 
-project.Role(demViewOnly):
+tm.Role(demViewOnly):
     name: View only
     project: demenagement
     unitRoles:
@@ -76,7 +76,7 @@ project.Role(demViewOnly):
          - testExecView
          - defectView
 
-project.Role(tmTestLead):
+tm.Role(tmTestLead):
     name: Test Lead
     project: testManagementApplication
     unitRoles:
@@ -101,7 +101,7 @@ project.Role(tmTestLead):
          - defectEdit
          - defectDelete
 
-project.Role(tmTestDesigner):
+tm.Role(tmTestDesigner):
     name: Test Designer
     project: testManagementApplication
     unitRoles:
@@ -112,7 +112,7 @@ project.Role(tmTestDesigner):
          - testPrepEdit
          - testPrepDelete
 
-project.Role(tmTestExecution):
+tm.Role(tmTestExecution):
     name: Test Execution
     project: testManagementApplication
     unitRoles:
@@ -122,7 +122,7 @@ project.Role(tmTestExecution):
          - testExecCreate
          - testExecEdit
 
-project.Role(tmViewOnly):
+tm.Role(tmViewOnly):
     name: View only
     project: testManagementApplication
     unitRoles:
@@ -175,40 +175,40 @@ tm.User(christian):
     projectRoles:
        - tmTestLead
 
-project.RequirementType(functional):
+tm.RequirementType(functional):
     project: testManagementApplication
     position: 1
     type: Functional
 
-project.RequirementType(technical):
+tm.RequirementType(technical):
     project: testManagementApplication
     position: 2
     type: Technical
 
-project.RequirementFolder(functionalReqFolder):
+tm.RequirementFolder(functionalReqFolder):
     project: testManagementApplication
     name: Requirement management
 
-project.Requirement(functionalReq1):
+tm.Requirement(functionalReq1):
     project: testManagementApplication
     name: List requirements (tree)
     type: functional
 
-project.Requirement(functionalReq2):
+tm.Requirement(functionalReq2):
     project: testManagementApplication
     name: Display requirement details
     type: functional
 
-project.Requirement(functionalReq3):
+tm.Requirement(functionalReq3):
     project: testManagementApplication
     name: Display entities linked to requirement
     type: functional
 
-project.RequirementFolder(crossConcernsFolder):
+tm.RequirementFolder(crossConcernsFolder):
     project: testManagementApplication
     name: Cross concerns
 
-project.Requirement(technicalReq1):
+tm.Requirement(technicalReq1):
     project: testManagementApplication
     name: Datatables need to be sortable
     type: technical
@@ -271,33 +271,33 @@ tree.jpa.TreeNode(requirementTreeNode6):
     type: requirement
     threadRoot: requirementTreeNode5
 
-project.approach.Release(releaseProto):
+tm.approach.Release(releaseProto):
     project: testManagementApplication
     name: Proto
 
-project.approach.TestCycle(unitTest):
+tm.approach.TestCycle(unitTest):
     project: testManagementApplication
     name: Unit test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
-project.approach.TestCycle(systemTest):
+tm.approach.TestCycle(systemTest):
     project: testManagementApplication
     name: System Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
-project.approach.TestCycle(userAcceptanceTest):
+tm.approach.TestCycle(userAcceptanceTest):
     project: testManagementApplication
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
-project.approach.Release(releaseBeta):
+tm.approach.Release(releaseBeta):
     project: testManagementApplication
     name: Beta
 
-project.approach.Release(releaseV1):
+tm.approach.Release(releaseV1):
     project: testManagementApplication
     name: V1
 
@@ -358,23 +358,23 @@ tree.jpa.TreeNode(approachTreeNode12):
     treeId: approachTree
     type: release
 
-project.test.ScriptFolder(testScriptFolderAdmin):
+tm.test.ScriptFolder(testScriptFolderAdmin):
     project: testManagementApplication
     name: Administration
 
-project.test.ScriptFolder(testScriptFolderAdminUsers):
+tm.test.ScriptFolder(testScriptFolderAdminUsers):
     project: testManagementApplication
     name: Users
 
-project.test.ScriptFolder(testScriptFolderAdminProjects):
+tm.test.ScriptFolder(testScriptFolderAdminProjects):
     project: testManagementApplication
     name: Projects
 
-project.test.Script(testScriptAdminProjectsCreate):
+tm.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
 
-project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
+tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 1
@@ -382,7 +382,7 @@ project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     description: Enter the URL /admin/projects
     expectedResult: Projects administration page is shown
 
-project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
+tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 2
@@ -390,7 +390,7 @@ project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     description: Select project category "projectCategory" and click on "New project"
     expectedResult: A new node appears in the tree under the selected project category
 
-project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
+tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 3
@@ -398,15 +398,15 @@ project.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     description: Enter "projectName" and press enter
     expectedResult: New project "projectName" is available
 
-project.test.Script(testScriptAdminProjectsEdit):
+tm.test.Script(testScriptAdminProjectsEdit):
     project: testManagementApplication
     name: Edit project details
 
-project.test.ScriptFolder(testScriptFolderRequirements):
+tm.test.ScriptFolder(testScriptFolderRequirements):
     project: testManagementApplication
     name: Requirements
 
-project.test.Script(testScriptRequirement1):
+tm.test.Script(testScriptRequirement1):
     project: testManagementApplication
     name: Register new requirement
 
@@ -478,23 +478,23 @@ tree.jpa.TreeNode(repositoryTreeNode19):
     type: script
     threadRoot: repositoryTreeNode18
 
-project.test.Tag(administrationTag):
+tm.test.Tag(administrationTag):
     project: testManagementApplication
     name: Administration
 
-project.test.Tag(usersTag):
+tm.test.Tag(usersTag):
     project: testManagementApplication
     name: Users
 
-project.test.Tag(projectsTag):
+tm.test.Tag(projectsTag):
     project: testManagementApplication
     name: Projects
 
-project.test.Tag(requirementsTag):
+tm.test.Tag(requirementsTag):
     project: testManagementApplication
     name: Requirements
 
-project.test.Instance(createNewProject1):
+tm.test.Instance(createNewProject1):
     project: testManagementApplication
     name: Create new project
     script: testScriptAdminProjectsCreate
@@ -505,7 +505,7 @@ project.test.Instance(createNewProject1):
       - administrationTag
       - projectsTag
 
-project.test.Instance(createNewProject2):
+tm.test.Instance(createNewProject2):
     project: testManagementApplication
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
@@ -516,7 +516,7 @@ project.test.Instance(createNewProject2):
       - administrationTag
       - projectsTag
 
-project.test.Instance(editProjectDetails):
+tm.test.Instance(editProjectDetails):
     project: testManagementApplication
     name: Edit project details
     script: testScriptAdminProjectsEdit
@@ -527,7 +527,7 @@ project.test.Instance(editProjectDetails):
       - administrationTag
       - projectsTag
 
-project.test.Instance(registerNewRequirement):
+tm.test.Instance(registerNewRequirement):
     project: testManagementApplication
     name: Register new requirement
     script: testScriptRequirement1
@@ -537,29 +537,29 @@ project.test.Instance(registerNewRequirement):
     tags:
       - requirementsTag
 
-project.Defect(defect1):
+tm.Defect(defect1):
     project: testManagementApplication
     name: The application does not start
     submittedBy: gwen
     assignedTo: manu
 
-project.Defect(defect2):
+tm.Defect(defect2):
     project: demenagement
     name: Test for naturalID
     submittedBy: nathalie
 
-project.Defect(defect3):
+tm.Defect(defect3):
     project: testManagementApplication
     name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
 
-project.Defect(defect4):
+tm.Defect(defect4):
     project: demenagement
     name: Box is not at the right place
     submittedBy: vroni
 
-project.Defect(defect5):
+tm.Defect(defect5):
     project: demenagement
     name: Old couch is still not removed
     submittedBy: nathalie

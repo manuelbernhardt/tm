@@ -24,7 +24,7 @@ No test run selected
       <td>
         <select id="status" name="status_${step.id}">
           <option value="">- pick -</option>
-          #{list items:models.project.test.ExecutionStatus.runValues(), as:'s'}
+          #{list items:models.tm.test.ExecutionStatus.runValues(), as:'s'}
           <option value="${s.getKey()}">${s}</option>
           #{/list}
         </select>

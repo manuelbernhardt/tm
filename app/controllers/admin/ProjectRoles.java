@@ -4,8 +4,8 @@ import java.util.List;
 
 import controllers.TMController;
 import controllers.tabularasa.TableController;
-import models.project.Project;
-import models.project.Role;
+import models.tm.Project;
+import models.tm.Role;
 import play.db.jpa.GenericModel;
 
 /**

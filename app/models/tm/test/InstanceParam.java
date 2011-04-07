@@ -1,8 +1,8 @@
-package models.project.test;
+package models.tm.test;
 
 import javax.persistence.*;
 
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>

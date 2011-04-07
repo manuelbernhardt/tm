@@ -5,8 +5,8 @@ import java.util.Map;
 import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
-import models.project.Requirement;
-import models.project.RequirementFolder;
+import models.tm.Requirement;
+import models.tm.RequirementFolder;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

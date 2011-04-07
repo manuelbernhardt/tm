@@ -1,4 +1,4 @@
-package models.project.approach;
+package models.tm.approach;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
 import controllers.ScriptCycleTreeDataHandler;
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.persistent.Node;

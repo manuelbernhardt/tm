@@ -1,4 +1,4 @@
-package models.project.approach;
+package models.tm.approach;
 
 import java.util.Date;
 import javax.persistence.Entity;
@@ -7,7 +7,7 @@ import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
 import controllers.ScriptCycleTreeDataHandler;
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 import models.tree.jpa.TreeNode;
 import play.data.validation.MaxSize;
 import tree.persistent.Node;

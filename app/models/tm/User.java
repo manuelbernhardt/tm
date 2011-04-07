@@ -15,8 +15,8 @@ import models.account.AccountEntity;
 import models.account.Auth;
 import models.general.TemporalModel;
 import models.general.UnitRole;
-import models.project.Project;
-import models.project.Role;
+import models.tm.Project;
+import models.tm.Role;
 import play.data.validation.Valid;
 
 /**

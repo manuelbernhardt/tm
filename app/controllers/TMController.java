@@ -4,7 +4,7 @@ import controllers.deadbolt.Deadbolt;
 import models.account.Account;
 import models.account.AccountEntity;
 import models.account.Auth;
-import models.project.Project;
+import models.tm.Project;
 import models.tm.User;
 import play.mvc.Before;
 import play.mvc.Controller;

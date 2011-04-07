@@ -2,8 +2,8 @@ package controllers;
 
 import java.util.Map;
 
-import models.project.test.Script;
-import models.project.test.ScriptFolder;
+import models.tm.test.Script;
+import models.tm.test.ScriptFolder;
 import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;

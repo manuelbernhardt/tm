@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import models.project.test.Run;
-import models.project.test.RunParam;
-import models.project.test.Script;
-import models.project.test.ScriptParam;
+import models.tm.test.Run;
+import models.tm.test.RunParam;
+import models.tm.test.Script;
+import models.tm.test.ScriptParam;
 import play.libs.Codec;
 
 /**

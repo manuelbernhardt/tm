@@ -1,4 +1,4 @@
-package models.project.test;
+package models.tm.test;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
 import play.data.validation.Required;

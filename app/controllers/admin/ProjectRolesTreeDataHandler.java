@@ -10,9 +10,9 @@ import tree.simple.ChildProducer;
 import tree.JSTreeNode;
 import tree.simple.SimpleNode;
 import tree.TreeDataHandler;
-import models.project.Project;
-import models.project.ProjectCategory;
-import models.project.Role;
+import models.tm.Project;
+import models.tm.ProjectCategory;
+import models.tm.Role;
 import models.tm.User;
 
 /**

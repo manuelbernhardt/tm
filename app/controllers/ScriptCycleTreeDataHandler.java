@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.project.approach.Release;
-import models.project.approach.TestCycle;
-import models.project.test.Instance;
-import models.project.test.InstanceParam;
-import models.project.test.Script;
-import models.project.test.ScriptParam;
+import models.tm.approach.Release;
+import models.tm.approach.TestCycle;
+import models.tm.test.Instance;
+import models.tm.test.InstanceParam;
+import models.tm.test.Script;
+import models.tm.test.ScriptParam;
 import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;

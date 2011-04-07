@@ -1,13 +1,8 @@
 #{dialogForm action:@preparation.Preparation.createOrUpdateStep(),
              createDialogId:'createStepDialog',
              updateDialogId:'updateStepDialog',
-             baseClass:'models.project.test.ScriptStep',
+             baseClass:'models.tm.test.ScriptStep',
              baseObject:step}
-<script type="text/javascript">
-  function ${dialogId}SubmissionCallback() {
-    refreshTableContents("stepTable", false);
-  }
-</script>
 
 #{input.field field:'step.name', label:'Name' /}
 #{input.field field:'step.position', label:'Position' /}

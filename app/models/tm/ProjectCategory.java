@@ -1,4 +1,4 @@
-package models.project;
+package models.tm;
 
 import java.util.List;
 import javax.persistence.Column;

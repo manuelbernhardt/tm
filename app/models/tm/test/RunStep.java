@@ -1,4 +1,4 @@
-package models.project.test;
+package models.tm.test;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import controllers.Parameters;
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
 
 /**

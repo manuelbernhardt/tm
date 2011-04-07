@@ -1,10 +1,10 @@
-package models.project.test;
+package models.tm.test;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import models.project.ProjectModel;
+import models.tm.ProjectModel;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
 
