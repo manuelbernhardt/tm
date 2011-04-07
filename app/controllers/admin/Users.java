@@ -25,10 +25,10 @@ import play.mvc.With;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @With(Deadbolt.class)
-@Restrict(UnitRole.ADMIN)
+@Restrict(UnitRole.ACCOUNTADMIN)
 public class Users extends TMController {
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void index() {
         List<Auth> users = Auth.findAll();
         // this is how we'd select a user by default
@@ -37,7 +37,7 @@ public class Users extends TMController {
         render(users);
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void userDetails(Long userId) {
         Router.ActionDefinition action = Router.reverse("admin.Users.edit");
         User user = null;
@@ -48,7 +48,7 @@ public class Users extends TMController {
         render("/general/userProfile.html", action, user);
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void projects(Long userId) {
         User user = null;
         if (userId != null) {
@@ -65,7 +65,7 @@ public class Users extends TMController {
         }
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void account(Long userId) {
         User user = null;
         if (userId != null) {
@@ -75,7 +75,7 @@ public class Users extends TMController {
     }
 
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void create(User user) {
         if (Validation.hasErrors()) {
             // TODO add some flash message
@@ -87,7 +87,7 @@ public class Users extends TMController {
         index();
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void edit(User user) {
         if (Validation.hasErrors()) {
             // TODO test if this works
@@ -99,7 +99,7 @@ public class Users extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,

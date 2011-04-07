@@ -136,7 +136,13 @@ tm.User(gwen):
     authentication: gwenAuth
     activeProject: testManagementApplication
     accountRoles:
-       - admin
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     projectRoles:
        - tmTestLead
        - demViewOnly
@@ -145,7 +151,13 @@ tm.User(manu):
     authentication: manuAuth
     activeProject: testManagementApplication
     accountRoles:
-       - admin
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     projectRoles:
        - tmTestDesigner
        - tmViewOnly
@@ -173,7 +185,13 @@ tm.User(tamara):
 tm.User(christian):
     authentication: christianAuth
     accountRoles:
-       - admin
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     activeProject: testManagementApplication
     projectRoles:
        - tmTestLead
@@ -579,7 +597,7 @@ tm.test.Run(createNewProjectST2Run1):
     instance: createNewProjectST2
     tester: gwen
     executionDate: 2011-03-19 09:45:23
-    status: FAILED
+    status: 3
 
 tm.test.RunStep(createNewProjectST2Run1Step1):
     project: testManagementApplication
@@ -589,7 +607,7 @@ tm.test.RunStep(createNewProjectST2Run1Step1):
     description: Enter the URL /admin/projects
     expectedResult: Projects administration page is shown
     actualResult:
-    status: PASSED
+    status: 2
 
 tm.test.RunStep(createNewProjectST2Run1Step2):
     project: testManagementApplication
@@ -599,7 +617,7 @@ tm.test.RunStep(createNewProjectST2Run1Step2):
     description: "Select project category 2011 and click on New project"
     expectedResult: A new node appears in the tree under the selected project category
     actualResult: 
-    status: FAILED
+    status: 3
 
 tm.test.RunStep(createNewProjectST2Run1Step3):
     project: testManagementApplication
@@ -609,7 +627,7 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     description: "Enter SAP Roll-out Denmark and press enter"
     expectedResult: "New project SAP Roll-out Denmark is available"
     actualResult:
-    status:
+    status: 2
 
 tm.Defect(defect1):
     project: testManagementApplication

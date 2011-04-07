@@ -18,18 +18,18 @@ import play.mvc.With;
 @With(Deadbolt.class)
 public class Projects extends TMController {
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void index() {
         render();
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void projectDetails(Long projectId) {
         Project project = Lookups.getProject(projectId);
         render(project);
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void edit(Project project) {
         checkInAccount(project);
         project.save();
@@ -37,13 +37,13 @@ public class Projects extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void roles(Long projectId) {
         Project project = Lookups.getProject(projectId);
         render(project);
     }
 
-    @Restrict(UnitRole.ADMIN)
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void users(Long projectId) {
         Project project = Lookups.getProject(projectId);
         List<Role> projectRoles = Role.findByProject(projectId);
