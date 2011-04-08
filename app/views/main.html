@@ -5,10 +5,19 @@
 #{tabLayout}
   #{tabs id:'tabs'}
     #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
-    #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
-    #{tab link:@preparation.Preparation.index(), title:'Test preparation', controller:'preparation.Preparation' /}
-    #{tab link:@Execution.index(), title:'Test execution', controller:'Execution' /}
-    #{tab link:@Defects.index(), title:'Defects', controller:'Defects' /}
+    <!-- TODO update with dynamic (project dependent) restrictions -->
+    #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}
+      #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPVIEW]]}
+      #{tab link:@preparation.Preparation.index(), title:'Test preparation', controller:'preparation.Preparation' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECVIEW]]}
+      #{tab link:@Execution.index(), title:'Test execution', controller:'Execution' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTVIEW]]}
+      #{tab link:@Defects.index(), title:'Defects', controller:'Defects' /}
+    #{/deadbolt.restrict}
   #{/tabs}
   #{tabContent}
     #{doLayout /}
