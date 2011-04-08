@@ -19,6 +19,13 @@ No role selected
 
   #{form action:@admin.ProjectRoles.edit(), id:'roleDetailsForm'}
   <table>
+    <tr>
+      <th>Project administration</th>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.PROJECTEDIT, selected:unitRoles /}</td>
+    </tr>
+  </table>
+
+  <table>
     <thead>
     <th></th>
     <th>View</th>
