@@ -39,8 +39,8 @@ public enum ExecutionStatus {
     }
 
     public static ExecutionStatus fromPosition(Integer position) {
-        for(ExecutionStatus status : ExecutionStatus.runValues()) {
-            if(status.getPosition().equals(position)) {
+        for(ExecutionStatus status : ExecutionStatus.values()) {
+            if(status.getPosition() == position) {
                 return status;
             }
         }

@@ -66,7 +66,7 @@ public class Execution extends TMController {
                                  String sColumns,
                                  String sEcho,
                                  Long cycle,
-                                 String status,
+                                 Integer status,
                                  String tags,
                                  Long responsible,
                                  Date dateFrom,
@@ -82,7 +82,7 @@ public class Execution extends TMController {
         if (cycle != null) {
             fq.addFilter("testCycle.id", "=", cycle);
         }
-        if (status != null && !StringUtils.isEmpty(status)) {
+        if (status != null) {
             fq.addFilter("status", "=", status);
         }
         if (tags != null && !StringUtils.isEmpty(tags)) {
@@ -203,7 +203,7 @@ public class Execution extends TMController {
 
     public static void updateRun(Long runId) {
         Run run = Lookups.getRun(runId);
-        if(run == null) {
+        if (run == null) {
             notFound();
         }
 
@@ -224,35 +224,35 @@ public class Execution extends TMController {
             } else if (param.startsWith(STATUS)) {
                 String id = param.substring(STATUS.length());
                 RunStep step = getRunStep(id, run, cache);
-                String s = params.all().get(param)[0];
-                if (s != null && s.length() > 0) {
-                    try {
-                        step.executionStatus = ExecutionStatus.valueOf(s);
-                    } catch (IllegalArgumentException iae) {
-                        // TODO logging
-                        iae.printStackTrace();
-                        error();
+                try {
+                    Integer status = Integer.parseInt(params.all().get(param)[0]);
+                    if (status != null) {
+                        step.executionStatus = ExecutionStatus.fromPosition(status);
+                        step.save();
                     }
-                    step.save();
+                } catch (IllegalArgumentException iae) {
+                    // TODO logging
+                    iae.printStackTrace();
+                    error();
                 }
             }
+
+            // re-compute Run and Instance status
+            run.updateStatus();
+            run.instance.updateStatus();
+
+            ok();
         }
-
-        // re-compute Run and Instance status
-        run.updateStatus();
-        run.instance.updateStatus();
-
-        ok();
     }
 
     public static void deleteRun(Long runId) {
         Run run = Lookups.getRun(runId);
-        if(run == null) {
+        if (run == null) {
             notFound();
         }
         // TODO FIXME - do NOT delete this if another user started working on it!
         // we may have to alter the Run creation timestamp upon edition i.e. (_before_ the postback), when the update dialog is loaded
-        
+
         run.delete();
 
         ok();

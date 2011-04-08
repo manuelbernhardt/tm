@@ -23,7 +23,7 @@
         <select id="status" name="status">
           <option value="">Select a status</option>
           #{list items:models.tm.test.ExecutionStatus.values(), as:'s'}
-          <option value="${s.getKey()}">${s}</option>
+          <option value="${s.getPosition()}">${s}</option>
           #{/list}
         </select>
       </div>
