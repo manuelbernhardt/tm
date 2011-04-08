@@ -4,7 +4,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -16,22 +15,17 @@ import play.db.jpa.Model;
 @MappedSuperclass
 public class TemporalModel extends Model {
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created", nullable = false)
-	private Date created;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updated;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated", nullable = false)
-	private Date updated;
+	@Column(name = "created", nullable = false, insertable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT '0000-00-00 00:00:00'")
+	private Date created;
 
 	@PrePersist
 	protected void onCreate() {
-		updated = created = new Date();
-	}
-
-	@PreUpdate
-	protected void onUpdate() {
-		updated = new Date();
+		created = new Date();
 	}
 
 	public Date getCreated() {
