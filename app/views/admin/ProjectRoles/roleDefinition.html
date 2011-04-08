@@ -19,6 +19,13 @@ No role selected
 
   #{form action:@admin.ProjectRoles.edit(), id:'roleDetailsForm'}
   <table>
+    <tr>
+      <th>Project administration</th>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.PROJECTEDIT, selected:unitRoles /}</td>
+    </tr>
+  </table>
+
+  <table>
     <thead>
     <th></th>
     <th>View</th>
@@ -33,6 +40,13 @@ No role selected
       <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQCREATE, selected:unitRoles /}</td>
       <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQEDIT, selected:unitRoles /}</td>
       <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.REQDELETE, selected:unitRoles /}</td>
+    </tr>
+    <tr>
+      <th>Test Scripts repository</th>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTREPOVIEW, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTREPOCREATE, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTREPOEDIT, selected:unitRoles /}</td>
+      <td>#{checkBox name:'unitRoles', value:models.general.UnitRole.TESTREPODELETE, selected:unitRoles /}</td>
     </tr>
     <tr>
       <th>Test Preparation</th>

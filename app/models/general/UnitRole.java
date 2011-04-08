@@ -5,7 +5,6 @@ package models.general;
  */
 public class UnitRole implements models.deadbolt.Role {
 
-    public static final String USER = "user";
     public static final String ACCOUNTADMIN = "accountAdmin";
 
     public static final String USERCREATE = "userCreate";
@@ -20,6 +19,11 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String REQCREATE = "reqCreate";
     public static final String REQEDIT = "reqEdit";
     public static final String REQDELETE = "reqDelete";
+
+    public static final String TESTREPOVIEW = "testRepoView";
+    public static final String TESTREPOCREATE = "testRepoCreate";
+    public static final String TESTREPOEDIT = "testRepoEdit";
+    public static final String TESTREPODELETE = "testRepoDelete";
 
     public static final String TESTPREPVIEW = "testPrepView";
     public static final String TESTPREPCREATE = "testPrepCreate";
