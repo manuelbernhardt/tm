@@ -67,13 +67,8 @@ public class Auth extends TemporalModel implements RoleHolder {
 
     public List<? extends models.deadbolt.Role> getRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
-        setApplicationRoles(res);
         setAccountRoles(res);
         return res;
-    }
-
-    private void setApplicationRoles(List<UnitRole> res) {
-        res.add(UnitRole.role(UnitRole.USER));
     }
 
     private void setAccountRoles(List<UnitRole> res) {
