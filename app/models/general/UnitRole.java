@@ -21,6 +21,11 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String REQEDIT = "reqEdit";
     public static final String REQDELETE = "reqDelete";
 
+    public static final String TESTREPOVIEW = "testRepoView";
+    public static final String TESTREPOCREATE = "testRepoCreate";
+    public static final String TESTREPOEDIT = "testRepoEdit";
+    public static final String TESTREPODELETE = "testRepoDelete";
+
     public static final String TESTPREPVIEW = "testPrepView";
     public static final String TESTPREPCREATE = "testPrepCreate";
     public static final String TESTPREPEDIT = "testPrepEdit";
