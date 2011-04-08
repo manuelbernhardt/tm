@@ -14,26 +14,26 @@ import play.data.validation.Validation;
 
 public class Approach extends TMController {
 
-    @Restrict(UnitRole.USER)
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void cycles(Long projectId) {
         Project project = Lookups.getProject(projectId);
         render(project);
     }
 
-    @Restrict(UnitRole.USER)
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void cycleDetails(Long cycleId) {
         TestCycle cycle = getCycle(cycleId);
         render(cycle);
     }
 
-    @Restrict(UnitRole.USER)
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void releaseDetails(Long releaseId) {
         Release release = getRelease(releaseId);
         render(release);
     }
 
 
-    @Restrict(UnitRole.USER)
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void editCycle(@Valid TestCycle cycle) {
         checkInAccount(cycle);
         if (Validation.hasErrors()) {
@@ -44,7 +44,7 @@ public class Approach extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.USER)
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void editRelease(@Valid Release release) {
         checkInAccount(release);
         if (Validation.hasErrors()) {

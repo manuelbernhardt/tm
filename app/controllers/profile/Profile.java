@@ -18,14 +18,12 @@ import play.mvc.With;
 @With(Deadbolt.class)
 public class Profile extends TMController {
 
-    @Restrict(UnitRole.USER)
     public static void index() {
         User user = getConnectedUser();
         Router.ActionDefinition action = Router.reverse("profile.Profile.edit");
         render("/profile/Profile/index.html", action, user);
     }
 
-    @Restrict(UnitRole.USER)
     public static void edit(@Valid User user) {
 
         if(!user.getId().equals(getConnectedUser().getId())) {

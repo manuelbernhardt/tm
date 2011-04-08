@@ -5,7 +5,6 @@ import models.general.UnitRole;
 
 public class Dashboard extends TMController {
 
-    @Restrict(UnitRole.USER)
     public static void index() {
         render();
     }
