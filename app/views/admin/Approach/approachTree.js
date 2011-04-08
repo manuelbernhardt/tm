@@ -6,7 +6,7 @@ var tree = $("#approachTree").jstree({
       "url" : "@{TMTreeController.getChildren()}",
       "data" : function (n) {
         return {
-          "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+          "id" : n.attr ? extractId(n.attr("id")) : -1,
           "treeId" : "approachTree",
           "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProject().getId() : project.id}"}
 

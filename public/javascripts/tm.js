@@ -161,7 +161,7 @@ function isSelectedNodeOfType(treeInstance, node, types) {
  * @param data the jsTree callback data
  */
 function getSelectedNode(data) {
-    return data.rslt.obj.attr("id").replace("node_", "");
+    return extractId(data.rslt.obj.attr("id"));
 }
 
 /**
@@ -174,7 +174,7 @@ function getSelectedNode(data) {
  * @param nodeId the id of the object (it's not the DOM ID)
  */
 function getTreeNode(treeId, type, nodeId) {
-    return $('#' + treeId + ' li[id=node_' + nodeId + '][rel=' + type + ']');
+    return $('#' + treeId + ' li[id=node_' + type + '_' + nodeId + '][rel=' + type + ']');
 }
 
 /**
@@ -200,6 +200,10 @@ function refreshTree(treeId) {
     var treeContainer = $("#" + treeId);
     jQuery.jstree._reference(treeContainer).refresh();
     jQuery.jstree._reference(treeContainer).deselect_all();
+}
+
+function extractId(id) {
+  return id.substring(id.lastIndexOf("_")+1);
 }
 
 

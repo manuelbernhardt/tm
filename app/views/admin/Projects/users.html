@@ -101,7 +101,7 @@ No project selected
           "url" : "@{TMTreeController.getChildren()}",
           "data" : function (n) {
             return {
-              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "id" : n.attr ? extractId(n.attr("id")) : -1,
               "treeId" : "rolesUserTree",
               "args" : {"projectId": "${project.id}"}
             };

@@ -49,7 +49,7 @@
 
           if (valid) {
             var name = selectedNode.text();
-            $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: selectedNode.attr('id').replace('node_', ''), scriptId: "${script.id}"}}}, null, true);
+            $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: "${script.id}"}}}, null, true);
             refreshCycleTree();
             $(this).dialog("close");
           }
