@@ -4,11 +4,6 @@
 
 <div class="container">
   <div class="left_tree">
-    <div id="actions">
-      <button id="create_folder">Folder</button>
-      <button id="create_script">Test Script</button>
-      <button id="remove">Remove</button>
-    </div>
     #{box 'Test Script Repository'}
     <div id="repositoryTree" class="tree" style="border-style:none;"></div>
     #{/box}
@@ -82,20 +77,7 @@
 
     #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
 
-    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@preparation.Preparation.content(), targetId:"scriptDetails" /}
-
-    /** button initialisation **/
-    $(function () {
-      $("#create_folder").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}});
-      })
-      $("#create_script").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-        $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}});
-      })
-      $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
-        $("#repositoryTree").jstree("remove", null);
-      })
-    });
+    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.content(), targetId:"scriptDetails" /}
 
   });
 

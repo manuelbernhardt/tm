@@ -10,18 +10,21 @@ GET     /requirements                           Requirements.index
 GET     /requirements/{requirementId}/details   Requirements.requirementDetails
 GET     /requirements/{requirementId}/linked    Requirements.linked
 
-GET     /preparation                            preparation.Preparation.index
-GET     /preparation/{scriptId}/content         preparation.Preparation.content
-GET     /preparation/{scriptId}/details         preparation.Preparation.scriptDetails
-GET     /preparation/{scriptId}/steps           preparation.Preparation.steps
-GET     /preparation/{scriptId}/linked          preparation.Preparation.linked
-GET     /preparation/{instanceId}/content       preparation.Instances.content
+GET     /repository                             Repository.index
+GET     /repository/{scriptId}/content          Repository.content
+GET     /repository/{scriptId}/details          Repository.scriptDetails
+GET     /repository/{scriptId}/steps            Repository.steps
+GET     /repository/{scriptId}/linked           Repository.linked
+
+GET     /preparation                            Preparation.index
+GET     /preparation/{instanceId}/content       Preparation.content
 
 GET     /execution                              Execution.index
 GET     /content/${instanceId}                  Execution.content
 
 GET     /defects                                Defects.index
 GET     /defects/data                           Defects.data
+
 GET     /profile                                profile.Profile.index
 POST    /profile/edit                           profile.Profile.edit
 

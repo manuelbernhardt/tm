@@ -1,4 +1,4 @@
-package controllers.preparation;
+package controllers;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +15,11 @@ import org.apache.commons.lang.StringUtils;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class Instances extends TMController {
+public class Preparation extends TMController {
+
+    public static void index() {
+        render();
+    }
 
     public static void content(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);

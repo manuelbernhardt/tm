@@ -9,8 +9,11 @@
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}
       #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
     #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOVIEW]]}
+      #{tab link:@Repository.index(), title:'Test Scripts repository', controller:'Repository' /}
+    #{/deadbolt.restrict}
     #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPVIEW]]}
-      #{tab link:@preparation.Preparation.index(), title:'Test preparation', controller:'preparation.Preparation' /}
+      #{tab link:@Preparation.index(), title:'Test preparation', controller:'Preparation' /}
     #{/deadbolt.restrict}
     #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECVIEW]]}
       #{tab link:@Execution.index(), title:'Test execution', controller:'Execution' /}
