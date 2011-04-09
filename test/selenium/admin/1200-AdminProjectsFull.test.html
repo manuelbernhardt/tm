@@ -1,0 +1,44 @@
+#{fixture delete:'all', load:'selenium/testData.yml' /}
+
+#{selenium 'Test 1100-Admin Users Full'}
+
+    // Try to access the user administration area and check that it contains the expected tabs
+    open('/admin')
+    clickAndWait('//ul[@id='tabs_header']/li[2]/a/span')
+    verifyElementPresent('create_category')
+    verifyElementPresent('create_project')
+    verifyElementPresent('remove')
+    verifyElementPresent('//a[@id='projectDetailsLink']/span')
+    verifyElementPresent('//a[@id='rolesLink']/span')
+    verifyElementPresent('//a[@id='usersLink']/span')
+
+    // PROJECT DETAILS
+    // Verify presence of a random project
+    verifyTextPresent('Test Management Application')
+
+    // Attempt new project category creation
+    click('//li[@id='node_0'][@rel='root']/a')
+    click('create_category')
+    type('//li[@id='node_0']/ul/li[3]/input','Test category')
+    fireEvent('//li[@id='node_0']/ul/li[3]/input','blur')
+    waitForElementPresent('//li[@id='node_3'][@rel='category']')
+    // Verify new project category available in tree at expected location
+    verifyText('//li[@id='node_3'][@rel='category']','Test category')
+
+    // Attempt new project creation
+    click('//li[@id='node_3'][@rel='category']/a')
+    click('create_project')
+    type('//li[@id='node_3'][@rel='category']/ul/li/input','Test project')
+    fireEvent('//li[@id='node_3'][@rel='category']/ul/li/input','blur')
+    waitForElementPresent('//li[@id='node_4'][@rel='default']')
+    // Verify new project available in tree at expected location
+    verifyText('//li[@id='node_4'][@rel='default']','Test project')
+
+    // Check content of project details edit form
+    click('//li[@id='node_4'][@rel='default']/a')
+    waitForElementPresent('project_name')
+    waitForValue('project_name','Test project')
+    waitForElementPresent('projectForm_submit')
+
+
+#{/selenium}
