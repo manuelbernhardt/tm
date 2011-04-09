@@ -43,6 +43,62 @@ account.Auth(christianAuth):
     password: christian
     account: oxiras
 
+account.Auth(testUserUserAdminAuth):
+    firstName: Ballmer
+    lastName: Peak
+    email: UserAdmin@testUser.com
+    password: testUserUserAdmin
+    account: oxiras
+
+account.Auth(testUserProjectAdminAuth):
+    firstName: Angelina
+    lastName: Jolie
+    email: ProjectAdmin@testUser.com
+    password: testUserProjectAdmin
+    account: oxiras
+
+account.Auth(testUserAccountAdminAuth):
+    firstName: Steven
+    lastName: Springberg
+    email: AccountAdmin@testUser.com
+    password: testUserAccountAdmin
+    account: oxiras
+
+account.Auth(testUserRequirementsOnlyAuth):
+    firstName: Eddie
+    lastName: Larrisson
+    email: RequirementsOnly@testUser.com
+    password: testUserRequirementsOnly
+    account: oxiras
+
+account.Auth(testUserTestRepositoryOnlyAuth):
+    firstName: William
+    lastName: Windows
+    email: TestRepositoryOnly@testUser.com
+    password: testUserTestRepositoryOnly
+    account: oxiras
+
+account.Auth(testUserTestPreparationOnlyAuth):
+    firstName: Scala
+    lastName: Johansson
+    email: TestPreparationOnly@testUser.com
+    password: testUserTestPreparationOnly
+    account: oxiras
+
+account.Auth(testUserTestExecutionOnlyAuth):
+    firstName: Lenny
+    lastName: Linux
+    email: TestExecutionOnly@testUser.com
+    password: testUserTestExecutionOnly
+    account: oxiras
+
+account.Auth(testUserDefectsOnlyAuth):
+    firstName: Mona Lisa
+    lastName: Harddrive
+    email: DefectsOnly@testUser.com
+    password: testUserDefectsOnly
+    account: oxiras
+
 tm.ProjectCategory(ProjCat2011):
     name: 2011
     account: oxiras
@@ -80,14 +136,15 @@ tm.Role(tmTestLead):
     name: Test Lead
     project: testManagementApplication
     unitRoles:
+         - projectEdit
          - reqView
          - reqCreate
          - reqEdit
          - reqDelete
-         - approachView
-         - approachCreate
-         - approachEdit
-         - approachDelete
+         - testRepoView
+         - testRepoCreate
+         - testRepoEdit
+         - testRepoDelete
          - testPrepView
          - testPrepCreate
          - testPrepEdit
@@ -101,12 +158,28 @@ tm.Role(tmTestLead):
          - defectEdit
          - defectDelete
 
+tm.Role(tmRequirements):
+    name: Requirement management
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - reqCreate
+         - reqEdit
+         - reqDelete
+
 tm.Role(tmTestDesigner):
     name: Test Designer
     project: testManagementApplication
     unitRoles:
-         - reqView
-         - approachView
+         - testRepoView
+         - testRepoCreate
+         - testRepoEdit
+         - testRepoDelete
+
+tm.Role(tmTestPreparation):
+    name: Test Preparation
+    project: testManagementApplication
+    unitRoles:
          - testPrepView
          - testPrepCreate
          - testPrepEdit
@@ -116,11 +189,20 @@ tm.Role(tmTestExecution):
     name: Test Execution
     project: testManagementApplication
     unitRoles:
-         - reqView
-         - approachView
          - testExecView
          - testExecCreate
          - testExecEdit
+         - defectView
+         - defectCreate
+         - defectEdit
+
+tm.Role(tmDefects):
+    name: Defect resolution
+    project: testManagementApplication
+    unitRoles:
+         - defectView
+         - defectCreate
+         - defectEdit
 
 tm.Role(tmViewOnly):
     name: View only
@@ -195,6 +277,50 @@ tm.User(christian):
     activeProject: testManagementApplication
     projectRoles:
        - tmTestLead
+
+tm.User(testUserAccountAdmin):
+    authentication: testUserAccountAdminAuth
+    accountRoles:
+       - accountAdmin
+
+tm.User(testUserProjectAdmin):
+    authentication: testUserProjectAdminAuth
+    accountRoles:
+       - projectCreate
+       - projectEdit
+       - projectDelete
+
+tm.User(testUserUserAdmin):
+    authentication: testUserUserAdminAuth
+    accountRoles:
+       - userCreate
+       - userEdit
+       - userDelete
+
+tm.User(testUserRequirementsOnly):
+    authentication: testUserRequirementsOnlyAuth
+    projectRoles:
+       -  tmRequirements
+
+tm.User(testUserTestRepositoryOnly):
+    authentication: testUserTestRepositoryOnlyAuth
+    projectRoles:
+       -  tmTestDesigner
+
+tm.User(testUserTestPreparationOnly):
+    authentication: testUserTestPreparationOnlyAuth
+    projectRoles:
+       -  tmTestPreparation
+
+tm.User(testUserTestExecutionOnly):
+    authentication: testUserTestExecutionOnlyAuth
+    projectRoles:
+       -  tmTestExecution
+
+tm.User(testUserDefectsOnly):
+    authentication: testUserDefectsOnlyAuth
+    projectRoles:
+       -  tmDefects
 
 tm.RequirementType(functional):
     project: testManagementApplication
@@ -616,7 +742,7 @@ tm.test.RunStep(createNewProjectST2Run1Step2):
     name: Step 2
     description: "Select project category 2011 and click on New project"
     expectedResult: A new node appears in the tree under the selected project category
-    actualResult:
+    actualResult: 
     status: 3
 
 tm.test.RunStep(createNewProjectST2Run1Step3):
