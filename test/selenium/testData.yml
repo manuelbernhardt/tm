@@ -1,42 +1,42 @@
-general.Account(oxiras):
+account.Account(oxiras):
     name: Oxiras ApS
 
-general.Auth(gwenAuth):
+account.Auth(gwenAuth):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-general.Auth(manuAuth):
+account.Auth(manuAuth):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
 
-general.Auth(nathalieAuth):
+account.Auth(nathalieAuth):
     firstName: Nathalie
     lastName: Van Haaster
     email: nathalie@example.com
     password: nathalie
     account: oxiras
 
-general.Auth(vroniAuth):
+account.Auth(vroniAuth):
     firstName: Vroni
     lastName: Bodmann
     email: vroni@example.com
     password: vroni
     account: oxiras
 
-general.Auth(tamaraAuth):
+account.Auth(tamaraAuth):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
     account: oxiras
 
-general.Auth(christianAuth):
+account.Auth(christianAuth):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
@@ -134,16 +134,30 @@ tm.Role(tmViewOnly):
 
 tm.User(gwen):
     authentication: gwenAuth
-    isApplicationAdmin: true
     activeProject: testManagementApplication
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     projectRoles:
        - tmTestLead
        - demViewOnly
 
 tm.User(manu):
     authentication: manuAuth
-    isApplicationAdmin: true
     activeProject: testManagementApplication
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     projectRoles:
        - tmTestDesigner
        - tmViewOnly
@@ -170,7 +184,14 @@ tm.User(tamara):
 
 tm.User(christian):
     authentication: christianAuth
-    isApplicationAdmin: true
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
     activeProject: testManagementApplication
     projectRoles:
        - tmTestLead
@@ -374,6 +395,16 @@ tm.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
 
+tm.test.ScriptParam(projectCategoryScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectCategory
+
+tm.test.ScriptParam(projectNameScriptParam):
+    project: testManagementApplication
+    script: testScriptAdminProjectsCreate
+    name: projectName
+
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
@@ -387,7 +418,7 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     script: testScriptAdminProjectsCreate
     position: 2
     name: Step 2
-    description: Select project category "projectCategory" and click on "New project"
+    description: "Select project category \u003C\u003C\u003CprojectCategory\u003E\u003E\u003E and click on New project"
     expectedResult: A new node appears in the tree under the selected project category
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
@@ -395,8 +426,8 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     script: testScriptAdminProjectsCreate
     position: 3
     name: Step 3
-    description: Enter "projectName" and press enter
-    expectedResult: New project "projectName" is available
+    description: "Enter \u003C\u003C\u003CprojectName\u003E\u003E\u003E and press enter"
+    expectedResult: "New project \u003C\u003C\u003CprojectName\u003E\u003E\u003E is available"
 
 tm.test.Script(testScriptAdminProjectsEdit):
     project: testManagementApplication
@@ -494,7 +525,7 @@ tm.test.Tag(requirementsTag):
     project: testManagementApplication
     name: Requirements
 
-tm.test.Instance(createNewProject1):
+tm.test.Instance(createNewProjectST1):
     project: testManagementApplication
     name: Create new project
     script: testScriptAdminProjectsCreate
@@ -505,7 +536,7 @@ tm.test.Instance(createNewProject1):
       - administrationTag
       - projectsTag
 
-tm.test.Instance(createNewProject2):
+tm.test.Instance(createNewProjectST2):
     project: testManagementApplication
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
@@ -527,6 +558,30 @@ tm.test.Instance(editProjectDetails):
       - administrationTag
       - projectsTag
 
+tm.test.InstanceParam(projectCategoryNewProjectST1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProjectST1
+    value:
+
+tm.test.InstanceParam(projectCategoryNewProjectST2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectCategoryScriptParam
+    instance: createNewProjectST2
+    value: "2011"
+
+tm.test.InstanceParam(projectNameNewProjectST1InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProjectST1
+    value: SAP Roll-out Denmark
+
+tm.test.InstanceParam(projectNameNewProjectST2InstanceParam):
+    project: testManagementApplication
+    scriptParam: projectNameScriptParam
+    instance: createNewProjectST2
+    value: SAP Roll-out Finland
+
 tm.test.Instance(registerNewRequirement):
     project: testManagementApplication
     name: Register new requirement
@@ -536,6 +591,43 @@ tm.test.Instance(registerNewRequirement):
     plannedExecution: 2011-03-19
     tags:
       - requirementsTag
+
+tm.test.Run(createNewProjectST2Run1):
+    project: testManagementApplication
+    instance: createNewProjectST2
+    tester: gwen
+    executionDate: 2011-03-19 09:45:23
+    status: 3
+
+tm.test.RunStep(createNewProjectST2Run1Step1):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 1
+    name: Step 1
+    description: Enter the URL /admin/projects
+    expectedResult: Projects administration page is shown
+    actualResult:
+    status: 2
+
+tm.test.RunStep(createNewProjectST2Run1Step2):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 2
+    name: Step 2
+    description: "Select project category 2011 and click on New project"
+    expectedResult: A new node appears in the tree under the selected project category
+    actualResult:
+    status: 3
+
+tm.test.RunStep(createNewProjectST2Run1Step3):
+    project: testManagementApplication
+    run: createNewProjectST2Run1
+    position: 3
+    name: Step 3
+    description: "Enter SAP Roll-out Denmark and press enter"
+    expectedResult: "New project SAP Roll-out Denmark is available"
+    actualResult:
+    status: 2
 
 tm.Defect(defect1):
     project: testManagementApplication
