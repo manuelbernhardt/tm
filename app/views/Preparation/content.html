@@ -1,0 +1,27 @@
+#{if instance == null}
+No test instance selected
+#{/if}
+#{else}
+<div id="instanceTabs">
+  <ul>
+    <li><a href="@{Preparation.tags('instanceId': instance.id)}" id="instanceTagsLink"><span>Tags</span></a>
+    </li>
+    <li><a href="@{Preparation.schedule('instanceId': instance.id)}" id="scheduleLink"><span>Schedule</span></a>
+    </li>
+    <li><a href="@{Preparation.testData('instanceId': instance.id)}" id="testDataLink"><span>Test data</span></a>
+    </li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#instanceTabs").tabs({
+//      select: function() {
+//        removeDialogs();
+//      }
+    });
+  });
+</script>
+
+#{/else}
