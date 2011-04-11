@@ -2,16 +2,16 @@
 /* DataTable */
 /*************/
 /*
-$.fn.dataTableExt.ofnSearch['html'] = function ( sData ) {
-	var n = document.createElement('div');
-	n.innerHTML = sData;
-	if ( n.textContent ) {
-		return n.textContent.replace(/\n/g," ");
-	} else {
-		return n.innerText.replace(/\n/g," ");
-	}
-}
-*/
+ $.fn.dataTableExt.ofnSearch['html'] = function ( sData ) {
+ var n = document.createElement('div');
+ n.innerHTML = sData;
+ if ( n.textContent ) {
+ return n.textContent.replace(/\n/g," ");
+ } else {
+ return n.innerText.replace(/\n/g," ");
+ }
+ }
+ */
 
 /**
  * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)
@@ -27,7 +27,7 @@ function handleRowSelection(tableId, handler) {
         $(event.target.parentNode).addClass('row_selected');
 
         var selectedRowId = getSelectedRowId(dataTable);
-        if(handler !==  null) {
+        if (handler !== null) {
             handler(selectedRowId);
         }
     });
@@ -95,7 +95,7 @@ function fnSelectRow(oTableLocal, rowId) {
             break;
         }
     }
-    if(index > -1) {
+    if (index > -1) {
         $(oTableLocal.fnGetNodes()[index]).addClass('row_selected');
     }
 }
@@ -203,7 +203,7 @@ function refreshTree(treeId) {
 }
 
 function extractId(id) {
-  return id.substring(id.lastIndexOf("_")+1);
+    return id.substring(id.lastIndexOf("_") + 1);
 }
 
 
@@ -231,4 +231,43 @@ function registerSelectNoneValidator() {
         }
         return true;
     }, "Please select an option");
+}
+
+/****************************/
+/* Static utility functions */
+/****************************/
+
+/**
+ * Post form data as JSON string, modifying this one to accomodate Play's automatic binding
+ * @param url the URL to submit to
+ * @param data the data object, of which keys are of the sort value_some_thing
+ * @param callback the callback to run after successful execution
+ */
+$.postJson = function (url, data, callback) {
+
+    var formData = {};
+    $.each(ko.toJS(data), function(key, value) {
+        if (key.startsWith('value_')) {
+            formData[key.substring(6).replace(/_/g, '.')] = value;
+        }
+        if (key == 'authenticityToken') {
+            formData[key] = value;
+        }
+    });
+
+    return jQuery.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+        dataType: 'json'
+    }).success(callback).error(function (jqhr, text) {
+        alert(text);
+    });
+}
+
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function (str) {
+        return !this.indexOf(str);
+    }
 }

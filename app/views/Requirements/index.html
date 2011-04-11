@@ -13,9 +13,33 @@
   <div class="right_tree">
     <div id="innerTabs">
       <ul>
-        <li><a href="@{Requirements.requirementDetails()}" id="details"><span>Requirement details</span></a></li>
-        <li><a href="@{Requirements.linked()}" id="linked"><span>Linked entities</span></a></li>
+        <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
+        <li><a href="#linked"><span>Linked entities</span></a></li>
       </ul>
+      <div id="requirementDetails">
+
+        #{ox.form action:@Requirements.edit(), id:'requirementForm', baseClass:'models.tm.Requirement', loadAction:@Requirements.requirementsDetailsData()}
+          <script type="text/javascript">
+            function requirementFormSubmissionCallback() {
+              refreshTree('requirementTree');
+            }
+          </script>
+          #{ox.field field:'requirement.name', label:'Name' /}
+          #{ox.field field:'requirement.description', label:'Description' /}
+          *{the following fields are necessary because play can't bind stuff automatically yet}*
+          #{ox.field field:'requirement.id', hidden:true /}
+          #{ox.field field:'requirement.type.id', hidden:true /}
+          #{ox.field field:'requirement.project.id', hidden:true /}
+          #{ox.field field:'requirement.project.account.id', hidden:true /}
+          #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
+          #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
+          #{input.submit /}
+        #{/ox.form}
+
+      </div>
+      <div id="linked">
+        
+      </div>
     </div>
   </div>
 </div>
@@ -25,6 +49,9 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
+
+    requirementFormLoadFields(1);
+
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
     $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});
     $('#remove').button({icons: {primary: 'ui-icon-minus'}});

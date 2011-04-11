@@ -21,10 +21,18 @@ public class Requirements extends TMController {
         render(requirement);
     }
 
+    public static void requirementsDetailsData(Long baseObjectId, String[] fields) {
+        // TODO implement this right
+        Object base = Requirement.findById(baseObjectId);
+
+        renderFields(base, fields);
+    }
+
     public static void linked(Long requirementId) {
         Requirement requirement = getRequirement(requirementId);
         render(requirement);
     }
+    
 
     public static void edit(@Valid Requirement requirement) {
         checkInAccount(requirement);

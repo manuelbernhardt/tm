@@ -28,9 +28,10 @@ import play.mvc.Scope;
 import play.templates.FastTags;
 import play.templates.GroovyTemplate;
 import play.templates.JavaExtensions;
+import play.templates.TagContext;
 
 /**
- * Custom FastTags, mostly copied together from Play! and from the jquery validation module, with a few modifications
+ * Custom FastTags, some written together from Play! and from the jQuery validation module, with a few modifications
  * so they can be used in CRUD-like tags for form generation.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -38,8 +39,17 @@ import play.templates.JavaExtensions;
 @FastTags.Namespace("forms")
 public class FormTags extends FastTags {
 
+    public static final String FIELD = "field_";
+
     /**
      * The field tag is a helper, based on the spirit of Don't Repeat Yourself.
+     * It is based on the {@link FastTags#_field(java.util.Map, groovy.lang.Closure, java.io.PrintWriter, play.templates.GroovyTemplate.ExecutableTemplate, int)} method.
+     * Additionally, it does a couple of things:
+     * <ul>
+     * <li>expects a baseObject or baseClass to compute the type of the field at hand</li>
+     * <li>renders validation rules for the jQuery validation plugin</li>
+     * <li>adds the field path to the parent form so that operations can be performed on the field list (for data binding)</li>
+     * </ul>
      *
      * @param args     tag attributes
      * @param body     tag inner body
@@ -51,7 +61,9 @@ public class FormTags extends FastTags {
         Map<String, Object> field = new HashMap<String, Object>();
         String path = args.get("field").toString();
         // make it possible to override the name... should be more generic
-        field.put("name", args.get("name") == null ? path : args.get("name"));
+        Object name = args.get("name") == null ? path : args.get("name");
+        field.put("name", name);
+        field.put("path", path);
         field.put("id", path.replace('.', '_'));
         field.put("flash", Scope.Flash.current().get(path));
         field.put("flashArray", field.get("flash") != null && !field.get("flash").toString().isEmpty() ? field.get("flash").toString().split(",") : new String[0]);
@@ -61,6 +73,9 @@ public class FormTags extends FastTags {
         Object obj = args.get("baseObject");
         String baseClass = (String) args.get("baseClass");
 
+        // store the field name in the form TagContext so that we can retrieve it later
+        TagContext.parent("form").data.put(FIELD + path.replaceAll("\\.", "_"), path);
+
         if (obj != null) {
             if (pieces.length > 1) {
                 try {
@@ -68,11 +83,15 @@ public class FormTags extends FastTags {
                     if (fo != null) {
                         field.put("validationData", buildValidationDataString(fo._1));
 
-                        try {
-                            Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(fo._1.getName()));
-                            field.put("value", getter.invoke(obj, new Object[0]));
-                        } catch (NoSuchMethodException e) {
-                            field.put("value", fo._1.get(fo._2).toString());
+                        // TODO this code is deprecated and is used only by the old forms that directly write the initial value in the field
+                        // TODO remove once we got rid of all old forms in the code
+                        if (TagContext.parent("input.form") != null) {
+                            try {
+                                Method getter = obj.getClass().getMethod("get" + JavaExtensions.capFirst(fo._1.getName()));
+                                field.put("value", getter.invoke(obj, new Object[0]));
+                            } catch (NoSuchMethodException e) {
+                                field.put("value", fo._1.get(fo._2).toString());
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -87,7 +106,8 @@ public class FormTags extends FastTags {
                 baseClazz = getBaseClass(template, fromLine, baseClass);
 
                 try {
-                    Field f = getField(pieces, baseClazz);
+                    F.Tuple<Field, Class> fc = getField(pieces, baseClazz);
+                    Field f = fc._1;
                     if (f != null) {
                         field.put("validationData", buildValidationDataString(f));
                     }
@@ -106,6 +126,32 @@ public class FormTags extends FastTags {
         }
         body.setProperty("field", field);
         body.call();
+    }
+
+    /**
+     * This tags retrieves the fields of the parent form and the baseClass of the form and puts them into a Map.
+     * Inside of the tag, the map can be used to load the form data.
+     *
+     * @param args     tag attributes
+     * @param body     tag inner body
+     * @param out      the output writer
+     * @param template enclosing template
+     * @param fromLine template line number where the tag is defined
+     */
+    public static void _loadFormData(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
+        Map<String, Object> formDataQuery = new HashMap<String, Object>();
+        List<String> fields = new ArrayList<String>();
+        Map<String, Object> formData = TagContext.parent().data;
+        for (String key : formData.keySet()) {
+            if (key.startsWith(FIELD)) {
+                fields.add((String) formData.get(key));
+            }
+        }
+        formDataQuery.put("baseClass", args.get("arg"));
+        formDataQuery.put("fields", fields);
+        body.setProperty("formDataQuery", formDataQuery);
+        body.call();
+
     }
 
     private static Class getBaseClass(GroovyTemplate.ExecutableTemplate template, int fromLine, String baseClass) {
@@ -133,14 +179,14 @@ public class FormTags extends FastTags {
         return null;
     }
 
-    private static Field getField(String[] pieces, Class baseClass) throws NoSuchFieldException {
+    private static F.Tuple<Field, Class> getField(String[] pieces, Class baseClass) throws NoSuchFieldException {
         if (pieces.length > 1) {
             for (int i = 1; i < pieces.length; i++) {
                 // TODO improve this so it uses the accessor (getter, or direct field access)
                 // this needs a rewrite of the type introspection to use a member instead of a field.
                 Field f = baseClass.getField(pieces[i]);
                 if (i == pieces.length - 1) {
-                    return f;
+                    return new F.Tuple<Field, Class>(f, baseClass);
                 } else {
                     baseClass = f.getType();
                 }
@@ -149,6 +195,21 @@ public class FormTags extends FastTags {
         return null;
     }
 
+    /**
+     * This tag computes a simplified type of a field based on the base class and a path to the field.
+     * It uses the Play! {@link CRUD} module which has a method for computing an ObjectType.
+     * As an output, it sets two body parameters:
+     * <ul>
+     * <li>objectField: the {@link CRUD} objectField representation of the field</li>
+     * <li>fieldType: the type of the field</li>
+     * </ul>
+     *
+     * @param args     the arguments passed to the tag. Expected arguments: either baseClass or baseObject, field (path to the field)
+     * @param body     tag inner body
+     * @param out      the output writer
+     * @param template enclosing template
+     * @param fromLine template line number where the tag is defined
+     */
     public static void _objectField(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
         String path = args.get("field").toString();
         String[] pieces = path.split("\\.");
@@ -166,11 +227,12 @@ public class FormTags extends FastTags {
         if (clazz != null) {
             if (pieces.length > 1) {
                 try {
-                    Field f = getField(pieces, clazz);
+                    F.Tuple<Field, Class> fc = getField(pieces, clazz);
+                    Field f = fc._1;
                     if (f != null) {
                         Model.Property property = null;
-                        if (Model.class.isAssignableFrom(f.getDeclaringClass())) {
-                            Model.Factory factory = Model.Manager.factoryFor((Class<? extends Model>) f.getDeclaringClass());
+                        if (Model.class.isAssignableFrom(fc._2)) {
+                            Model.Factory factory = Model.Manager.factoryFor((Class<? extends Model>) fc._2);
                             // TODO probably we should be caching this...?
                             for (Model.Property p : factory.listProperties()) {
                                 if (p.name.equals(f.getName())) {
@@ -193,6 +255,7 @@ public class FormTags extends FastTags {
                         body.setProperty("fieldType", objectField.type);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String message = "Cannot compute field '" + path + "' of class '" + clazz.getName() + "'";
                     throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
                 }
