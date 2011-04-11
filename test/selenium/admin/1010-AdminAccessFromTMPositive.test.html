@@ -1,0 +1,31 @@
+#{fixture delete:'all', load:'selenium/testData.yml' /}
+
+#{selenium 'Test 1010-Admin Access from TM Positive'}
+
+    // Try to log in the administration area
+    clearSession()
+    open('/')
+    assertTextPresent('Oxiras Test Management Suite')
+    type('username', 'gwenael.alizon@oxiras.com')
+    type('password', 'gwen')
+    clickAndWait('signin')
+
+    // Verify that the user in correctly logged in
+    verifyTextPresent('Dashboard')
+    verifyTextPresent('Requirements')
+    verifyTextPresent('Test preparation')
+    verifyTextPresent('Test execution')
+    verifyTextPresent('Defects')
+
+    // Select the user administration
+    click('adminButton')
+    clickAndWait('adminProjectsLink')
+
+    // Verify that the user reached the administration area
+    verifyTextPresent('Users')
+    verifyTextPresent('Projects')
+    verifyTextPresent('Account Settings')
+    verifyElementPresent('userButton')
+    verifyElementPresent('adminButton')
+
+#{/selenium}
