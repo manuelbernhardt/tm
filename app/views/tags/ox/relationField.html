@@ -1,0 +1,24 @@
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
+<div class="field">
+    <label class="name" for="${_field}">${_label}</label>
+
+#{if !_autoComplete}
+
+  <select id="${_field}" name="${_field}.id" data-bind="value: value_${field.id}_id" class="oxfield">
+      #{ifnot _objectField.required}
+          <option value="">(None)</option>
+      #{/ifnot}
+      #{else}
+          <option value="">(Select a value)</option>
+      #{/else}
+      %{ _objectField.choices.each() { }%
+      <option value="${it._key()}">${it}</option>
+      %{ } }%
+  </select>
+#{/if}
+#{elseif _autoComplete}
+  Hyperspace multiflux problem in secondary plasma matrix
+#{/elseif}
+
+</div>
+#{/}

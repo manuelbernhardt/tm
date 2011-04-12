@@ -22,6 +22,7 @@
         loadAction:@Requirements.requirementsDetailsData()}
         #{ox.field field:'requirement.name', label:'Name' /}
         #{ox.field field:'requirement.description', label:'Description' /}
+        #{ox.field field:'requirement.type', label:'Type' /}
         *{the following fields are necessary because play can't bind stuff automatically yet}*
         #{ox.field field:'requirement.id', hidden:true /}
         #{ox.field field:'requirement.type.id', hidden:true /}

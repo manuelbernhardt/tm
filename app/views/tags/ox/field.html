@@ -22,7 +22,7 @@
   #{ox.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name /}
 #{/elseif}
 #{elseif objectField.type == 'relation'}
-  #{input.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField, name: _name, autoComplete: _autoComplete != null && _autoComplete /}
+  #{ox.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField, name: _name, autoComplete: _autoComplete != null && _autoComplete /}
 #{/elseif}
 #{else}
   Problem with the hyperspace flux compensator, syonic variable type is '${objectField.type}'
