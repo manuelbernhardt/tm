@@ -222,9 +222,31 @@ function registerSelectNoneValidator() {
     }, "Please select an option");
 }
 
-/****************************/
-/* Form utility functions   */
-/****************************/
+/********************/
+/* Form utilities  */
+/******************/
+
+/**
+ * jQuery plugin for ox.forms
+ */
+(function($) {
+
+    $.fn.initForm = function(options) {
+
+        var settings = {};
+
+        return this.each(function() {
+            if (options) {
+                $.extend(settings, options);
+            } else {
+                alert("need to provide settings!");
+            }
+            initForm($(this), settings.id, settings.loadAction, settings.submissionCallback);
+        });
+
+    };
+})(jQuery);
+
 
 /**
  * "initForm" function for ox.forms
@@ -234,29 +256,41 @@ function registerSelectNoneValidator() {
  * @param loadAction URL to the controller action that provides field data
  * @param submissionCallback optional callback executed after the form is submitted
  */
+
 function initForm(form, id, loadAction, submissionCallback) {
-    var fields = [];
-    $.each(form.find('.oxfield'), function(index, el) {
-        fields.push($(el).attr('name'));
-    });
-    var query = {"baseObjectId": id};
-    $.extend(query, {"fields": fields});
-    var formData;
-    $.getJSON(loadAction, query, function(data) {
-        var viewModel = ko.mapping.fromJS(data);
-        $.extend(viewModel, {submitForm: function(formElement) {
-            if ($(formElement).validate({meta: 'validate'}).form()) {
-                $.postJson($(formElement).attr('action'), $.extend(viewModel, {"authenticityToken": $(formElement).find('input[name="authenticityToken"]').val()}), function(submitData) {
-                    if (typeof submissionCallback == 'function') {
-                        submissionCallback.call();
-                    }
-                    $('#' + $(formElement).attr('id') + '_submit').button('disable');
-                    <!-- TODO if we have a "newForm", clear fields after submit -->
-                });
-            }
-        }});
-        ko.applyBindings(viewModel);
-    });
+    if (id && loadAction) {
+        var fields = [];
+        $.each(form.find('.oxfield'), function(index, el) {
+            fields.push($(el).attr('name'));
+        });
+        var query = {"baseObjectId": id};
+        $.extend(query, {"fields": fields});
+        var formData;
+        $.getJSON(loadAction, query, function(data) {
+            var viewModel = ko.mapping.fromJS(data);
+            $.extend(viewModel, {submitForm: function(formElement) {
+                if ($(formElement).validate({meta: 'validate'}).form()) {
+                    $.postKnockoutJSJson($(formElement).attr('action'), $.extend(viewModel, {"authenticityToken": $(formElement).find('input[name="authenticityToken"]').val()}), function(submitData) {
+                        if (typeof submissionCallback == 'function') {
+                            submissionCallback.call();
+                        }
+                        $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                    });
+                }
+            }});
+            ko.applyBindings(viewModel);
+        });
+    } else {
+        if ($(formElement).validate({meta: 'validate'}).form()) {
+            $(formElement).ajaxForm(function() {
+                if (typeof submissionCallback == 'function') {
+                    submissionCallback.call();
+                }
+                $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                $(formElement).resetForm();
+            });
+        }
+    }
 }
 
 /**
@@ -265,7 +299,7 @@ function initForm(form, id, loadAction, submissionCallback) {
  * @param data the data object, of which keys are of the sort value_some_thing
  * @param callback the callback to run after successful execution
  */
-$.postJson = function (url, data, callback) {
+$.postKnockoutJSJson = function (url, data, callback) {
     var formData = {};
     $.each(ko.toJS(data), function(key, value) {
         if (key.startsWith('value_')) {
