@@ -18,7 +18,7 @@
               selected = field.value != null && (it._key().toString() == field.value._key().toString())
           }
       }%
-      <option value="${it._key()}">${it}</option>
+      <option value="${it._key()}" ${selected ? 'selected="true"'.raw() : ''}>${it}</option>
       %{ } }%
   </select>
 #{/if}
