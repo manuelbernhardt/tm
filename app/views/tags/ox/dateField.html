@@ -1,0 +1,16 @@
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
+<div class="field">
+  <label class="name" for="${field.id}">${_label}</label>
+  <input id="${field.id}" data-validate="${field.validationData}" data-bind="value: value_${field.id}"  type="text" name="${field.name}" class="oxfield ${field.errorClass}"/>
+  <span class="error">${field.error}</span>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#${field.id}").datepicker({
+      numberOfMonths: 3,
+			showButtonPanel: true,
+      gotoCurrent: true
+    });
+  });
+</script>
+#{/}

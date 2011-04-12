@@ -1,9 +1,12 @@
 package controllers;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +98,8 @@ public class TMController extends Controller {
         }
     }
 
+    private final static DateFormat df = new SimpleDateFormat(play.Play.configuration.getProperty("date.format"));
+
     /**
      * Renders the values of given fields of a base object as JSON string. Values in the JSON object are prefixed with "value_".
      *
@@ -140,7 +145,12 @@ public class TMController extends Controller {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         for (String r : sortedFields) {
-            result.put("value_" + r.replaceAll("\\.", "_"), values.get(r));
+            Object val = values.get(r);
+            // Gson doesn't help here, for some reason it ignores the data format setting in lists...
+            if(val instanceof Date) {
+                val = df.format((Date)val);
+            }
+            result.put("value_" + r.replaceAll("\\.", "_"), val);
         }
         renderJSON(result);
     }

@@ -1,0 +1,7 @@
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
+<div class="field">
+    <label class="name" for="${field.id}">${_label}</label>
+    <input id="${field.id}" data-validate="${field.validationData}" data-bind="value: value_${field.id}" type="number" name="${field.name}" class="oxfield ${field.errorClass}"/>
+    <span class="error">${field.error}</span>
+</div>
+#{/}
