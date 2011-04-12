@@ -128,32 +128,6 @@ public class FormTags extends FastTags {
         body.call();
     }
 
-    /**
-     * This tags retrieves the fields of the parent form and the baseClass of the form and puts them into a Map.
-     * Inside of the tag, the map can be used to load the form data.
-     *
-     * @param args     tag attributes
-     * @param body     tag inner body
-     * @param out      the output writer
-     * @param template enclosing template
-     * @param fromLine template line number where the tag is defined
-     */
-    public static void _loadFormData(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
-        Map<String, Object> formDataQuery = new HashMap<String, Object>();
-        List<String> fields = new ArrayList<String>();
-        Map<String, Object> formData = TagContext.parent().data;
-        for (String key : formData.keySet()) {
-            if (key.startsWith(FIELD)) {
-                fields.add((String) formData.get(key));
-            }
-        }
-        formDataQuery.put("baseClass", args.get("arg"));
-        formDataQuery.put("fields", fields);
-        body.setProperty("formDataQuery", formDataQuery);
-        body.call();
-
-    }
-
     private static Class getBaseClass(GroovyTemplate.ExecutableTemplate template, int fromLine, String baseClass) {
         Class baseClazz;
         try {
