@@ -1,18 +1,18 @@
 *{
   ox.form: takes care of generating forms with the following automated goodies:
-           - complete HTML form generation together with necessary Play! security tokens
-           - validation using the jQuery form validation plugin
-           - data-binding using knockoutJS
-           - ajax submit using the jQuery form plugin
+   - complete HTML form generation together with necessary Play! security tokens
+   - validation using the jQuery form validation plugin
+   - data-binding using knockoutJS
+   - ajax submit using the jQuery form plugin
 
-           the form operates in two modes: creation if no baseObjectId is provided, edition otherwise
+   the form operates in two modes: creation if no baseObjectId is provided, edition otherwise
 
-  input parameters:
-  - _id:           form ID
-  - _action:       controller action
-  - _baseClass:    class of the base object to create / edit
-  - _baseObjectId: ID necessary to retrieve the base object data via a JSON callback
-  - _loadAction:   controller action that will retrieve the initial form data based on the baseObjectId and the baseClass
+   input parameters:
+   - _id:           form ID
+   - _action:       controller action
+   - _baseClass:    class of the base object to create / edit
+   - _baseObjectId: ID necessary to retrieve the base object data via a JSON callback
+   - _loadAction:   controller action that will retrieve the initial form data based on the baseObjectId and the baseClass
 }*
 
 #{form action:_action, id:_id, class:'oxForm', "data-bind":'submit: submitForm'}
@@ -20,31 +20,6 @@
   %{_body.setProperty('formId', _id); }%
   %{_body.setProperty('baseClass', _baseClass); }%
   #{doBody /}
-*{ now that we know all the fields, generate the code necessary for retrieving the existing form data from the server }*
-    #{forms.loadFormData _baseClass}
-      <script type="text/javascript">
-        function ${_id}LoadFields(id) {
-          var fields = ${formDataQuery.asJSON()};
-          $.extend(fields, {"baseObjectId": id});
-          $.getJSON('${_loadAction}', fields, function(data) {
-            var viewModel = ko.mapping.fromJS(data);
-            $.extend(viewModel, {submitForm: function(formElement) {
-              var validate = $('#${_id}').validate();
-              if(validate) {
-                $.postJson('${_action}', $.extend(viewModel, {authenticityToken: $('#${_id}').attr('value')}), function(submitData) {
-                  if(typeof ${_id}SubmissionCallback !== 'undefined') {
-                    ${_id}SubmissionCallback();
-                  }
-                  $('#${_id}_submit').button('disable');
-                  <!-- TODO if we have a "newForm", clear fields after submit -->
-              });
-              }
-            }});
-            ko.applyBindings(viewModel);
-          });
-        }
-      </script>
-    #{/forms.loadFormData}
 #{/form}
 
 <script type="text/javascript">

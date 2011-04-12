@@ -47,9 +47,11 @@ h1 {
   margin-bottom: 5px;
 }
 
-.error {
-  display: inline;
-  color: #c00;
+label.error {
+  float: none;
+  color: red;
+  padding-left: .5em;
+  vertical-align: top;
 }
 
 /* container stuff */
@@ -95,7 +97,7 @@ td.sNone {
 
 /* styles for form elements */
 
-form label {
+label.name {
   display: block;
   float: left;
   width: 100px;

@@ -1,6 +1,6 @@
 #{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
 <div class="field">
-  <label for="${field.id}">${_label}</label>
+  <label class="name" for="${field.id}">${_label}</label>
   <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
          value="${field.value?.format(play.Play.configuration.getProperty('date.format'))}" class="${field.errorClass}"/>
   <span class="error">${field.error}</span>

@@ -6,8 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import models.tm.User;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
 
@@ -19,6 +19,7 @@ import tree.persistent.NodeName;
 public class Requirement extends ProjectModel implements Node {
 
     @NodeName
+    @Required
     public String name;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})

@@ -19,11 +19,6 @@
       <div id="requirementDetails">
 
         #{ox.form action:@Requirements.edit(), id:'requirementForm', baseClass:'models.tm.Requirement', loadAction:@Requirements.requirementsDetailsData()}
-          <script type="text/javascript">
-            function requirementFormSubmissionCallback() {
-              refreshTree('requirementTree');
-            }
-          </script>
           #{ox.field field:'requirement.name', label:'Name' /}
           #{ox.field field:'requirement.description', label:'Description' /}
           *{the following fields are necessary because play can't bind stuff automatically yet}*
@@ -50,7 +45,9 @@
 
   $(document).ready(function () {
 
-    requirementFormLoadFields(1);
+    initForm($('#requirementForm'), 1, '@{Requirements.requirementsDetailsData()}', function() {
+      refreshTree('requirementTree');
+    });
 
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
     $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});

@@ -1,17 +1,6 @@
 /*************/
 /* DataTable */
 /*************/
-/*
- $.fn.dataTableExt.ofnSearch['html'] = function ( sData ) {
- var n = document.createElement('div');
- n.innerHTML = sData;
- if ( n.textContent ) {
- return n.textContent.replace(/\n/g," ");
- } else {
- return n.innerText.replace(/\n/g," ");
- }
- }
- */
 
 /**
  * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)
@@ -234,17 +223,49 @@ function registerSelectNoneValidator() {
 }
 
 /****************************/
-/* Static utility functions */
+/* Form utility functions   */
 /****************************/
 
 /**
- * Post form data as JSON string, modifying this one to accomodate Play's automatic binding
+ * "initForm" function for ox.forms
+ * Takes care of loading initial form data and of submitting the form via AJAX after performing validation.
+ *
+ * @param id ID of the baseObject to load into the form.
+ * @param loadAction URL to the controller action that provides field data
+ * @param submissionCallback optional callback executed after the form is submitted
+ */
+function initForm(form, id, loadAction, submissionCallback) {
+    var fields = [];
+    $.each(form.find('.oxfield'), function(index, el) {
+        fields.push($(el).attr('name'));
+    });
+    var query = {"baseObjectId": id};
+    $.extend(query, {"fields": fields});
+    var formData;
+    $.getJSON(loadAction, query, function(data) {
+        var viewModel = ko.mapping.fromJS(data);
+        $.extend(viewModel, {submitForm: function(formElement) {
+            if ($(formElement).validate({meta: 'validate'}).form()) {
+                $.postJson($(formElement).attr('action'), $.extend(viewModel, {"authenticityToken": $(formElement).find('input[name="authenticityToken"]').val()}), function(submitData) {
+                    if (typeof submissionCallback == 'function') {
+                        submissionCallback.call();
+                    }
+                    $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                    <!-- TODO if we have a "newForm", clear fields after submit -->
+                });
+            }
+        }});
+        ko.applyBindings(viewModel);
+    });
+}
+
+/**
+ * Post knockoutJS form data as JSON string
  * @param url the URL to submit to
  * @param data the data object, of which keys are of the sort value_some_thing
  * @param callback the callback to run after successful execution
  */
 $.postJson = function (url, data, callback) {
-
     var formData = {};
     $.each(ko.toJS(data), function(key, value) {
         if (key.startsWith('value_')) {
@@ -266,6 +287,9 @@ $.postJson = function (url, data, callback) {
     });
 }
 
+/**
+ * Various global utilities
+ */
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (str) {
         return !this.indexOf(str);
