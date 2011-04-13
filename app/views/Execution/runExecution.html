@@ -17,8 +17,8 @@ No test run selected
     <tr class="${step_parity}">
       <td>${step.position}</td>
       <td>${step.name}</td>
-      <td>${step.descriptionHTML.raw()}</td>
-      <td>${step.expectedResultHTML.raw()}</td>
+      <td>${step.descriptionEditableHTML.raw()}</td>
+      <td>${step.expectedResultEditableHTML.raw()}</td>
       <td><textarea id="actualResult" name="actualResult_${step.id}" rows="5" cols="48">${step.actualResult}</textarea>
       </td>
       <td>
@@ -46,7 +46,7 @@ No test run selected
       $.post(deleteAction({runId: '${run.id}'}));
     }
 
-    $('.edit').editable('@{Execution.updateParameter("runId": run.id)}', {
+    $('.editParam').editable('@{Execution.updateParameter("runId": run.id)}', {
       callback : function(value, settings) {
         // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.
         // if yes, update its value

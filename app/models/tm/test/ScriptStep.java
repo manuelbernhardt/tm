@@ -7,11 +7,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import controllers.ParameterHandler;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
 import play.data.validation.Required;
-import play.templates.JavaExtensions;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -39,11 +39,11 @@ public class ScriptStep extends ProjectModel {
     public String expectedResult;
 
     public String getDescriptionHTML() {
-        return JavaExtensions.escapeHtml(description).toString();
+        return ParameterHandler.applyClass(description, this.script, ParameterHandler.VIEW_CLASS);
     }
 
     public String getExpectedResultHTML() {
-        return JavaExtensions.escapeHtml(expectedResult).toString();
+        return ParameterHandler.applyClass(expectedResult, this.script, ParameterHandler.VIEW_CLASS);
     }
 
 

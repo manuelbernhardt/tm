@@ -20,7 +20,7 @@ import models.tm.User;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Run extends ProjectModel {
+public class Run extends ProjectModel implements ParameterHolder {
 
     /** this flag indicates that the Run is being created by the user but was not saved yet **/
     boolean temporary = true;
@@ -37,6 +37,10 @@ public class Run extends ProjectModel {
 
     public List<RunStep> getSteps() {
         return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();
+    }
+
+    public RunParam getParam(String name) {
+        return RunParam.find("from RunParam p where p.run = ? and p.name = ?", this, name).<RunParam>first();
     }
 
     public void updateStatus() {

@@ -18,7 +18,7 @@ import tree.persistent.NodeName;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Script extends ProjectModel implements Node {
+public class Script extends ProjectModel implements Node, ParameterHolder {
 
     @NodeName
     public String name;
@@ -46,4 +46,9 @@ public class Script extends ProjectModel implements Node {
     public List<ScriptParam> getParams() {
         return ScriptParam.find("from ScriptParam param where param.script = ?", this).<ScriptParam>fetch();
     }
+
+    public ScriptParam getParam(String name) {
+        return ScriptParam.find("from ScriptParam p where p.script = ? and p.name = ?", this, name).<ScriptParam>first();
+    }
+
 }

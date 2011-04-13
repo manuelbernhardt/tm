@@ -26,7 +26,12 @@ div.tree {
   font-weight: bold;
 }
 
-.editStyle {
+.viewParam {
+  display: inline;
+  font-weight: bold;
+}
+
+.editParam {
   display: inline;
   font-weight: bold;
   border-style: dashed;

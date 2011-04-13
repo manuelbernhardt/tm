@@ -5,20 +5,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import models.tm.test.Run;
+import models.tm.test.Param;
+import models.tm.test.ParameterHolder;
 import models.tm.test.RunParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptParam;
 import play.libs.Codec;
 
 /**
- * Utility class for handling Parameters in Steps.
+ * Utility class for handling ParameterHandler in Steps.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class Parameters {
+public class ParameterHandler {
 
     private static final Pattern parameterPattern = Pattern.compile("<<<[^>>>]*>>>");
+    public static final String VIEW_CLASS = "viewParam";
+    public static final String EDIT_CLASS = "editParam";
 
     /**
      * Fetches the names of all parameters denoted by <<< tripe triangular brackets >>>
@@ -59,32 +62,36 @@ public class Parameters {
     }
 
     /**
-     * Transform a text by adding the necessary CSS classes for edition to the recognized parameters.
+     * Transform a text by adding CSS classes on recognized parameters.
      *
-     * @param text the text to enhance with "editable" divs
-     * @param run  the Run the texts belong to
-     * @return a HTML snipet with "editable" divs.
+     * @param text            the text to enhance with specific classes
+     * @param parameterHolder the holder for the parameters the texts belong to
+     * @return a HTML snipet with divs having the specified classes
      */
-    public static String applyEditClass(String text, Run run) {
-        return applyClass(text, run, "editStyle edit");
-    }
-
-    private static String applyClass(String text, Run run, String classes) {
+    public static String applyClass(String text, ParameterHolder parameterHolder, String classes) {
         Matcher matcher = parameterPattern.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
-            RunParam p = RunParam.find("from RunParam p where p.run = ? and p.name = ?", run, extractParamName(text, matcher)).<RunParam>first();
-            if (p.value == null) {
-                matcher.appendReplacement(sb, "<div id=\"" + getParameterId(p) + "\" class=\"" + classes + "\">enter a value</div>");
+            Param p = parameterHolder.getParam(extractParamName(text, matcher));
+
+            if (p instanceof RunParam) {
+                RunParam rp = (RunParam) p;
+                if (rp.value == null) {
+                    matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">enter a value</div>");
+                } else {
+                    matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">" + rp.value +"</div>");
+                }
+            } else if (p instanceof ScriptParam) {
+                matcher.appendReplacement(sb, "<div class=\"viewParam\">" + ((ScriptParam) p).name + "</div>");
             } else {
-                matcher.appendReplacement(sb, "<div class=\"parameter\">" + p.value + "</div>");
+                throw new RuntimeException("What are you trying to do?");
             }
         }
         matcher.appendTail(sb);
         return sb.toString();
     }
 
-    private static String getParameterId(RunParam p) {
+    private static String getRunParameterId(RunParam p) {
         return "param_" + p.id + "_" + Codec.UUID();
     }
 

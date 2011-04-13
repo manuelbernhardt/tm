@@ -13,11 +13,14 @@ import models.tm.ProjectModel;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class ScriptParam extends ProjectModel {
+public class ScriptParam extends ProjectModel implements Param {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public Script script;
 
     public String name;
+
+
+
 
 }
