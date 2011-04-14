@@ -39,6 +39,10 @@ public class Run extends ProjectModel implements ParameterHolder {
         return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();
     }
 
+    public List<RunParam> getParams() {
+        return RunParam.find("from RunParam p where p.run = ?", this).<RunParam>fetch();
+    }
+
     public RunParam getParam(String name) {
         return RunParam.find("from RunParam p where p.run = ? and p.name = ?", this, name).<RunParam>first();
     }
