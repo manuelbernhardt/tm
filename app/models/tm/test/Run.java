@@ -22,8 +22,8 @@ import models.tm.User;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
 public class Run extends ProjectModel implements ParameterHolder {
 
-    /** this flag indicates that the Run is being created by the user but was not saved yet **/
-    boolean temporary = true;
+    /** this flag indicates that the Run is being created by the user but was not saved yet, ths it is not visible in the list **/
+    public boolean temporary = true;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public Instance instance;

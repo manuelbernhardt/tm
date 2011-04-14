@@ -125,11 +125,12 @@ public class Execution extends TMController {
         Instance instance = Lookups.getInstance(instanceId);
 
         GenericModel.JPAQuery query = null;
+        String q = "from Run r where r.instance = ? and r.project = ? and r.temporary = false order by r.executionDate desc";
         if (sSearch != null && sSearch.length() > 0) {
             // TODO implement the search
-            query = Run.find("from Run r where r.instance = ? and r.project = ? order by r.executionDate desc", instance, TMController.getActiveProject());
+            query = Run.find(q, instance, TMController.getActiveProject());
         } else {
-            query = Run.find("from Run r where r.instance = ? and r.project = ? order by r.executionDate desc", instance, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = Run.find(q, instance, TMController.getActiveProject()).from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<Run> runs = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = Run.count();
@@ -165,6 +166,8 @@ public class Execution extends TMController {
         run.tester = getConnectedUser();
         run.executionDate = new Date();
         run.executionStatus = ExecutionStatus.NOT_RUN;
+        // for now this run is temporary, it will be a permanent one when the user actually saves the run.
+        run.temporary = true;
         run.create();
 
         // copy the steps
@@ -252,6 +255,10 @@ public class Execution extends TMController {
                 }
             }
         }
+
+        // run is not temporary anymore
+        run.temporary = false;
+
         // re-compute Run and Instance status
         run.updateStatus();
         run.instance.updateStatus();

@@ -724,6 +724,7 @@ tm.test.Run(createNewProjectST2Run1):
     tester: gwen
     executionDate: 2011-03-19 09:45:23
     status: 3
+    temporary: false
 
 tm.test.RunStep(createNewProjectST2Run1Step1):
     project: testManagementApplication
