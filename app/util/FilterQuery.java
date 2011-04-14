@@ -16,6 +16,7 @@ import play.libs.F;
  */
 public class FilterQuery {
 
+
     private final Class<?> type;
     private Map<F.Tuple<String, String>, Object> filters = new HashMap<F.Tuple<String, String>, Object>();
     private Map<F.Tuple<String, String>, Object> additionalWhere = new HashMap<F.Tuple<String, String>, Object>();
@@ -61,7 +62,7 @@ public class FilterQuery {
         for (Iterator<F.Tuple<String, String>> it = filters.keySet().iterator(); it.hasNext();) {
             F.Tuple<String, String> next = (F.Tuple<String, String>) it.next();
 
-            q += " o." + next._1 + " " + next._2 + " " + " (:" + replace(next._1) + ")";
+            q += " o." + next._1 + " " + next._2 + " " + " (:" + validParamName(next._1) + ")";
             if (it.hasNext() || additionalWhere.size() > 0) {
                 q += " and";
             }
@@ -79,7 +80,7 @@ public class FilterQuery {
 
         Query query = JPA.em().createQuery(q);
         for (F.Tuple<String, String> t : filters.keySet()) {
-            query.setParameter(replace(t._1), filters.get(t));
+            query.setParameter(validParamName(t._1), filters.get(t));
         }
         for (F.Tuple<String, String> t : additionalWhere.keySet()) {
             query.setParameter(t._2, additionalWhere.get(t));
@@ -88,8 +89,7 @@ public class FilterQuery {
         return query;
     }
 
-    // TODO replace by some library method (Apache commons?)
-    private String replace(String c) {
+    private String validParamName(String c) {
         return c.replaceAll("\\.", "_").replaceAll(" ", "_");
     }
 
