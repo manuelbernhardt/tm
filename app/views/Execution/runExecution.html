@@ -25,7 +25,7 @@ No test run selected
         <select id="status" name="status_${step.id}">
           <option value="">- pick -</option>
           #{list items:models.tm.test.ExecutionStatus.runValues(), as:'s'}
-          <option value="${s.getPosition()}">${s}</option>
+          <option value="${s.getPosition()}" ${s.equals(step.executionStatus)?'selected':''}>${s}</option>
           #{/list}
         </select>
       </td>

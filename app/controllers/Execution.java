@@ -211,38 +211,52 @@ public class Execution extends TMController {
         // that is, this automatic binding is sort of buggy: it generates a lot of null elements in the list and also does not pre-load the JPA entity, so this is sort of broken
 
         // TODO rewrite this once we have proper binding
-        Map<String, RunStep> cache = new HashMap<String, RunStep>();
         for (String param : params.all().keySet()) {
+            String paramValue = params.all().get(param)[0];
             if (param.startsWith(ACTUAL_RESULT)) {
                 String id = param.substring(ACTUAL_RESULT.length());
-                RunStep step = getRunStep(id, run, cache);
-                String s = params.all().get(param)[0];
-                if (s != null && s.length() > 0) {
-                    step.actualResult = s;
+                RunStep step = getRunStep(id, run);
+                if (paramValue != null && paramValue.length() > 0) {
+                    step.actualResult = paramValue;
                     step.save();
                 }
             } else if (param.startsWith(STATUS)) {
                 String id = param.substring(STATUS.length());
-                RunStep step = getRunStep(id, run, cache);
-                try {
-                    Integer status = Integer.parseInt(params.all().get(param)[0]);
-                    if (status != null) {
-                        step.executionStatus = ExecutionStatus.fromPosition(status);
-                        step.save();
+                RunStep step = getRunStep(id, run);
+                if (paramValue != null && paramValue.length() > 0) {
+                    try {
+                        Integer status = Integer.parseInt(paramValue);
+                        if (status != null) {
+                            step.executionStatus = ExecutionStatus.fromPosition(status);
+                            // ¤$%&/()= Play/Hibernate bug!! we shouldn't have to invoke that bloody PreUpdate handler ourselves!
+                            // TODO watch play.lighthouseapp.com/projects/57987-play-framework/tickets/731-jpa-preupdate-lifecycle-handler-does-not-work-in-play-controllers
+                            step.doSave();
+                            step.save();
+                        }
+                    } catch (NumberFormatException nfe) {
+                        // TODO logging
+                        nfe.printStackTrace();
+                        error();
+                    } catch (IllegalArgumentException iae) {
+                        // TODO logging
+                        iae.printStackTrace();
+                        error();
                     }
-                } catch (IllegalArgumentException iae) {
-                    // TODO logging
-                    iae.printStackTrace();
-                    error();
+                } else {
+                    // no status picked
+                    step.executionStatus = ExecutionStatus.NOT_RUN;
+                    // ¤$%&/()= Play/Hibernate bug!! we shouldn't have to invoke that bloody PreUpdate handler ourselves!
+                    // TODO watch play.lighthouseapp.com/projects/57987-play-framework/tickets/731-jpa-preupdate-lifecycle-handler-does-not-work-in-play-controllers
+                    step.doSave();
+                    step.save();
                 }
             }
-
-            // re-compute Run and Instance status
-            run.updateStatus();
-            run.instance.updateStatus();
-
-            ok();
         }
+        // re-compute Run and Instance status
+        run.updateStatus();
+        run.instance.updateStatus();
+
+        ok();
     }
 
     public static void deleteRun(Long runId) {
@@ -287,26 +301,20 @@ public class Execution extends TMController {
         }
     }
 
-    /**
-     * Gets a RunStep based on its ID, provides some caching. This method will eventually disappear.
-     */
-    private static RunStep getRunStep(String id, Run run, Map<String, RunStep> cache) {
+    private static RunStep getRunStep(String id, Run run) {
         if (id != null && id.length() > 0) {
-            RunStep step = cache.get(id);
-            if (step == null) {
-                try {
-                    Long lid = Long.parseLong(id);
-                    step = RunStep.find("from RunStep step where step.id = ? and step.project = ? and step.run = ?", lid, getActiveProject(), run).first();
-                    if (step != null) {
-                        checkInAccount(step);
-                    }
-
-
-                } catch (NumberFormatException nfe) {
-                    // TODO log this and report (security)
-                    nfe.printStackTrace();
+            RunStep step = null;
+            try {
+                Long lid = Long.parseLong(id);
+                step = RunStep.find("from RunStep step where step.id = ? and step.project = ? and step.run = ?", lid, getActiveProject(), run).first();
+                if (step != null) {
+                    checkInAccount(step);
                 }
-                cache.put(id, step);
+
+
+            } catch (NumberFormatException nfe) {
+                // TODO log this and report (security)
+                nfe.printStackTrace();
             }
             return step;
         }

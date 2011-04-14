@@ -31,8 +31,11 @@ No test instance selected
         $("#runTable").dataTable().fnDraw(false);
   }
   function updateRunDialogSubmissionCallback() {
-    refreshTableContents("runTable", false);
-    refreshTableContents("instanceTable", false);
+    $('#runForm').ajaxSubmit(function() {
+      refreshTableContents("runStepTable", false);
+      refreshTableContents("runTable", false);
+      refreshTableContents("instanceTable", false);
+    });
   }
 </script>
 #{/dialog}
