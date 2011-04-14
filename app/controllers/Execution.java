@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import controllers.deadbolt.Deadbolt;
 import controllers.tabularasa.TableController;
+import models.tm.User;
 import models.tm.approach.Release;
 import models.tm.test.ExecutionStatus;
 import models.tm.test.Instance;
@@ -17,7 +18,6 @@ import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.RunStep;
 import models.tm.test.ScriptStep;
-import models.tm.User;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
@@ -270,14 +270,16 @@ public class Execution extends TMController {
         Run run = Lookups.getRun(runId);
         if (run == null) {
             notFound();
+        } else {
+            try {
+                run.delete();
+            } catch (Throwable t) {
+                // TODO logging
+                t.printStackTrace();
+                error();
+            }
         }
-        // TODO FIXME - do NOT delete this if another user started working on it!
-        // we may have to alter the Run creation timestamp upon edition i.e. (_before_ the postback), when the update dialog is loaded
-
-        run.delete();
-
         ok();
-
     }
 
     public static void updateParameter(Long runId, String id, String value) {

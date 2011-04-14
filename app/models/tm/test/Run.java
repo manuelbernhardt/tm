@@ -8,12 +8,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.ProjectModel;
 import models.tm.User;
+import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -68,6 +71,20 @@ public class Run extends ProjectModel implements ParameterHolder {
         // TODO this feels like a Play bug - we should not need to invoke the PreUpdate callback manually
         doSave();
         save();
+    }
+
+    @Override
+    public <T extends JPABase> T delete() {
+        // delete all the attached elements
+        Query deleteSteps = JPA.em().createQuery("delete from RunStep s where s.run = :run");
+        deleteSteps.setParameter("run", this);
+        deleteSteps.executeUpdate();
+
+        Query deleteParams = JPA.em().createQuery("delete from RunParam p where p.run = :run");
+        deleteParams.setParameter("run", this);
+        deleteParams.executeUpdate();
+
+        return super.delete();
     }
 
     @Transient

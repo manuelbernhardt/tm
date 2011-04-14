@@ -3,10 +3,8 @@ package jobs;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
-import javax.persistence.Query;
 
 import models.tm.test.Run;
-import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.On;
 
@@ -31,14 +29,6 @@ public class TemporaryRunCleanupJob extends Job {
         Timestamp t = new Timestamp(c.getTime().getTime());
         List<Run> runs = Run.find("from Run r where r.temporary = true and r.created <= ?", t).<Run>fetch();
         for (Run run : runs) {
-            Query deleteSteps = JPA.em().createQuery("delete from RunStep s where s.run = :run");
-            deleteSteps.setParameter("run", run);
-            deleteSteps.executeUpdate();
-
-            Query deleteParams = JPA.em().createQuery("delete from RunParam p where p.run = :run");
-            deleteParams.setParameter("run", run);
-            deleteParams.executeUpdate();
-
             run.delete();
         }
     }
