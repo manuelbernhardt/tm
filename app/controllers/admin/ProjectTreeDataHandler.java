@@ -26,7 +26,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return "projectTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long id, Map<String, String> args) {
+    public List<? extends JSTreeNode> getChildren(Long id, String type, Map<String, String> args) {
         List<JSTreeNode> l = new ArrayList<JSTreeNode>();
         final ChildProducer producer = new CategoryChildProducer();
         if (id == -1) {
@@ -40,7 +40,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         return l;
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
+    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         Account userAccount = TMController.getUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
@@ -86,7 +86,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
         // TODO
     }
 
-    public void move(Long id, Long target, Long position) {
+    public void move(Long id, String type, Long target, String targetType, Long position) {
         // TODO
     }
 

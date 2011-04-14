@@ -103,6 +103,7 @@ No project selected
             return {
               "id" : n.attr ? extractId(n.attr("id")) : -1,
               "treeId" : "rolesUserTree",
+              "type" : n.attr ? n.attr("rel") : "",
               "args" : {"projectId": "${project.id}"}
             };
           }

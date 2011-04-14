@@ -139,7 +139,12 @@ public class TMController extends Controller {
                     // since we did resolve the required field paths beforehand, we can safely rely on our parent being already resolved
                     String parent = s.substring(0, s.lastIndexOf("."));
                     Object parentValue = values.get(parent);
-                    values.put(s, getValue(parentValue, s.substring(parent.length() + 1, s.length())));
+                    if(parentValue != null) {
+                        values.put(s, getValue(parentValue, s.substring(parent.length() + 1, s.length())));
+                    } else {
+                        // "nullable pointer"... we just ignore it in this case
+                        values.put(s, null);
+                    }
                 }
             }
         }

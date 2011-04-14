@@ -11,7 +11,6 @@ import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptParam;
-import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -30,7 +29,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         return "scriptCycleTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long parentId, Map<String, String> args) {
+    public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
         Script script = getScript(args.get("scriptId"));
         final CycleChildProducer cycleChildProducer = new CycleChildProducer(script);
 
@@ -80,7 +79,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         return ts;
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
+    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
 
         if (type.equals(ScriptCycleTreeDataHandler.TEST_CYCLE)) {
             String cycleNodeId = args.get("cycleNodeId");
@@ -88,12 +87,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             if (cycleNodeId == null || scriptId == null) {
                 return null;
             }
-
-            TreeNode cycleNode = TreeNode.find(Long.parseLong(cycleNodeId), ApproachTree.APPROACH_TREE);
-            if (cycleNode == null) {
-                return null;
-            }
-            TestCycle cycle = TestCycle.findById(cycleNode.nodeId);
+            TestCycle cycle = TestCycle.findById(Long.parseLong(cycleNodeId));
             Script script = Script.findById(Long.parseLong(scriptId));
             if (cycle == null || script == null) {
                 return null;
@@ -135,7 +129,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
     public void copy(Long id, Long target, Long position) {
     }
 
-    public void move(Long id, Long target, Long position) {
+    public void move(Long id, String type, Long target, String targetType, Long position) {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

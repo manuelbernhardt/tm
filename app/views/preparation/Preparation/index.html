@@ -34,6 +34,7 @@
           "data" : function (n) {
             return {
               "id" : n.attr ? extractId(n.attr("id")) : -1,
+              "type" : n.attr ? n.attr("rel") : "",
               "treeId" : "repositoryTree"
             };
           }

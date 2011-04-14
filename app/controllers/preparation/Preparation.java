@@ -4,7 +4,6 @@ import java.util.List;
 import javax.persistence.Query;
 
 import controllers.Lookups;
-import controllers.RepositoryTree;
 import controllers.ParameterHandler;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
@@ -13,7 +12,6 @@ import models.tm.test.InstanceParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptParam;
 import models.tm.test.ScriptStep;
-import models.tree.jpa.TreeNode;
 import org.apache.commons.lang.StringEscapeUtils;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -30,7 +28,7 @@ public class Preparation extends TMController {
     }
 
     public static void content(Long scriptNodeId) {
-        Script script = getFromNode(scriptNodeId);
+        Script script = getScript(scriptNodeId);
         render(script);
     }
 
@@ -142,17 +140,13 @@ public class Preparation extends TMController {
     }
 
 
-    private static Script getFromNode(Long nodeId) {
-        if (nodeId == null) {
+    private static Script getScript(Long scriptId) {
+        if (scriptId == null) {
             return null;
         }
-        TreeNode node = TreeNode.find(nodeId, RepositoryTree.REPOSITORY_TREE);
-        if (node == null) {
-            notFound();
-        }
-        Script script = Script.findById(node.nodeId);
+        Script script = Script.findById(scriptId);
         if (script == null) {
-            notFound();
+            return null;
         }
         checkInAccount(script);
         return script;

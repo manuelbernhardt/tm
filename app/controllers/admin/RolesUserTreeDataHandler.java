@@ -21,7 +21,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         return "rolesUserTree";
     }
 
-    public List<? extends JSTreeNode> getChildren(Long parentId, final Map<String, String> args) {
+    public List<? extends JSTreeNode> getChildren(Long parentId, String type, final Map<String, String> args) {
 
         final RoleChildProducer roleChildProducer = new RoleChildProducer();
         if (parentId == -1) {
@@ -38,7 +38,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
         }
     }
 
-    public Long create(Long parentId, Long position, String name, String type, Map<String, String> args) {
+    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         return editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
     }
 
@@ -77,7 +77,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
     public void copy(Long id, Long target, Long position) {
     }
 
-    public void move(Long id, Long target, Long position) {
+    public void move(Long id, String type, Long target, String targetType, Long position) {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

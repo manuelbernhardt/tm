@@ -1,6 +1,5 @@
 package controllers.admin;
 
-import controllers.ApproachTree;
 import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Restrict;
@@ -8,7 +7,6 @@ import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
-import models.tree.jpa.TreeNode;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 
@@ -57,30 +55,26 @@ public class Approach extends TMController {
 
 
     private static TestCycle getCycle(Long cycleId) {
-        TestCycle cycle = null;
-        if (cycleId != null) {
-            TreeNode node = TreeNode.find(cycleId, ApproachTree.APPROACH_TREE);
-            if(node == null) {
-                return null;
-            }
-            cycle = TestCycle.findById(node.nodeId);
-            checkInAccount(cycle);
+        if (cycleId == null) {
+            return null;
         }
+        TestCycle cycle = TestCycle.findById(cycleId);
+        if (cycle == null) {
+            return null;
+        }
+        checkInAccount(cycle);
         return cycle;
     }
 
     private static Release getRelease(Long releaseId) {
-        Release release = null;
-        if (releaseId != null) {
-            TreeNode node = TreeNode.find(releaseId, ApproachTree.APPROACH_TREE);
-            if (node == null) {
-                return null;
-            }
-            release = Release.findById(node.nodeId);
-            checkInAccount(release);
+        if (releaseId == null) {
+            return null;
         }
+        Release release = Release.findById(releaseId);
+        if (release == null) {
+            return null;
+        }
+        checkInAccount(release);
         return release;
     }
-
-
 }

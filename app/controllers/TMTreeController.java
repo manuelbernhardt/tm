@@ -11,8 +11,8 @@ import controllers.tree.TreeController;
  */
 public class TMTreeController extends TMController {
 
-    public static void create(String treeId, Long parentId, Long position, String name, String type, Map<String, String> args) {
-        TreeController.createDirect(treeId, parentId, position, name, type, args);
+    public static void create(String treeId, Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
+        TreeController.createDirect(treeId, parentId, parentType, position, name, type, args);
     }
 
     public static void remove(String treeId, Long id, Long parentId, String type, Map<String, String> args) {
@@ -23,12 +23,12 @@ public class TMTreeController extends TMController {
         TreeController.renameDirect(treeId, id, name, type);
     }
 
-    public static void move(String treeId, Long id, Long target, Long position, String name, boolean copy) {
-        TreeController.moveDirect(treeId, id, target, position, name, copy);
+    public static void move(String treeId, Long id, String type, Long target, String targetType, Long position, String name, boolean copy) {
+        TreeController.moveDirect(treeId, id, type, target, targetType, position, name, copy);
     }
 
-    public static void getChildren(String treeId, Long id, Map<String, String> args) {
-        TreeController.getChildrenDirect(treeId, id, args);
+    public static void getChildren(String treeId, Long id, String type, Map<String, String> args) {
+        TreeController.getChildrenDirect(treeId, id, type, args);
     }
 
 }

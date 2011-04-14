@@ -47,6 +47,7 @@ No script selected
             return {
               "id" : n.attr ? extractId(n.attr("id")) : -1,
               "treeId" : "scriptCycleTree",
+              "type" : n.attr ? n.attr("rel") : "",
               "args" : {"scriptId": "${script.id}"}
             };
           }

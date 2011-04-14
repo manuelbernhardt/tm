@@ -72,6 +72,7 @@ $(document).ready(function () {
           return {
             "id" : n.attr ? extractId(n.attr("id")) : -1,
             "treeId" : "projectRolesTree",
+            "type" : n.attr ? n.attr("rel") : "",
             "args" : {"userId": "${user.id}"}
           };
         }

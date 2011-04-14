@@ -74,7 +74,8 @@
           "url" : "@{TMTreeController.getChildren()}",
           "data" : function (n) {
             return {
-              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "id" : n.attr ? extractId(n.attr("id")) : -1,
+              "type" : n.attr ? n.attr("rel") : "",
               "treeId" : "requirementTree"
             };
           }
@@ -122,6 +123,7 @@
 
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
+      if(isSelectedNodeType(data, ["requirement", "default"]))
       $('#requirementForm').loadForm({
         id: getSelectedNodeId(data),
         loadAction: '@{Requirements.requirementsDetailsData()}',
