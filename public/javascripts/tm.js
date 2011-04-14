@@ -100,7 +100,7 @@ function fnSelectRow(oTableLocal, rowId) {
  */
 function treeNodeSelectionHandler(tabLinks, selectionNodeTypes, selectionType, tabsContainer, data) {
     if (isSelectedNodeType(data, selectionNodeTypes)) {
-        var selectedId = getSelectedNode(data);
+        var selectedId = getSelectedNodeId(data);
         selectTab(tabLinks, selectedId, selectionType, tabsContainer);
     }
 }
@@ -149,7 +149,7 @@ function isSelectedNodeOfType(treeInstance, node, types) {
  * Gets the selected tree node
  * @param data the jsTree callback data
  */
-function getSelectedNode(data) {
+function getSelectedNodeId(data) {
     return extractId(data.rslt.obj.attr("id"));
 }
 
@@ -231,7 +231,7 @@ function registerSelectNoneValidator() {
  */
 (function($) {
 
-    $.fn.initForm = function(options) {
+    $.fn.loadForm = function(options) {
 
         var settings = {};
 
@@ -241,7 +241,7 @@ function registerSelectNoneValidator() {
             } else {
                 alert("need to provide settings!");
             }
-            initForm($(this), settings.id, settings.loadAction, settings.submissionCallback);
+            loadForm($(this), settings.id, settings.loadAction, settings.submissionCallback);
         });
 
     };
@@ -257,7 +257,7 @@ function registerSelectNoneValidator() {
  * @param submissionCallback optional callback executed after the form is submitted
  */
 
-function initForm(form, id, loadAction, submissionCallback) {
+function loadForm(form, id, loadAction, submissionCallback) {
     if (id && loadAction) {
         var fields = [];
         $.each(form.find('.oxfield'), function(index, el) {

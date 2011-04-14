@@ -47,14 +47,13 @@
 
   $(document).ready(function () {
 
-    $('#requirementForm').initForm({
+    $('#requirementForm').loadForm({
       id: 1,
       loadAction: '@{Requirements.requirementsDetailsData()}',
       submissionCallback: function() {
         refreshTree('requirementTree');
       }
     });
-
 
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
     $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});
@@ -123,8 +122,13 @@
 
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      var tabLinks = ['@{Requirements.requirementDetails()}', '@{Requirements.linked()}'];
-      treeNodeSelectionHandler(tabLinks, ['default', 'requirement'], 'requirement', $('#innerTabs'), data);
+      $('#requirementForm').loadForm({
+        id: getSelectedNodeId(data),
+        loadAction: '@{Requirements.requirementsDetailsData()}',
+        submissionCallback: function() {
+          refreshTree('requirementTree');
+        }
+      });
     });
 
 
