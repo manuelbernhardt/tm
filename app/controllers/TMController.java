@@ -150,7 +150,7 @@ public class TMController extends Controller {
             if(val instanceof Date) {
                 val = df.format((Date)val);
             }
-            result.put("value_" + r.replaceAll("\\.", "_"), val);
+            result.put("value_" + r.replaceAll("\\.", "_"), val == null ? "" : val);
         }
         renderJSON(result);
     }
