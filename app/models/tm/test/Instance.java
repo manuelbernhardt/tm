@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
 import models.tm.ProjectModel;
 import models.tm.approach.TestCycle;
 import models.tm.User;
+import play.db.jpa.JPABase;
 import play.templates.JavaExtensions;
 
 /**
@@ -61,10 +62,20 @@ public class Instance extends ProjectModel {
         if (run != null) {
             executionStatus = run.executionStatus;
 
-            // TODO this feels like a Play bug - we should not need to invoke the PreUpdate callback manually
+            // TODO this is a Play bug - we should not need to invoke the PreUpdate callback manually
             doSave();
             save();
         }
+    }
+
+    @Override
+    public <T extends JPABase> T delete() {
+        // remove associated entities
+        for(InstanceParam p : getParams()) {
+            p.delete();
+        }
+
+        return super.delete();
     }
 
     @Transient
