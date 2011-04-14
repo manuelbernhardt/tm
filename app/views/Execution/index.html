@@ -3,7 +3,7 @@
 
 #{box 'Filters'}
 <div class="container">
-  <form action="index.html">
+  <form id="instanceFilterForm" action="index.html">
     <div class="left_column">
       <div class="field">
         <label for="cycle">Test cycle</label>
@@ -84,7 +84,14 @@
 
     $('#filter').button().click(function(event) {
       event.preventDefault();
-      refreshTableContents("instanceTable", true);
+      refreshTableContents("instanceTable", false);
+    });
+
+    // auto-filter, doesn't yet work for tags
+    $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
+      $(el).change(function() {
+        refreshTableContents("instanceTable", false);
+      });
     });
 
     $('#dateFrom, #dateTo').datepicker({
