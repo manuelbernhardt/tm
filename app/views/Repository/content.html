@@ -7,16 +7,16 @@ No script selected
   <h3><a href="#">Test Script "${script.name}"</a></h3>
   <div id="scriptDetailsTabs">
     <ul>
-      <li><a href="@{preparation.Preparation.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
-      <li><a href="@{preparation.Preparation.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
-      <li><a href="@{preparation.Preparation.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
+      <li><a href="@{Repository.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+      <li><a href="@{Repository.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
+      <li><a href="@{Repository.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
       </li>
     </ul>
   </div>
   <h3><a href="#">Test execution preparation</a></h3>
   <div>
     <div class="left_tree">
-      #{include 'preparation/Preparation/cycleAssignDialog.html' /}
+      #{include 'Preparation/instanceCreateDialog.html' /}
       <div id="scriptCycleTree" class="tree"></div>
     </div>
     <div class="right_tree">
@@ -87,7 +87,7 @@ No script selected
     });
     #{tree.common id:"scriptCycleTree", controller:"TMTreeController" /}
 
-    #{tree.selectionListener treeId:"scriptCycleTree", type:"instance", types:["default", "instance"], action:@preparation.Instances.content(), targetId:"instanceDetails" /}
+    #{tree.selectionListener treeId:"scriptCycleTree", type:"instance", types:["default", "instance"], action:@Preparation.content(), targetId:"instanceDetails" /}
 
 
   });

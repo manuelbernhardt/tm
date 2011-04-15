@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'Test preparation' /}
+#{set title:'Test Scripts repository' /}
 
 
 <div class="container">
@@ -83,7 +83,7 @@
 
     #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
 
-    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@preparation.Preparation.content(), targetId:"scriptDetails" /}
+    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Repository.content(), targetId:"scriptDetails" /}
 
     /** button initialisation **/
     $(function () {

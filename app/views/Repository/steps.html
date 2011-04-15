@@ -3,7 +3,7 @@ No script selected
 #{/if}
 #{else}
 
-#{dialog id:'createStepDialog', title:'Create a step', loadAction:@preparation.Preparation.stepDialog('scriptId': script.id),
+#{dialog id:'createStepDialog', title:'Create a step', loadAction:@Repository.stepDialog('scriptId': script.id),
 openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create', width: 500, height: 500}
 <script type="text/javascript">
   function createStepDialogSubmissionCallback() {
@@ -13,7 +13,7 @@ openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create
 #{/dialog}
 
 
-#{dialog id:'updateStepDialog', title:'Edit a step', loadAction:@preparation.Preparation.stepDialog(':scriptId', ':stepId'),
+#{dialog id:'updateStepDialog', title:'Edit a step', loadAction:@Repository.stepDialog(':scriptId', ':stepId'),
 openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'update', width: 500, height: 500}
 <script type="text/javascript">
   function updateStepDialogSubmissionCallback() {
@@ -52,7 +52,7 @@ openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'u
         {"sName": "descriptionHTML"},
         {"sName": "expectedResultHTML"}
       ],
-      "sAjaxSource": "@{preparation.Preparation.stepData('scriptId': script.id)}",
+      "sAjaxSource": "@{Repository.stepData('scriptId': script.id)}",
       "bProcessing": true,
       "bServerSide": true,
       "bFilter": false,

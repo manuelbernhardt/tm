@@ -1,0 +1,85 @@
+#{extends 'main.html' /}
+#{set title:'Test preparation' /}
+
+
+<div class="container">
+  <div class="left_tree">
+    #{box 'Test Script Repository'}
+    <div id="repositoryTree" class="tree" style="border-style:none;"></div>
+    #{/box}
+  </div>
+  <div class="right_tree">
+    <div id="scriptDetails">No script selected</div>
+  </div>
+</div>
+
+
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+
+    var tree = $("#repositoryTree").jstree({
+      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
+
+      "json_data" : {
+        "ajax" : {
+          "url" : "@{TMTreeController.getChildren()}",
+          "data" : function (n) {
+            return {
+              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "treeId" : "repositoryTree"
+            };
+          }
+        }
+      },
+      "ui" : {
+        "select_limit": 1
+      },
+      "themeroller": {
+        "item": ""
+      },
+      "types" : {
+        "max_depth" : -2,
+        "max_children" : -2,
+        "types" : {
+          "default" : {
+            "valid_children" : "none",
+            "icon" : {
+              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for test script
+            }
+          },
+          "scriptFolder" : {
+            "valid_children" : [ "default", "scriptFolder" ],
+            "icon" : {
+              "image" : "@{'public/images/jstree/folder.png'}" // TODO icon for release
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+          }
+        }
+      },
+      "hotkeys": {
+        "Ctrl+x" : function() {
+          this.cut(null)
+        },
+        "Ctrl+v" : function() {
+          this.paste(null)
+        },
+        "Ctrl+n" : function() {
+          this.create_node(null, "after", {attr:{"rel":"default"}});
+        }
+      }
+    });
+
+    #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
+
+    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.content(), targetId:"scriptDetails" /}
+
+  });
+
+</script>
+#{/set}

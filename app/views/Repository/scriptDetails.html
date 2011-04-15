@@ -3,7 +3,7 @@ No script selected
 #{/if}
 #{else}
 
-#{input.form action:@preparation.Preparation.editScript(), id:'scriptDetailsForm', baseObject:script}
+#{input.form action:@Repository.editScript(), id:'scriptDetailsForm', baseObject:script}
   <script type="text/javascript">
     function scriptDetailsFormSubmissionCallback() {
       refreshTree('repositoryTree');

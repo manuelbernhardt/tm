@@ -1,4 +1,4 @@
-package controllers.preparation;
+package controllers;
 
 import java.util.List;
 import javax.persistence.Query;
@@ -21,7 +21,7 @@ import play.db.jpa.JPA;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class Preparation extends TMController {
+public class Repository extends TMController {
 
     public static void index() {
         render();
@@ -61,7 +61,7 @@ public class Preparation extends TMController {
         Script script = Lookups.getTestScript(scriptId);
         // TODO do this right
         ScriptStep step = (stepId != null ? ScriptStep.<ScriptStep>findById(stepId) : null);
-        render("preparation/Preparation/stepForm.html", script, step);
+        render("Repository/stepForm.html", script, step);
 
     }
 

@@ -3,7 +3,7 @@ No test instance selected
 #{/if}
 #{else}
 
-#{input.form action:@preparation.Instances.editSchedule(), id:'scheduleForm', baseObject:instance}
+#{input.form action:@Preparation.editSchedule(), id:'scheduleForm', baseObject:instance}
 
   <label for="responsible">Assigned to</label>
   <input type="text" id="responsible" name="responsible" value="${instance.responsible != null ? instance.responsible.getFullName() : ''}">
@@ -19,7 +19,7 @@ No test instance selected
   $(document).ready(function() {
 
     $('#responsible').autocomplete({
-      source: "@{preparation.Instances.allUsers()}",
+      source: "@{Preparation.allUsers()}",
       minLength: 0,
       select: function(event, ui) {
         $('#responsible').val(ui.item.label);
