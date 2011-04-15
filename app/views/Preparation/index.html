@@ -28,7 +28,8 @@
           "url" : "@{TMTreeController.getChildren()}",
           "data" : function (n) {
             return {
-              "id" : n.attr ? n.attr("id").replace("node_", "") : -1,
+              "id" : n.attr ? extractId(n.attr("id")) : -1,
+              "type" : n.attr ? n.attr("rel") : "",
               "treeId" : "repositoryTree"
             };
           }
@@ -77,7 +78,7 @@
 
     #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
 
-    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.content(), targetId:"scriptDetails" /}
+    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.scriptContent(), targetId:"scriptDetails" /}
 
   });
 

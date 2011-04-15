@@ -8,12 +8,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import models.tm.Project;
+import models.tm.User;
 import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.Script;
 import models.tm.test.Tag;
-import models.tm.User;
 import play.mvc.Controller;
 import play.mvc.Util;
 
@@ -23,6 +23,20 @@ import play.mvc.Util;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Lookups extends TMController {
+
+    @Util
+    public static Script getScript(Long scriptId) {
+        if (scriptId == null) {
+            return null;
+        }
+        Script script = Script.<Script>findById(scriptId);
+        if (script == null) {
+            return null;
+        }
+        checkInAccount(script);
+        return script;
+    }
+
 
     @Util
     public static Instance getInstance(Long instanceId) {
@@ -49,7 +63,6 @@ public class Lookups extends TMController {
         checkInAccount(run);
         return run;
     }
-
 
     @Util
     public static Project getProject(Long projectId) {

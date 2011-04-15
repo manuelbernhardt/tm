@@ -3,32 +3,19 @@ No script selected
 #{/if}
 #{else}
 
-<div id="accordion">
-  <h3><a href="#">Test Script "${script.name}"</a></h3>
-  <div id="scriptDetailsTabs">
-    <ul>
-      <li><a href="@{Repository.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
-      <li><a href="@{Repository.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
-      <li><a href="@{Repository.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
-      </li>
-    </ul>
-  </div>
-  <h3><a href="#">Test execution preparation</a></h3>
-  <div>
-    <div class="left_tree">
-      #{include 'Preparation/instanceCreateDialog.html' /}
-      <div id="scriptCycleTree" class="tree"></div>
-    </div>
-    <div class="right_tree">
-      <div id="instanceDetails">No test instance selected</div>
-    </div>
-  </div>
+#{box 'Test Script "'+script.name+'"'}
+<div id="scriptDetailsTabs">
+  <ul>
+    <li><a href="@{Repository.scriptDetails('scriptId': script.id)}" id="scriptDetailsLink"><span>Description</span></a></li>
+    <li><a href="@{Repository.steps('scriptId': script.id)}" id="stepsLink"><span>Steps</span></a></li>
+    <li><a href="@{Repository.linked('scriptId': script.id)}" id="linkedEntitiesLink"><span>Linked entities</span></a>
+    </li>
+  </ul>
+#{/box}
 </div>
 
 <script type="text/javascript">
   $(document).ready(function() {
-
-    $('#accordion').accordion({ autoHeight: false });
 
     $("#scriptDetailsTabs").tabs({
       select: function() {
@@ -36,62 +23,6 @@ No script selected
       }
     });
 
-
-    $("#scriptCycleTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
-
-      "json_data" : {
-        "ajax" : {
-          "url" : "@{TMTreeController.getChildren()}",
-          "data" : function (n) {
-            return {
-              "id" : n.attr ? extractId(n.attr("id")) : -1,
-              "treeId" : "scriptCycleTree",
-              "type" : n.attr ? n.attr("rel") : "",
-              "args" : {"scriptId": "${script.id}"}
-            };
-          }
-        }
-      },
-      "themeroller": {
-        "item": ""
-      },
-      "types" : {
-        "max_depth" : -2,
-        "max_children" : -2,
-        "types" : {
-          "default" : {
-            "valid_children" : "none",
-            "icon" : {
-              "image" : "@{'public/images/jstree/file.png'}" // TODO instance icon
-            }
-          },
-          "testCycle" : {
-            "valid_children" : [ "instance" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}" // TODO cycle icon
-            }
-          },
-          "release" : {
-            "valid_children" : [ "testCycle" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}" // TODO release icon
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : false,
-            "remove" : false
-          }
-        }
-      }
-    });
-    #{tree.common id:"scriptCycleTree", controller:"TMTreeController" /}
-
-    #{tree.selectionListener treeId:"scriptCycleTree", type:"instance", types:["default", "instance"], action:@Preparation.content(), targetId:"instanceDetails" /}
-
-
   });
 </script>
-
-
 #{/else}

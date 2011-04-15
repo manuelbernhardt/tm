@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import controllers.Lookups;
-import controllers.TMController;
+import models.tm.User;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
+import models.tm.test.Script;
 import models.tm.test.Tag;
-import models.tm.User;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -19,6 +18,11 @@ public class Preparation extends TMController {
 
     public static void index() {
         render();
+    }
+
+    public static void scriptContent(Long scriptNodeId) {
+        Script script = Lookups.getScript(scriptNodeId);
+        render(script);
     }
 
     public static void content(Long instanceId) {

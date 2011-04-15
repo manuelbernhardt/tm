@@ -74,6 +74,9 @@ public class Instance extends ProjectModel {
         for(InstanceParam p : getParams()) {
             p.delete();
         }
+        for(Run r : getRuns()) {
+            r.delete();
+        }
 
         return super.delete();
     }
