@@ -37,11 +37,11 @@ No project selected
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ['default', 'testCycle'])) {
-        $.get('@{admin.Approach.cycleDetails()}', { cycleId: getSelectedNodeId(data) }, function(data) {
+        $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
         });
       } else if (isSelectedNodeType(data, ['release'])) {
-        $.get('@{admin.Approach.releaseDetails()}', { releaseId: getSelectedNodeId(data) }, function(data) {
+        $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
         });
       }

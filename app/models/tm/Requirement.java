@@ -1,11 +1,14 @@
 package models.tm;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.test.Script;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import tree.persistent.Node;
@@ -36,6 +39,9 @@ public class Requirement extends ProjectModel implements Node {
         // TODO
         return super.clone();
     }
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Script> linkedScripts;
 
 
 }

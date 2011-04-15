@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import models.tm.Project;
+import models.tm.Requirement;
 import models.tm.User;
 import models.tm.test.Instance;
 import models.tm.test.Run;
@@ -116,6 +117,18 @@ public class Lookups extends TMController {
         }
         checkInAccount(script);
         return script;
+    }
+
+    static Requirement getRequirement(Long requirementId) {
+        if (requirementId == null) {
+            return null;
+        }
+        Requirement requirement = Requirement.<Requirement>findById(requirementId);
+        if (requirement == null) {
+            return null;
+        }
+        checkInAccount(requirement);
+        return requirement;
     }
 
     private static class UserSerializer implements JsonSerializer<User> {

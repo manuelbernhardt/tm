@@ -35,7 +35,7 @@
 
       </div>
       <div id="linked">
-
+        #{include 'Requirements/linkScriptDialog.html' /}
       </div>
     </div>
   </div>
@@ -47,24 +47,12 @@
 
   $(document).ready(function () {
 
-    $('#requirementForm').loadForm({
-      id: 1,
-      loadAction: '@{Requirements.requirementsDetailsData()}',
-      submissionCallback: function() {
-        refreshTree('requirementTree');
-      }
-    });
-
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
     $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});
     $('#remove').button({icons: {primary: 'ui-icon-minus'}});
 
 
-    $("#innerTabs").tabs({
-      select: function() {
-        removeDialogs();
-      }
-    });
+    $("#innerTabs").tabs();
 
     var tree = $("#requirementTree").jstree({
       "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
@@ -124,8 +112,9 @@
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if(isSelectedNodeType(data, ["requirement", "default"]))
+      reloadTables();
       $('#requirementForm').loadForm({
-        id: getSelectedNodeId(data),
+        id: getNodeIdFromData(data),
         loadAction: '@{Requirements.requirementsDetailsData()}',
         submissionCallback: function() {
           refreshTree('requirementTree');

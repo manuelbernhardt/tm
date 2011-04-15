@@ -89,6 +89,16 @@ function fnSelectRow(oTableLocal, rowId) {
     }
 }
 
+/**
+ * Reloads all tables in the DOM
+ */
+function reloadTables() {
+    $.each($('table.display'), function(index, el) {
+        $(el).dataTable().fnDraw()
+    });
+}
+
+
 /***********/
 /* JSTree */
 /*********/
@@ -105,7 +115,7 @@ function fnSelectRow(oTableLocal, rowId) {
  */
 function treeNodeSelectionHandler(tabLinks, selectionNodeTypes, selectionType, tabsContainer, data) {
     if (isSelectedNodeType(data, selectionNodeTypes)) {
-        var selectedId = getSelectedNodeId(data);
+        var selectedId = getNodeIdFromData(data);
         selectTab(tabLinks, selectedId, selectionType, tabsContainer);
     }
 }
@@ -154,8 +164,17 @@ function isSelectedNodeOfType(treeInstance, node, types) {
  * Gets the selected tree node
  * @param data the jsTree callback data
  */
-function getSelectedNodeId(data) {
+function getNodeIdFromData(data) {
     return extractId(data.rslt.obj.attr("id"));
+}
+
+
+function getSelectedNodeId(treeId) {
+    var tree = $.jstree._reference($('#' + treeId));
+    if(typeof tree.get_selected().attr('id') !== 'undefined' ) {
+        return extractId(tree.get_selected().attr('id'));
+    }
+    return null;
 }
 
 /**
@@ -200,16 +219,6 @@ function extractId(id) {
     return id.substring(id.lastIndexOf("_") + 1);
 }
 
-
-/**
- * Remove all jQuery dialogs in the DOM tree. This is a bug of jQuery, which adds parts of the dialog
- * to the root DOM node instead of the child to which it is added, causing troubles when using a dialog
- * inside of a AJAX tab for example
- */
-function removeDialogs() {
-    $(".modalDialog").remove();
-}
-
 /********************/
 /* Form validation  */
 /********************/
@@ -230,6 +239,16 @@ function registerSelectNoneValidator() {
 /********************/
 /* Form utilities  */
 /******************/
+
+/**
+ * Remove all jQuery dialogs in the DOM tree. This is a bug of jQuery, which adds parts of the dialog
+ * to the root DOM node instead of the child to which it is added, causing troubles when using a dialog
+ * inside of a AJAX tab for example
+ */
+function removeDialogs() {
+    $(".modalDialog").remove();
+}
+
 
 /**
  * jQuery plugin for ox.forms

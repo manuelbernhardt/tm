@@ -1,8 +1,13 @@
 package controllers;
 
+import java.util.List;
+
+import controllers.tabularasa.TableController;
 import models.tm.Requirement;
+import models.tm.test.Script;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.db.jpa.GenericModel;
 
 /**
  * TODO security
@@ -16,46 +21,51 @@ public class Requirements extends TMController {
     }
 
     public static void requirementDetails(Long requirementId) {
-        Requirement requirement = getRequirement(requirementId);
+        Requirement requirement = Lookups.getRequirement(requirementId);
         render(requirement);
     }
 
     public static void requirementsDetailsData(Long baseObjectId, String[] fields) {
-        // TODO implement this right
-        Object base = Requirement.findById(baseObjectId);
-
+        Object base = Lookups.getRequirement(baseObjectId);
         renderFields(base, fields);
     }
 
-    public static void linked(Long requirementId) {
-        Requirement requirement = getRequirement(requirementId);
-        render(requirement);
+    public static void linkScript(Long requirementId, Long scriptId) {
+        Requirement requirement = Lookups.getRequirement(requirementId);
+        Script script = Lookups.getScript(scriptId);
+        requirement.linkedScripts.add(script);
+        requirement.save();
+        ok();
     }
-    
+
+    public static void unlinkScript(Long requirementId, Long scriptId) {
+        Requirement requirement = Lookups.getRequirement(requirementId);
+        Script script = Lookups.getScript(scriptId);
+        requirement.linkedScripts.remove(script);
+        requirement.save();
+        ok();
+    }
+
+
+    public static void linkedScripts(String tableId,
+                                     String sColumns,
+                                     String sEcho,
+                                     Long requirementId) {
+        GenericModel.JPAQuery query = Requirement.find("select s from Requirement r, Script s where r.id = ? and s in elements(r.linkedScripts)", requirementId);
+        List<Script> scripts = query.fetch();
+        long totalRecords = Script.count("project = ?", getActiveProject());
+        TableController.renderJSON(scripts, Script.class, totalRecords, sColumns, sEcho);
+    }
+
 
     public static void edit(@Valid Requirement requirement) {
         checkInAccount(requirement);
-        if(Validation.hasErrors()) {
+        if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
         }
         requirement.save();
         ok();
-    }
-
-    /**
-     * Resolves a Requirement given a TreeNode id
-     */
-    private static Requirement getRequirement(Long requirementId) {
-        if (requirementId == null) {
-            return null;
-        }
-        Requirement requirement = Requirement.<Requirement>findById(requirementId);
-        if (requirement == null) {
-            return null;
-        }
-        checkInAccount(requirement);
-        return requirement;
     }
 
 }
