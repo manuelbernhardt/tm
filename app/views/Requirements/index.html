@@ -47,72 +47,14 @@
 
   $(document).ready(function () {
 
-    $('#create_folder').button({icons: {primary: 'ui-icon-plus'}});
-    $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}});
-    $('#remove').button({icons: {primary: 'ui-icon-minus'}});
-
-
     $("#innerTabs").tabs();
 
-    var tree = $("#requirementTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
-
-      "json_data" : {
-        "ajax" : {
-          "url" : "@{TMTreeController.getChildren()}",
-          "data" : function (n) {
-            return {
-              "id" : n.attr ? extractId(n.attr("id")) : -1,
-              "type" : n.attr ? n.attr("rel") : "",
-              "treeId" : "requirementTree"
-            };
-          }
-        }
-      },
-      "themeroller": {
-        "item": ""
-      },
-      "types" : {
-        "max_depth" : -2,
-        "max_children" : -2,
-        "types" : {
-          "default" : {
-            "valid_children" : "none",
-            "icon" : {
-              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for requirement
-            }
-          },
-          "requirementFolder" : {
-            "valid_children" : [ "default", "requirementFolder" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}"
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : true,
-            "remove" : true
-          }
-        }
-      },
-      "hotkeys": {
-        "Ctrl+x" : function() {
-          this.cut(null)
-        },
-        "Ctrl+v" : function() {
-          this.paste(null)
-        },
-        "Ctrl+n" : function() {
-          this.create_node(null, "after", {attr:{"rel":"default"}});
-        }
-      }
-    });
-
-    #{tree.common id:"requirementTree", controller:"TMTreeController" /}
+    $("#requirementTree").tree({types: requirementTreeTypes});
 
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      if(isSelectedNodeType(data, ["requirement", "default"]))
-      reloadTables();
+      if (isSelectedNodeType(data, ["requirement", "default"]))
+        reloadTables();
       $('#requirementForm').loadForm({
         id: getNodeIdFromData(data),
         loadAction: '@{Requirements.requirementsDetailsData()}',
@@ -122,19 +64,15 @@
       });
     });
 
-
-    /** button initialisation **/
-    $(function () {
-      $("#create_folder").click(function () {
-        $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
-      })
-      $("#create_requirement").click(function () {
-        $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
-      })
-      $("#remove").click(function () {
-        $("#requirementTree").jstree("remove", null);
-      })
-    });
+    $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
+    })
+    $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+    })
+    $('#remove').button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+      $("#requirementTree").jstree("remove", null);
+    })
 
   });
 

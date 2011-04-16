@@ -1,0 +1,135 @@
+(function($) {
+
+    $.fn.tree = function(options) {
+
+        var settings = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ]};
+        if (options) {
+            $.extend(settings, options);
+        }
+        var treeId = this.attr("id");
+
+        this.jstree({
+
+            "plugins" : settings.plugins,
+
+            "json_data" : {
+                "ajax" : {
+                    "url" : treeChildrenRouteAction(),
+                    "data" : function (n) {
+                        return {
+                            "id" : n.attr ? extractId(n.attr("id")) : -1,
+                            "treeId" : treeId,
+                            "type" : n.attr ? n.attr("rel") : "",
+                            "args" : settings.args ? settings.args : {}
+                        };
+                    }
+                }
+            },
+            "themeroller": {
+                "item": ""
+            },
+            "types" : settings.types,
+            "ui": {
+                "select_limit": 1
+            },
+            "hotkeys": {
+                "Ctrl+x" : function() {
+                    this.cut(null)
+                },
+                "Ctrl+v" : function() {
+                    this.paste(null)
+                }
+            }
+        }).bind("create.jstree",
+                function (e, data) {
+                    $.post(treeCreateRouteAction(),
+                    {
+                        "treeId" : treeId,
+                        "parentId": data.rslt.parent.attr ? extractId(data.rslt.parent.attr("id")) : -1,
+                        "parentType": data.rslt.parent.attr ? data.rslt.parent.attr("rel") : "",
+                        "position" : data.rslt.position,
+                        "name" : data.rslt.name,
+                        "type" : data.rslt.obj.attr("rel"),
+                        "args" : data.rslt.obj.data("args") ? data.rslt.obj.data("args") : null
+
+                    },
+                            function (r) {
+                                if (r.status) {
+                                    $(data.rslt.obj).attr("id", "node_" + r.rel + "_" + r.id);
+                                }
+                                else {
+                                    $.jstree.rollback(data.rlbk);
+                                }
+                            }
+                            );
+                }).bind("delete_node.jstree",
+                function (e, data) {
+                    data.rslt.obj.each(function () {
+                        $.ajax({
+                            async : false,
+                            type: 'DELETE',
+                            url: treeRemoveRouteAction(),
+                            data : {
+                                "treeId" : treeId,
+                                "id" : extractId(this.id),
+                                "parentId": data.rslt.parent.attr ? extractId(data.rslt.parent.attr("id")) : -1,
+                                "type" : data.rslt.obj.attr("rel"),
+                                "args" : data.rslt.obj.data("args") ? data.rslt.obj.data("args") : null
+
+                            },
+                            success : function (r) {
+                                if (!r.status) {
+                                    data.inst.refresh();
+                                }
+                            }
+                        });
+                    });
+                }).bind("rename.jstree",
+                function (e, data) {
+                    $.post(treeRenameRouteAction(),
+                    {
+                        "treeId" : treeId,
+                        "id" : extractId(data.rslt.obj.attr("id")),
+                        "name" : data.rslt.new_name,
+                        "type" : data.rslt.obj.attr("rel")
+                    },
+                            function (r) {
+                                if (!r.status) {
+                                    $.jstree.rollback(data.rlbk);
+                                }
+                            }
+                            );
+                }).bind("move_node.jstree", function (e, data) {
+            data.rslt.o.each(function (i) {
+                $.ajax({
+                    async : false,
+                    type: 'POST',
+                    url: treeMoveRouteAction(),
+                    data : {
+                        "treeId" : treeId,
+                        "id" : extractId($(this).attr("id")),
+                        "type" : $(this).attr("rel"),
+                        "target" : extractId(data.rslt.np.attr("id")),
+                        "targetType" : data.rslt.np.attr("rel"),
+                        "position" : data.rslt.cp + i,
+                        "name" : data.rslt.name,
+                        "copy" : data.rslt.cy ? true : false
+                    },
+                    success : function (r) {
+                        if (!r.status) {
+                            $.jstree.rollback(data.rlbk);
+                        }
+                        else {
+                            $(data.rslt.oc).attr("id", "node_" + r.type + "_" + r.id);
+                            if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+                                data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+                            }
+                        }
+                    }
+                });
+            })
+        });
+
+        return this;
+    }
+})(jQuery);

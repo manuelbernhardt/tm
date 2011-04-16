@@ -27,8 +27,20 @@
   <script src="@{'/public/javascripts/jquery.validate.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jquery.dataTables.min.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jstree/jquery.jstree.js'}" type="text/javascript" charset="utf-8"></script>
+  <script src="@{'/public/javascripts/tree.js'}" type="text/javascript" charset="utf-8"></script>
+  <script src="@{'/public/javascripts/treeTypes.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jquery.hotkeys.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jquery.selectbox.js'}" type="text/javascript" charset="utf-8"></script>
+
+  *{client-side routing for the tree}*
+  <script type="text/javascript">
+      var treeChildrenRouteAction = #{jsAction @TMTreeController.getChildren() /}
+      var treeCreateRouteAction = #{jsAction @TMTreeController.create() /}
+      var treeRenameRouteAction = #{jsAction @TMTreeController.rename() /}
+      var treeRemoveRouteAction = #{jsAction @TMTreeController.remove() /}
+      var treeMoveRouteAction = #{jsAction @TMTreeController.move() /}
+  </script>
+
   #{get 'moreScripts' /}
 
 </head>
