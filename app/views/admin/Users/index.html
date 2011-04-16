@@ -1,6 +1,44 @@
 #{extends 'admin/main.html' /}
 #{set title:'User administration' /}
 
+<div class="container">
+  <div class="left_table">
+
+    #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
+    openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
+      <script type="text/javascript">
+        function newUserDialogSubmissionCallback() {
+          refreshTableContents("tab", false);
+        }
+      </script>
+      #{input.field field:'user.authentication.firstName', label:'First Name' /}
+      #{input.field field:'user.authentication.lastName', label:'Last Name' /}
+      #{input.field field:'user.authentication.email', label:'Email' /}
+      #{input.field field:'user.authentication.password', label:'Password' /}
+    #{/formDialog}
+
+    <table class="display" id="tab">
+      <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="right_table">
+
+    <div id="innerTabs">
+      <ul>
+        <li><a href="@{admin.Users.userDetails()}" id="userDetailsLink"><span>User details</span></a></li>
+        <li><a href="@{admin.Users.projects()}" id="projectsLink"><span>Projects</span></a></li>
+        <li><a href="@{admin.Users.account()}" id="accountLink"><span>Account</span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 #{set 'moreScripts'}
 
 <script type="text/javascript">
@@ -55,41 +93,3 @@
 
 </script>
 #{/set}
-
-<div class="container">
-  <div class="left_table">
-
-    #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
-    openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
-      <script type="text/javascript">
-        function newUserDialogSubmissionCallback() {
-          refreshTableContents("tab", false);
-        }
-      </script>
-      #{input.field field:'user.authentication.firstName', label:'First Name' /}
-      #{input.field field:'user.authentication.lastName', label:'Last Name' /}
-      #{input.field field:'user.authentication.email', label:'Email' /}
-      #{input.field field:'user.authentication.password', label:'Password' /}
-    #{/formDialog}
-
-    <table class="display" id="tab">
-      <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <div class="right_table">
-
-    <div id="innerTabs">
-      <ul>
-        <li><a href="@{admin.Users.userDetails()}" id="userDetailsLink"><span>User details</span></a></li>
-        <li><a href="@{admin.Users.projects()}" id="projectsLink"><span>Projects</span></a></li>
-        <li><a href="@{admin.Users.account()}" id="accountLink"><span>Account</span></a></li>
-      </ul>
-    </div>
-  </div>
-</div>

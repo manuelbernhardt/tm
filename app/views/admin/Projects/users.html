@@ -93,58 +93,7 @@ No project selected
       }
     });
 
-    $("#rolesUserTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
-
-      "json_data" : {
-        "ajax" : {
-          "url" : "@{TMTreeController.getChildren()}",
-          "data" : function (n) {
-            return {
-              "id" : n.attr ? extractId(n.attr("id")) : -1,
-              "treeId" : "rolesUserTree",
-              "type" : n.attr ? n.attr("rel") : "",
-              "args" : {"projectId": "${project.id}"}
-            };
-          }
-        }
-      },
-      "themeroller": {
-        "item": ""
-      },
-      "types" : {
-        "max_depth" : -2,
-        "max_children" : -2,
-        "types" : {
-          "default" : { // user
-            "valid_children" : "none",
-            "icon" : {
-              "image" : "@{'public/images/jstree/file.png'}" // TODO user icon
-            }
-          },
-          "role" : {
-            "valid_children" : [ "default" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}" // TODO role icon
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : false,
-            "remove" : false
-          }
-        }
-      },
-      "hotkeys": {
-        "Ctrl+x" : function() {
-          this.cut(null)
-        },
-        "Ctrl+v" : function() {
-          this.paste(null)
-        }
-      }
-    });
-    #{tree.common id:"rolesUserTree", controller:"TMTreeController" /}
-
+    $("#rolesUserTree").tree({"args" : {"projectId": "${project.id}"}, types: rolesUserTreeTypes});
     /** Selection handler **/
     $("#rolesUserTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, "role")) {

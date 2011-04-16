@@ -1,4 +1,4 @@
-var roleProjectTypes = {
+var projectRoleTreeTypes = {
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
@@ -32,6 +32,29 @@ var roleProjectTypes = {
     }
 };
 
+var repositoryTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for test script
+            }
+        },
+        "scriptFolder" : {
+            "valid_children" : [ "default", "scriptFolder" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO icon for release
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+        }
+    }
+};
+
 var requirementTreeTypes = {
     "max_depth" : -2,
     "max_children" : -2,
@@ -46,6 +69,114 @@ var requirementTreeTypes = {
             "valid_children" : [ "default", "requirementFolder" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+        }
+    }
+};
+
+var scriptCycleTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO instance icon
+            }
+        },
+        "testCycle" : {
+            "valid_children" : [ "instance" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO cycle icon
+            }
+        },
+        "release" : {
+            "valid_children" : [ "testCycle" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO release icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        }
+    }
+};
+
+var projectTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for project
+            }
+        },
+        "category" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+        },
+        "root" : {
+            "valid_children" : [ "default", "category" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        }
+    }
+};
+
+var rolesUserTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : { // user
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO user icon
+            }
+        },
+        "role" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO role icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        }
+    }
+};
+
+var approachTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for test cycle
+            }
+        },
+        "release" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO icon for release
             },
             "start_drag" : false,
             "move_node" : false,

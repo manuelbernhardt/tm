@@ -3,7 +3,41 @@ No user selected
 #{/if}
 #{else}
 
+
+<div id="treeDiv">
+  <button id="assign-role">Role assignement</button>
+  <button id="unassign-role">Remove</button>
+  <div id="projectRolesTree" class="tree"></div>
+</div>
+
+<div id="assign-dialog" title="Assign a new role" class="modalDialog">
+  <form id="assignForm">
+    <fieldset>
+
+      <label for="categories">Project category</label>
+      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text
+      ui-widget-content ui-corner-all", id:'categories'}
+      #{option -1} No category #{/option}
+      #{/select}
+
+      <label for="projects">Project</label>
+      #{select 'projects', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
+      id:'projects'}
+      #{option -1} Please select a project #{/option}
+      #{/select}
+
+      <label for="roles">Role</label>
+      #{select 'roles', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
+      id:'roles'}
+      #{option -1} Please select a role #{/option}
+      #{/select}
+
+    </fieldset>
+  </form>
+</div>
+
 <script type="text/javascript">
+
 
 $(document).ready(function () {
 
@@ -40,6 +74,8 @@ $(document).ready(function () {
           jQuery.jstree._reference(treeContainer).refresh();
           jQuery.jstree._reference(treeContainer).deselect_all();
           $(this).dialog("close");
+        } else {
+          alert("Not valid");
         }
       },
       Cancel: function() {
@@ -62,98 +98,33 @@ $(document).ready(function () {
     }
   });
 
-  $("#projectRolesTree").jstree({
-    "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
-
-    "json_data" : {
-      "ajax" : {
-        "url" : "@{TMTreeController.getChildren()}",
-        "data" : function (n) {
-          return {
-            "id" : n.attr ? extractId(n.attr("id")) : -1,
-            "treeId" : "projectRolesTree",
-            "type" : n.attr ? n.attr("rel") : "",
-            "args" : {"userId": "${user.id}"}
-          };
-        }
-      }
-    },
-    "themeroller": {
-      "item": ""
-    },
-    "types" : {
-      "max_depth" : -2,
-      "max_children" : -2,
-      "types" : {
-        "default" : { // role
-          "valid_children" : "none",
-          "icon" : {
-            "image" : "@{'public/images/jstree/file.png'}" // TODO role icon
-          }
-        },
-        "category" : {
-          "valid_children" : [ "project" ],
-          "icon" : {
-            "image" : "@{'public/images/jstree/folder.png'}"
-          },
-          "start_drag" : false,
-          "move_node" : false,
-          "delete_node" : false,
-          "remove" : false
-        },
-        "project" : {
-          "valid_children" : [ "default" ],
-          "icon" : {
-            "image" : "@{'public/images/jstree/folder.png'}" // TODO project icon
-          },
-          "start_drag" : false,
-          "move_node" : false,
-          "delete_node" : false,
-          "remove" : false
-
-        }
-      }
-    },
-    "ui": {
-      "select_limit": 1
-    },
-    "hotkeys": {
-      "Ctrl+x" : function() {
-        this.cut(null)
-      },
-      "Ctrl+v" : function() {
-        this.paste(null)
-      }
-    }
-  });
-  #{tree.common id:"projectRolesTree", controller:"TMTreeController" /}
-
+  $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});
 
   // pre-select assingment form fields based on what we select in the tree
   $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
     // category selected
     if (data.inst._get_type(data.rslt.obj) == "category") {
-      var categoryId = data.rslt.obj.attr("id");
+      var categoryId = extractId(data.rslt.obj.attr("id"));
       selectCategory(categoryId);
       $('#categories').val(categoryId);
       // project selected
     } else if (data.inst._get_type(data.rslt.obj) == "project") {
       var parent = data.inst._get_parent(data.rslt.obj);
-      selectCategory(parent.attr("id"));
+      selectCategory(extractId(parent.attr("id")));
       setCategory(parent);
-      var projectId = data.rslt.obj.attr("id");
+      var projectId = extractId(data.rslt.obj.attr("id"));
       selectProject(projectId, function() {
         $('#projects').val(projectId);
       });
       // role selected
     } else {
-      var roleId = data.rslt.obj.attr("id");
+      var roleId = extractId(data.rslt.obj.attr("id"));
       var roleParent = data.inst._get_parent(data.rslt.obj);
-      var pId = roleParent.attr("id");
+      var pId = extractId(roleParent.attr("id"));
       var projectParent = data.inst._get_parent(roleParent);
       var cId = -1;
       if (typeof projectParent !== 'undefined') {
-        cId = projectParent.attr("id");
+        cId = extractId(projectParent.attr("id"));
       }
       selectCategory(cId, function() {
         setCategory(projectParent);
@@ -198,45 +169,12 @@ function selectProject(projectId, callback) {
 
 function setCategory(parent) {
   if (typeof parent !== 'undefined') {
-    var categoryId = parent.attr("id");
+    var categoryId = extractId(parent.attr("id"));
     $('#categories').val(categoryId);
   } else {
     $('#categories').val(-1); // no category
   }
 }
 </script>
-
-<div id="treeDiv">
-  <button id="assign-role">Role assignement</button>
-  <button id="unassign-role">Remove</button>
-  <div id="projectRolesTree" class="tree"></div>
-</div>
-
-<div id="assign-dialog" title="Assign a new role" class="modalDialog">
-  <form id="assignForm">
-    <fieldset>
-
-      <label for="categories">Project category</label>
-      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text
-      ui-widget-content ui-corner-all", id:'categories'}
-      #{option -1} No category #{/option}
-      #{/select}
-
-      <label for="projects">Project</label>
-      #{select 'projects', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
-      id:'projects'}
-      #{option -1} Please select a project #{/option}
-      #{/select}
-
-      <label for="roles">Role</label>
-      #{select 'roles', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all",
-      id:'roles'}
-      #{option -1} Please select a role #{/option}
-      #{/select}
-
-    </fieldset>
-  </form>
-</div>
-
 
 #{/else}

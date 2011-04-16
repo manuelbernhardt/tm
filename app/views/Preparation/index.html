@@ -15,12 +15,10 @@
 
 
 #{set 'moreScripts'}
-<script src="@{'/public/javascripts/repositoryTree.js'}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 
   $(document).ready(function () {
-    repositoryTree('@{TMTreeController.getChildren()}');
-    #{tree.common id:"repositoryTree", controller:"TMTreeController" /}
+    $("#repositoryTree").tree({types: repositoryTreeTypes});
     #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.scriptContent(), targetId:"scriptDetails" /}
   });
 

@@ -66,13 +66,13 @@
 
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
-    })
+    });
     $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
-    })
+    });
     $('#remove').button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       $("#requirementTree").jstree("remove", null);
-    })
+    });
 
   });
 

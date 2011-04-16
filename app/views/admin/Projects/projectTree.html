@@ -7,69 +7,7 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
-    var tree = $("#projectTree").jstree({
-      "plugins" : [ "json_data", "ui", "crrm",  "types", "contextmenu", "hotkeys", "themeroller" ],
-
-      "json_data" : {
-        "ajax" : {
-          "url" : "@{TMTreeController.getChildren()}",
-          "data" : function (n) {
-            return {
-              "id" : n.attr ? extractId(n.attr("id")) : -1,
-              "type" : n.attr ? n.attr("rel") : "",
-              "treeId" : "projectTree"
-            };
-          }
-        }
-      },
-      "themeroller": {
-        "item": ""
-      },
-      "types" : {
-        "max_depth" : -2,
-        "max_children" : -2,
-        "types" : {
-          "default" : {
-            "valid_children" : "none",
-            "icon" : {
-              "image" : "@{'public/images/jstree/file.png'}" // TODO icon for project
-            }
-          },
-          "category" : {
-            "valid_children" : [ "default" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}"
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : true,
-            "remove" : true
-          },
-          "root" : {
-            "valid_children" : [ "default", "category" ],
-            "icon" : {
-              "image" : "@{'public/images/jstree/folder.png'}"
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : false,
-            "remove" : false
-          }
-        }
-      },
-      "hotkeys": {
-        "Ctrl+x" : function() {
-          this.cut(null)
-        },
-        "Ctrl+v" : function() {
-          this.paste(null)
-        },
-        "Ctrl+n" : function() {
-          this.create_node(null, "after", {attr:{"rel":"category"}});
-        }
-      }
-    });
-    #{tree.common id:"projectTree", controller:"TMTreeController" /}
+    var tree = $("#projectTree").tree({types: projectTreeTypes});
 
     /** Selection listener **/
     $("#projectTree").bind("select_node.jstree", function (e, data) {

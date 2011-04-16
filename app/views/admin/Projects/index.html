@@ -1,23 +1,12 @@
 #{extends 'admin/main.html' /}
 #{set title:'Project administration' /}
 
-#{set 'moreScripts'}
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    $("#innerTabs").tabs({
-      select: function() {
-        removeDialogs();
-      }
-    });
-  });
-
-</script>
-#{/set}
-
 <div class="container">
   <div class="left_tree">
-    #{include 'admin/Projects/projectTree.html'/}
+    <button id="create_category">Project Category</button>
+    <button id="create_project">Project</button>
+    <button id="remove">Remove</button>
+    <div id="projectTree" class="tree"></div>
   </div>
   <div class="right_tree">
     <div id="innerTabs">
@@ -30,3 +19,36 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $("#innerTabs").tabs({
+      select: function() {
+        removeDialogs();
+      }
+    });
+
+    $("#projectTree").tree({types: projectTreeTypes});
+
+    /** Selection listener **/
+    $("#projectTree").bind("select_node.jstree", function (e, data) {
+      var tabLinks = ['@{admin.Projects.projectDetails()}', '@{admin.Approach.cycles()}', '@{admin.Projects.roles()}', '@{admin.Projects.users()}'];
+      treeNodeSelectionHandler(tabLinks, ['default'], 'project', $('#innerTabs'), data);
+    });
+
+    /** Button initialisation **/
+    $("#create_category").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}});
+    });
+
+    $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+    });
+
+    $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+      $("#projectTree").jstree("remove", null);
+    });
+
+  });
+</script>

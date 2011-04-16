@@ -58,8 +58,7 @@
       }
     });
 
-    #{include 'admin/Approach/approachTree.js' /}
-    #{tree.common id:"approachTree", controller:"TMTreeController" /}
+    $('#approachTree').tree({"args" : {"projectId": "${project == null ? controllers.TMController.getActiveProject().getId() : project.id}"}, types: approachTreeTypes});
 
     function refreshCycleTree() {
       var cycleTreeContainer = $("#scriptCycleTree");
