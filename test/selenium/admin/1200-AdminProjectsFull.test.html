@@ -17,25 +17,25 @@
     verifyTextPresent('Test Management Application')
 
     // Attempt new project category creation
-    click('//li[@id='node_0'][@rel='root']/a')
+    click('//li[@id='node_root_0']/a')
     click('create_category')
-    type('//li[@id='node_0']/ul/li[3]/input','Test category')
-    fireEvent('//li[@id='node_0']/ul/li[3]/input','blur')
-    waitForElementPresent('//li[@id='node_3'][@rel='category']')
+    type('//li[@id='node_root_0']/ul/li[3]/input','Test category')
+    fireEvent('//li[@id='node_root_0']/ul/li[3]/input','blur')
+    waitForElementPresent('//li[@id='node_category_3']')
     // Verify new project category available in tree at expected location
-    verifyText('//li[@id='node_3'][@rel='category']','Test category')
+    verifyText('//li[@id='node_category_3']','Test category')
 
     // Attempt new project creation
-    click('//li[@id='node_3'][@rel='category']/a')
+    click('//li[@id='node_category_3']/a')
     click('create_project')
-    type('//li[@id='node_3'][@rel='category']/ul/li/input','Test project')
-    fireEvent('//li[@id='node_3'][@rel='category']/ul/li/input','blur')
-    waitForElementPresent('//li[@id='node_4'][@rel='default']')
+    type('//li[@id='node_category_3']/ul/li/input','Test project')
+    fireEvent('//li[@id='node_category_3']/ul/li/input','blur')
+    waitForElementPresent('//li[@id='node_default_4']')
     // Verify new project available in tree at expected location
-    verifyText('//li[@id='node_4'][@rel='default']','Test project')
+    verifyText('//li[@id='node_default_4']','Test project')
 
     // Check content of project details edit form
-    click('//li[@id='node_4'][@rel='default']/a')
+    click('//li[@id='node_default_4']/a')
     waitForElementPresent('project_name')
     waitForValue('project_name','Test project')
     waitForElementPresent('projectForm_submit')
