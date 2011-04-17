@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controllers.tabularasa.TableController;
+import models.tm.Defect;
 import models.tm.Requirement;
+import models.tm.test.Instance;
 import models.tm.test.Script;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -56,6 +59,25 @@ public class Requirements extends TMController {
         long totalRecords = Script.count("project = ?", getActiveProject());
         TableController.renderJSON(scripts, Script.class, totalRecords, sColumns, sEcho);
     }
+
+    public static void linkedInstances(String tableId,
+                                     String sColumns,
+                                     String sEcho,
+                                     Long requirementId) {
+        GenericModel.JPAQuery query = Requirement.find("select i from Requirement r, Script s, Instance i where r.id = ? and s in elements(r.linkedScripts) and i.script = s", requirementId);
+        List<Instance> instances = query.fetch();
+        long totalRecords = Instance.count("project = ?", getActiveProject());
+        TableController.renderJSON(instances, Instance.class, totalRecords, sColumns, sEcho);
+    }
+
+    public static void linkedDefects(String tableId,
+                                     String sColumns,
+                                     String sEcho,
+                                     Long requirementId) {
+        // TODO
+        TableController.renderJSON(new ArrayList<Defect>(), Defect.class, 0, sColumns, sEcho);
+    }
+
 
 
     public static void edit(@Valid Requirement requirement) {

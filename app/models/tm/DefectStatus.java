@@ -12,6 +12,6 @@ import javax.persistence.UniqueConstraint;
 public class DefectStatus extends ProjectModel {
 
     public Integer position;
-    public String status;
+    public String name;
 
 }

@@ -23,7 +23,7 @@
         {"sName": "submittedBy.authentication.fullName"},
         {"sName": "assignedTo.authentication.fullName"},
         {"sName": "name"},
-        {"sName": "status"}
+        {"sName": "status.name"}
       ],
       "sAjaxSource": "@{Defects.data()}",
       "bProcessing": true,
@@ -34,13 +34,6 @@
       "bInfo": false,
       "oLanguage": {
         "sZeroRecords": "No defects submitted yet"
-      },
-      "fnDrawCallback": function() {
-        // select a user if one was selected
-        if ('${selectedDefect}'.length > 0) {
-          fnSelectRow(tabDataTable, "${selectedDefect}");
-          fnReloadTabs(${selectedDefect});
-        }
       }
     };
     #{/tabularasa.init}
