@@ -263,27 +263,23 @@ function removeDialogs() {
                 var $this = $(this);
                 var data = $this.data('oxForm');
                 if (!data) {
-                    if (!options.loadAction) {
-                        if ($this.validate({meta: 'validate'}).form()) {
-                            $this.ajaxForm(function() {
-                                if (typeof options.submissionCallback == 'function') {
-                                    options.submissionCallback.call();
-                                }
-                                $('#' + $this.attr('id') + '_submit').button('disable');
-                                $this.resetForm();
-                            });
-                        }
-                    } else {
+                    if (options.loadAction) {
                         $this.data('oxForm', {
                             'loadAction': options.loadAction,
                             'submissionCallback': options.submissionCallback,
+                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
                             'fields': getFields($this),
                             'viewModel': {
                                 'authenticityToken': $this.find('input[name="authenticityToken"]').val(),
                                 'submitForm': function(formElement) {
                                     if ($(formElement).validate({meta: 'validate'}).form()) {
-                                        $.postKnockoutJSJson($(formElement).attr('action'), this, function(submitData) {
-                                            var sCallback = $(formElement).data('oxForm').submissionCallback;
+                                        var oxFormData = $(formElement).data('oxForm');
+                                        var additionalData = null;
+                                        if (typeof oxFormData.submissionParameters !== 'undefined') {
+                                            additionalData = oxFormData.submissionParameters;
+                                        }
+                                        $.postKnockoutJSJson($(formElement).attr('action'), this, additionalData, function(submitData) {
+                                            var sCallback = oxFormData.submissionCallback;
                                             if (typeof sCallback == 'function') {
                                                 sCallback.call();
                                             }
@@ -293,29 +289,59 @@ function removeDialogs() {
                                 }
                             }
                         });
+                    } else {
+                        $this.data('oxForm', {
+                            'submissionCallback': options.submissionCallback,
+                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
+                        });
                     }
                 }
+                return $this;
             });
         },
-        load : function(id) {
+        load : function(id, submissionParameters) {
             return this.each(function() {
+                var form = this;
                 var $this = $(this);
                 var oxFormData = $this.data('oxForm');
                 if (!oxFormData.loadAction) {
                     alert("Error: Cannot use load() method when no loadAction is passed at initialization");
                     return;
                 }
+                if (typeof submissionParameters !== 'undefined') {
+                    $.extend(oxFormData.submissionParameters, submissionParameters);
+                }
                 var query = {"baseObjectId": id, "fields": oxFormData.fields };
                 var viewModel = oxFormData.viewModel;
                 $.getJSON(oxFormData.loadAction, query, function(data) {
                     if (!ko.mapping.isMapped(viewModel)) {
                         viewModel = $.extend(viewModel, ko.mapping.fromJS(data));
-                        ko.applyBindings(viewModel);
+                        ko.applyBindings(viewModel, form);
                     } else {
                         ko.mapping.updateFromJS(viewModel, data);
                     }
                 });
             });
+        },
+        submitCreateForm : function(submissionParameters) {
+            var $this = $(this);
+            var oxFormData = $this.data('oxForm');
+            if ($this.validate({meta: 'validate'}).form()) {
+                if (typeof submissionParameters !== 'undefined') {
+                    $.extend(oxFormData.submissionParameters, submissionParameters);
+                }
+                $this.ajaxSubmit({
+                    success: function() {
+
+                        if (typeof oxFormData.submissionCallback == 'function') {
+                            oxFormData.submissionCallback.call();
+                        }
+                        $('#' + $this.attr('id') + '_submit').button('disable');
+                        $this.resetForm();
+                    },
+                    data: oxFormData.submissionParameters
+                });
+            }
         },
         destroy : function() {
 
@@ -345,8 +371,7 @@ function removeDialogs() {
 
     };
 
-})
-        (jQuery);
+})(jQuery);
 
 
 /**
@@ -364,12 +389,15 @@ function getFields(form) {
 /**
  * Post knockoutJS form data as JSON string
  * @param url the URL to submit to
- * @param data the data object, of which keys are of the sort value_some_thing
+ * @param viewModelData the data object, of which keys are of the sort value_some_thing
  * @param callback the callback to run after successful execution
  */
-$.postKnockoutJSJson = function (url, data, callback) {
+$.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
     var formData = {};
-    $.each(ko.toJS(data), function(key, value) {
+    if (additionalData) {
+        $.extend(formData, additionalData);
+    }
+    $.each(ko.toJS(viewModelData), function(key, value) {
         if (key.startsWith('value_')) {
             formData[key.substring(6).replace(/_/g, '.')] = value;
         }

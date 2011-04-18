@@ -14,7 +14,49 @@
     #{/box}
   </div>
   <div class="right_tree">
-    <div id="scriptDetails">No script selected</div>
+
+    <div id="innerTabs">
+      <ul>
+        <li><a href="#scriptDetails"><span>Description</span></a></li>
+        <li><a href="#scriptSteps"><span>Steps</span></a></li>
+        <li><a href="#linkedEntities"><span>Linked entities</span></a></li>
+      </ul>
+      <div id="scriptDetails">
+
+        <div class="hiddenOnLoad">
+
+          #{ox.form action:@Repository.editScript(), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
+
+            #{ox.field field:'script.name', label:'Name' /}
+            #{ox.field field:'script.description', label:'Description' /}
+            *{the following fields are necessary because play can't bind stuff automatically yet}*
+            #{ox.field field:'script.id', hidden:true /}
+            #{ox.field field:'script.project.id', hidden:true /}
+            #{ox.field field:'script.project.account.id', hidden:true /}
+            #{ox.field field:'script.project.projectCategory.id', hidden:true /}
+            #{ox.field field:'script.project.projectCategory.account.id', hidden:true /}
+
+            #{input.submit /}
+
+          #{/ox.form}
+
+        </div>
+
+        <div class="shownOnLoad">
+          No script selected.
+        </div>
+        
+      </div>
+      <div id="scriptSteps">
+        #{include 'Repository/stepsNew.html' /}
+      </div>
+      <div id="linkedEntities">
+        Linked entities
+      </div>
+
+    </div>
+
+
   </div>
 </div>
 
@@ -26,7 +68,16 @@
 
     $('#repositoryTree').tree({types: repositoryTreeTypes});
 
-    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:['default', 'script'], action:@Repository.content(), targetId:"scriptDetails" /}
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["script", "default"])) {
+        $('.shownOnLoad').hide();
+        $('.hiddenOnLoad').show();
+
+        $('#scriptDetailsForm').oxForm('load', getSelectedNodeId('repositoryTree'));
+
+        reloadTables();
+      }
+    });
 
     $(function () {
       $("#create_folder").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
@@ -39,6 +90,21 @@
         $("#repositoryTree").jstree("remove", null);
       });
     });
+
+    $("#innerTabs").tabs({
+      select: function() {
+        removeDialogs();
+      }
+    });
+
+    $('#scriptDetailsForm').oxForm({
+      loadAction: '@{Repository.scriptDetailsData()}',
+      submissionCallback: function() {
+        refreshTree('repositoryTree');
+      }
+    });
+
+
 
   });
 

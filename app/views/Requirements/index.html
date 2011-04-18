@@ -34,7 +34,7 @@
           #{input.submit /}
           #{/ox.form}
         </div>
-        <div class="displayedOnLoad">
+        <div class="shownOnLoad">
           No requirement selected.
         </div>
 
@@ -43,7 +43,7 @@
         <div class="hiddenOnLoad">
           #{include 'Requirements/linkedEntities.html' /}
         </div>
-        <div class="displayedOnLoad">
+        <div class="shownOnLoad">
           No requirement selected.
         </div>
       </div>
@@ -68,10 +68,9 @@
       }
     });
 
-    /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["requirement", "default"])) {
-        $('.displayedOnLoad').hide();
+        $('.shownOnLoad').hide();
         $('.hiddenOnLoad').show();
 
         $('#requirementForm').oxForm('load', getSelectedNodeId('requirementTree'));

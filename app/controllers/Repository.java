@@ -3,9 +3,6 @@ package controllers;
 import java.util.List;
 import javax.persistence.Query;
 
-import controllers.Lookups;
-import controllers.ParameterHandler;
-import controllers.TMController;
 import controllers.tabularasa.TableController;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
@@ -26,6 +23,19 @@ public class Repository extends TMController {
     public static void index() {
         render();
     }
+
+    public static void scriptDetailsData(Long baseObjectId, String[] fields) {
+        Object base = Lookups.getScript(baseObjectId);
+        renderFields(base, fields);
+    }
+
+    public static void stepDetailsData(Long scriptId, Long baseObjectId, String[] fields) {
+        Script script = Lookups.getTestScript(scriptId);
+        // TODO do this right
+        ScriptStep step = (baseObjectId != null ? ScriptStep.<ScriptStep>findById(baseObjectId) : null);
+        renderFields(step, fields);
+    }
+
 
     public static void content(Long scriptNodeId) {
         Script script = getScript(scriptNodeId);
