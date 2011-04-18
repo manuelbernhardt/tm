@@ -61,7 +61,7 @@
 
     $("#requirementTree").tree({types: requirementTreeTypes});
 
-    $('#requirementForm').loadForm({
+    $('#requirementForm').oxForm({
       loadAction: '@{Requirements.requirementsDetailsData()}',
       submissionCallback: function() {
         refreshTree('requirementTree');
@@ -74,7 +74,7 @@
         $('.displayedOnLoad').hide();
         $('.hiddenOnLoad').show();
 
-        $('#requirementForm').loadForm('load', getSelectedNodeId('requirementTree'));
+        $('#requirementForm').oxForm('load', getSelectedNodeId('requirementTree'));
         reloadTables();
       }
     });

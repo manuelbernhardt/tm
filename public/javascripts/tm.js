@@ -252,6 +252,7 @@ function removeDialogs() {
 
 /**
  * jQuery plugin for ox.forms
+ *
  */
 (function($) {
 
@@ -260,7 +261,7 @@ function removeDialogs() {
             return this.each(function() {
 
                 var $this = $(this);
-                var data = $this.data('loadForm');
+                var data = $this.data('oxForm');
                 if (!data) {
                     if (!options.loadAction) {
                         if ($this.validate({meta: 'validate'}).form()) {
@@ -273,7 +274,7 @@ function removeDialogs() {
                             });
                         }
                     } else {
-                        $this.data('loadForm', {
+                        $this.data('oxForm', {
                             'loadAction': options.loadAction,
                             'submissionCallback': options.submissionCallback,
                             'fields': getFields($this),
@@ -282,7 +283,7 @@ function removeDialogs() {
                                 'submitForm': function(formElement) {
                                     if ($(formElement).validate({meta: 'validate'}).form()) {
                                         $.postKnockoutJSJson($(formElement).attr('action'), this, function(submitData) {
-                                            var sCallback = $(formElement).data('loadForm').submissionCallback;
+                                            var sCallback = $(formElement).data('oxForm').submissionCallback;
                                             if (typeof sCallback == 'function') {
                                                 sCallback.call();
                                             }
@@ -299,14 +300,14 @@ function removeDialogs() {
         load : function(id) {
             return this.each(function() {
                 var $this = $(this);
-                var loadFormData = $this.data('loadForm');
-                if (!loadFormData.loadAction) {
+                var oxFormData = $this.data('oxForm');
+                if (!oxFormData.loadAction) {
                     alert("Error: Cannot use load() method when no loadAction is passed at initialization");
                     return;
                 }
-                var query = {"baseObjectId": id, "fields": loadFormData.fields };
-                var viewModel = loadFormData.viewModel;
-                $.getJSON(loadFormData.loadAction, query, function(data) {
+                var query = {"baseObjectId": id, "fields": oxFormData.fields };
+                var viewModel = oxFormData.viewModel;
+                $.getJSON(oxFormData.loadAction, query, function(data) {
                     if (!ko.mapping.isMapped(viewModel)) {
                         viewModel = $.extend(viewModel, ko.mapping.fromJS(data));
                         ko.applyBindings(viewModel);
@@ -315,10 +316,23 @@ function removeDialogs() {
                     }
                 });
             });
+        },
+        destroy : function() {
+
+            return this.each(function() {
+
+                var $this = $(this);
+                var data = $this.data('oxForm');
+
+                data.oxForm.remove();
+                $this.removeData('oxForm');
+
+            })
+
         }
     }
 
-    $.fn.loadForm = function(method) {
+    $.fn.oxForm = function(method) {
 
         // Method calling logic
         if (methods[method]) {
