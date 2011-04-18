@@ -18,24 +18,34 @@
       </ul>
       <div id="requirementDetails">
 
-        #{ox.form action:@Requirements.edit(), id:'requirementForm', baseClass:'models.tm.Requirement',
-        loadAction:@Requirements.requirementsDetailsData()}
-        #{ox.field field:'requirement.name', label:'Name' /}
-        #{ox.field field:'requirement.description', label:'Description' /}
-        #{ox.field field:'requirement.type', label:'Type' /}
-        *{the following fields are necessary because play can't bind stuff automatically yet}*
-        #{ox.field field:'requirement.id', hidden:true /}
-        #{ox.field field:'requirement.type.id', hidden:true /}
-        #{ox.field field:'requirement.project.id', hidden:true /}
-        #{ox.field field:'requirement.project.account.id', hidden:true /}
-        #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
-        #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
-        #{input.submit /}
-        #{/ox.form}
+        <div class="hiddenOnLoad">
+          #{ox.form action:@Requirements.edit(), id:'requirementForm', baseClass:'models.tm.Requirement',
+          loadAction:@Requirements.requirementsDetailsData()}
+          #{ox.field field:'requirement.name', label:'Name' /}
+          #{ox.field field:'requirement.description', label:'Description' /}
+          #{ox.field field:'requirement.type', label:'Type' /}
+          *{the following fields are necessary because play can't bind stuff automatically yet}*
+          #{ox.field field:'requirement.id', hidden:true /}
+          #{ox.field field:'requirement.type.id', hidden:true /}
+          #{ox.field field:'requirement.project.id', hidden:true /}
+          #{ox.field field:'requirement.project.account.id', hidden:true /}
+          #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
+          #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
+          #{input.submit /}
+          #{/ox.form}
+        </div>
+        <div class="displayedOnLoad">
+          No requirement selected.
+        </div>
 
       </div>
       <div id="linked">
-        #{include 'Requirements/linkedEntities.html' /}
+        <div class="hiddenOnLoad">
+          #{include 'Requirements/linkedEntities.html' /}
+        </div>
+        <div class="displayedOnLoad">
+          No requirement selected.
+         </div>
       </div>
     </div>
   </div>
@@ -53,15 +63,18 @@
 
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["requirement", "default"]))
+      if (isSelectedNodeType(data, ["requirement", "default"])) {
         reloadTables();
-      $('#requirementForm').loadForm({
-        id: getNodeIdFromData(data),
-        loadAction: '@{Requirements.requirementsDetailsData()}',
-        submissionCallback: function() {
-          refreshTree('requirementTree');
-        }
-      });
+        $('.displayedOnLoad').hide();
+        $('.hiddenOnLoad').show();
+        $('#requirementForm').loadForm({
+          id: getNodeIdFromData(data),
+          loadAction: '@{Requirements.requirementsDetailsData()}',
+          submissionCallback: function() {
+            refreshTree('requirementTree');
+          }
+        });
+      }
     });
 
     $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {

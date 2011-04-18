@@ -59,6 +59,10 @@ label.error {
   vertical-align: top;
 }
 
+.hiddenOnLoad {
+  display: none;
+}
+
 /* container stuff */
 div.container {
 /*border: 1px solid #000000;*/
