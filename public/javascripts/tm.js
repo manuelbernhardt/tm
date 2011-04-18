@@ -171,7 +171,7 @@ function getNodeIdFromData(data) {
 
 function getSelectedNodeId(treeId) {
     var tree = $.jstree._reference($('#' + treeId));
-    if(typeof tree.get_selected().attr('id') !== 'undefined' ) {
+    if (typeof tree.get_selected().attr('id') !== 'undefined') {
         return extractId(tree.get_selected().attr('id'));
     }
     return null;
@@ -255,66 +255,96 @@ function removeDialogs() {
  */
 (function($) {
 
-    $.fn.loadForm = function(options) {
+    var methods = {
+        init : function(options) {
+            return this.each(function() {
 
-        var settings = {};
-
-        return this.each(function() {
-            if (options) {
-                $.extend(settings, options);
-            } else {
-                alert("need to provide settings!");
-            }
-            loadForm($(this), settings.id, settings.loadAction, settings.submissionCallback);
-        });
-
-    };
-})(jQuery);
-
-
-/**
- * "initForm" function for ox.forms
- * Takes care of loading initial form data and of submitting the form via AJAX after performing validation.
- *
- * @param id ID of the baseObject to load into the form.
- * @param loadAction URL to the controller action that provides field data
- * @param submissionCallback optional callback executed after the form is submitted
- */
-
-function loadForm(form, id, loadAction, submissionCallback) {
-    if (id && loadAction) {
-        var fields = [];
-        $.each(form.find('.oxfield'), function(index, el) {
-            fields.push($(el).attr('name'));
-        });
-        var query = {"baseObjectId": id};
-        $.extend(query, {"fields": fields});
-        var formData;
-        $.getJSON(loadAction, query, function(data) {
-            var viewModel = ko.mapping.fromJS(data);
-            $.extend(viewModel, {submitForm: function(formElement) {
-                if ($(formElement).validate({meta: 'validate'}).form()) {
-                    $.postKnockoutJSJson($(formElement).attr('action'), $.extend(viewModel, {"authenticityToken": $(formElement).find('input[name="authenticityToken"]').val()}), function(submitData) {
-                        if (typeof submissionCallback == 'function') {
-                            submissionCallback.call();
+                var $this = $(this);
+                var data = $this.data('loadForm');
+                if (!data) {
+                    if (!options.loadAction) {
+                        if ($this.validate({meta: 'validate'}).form()) {
+                            $this.ajaxForm(function() {
+                                if (typeof options.submissionCallback == 'function') {
+                                    options.submissionCallback.call();
+                                }
+                                $('#' + $this.attr('id') + '_submit').button('disable');
+                                $this.resetForm();
+                            });
                         }
-                        $('#' + $(formElement).attr('id') + '_submit').button('disable');
-                    });
+                    } else {
+                        $this.data('loadForm', {
+                            'loadAction': options.loadAction,
+                            'submissionCallback': options.submissionCallback,
+                            'fields': getFields($this),
+                            'viewModel': {
+                                'authenticityToken': $this.find('input[name="authenticityToken"]').val(),
+                                'submitForm': function(formElement) {
+                                    if ($(formElement).validate({meta: 'validate'}).form()) {
+                                        $.postKnockoutJSJson($(formElement).attr('action'), this, function(submitData) {
+                                            var sCallback = $(formElement).data('loadForm').submissionCallback;
+                                            if (typeof sCallback == 'function') {
+                                                sCallback.call();
+                                            }
+                                            $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
-            }});
-            ko.applyBindings(viewModel);
-        });
-    } else {
-        if ($(formElement).validate({meta: 'validate'}).form()) {
-            $(formElement).ajaxForm(function() {
-                if (typeof submissionCallback == 'function') {
-                    submissionCallback.call();
+            });
+        },
+        load : function(id) {
+            return this.each(function() {
+                var $this = $(this);
+                var loadFormData = $this.data('loadForm');
+                if (!loadFormData.loadAction) {
+                    alert("Error: Cannot use load() method when no loadAction is passed at initialization");
+                    return;
                 }
-                $('#' + $(formElement).attr('id') + '_submit').button('disable');
-                $(formElement).resetForm();
+                var query = {"baseObjectId": id, "fields": loadFormData.fields };
+                var viewModel = loadFormData.viewModel;
+                $.getJSON(loadFormData.loadAction, query, function(data) {
+                    if (!ko.mapping.isMapped(viewModel)) {
+                        viewModel = $.extend(viewModel, ko.mapping.fromJS(data));
+                        ko.applyBindings(viewModel);
+                    } else {
+                        ko.mapping.updateFromJS(viewModel, data);
+                    }
+                });
             });
         }
     }
+
+    $.fn.loadForm = function(method) {
+
+        // Method calling logic
+        if (methods[method]) {
+            return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.loadForm');
+        }
+
+    };
+
+})
+        (jQuery);
+
+
+/**
+ * Helper method to fetch all fields for the ox.forms
+ * @param form the form to harvest the fields of
+ */
+function getFields(form) {
+    var fields = [];
+    $.each(form.find('.oxfield'), function(index, el) {
+        fields.push($(el).attr('name'));
+    });
+    return fields;
 }
 
 /**

@@ -45,7 +45,7 @@
         </div>
         <div class="displayedOnLoad">
           No requirement selected.
-         </div>
+        </div>
       </div>
     </div>
   </div>
@@ -61,19 +61,21 @@
 
     $("#requirementTree").tree({types: requirementTreeTypes});
 
+    $('#requirementForm').loadForm({
+      loadAction: '@{Requirements.requirementsDetailsData()}',
+      submissionCallback: function() {
+        refreshTree('requirementTree');
+      }
+    });
+
     /** Selection listener **/
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["requirement", "default"])) {
-        reloadTables();
         $('.displayedOnLoad').hide();
         $('.hiddenOnLoad').show();
-        $('#requirementForm').loadForm({
-          id: getNodeIdFromData(data),
-          loadAction: '@{Requirements.requirementsDetailsData()}',
-          submissionCallback: function() {
-            refreshTree('requirementTree');
-          }
-        });
+
+        $('#requirementForm').loadForm('load', getSelectedNodeId('requirementTree'));
+        reloadTables();
       }
     });
 
