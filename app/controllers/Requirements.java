@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controllers.tabularasa.TableController;
@@ -74,11 +73,11 @@ public class Requirements extends TMController {
                                      String sColumns,
                                      String sEcho,
                                      Long requirementId) {
-        // TODO
-        TableController.renderJSON(new ArrayList<Defect>(), Defect.class, 0, sColumns, sEcho);
+        GenericModel.JPAQuery query = Requirement.find("select d from Requirement r, Script s, Instance i, Run run, Defect d where r.id = ? and s in elements(r.linkedScripts) and i.script = s and i.script = s and run.instance = i and run.defect = d", requirementId);
+        List<Defect> instances = query.fetch();
+        long totalRecords = Instance.count("project = ?", getActiveProject());
+        TableController.renderJSON(instances, Defect.class, totalRecords, sColumns, sEcho);
     }
-
-
 
     public static void edit(@Valid Requirement requirement) {
         checkInAccount(requirement);

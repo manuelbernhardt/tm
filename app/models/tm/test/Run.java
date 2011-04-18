@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Defect;
 import models.tm.ProjectModel;
 import models.tm.User;
 import play.db.jpa.JPA;
@@ -33,6 +34,9 @@ public class Run extends ProjectModel implements ParameterHolder {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
     public User tester;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
+    public Defect defect;
 
     public Date executionDate;
 
