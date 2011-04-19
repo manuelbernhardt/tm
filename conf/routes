@@ -3,53 +3,59 @@
 # ~~~~
 
 # Import Secure routes
-*       /                                       module:secure
+*       /                                               module:secure
 
-GET     /                                       Dashboard.index
-GET     /requirements                           Requirements.index
-GET     /requirements/{requirementId}/details   Requirements.requirementDetails
-GET     /requirements/{requirementId}/linked    Requirements.linked
+GET     /?                                              Dashboard.index
 
-GET     /repository                             Repository.index
-GET     /repository/{scriptId}/content          Repository.content
-GET     /repository/{scriptId}/details          Repository.scriptDetails
-GET     /repository/{scriptId}/steps            Repository.steps
-GET     /repository/{scriptId}/linked           Repository.linked
+GET     /requirements/?                                 Requirements.index
+GET     /requirements/{requirementId}/details           Requirements.requirementDetails
+GET     /requirements/{requirementId}/linked            Requirements.linked
 
-GET     /preparation                            Preparation.index
-GET     /preparation/{instanceId}/content       Preparation.content
+GET     /repository/?                                   Repository.index
+GET     /repository/{scriptId}/content                  Repository.content
+GET     /repository/{scriptId}/details                  Repository.scriptDetails
+GET     /repository/{scriptId}/steps                    Repository.steps
+GET     /repository/{scriptId}/linked                   Repository.linked
 
-GET     /execution                              Execution.index
-GET     /content/${instanceId}                  Execution.content
+GET     /preparation/?                                  Preparation.index
+GET     /preparation/{instanceId}/tags                  Preparation.tags
+GET     /preparation/{instanceId}/instanceParameters    Preparation.instanceParameters
+GET     /preparation/{baseObjectId}/schedule            Preparation.schedule
+POST    /preparation/updateTags                         Preparation.updateTags
+POST    /preparation/updateSchedule                     Preparation.updateSchedule
+POST    /preparation/updateParameters                   Preparation.updateParameters
 
-GET     /defects                                Defects.index
-GET     /defects/data                           Defects.data
+GET     /execution/?                                    Execution.index
+GET     /execution/{instanceId}/content                 Execution.content
 
-GET     /profile                                profile.Profile.index
-POST    /profile/edit                           profile.Profile.edit
+GET     /defects/?                                      Defects.index
+GET     /defects/data                                   Defects.data
 
-*       /admin/accounts                         module:crud
+GET     /profile/?                                      profile.Profile.index
+POST    /profile/edit                                   profile.Profile.edit
 
-GET     /admin/users                            admin.Users.index
-GET     /admin                                  admin.Users.index
-GET     /admin/users/data                       admin.Users.data
-POST    /admin/users/edit                       admin.Users.edit
-GET     /admin/projects                         admin.Projects.index
-GET     /admin/approach                         admin.Approach.cycles
-GET     /admin/approach/{cycleId}/details       admin.Approach.cycleDetails
-GET     /admin/approach/{releaseId}/details     admin.Approach.releaseDetails
-POST    /admin/approach/editCycle               admin.Approach.editCycle
-POST    /admin/approach/editRelease             admin.Approach.editRelease
-GET     /admin/projectRoles/{projectId}/data    admin.ProjectRoles.data
-POST    /admin/projectRoles/edit                admin.ProjectRoles.edit
+*       /admin/accounts                                 module:crud
 
-*       /                                       module:tree
+GET     /admin/users                                    admin.Users.index
+GET     /admin/?                                        admin.Users.index
+GET     /admin/users/data                               admin.Users.data
+POST    /admin/users/edit                               admin.Users.edit
+GET     /admin/projects                                 admin.Projects.index
+GET     /admin/approach                                 admin.Approach.cycles
+GET     /admin/approach/{cycleId}/details               admin.Approach.cycleDetails
+GET     /admin/approach/{releaseId}/details             admin.Approach.releaseDetails
+POST    /admin/approach/editCycle                       admin.Approach.editCycle
+POST    /admin/approach/editRelease                     admin.Approach.editRelease
+GET     /admin/projectRoles/{projectId}/data            admin.ProjectRoles.data
+POST    /admin/projectRoles/edit                        admin.ProjectRoles.edit
 
-GET     /tmtree/{treeId}/{id}                   TMTreeController.getChildren
-POST    /tmtree/create                          TMTreeController.create
-POST    /tmtree/rename                          TMTreeController.rename
-POST    /tmtree/move                            TMTreeController.move
-DELETE  /tmtree/remove                          TMTreeController.remove
+*       /                                               module:tree
+
+GET     /tmtree/                                        TMTreeController.getChildren
+POST    /tmtree/create                                  TMTreeController.create
+POST    /tmtree/rename                                  TMTreeController.rename
+POST    /tmtree/move                                    TMTreeController.move
+DELETE  /tmtree/remove                                  TMTreeController.remove
 
 
 

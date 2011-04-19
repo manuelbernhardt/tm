@@ -11,47 +11,68 @@
   <div class="right_tree">
 
     #{box 'Test Script'}
-    <div class="left_tree">
-      #{include 'Preparation/instanceCreateDialog.html' /}
-      <div id="scriptCycleTree" class="tree"></div>
-    </div>
-    <div class="right_tree">
 
-      <div id="innerTabs">
-        <ul>
-          <li><a href="#tagsTab"><span>Tags</span></a></li>
-          <li><a href="#schedule"><span>Schedule</span></a></li>
-          <li><a href="#testData"><span>Test data</span></a></li>
-        </ul>
-        <div id="tagsTab">
-          <form id="tagsForm" action="@{Preparation.addTags()}" method="post">
-            <input name="tags" id="tags" type="text"/>
-            <button id="tagsSaveButton">Save</button>
-          </form>
-        </div>
-        <div id="schedule">
-          #{ox.form action:@Preparation.editSchedule(), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
-          #{ox.field field:'instance.responsible', label:'Assigned to' /}
-          #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
-          #{input.submit /}
-          #{/ox.form}
-        </div>
-        <div id="testData">
-          <form id="instanceParamForm" method="POST" action="@{Preparation.editData()}" data-bind="submit: submitForm">
-            <table id="instanceParamTable" class="display">
-              <thead>
-              <th>Parameter</th>
-              <th>Value</th>
-              </thead>
-              <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
-            </table>
-            <button type="submit" id="saveParamsButton">Save</button>
-          </form>
+    <div class="hiddenOnLoad">
+      <div class="left_tree">
+        #{include 'Preparation/instanceCreateDialog.html' /}
+        <div id="scriptCycleTree" class="tree"></div>
+      </div>
+      <div class="right_tree">
 
+        <div id="innerTabs">
+          <ul>
+            <li><a href="#tagsTab"><span>Tags</span></a></li>
+            <li><a href="#schedule"><span>Schedule</span></a></li>
+            <li><a href="#testData"><span>Test data</span></a></li>
+          </ul>
+          <div id="tagsTab">
+            <div class="instanceShownOnLoad">
+              No test instance selected
+            </div>
+            <div class="instanceHiddenOnLoad" style="display: none;">
+              <form id="tagsForm" action="@{Preparation.updateTags()}" method="post">
+                <input name="tags" id="tags" type="text"/>
+                <button id="tagsSaveButton">Save</button>
+              </form>
+            </div>
+          </div>
+          <div id="schedule">
+            <div class="instanceShownOnLoad">
+              No test instance selected
+            </div>
+            <div class="instanceHiddenOnLoad" style="display: none;">
+              #{ox.form action:@Preparation.updateSchedule(), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
+              #{ox.field field:'instance.responsible', label:'Assigned to' /}
+              #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
+              #{input.submit /}
+              #{/ox.form}
+            </div>
+          </div>
+          <div id="testData">
+            <div class="instanceShownOnLoad">
+              No test instance selected
+            </div>
+            <div class="instanceHiddenOnLoad" style="display: none;">
+              <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}" data-bind="submit: submitForm">
+                <table id="instanceParamTable" class="display">
+                  <thead>
+                  <th>Parameter</th>
+                  <th>Value</th>
+                  </thead>
+                  <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+                </table>
+                <button type="submit" id="saveParamsButton">Save</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
+    <div class="shownOnLoad">
+      No test script selected
+    </div>
+
+
     #{/box}
 
   </div>
@@ -70,13 +91,21 @@
 
   $(document).ready(function () {
 
+    // selection listener for the repository tree
     $("#repositoryTree").tree({types: repositoryTreeTypes});
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["script", "default"])) {
+
+        $('.instanceHiddenOnLoad').hide();
+        $('.instanceShownOnLoad').show();
+        
         jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+        $('.hiddenOnLoad').show();
+        $('.shownOnLoad').hide();
       }
     });
 
+    // viewModel for instance parameters
     var paramViewModel = {'submitForm': function(formElement) {
       $.ajax({
         url: $(formElement).attr('action'),
@@ -92,12 +121,16 @@
       return false;
     }};
 
+    // selection listener for the instance tree
     $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
     $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["instance", "default"])) {
+        $('.instanceHiddenOnLoad').show();
+        $('.instanceShownOnLoad').hide();
+
         var instanceId = getNodeIdFromData(data);
 
-        // tags
+        // tags data loading
         $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
           tokens.clearTokens();
           $(data).each(function() {
@@ -105,10 +138,10 @@
           });
         });
 
-        // schedule
+        // schedule data loading
         $('#scheduleForm').oxForm('load', instanceId);
 
-        // instance parameters
+        // instance parameter data loading
         $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
           if (!ko.mapping.isMapped(paramViewModel)) {
             $.extend(paramViewModel, ko.mapping.fromJS(data));
@@ -126,6 +159,8 @@
       }
     });
 
+    $('#innerTabs').tabs();
+
     function getScriptQuery() {
       return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
     }
@@ -134,8 +169,7 @@
       return {'instanceId': getSelectedNodeId('scriptCycleTree')};
     }
 
-    $('#innerTabs').tabs();
-
+    // tags
     var tokens = $('#tags').tokenInput(getTagSearchURL, {
       preventDuplicates: true,
       tokenValue: 'name',
@@ -162,7 +196,7 @@
     });
 
     $('#scheduleForm').oxForm({
-      loadAction: '@{Preparation.scheduleData()}',
+      loadAction: '@{Preparation.schedule()}',
       submissionParameters: getInstanceQuery
     });
 

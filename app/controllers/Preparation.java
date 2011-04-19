@@ -32,7 +32,7 @@ public class Preparation extends TMController {
         Lookups.allTags(instance.project, q);
     }
 
-    public static void scheduleData(Long baseObjectId, String[] fields) {
+    public static void schedule(Long baseObjectId, String[] fields) {
         Instance instance = Lookups.getInstance(baseObjectId);
         renderFields(instance, fields);
     }
@@ -53,7 +53,7 @@ public class Preparation extends TMController {
         renderJSON(params.toString());
     }
 
-    public static void addTags(Long instanceId, String tags) {
+    public static void updateTags(Long instanceId, String tags) {
         Instance instance = Lookups.getInstance(instanceId);
         List<Tag> tagList = new ArrayList<Tag>();
         for (String name : tags.split(",")) {
@@ -73,7 +73,7 @@ public class Preparation extends TMController {
         ok();
     }
 
-    public static void editSchedule(Long instanceId, @Valid Instance instance) {
+    public static void updateSchedule(Long instanceId, @Valid Instance instance) {
         // here we sort of cheat; instead of making Play! happy and passing all the 1000 parameters necessary for it to properly bind the instance, we just copy over the
         // parameters given by the "stale" instance.
         Instance existing = Lookups.getInstance(instanceId);
@@ -85,7 +85,7 @@ public class Preparation extends TMController {
         ok();
     }
 
-    public static void editData(Long instanceId) {
+    public static void updateParameters(Long instanceId) {
         String paramsJson = params.get("params");
         JsonReader reader = new JsonReader(new StringReader(paramsJson));
         try {
@@ -124,10 +124,4 @@ public class Preparation extends TMController {
         }
         ok();
     }
-
-    public static void allUsers() {
-        Lookups.allUsers();
-    }
-
-
 }
