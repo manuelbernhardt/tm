@@ -19,23 +19,21 @@
 </div>
 
 <div id="createStepDialog" title="Create a step">
-  #{ox.form id:'createStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep',
-  create:true}
-  #{ox.field field:'step.name', label:'Name' /}
-  #{ox.field field:'step.position', label:'Position' /}
-  #{ox.field field:'step.description', label:'Description' /}
-  #{ox.field field:'step.expectedResult', label:'Expected result' /}
+  #{ox.form id:'createStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep', create:true}
+    #{ox.field field:'step.name', label:'Name' /}
+    #{ox.field field:'step.position', label:'Position' /}
+    #{ox.field field:'step.description', label:'Description' /}
+    #{ox.field field:'step.expectedResult', label:'Expected result' /}
   #{/ox.form}
 </div>
 
 <div id="updateStepDialog" title="Create a step">
   #{ox.form id:'updateStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep'}
-  #{ox.field field:'step.name', label:'Name' /}
-  #{ox.field field:'step.position', label:'Position' /}
-  #{ox.field field:'step.description', label:'Description' /}
-  #{ox.field field:'step.expectedResult', label:'Expected result' /}
-  #{ox.field field:'step.id', hidden:true /}
-  <input type="hidden" name="scriptId">
+    #{ox.field field:'step.name', label:'Name' /}
+    #{ox.field field:'step.position', label:'Position' /}
+    #{ox.field field:'step.description', label:'Description' /}
+    #{ox.field field:'step.expectedResult', label:'Expected result' /}
+    #{ox.field field:'step.id', hidden:true /}
   #{/ox.form}
 </div>
 
@@ -53,7 +51,7 @@
         {"sName": "descriptionHTML"},
         {"sName": "expectedResultHTML"}
       ],
-      "sAjaxSource": "@{Repository.stepData()}",
+      "sAjaxSource": "@{Repository.steps()}",
       "bProcessing": true,
       "bServerSide": true,
       "bFilter": false,
@@ -119,7 +117,6 @@
       },
       loadAction: '@{Repository.stepDetailsData()}'
     });
-
 
     $('#updateStepDialog').dialog({
       autoOpen: false,

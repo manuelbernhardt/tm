@@ -63,7 +63,8 @@
       "bProcessing": true,
       "bServerSide": true,
       "bScrollCollapse": true,
-      "bPaginate": true,
+      "bPaginate": false,
+      "bLengthChange": false,
       "bSort": false,
       "bFilter": false,
       "bAutoWidth": false,
@@ -114,7 +115,7 @@
     var defectTableParameters = {
       "aoColumns": [
         {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
-        {"sName": "naturalId"},
+        {"sName": "naturalId", "sWidth": "10%"},
         {"sName": "name"},
         {"sName": "tagNames"},
         {"sName": "status.name"}

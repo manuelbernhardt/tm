@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Defect;
 import models.tm.ProjectModel;
 import models.tm.approach.TestCycle;
 import models.tm.User;
@@ -43,6 +44,9 @@ public class Instance extends ProjectModel {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Defect> defects;
 
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");

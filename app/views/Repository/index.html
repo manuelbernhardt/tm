@@ -19,7 +19,7 @@
       <ul>
         <li><a href="#scriptDetails"><span>Description</span></a></li>
         <li><a href="#scriptSteps"><span>Steps</span></a></li>
-        <li><a href="#linkedEntities"><span>Linked entities</span></a></li>
+        <li><a href="#linkedRequirements"><span>Linked requirements</span></a></li>
       </ul>
       <div id="scriptDetails">
 
@@ -44,8 +44,18 @@
       <div id="scriptSteps">
         #{include 'Repository/steps.html' /}
       </div>
-      <div id="linkedEntities">
-        Linked entities
+      <div id="linkedRequirements">
+        <table class="display" id="requirementTable">
+          <thead>
+          <tr>
+            <th>Requirement ID</th>
+            <th>Requirement title</th>
+            <th>Tags</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
 
     </div>
@@ -97,6 +107,35 @@
         refreshTree('repositoryTree');
       }
     });
+
+    #{tabularasa.init tableId:'requirementTable'}
+    var requirementTableParameters = {
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
+        {"sName": "naturalId"},
+        {"sName": "name"},
+        {"sName": "tagNames"},
+        {"sName": "status"}
+      ],
+      "aoSorting": [
+        [1, "desc"]
+      ],
+      "sAjaxSource": "@{Repository.linkedRequirements()}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bScrollCollapse": true,
+      "bPaginate": false,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "bAutoWidth": false,
+      "bInfo": false,
+      "oLanguage": {
+        "sZeroRecords": "No linked requirements"
+      }
+    };
+    #{/tabularasa.init}
+
 
 
 

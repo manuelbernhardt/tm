@@ -48,24 +48,23 @@ public class Requirements extends TMController {
         ok();
     }
 
-
     public static void linkedScripts(String tableId,
                                      String sColumns,
                                      String sEcho,
                                      Long requirementId) {
         GenericModel.JPAQuery query = Requirement.find("select s from Requirement r, Script s where r.id = ? and s in elements(r.linkedScripts)", requirementId);
         List<Script> scripts = query.fetch();
-        long totalRecords = Script.count("project = ?", getActiveProject());
+        long totalRecords = scripts.size();
         TableController.renderJSON(scripts, Script.class, totalRecords, sColumns, sEcho);
     }
 
     public static void linkedInstances(String tableId,
-                                     String sColumns,
-                                     String sEcho,
-                                     Long requirementId) {
+                                       String sColumns,
+                                       String sEcho,
+                                       Long requirementId) {
         GenericModel.JPAQuery query = Requirement.find("select i from Requirement r, Script s, Instance i where r.id = ? and s in elements(r.linkedScripts) and i.script = s", requirementId);
         List<Instance> instances = query.fetch();
-        long totalRecords = Instance.count("project = ?", getActiveProject());
+        long totalRecords = instances.size();
         TableController.renderJSON(instances, Instance.class, totalRecords, sColumns, sEcho);
     }
 
@@ -73,10 +72,10 @@ public class Requirements extends TMController {
                                      String sColumns,
                                      String sEcho,
                                      Long requirementId) {
-        GenericModel.JPAQuery query = Requirement.find("select d from Requirement r, Script s, Instance i, Run run, Defect d where r.id = ? and s in elements(r.linkedScripts) and i.script = s and i.script = s and run.instance = i and run.defect = d", requirementId);
-        List<Defect> instances = query.fetch();
-        long totalRecords = Instance.count("project = ?", getActiveProject());
-        TableController.renderJSON(instances, Defect.class, totalRecords, sColumns, sEcho);
+        GenericModel.JPAQuery query = Requirement.find("select d from Requirement r, Script s, Instance i, Defect d where r.id = ? and s in elements(r.linkedScripts) and i.script = s and d in elements(i.defects)", requirementId);
+        List<Defect> defects = query.fetch();
+        long totalRecords = defects.size();
+        TableController.renderJSON(defects, Defect.class, totalRecords, sColumns, sEcho);
     }
 
     public static void edit(@Valid Requirement requirement) {

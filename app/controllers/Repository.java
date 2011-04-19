@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import controllers.tabularasa.TableController;
+import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Script;
@@ -108,15 +109,26 @@ public class Repository extends TMController {
         }
     }
 
-    public static void stepData(String tableId, Long scriptId,
-                                Integer iDisplayStart,
-                                Integer iDisplayLength,
-                                String sColumns,
-                                String sEcho,
-                                String sSearch) {
+    public static void steps(String tableId, Long scriptId,
+                             Integer iDisplayStart,
+                             Integer iDisplayLength,
+                             String sColumns,
+                             String sEcho,
+                             String sSearch) {
         GenericModel.JPAQuery query = ScriptStep.find("script.id = ? order by position", scriptId).from(iDisplayStart == null ? 0 : iDisplayStart);
         List<ScriptStep> steps = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = ScriptStep.count("script.id", scriptId);
         TableController.renderJSON(steps, ScriptStep.class, totalRecords, sColumns, sEcho);
     }
+
+    public static void linkedRequirements(String tableId,
+                                          String sColumns,
+                                          String sEcho,
+                                          Long scriptId) {
+        GenericModel.JPAQuery query = Requirement.find("select r from Requirement r, Script s, Instance i where i.id = ? and s in elements(r.linkedScripts) and i.script = s", scriptId);
+        List<Requirement> requirements = query.fetch();
+        long totalRecords = requirements.size();
+        TableController.renderJSON(requirements, Requirement.class, totalRecords, sColumns, sEcho);
+    }
+
 }
