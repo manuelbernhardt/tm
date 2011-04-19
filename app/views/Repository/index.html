@@ -24,9 +24,7 @@
       <div id="scriptDetails">
 
         <div class="hiddenOnLoad">
-
           #{ox.form action:@Repository.editScript(), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
-
             #{ox.field field:'script.name', label:'Name' /}
             #{ox.field field:'script.description', label:'Description' /}
             *{the following fields are necessary because play can't bind stuff automatically yet}*
@@ -37,18 +35,14 @@
             #{ox.field field:'script.project.projectCategory.account.id', hidden:true /}
 
             #{input.submit /}
-
           #{/ox.form}
-
         </div>
-
         <div class="shownOnLoad">
           No script selected.
         </div>
-        
       </div>
       <div id="scriptSteps">
-        #{include 'Repository/stepsNew.html' /}
+        #{include 'Repository/steps.html' /}
       </div>
       <div id="linkedEntities">
         Linked entities

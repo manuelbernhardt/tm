@@ -36,27 +36,6 @@ public class Repository extends TMController {
         renderFields(step, fields);
     }
 
-
-    public static void content(Long scriptNodeId) {
-        Script script = getScript(scriptNodeId);
-        render(script);
-    }
-
-    public static void scriptDetails(Long scriptId) {
-        Script script = Lookups.getTestScript(scriptId);
-        render(script);
-    }
-
-    public static void steps(Long scriptId) {
-        Script script = Lookups.getTestScript(scriptId);
-        render(script);
-    }
-
-    public static void linked(Long scriptId) {
-        Script script = Lookups.getTestScript(scriptId);
-        render(script);
-    }
-
     public static void editScript(@Valid Script script) {
         checkInAccount(script);
         if (Validation.hasErrors()) {
@@ -65,14 +44,6 @@ public class Repository extends TMController {
         }
         script.save();
         ok();
-    }
-
-    public static void stepDialog(Long scriptId, Long stepId) {
-        Script script = Lookups.getTestScript(scriptId);
-        // TODO do this right
-        ScriptStep step = (stepId != null ? ScriptStep.<ScriptStep>findById(stepId) : null);
-        render("Repository/stepForm.html", script, step);
-
     }
 
     public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
@@ -94,11 +65,11 @@ public class Repository extends TMController {
             scriptParameters.addAll(ParameterHandler.getScriptParameters(step.expectedResult, script));
 
             // create only the new ones
-            for(ScriptParam p : scriptParameters) {
-                if(ScriptParam.count("from ScriptParam p where p.name = ? and p.script = ?", p.name, script) == 0) {
+            for (ScriptParam p : scriptParameters) {
+                if (ScriptParam.count("from ScriptParam p where p.name = ? and p.script = ?", p.name, script) == 0) {
                     p.create();
                     // propagate creation of a new param to all instances of this script
-                    for(Instance i : script.getInstances()) {
+                    for (Instance i : script.getInstances()) {
                         InstanceParam ip = new InstanceParam();
                         ip.project = i.project;
                         ip.instance = i;
@@ -109,13 +80,13 @@ public class Repository extends TMController {
             }
 
             // for new steps only
-            if(step.id == null) {
+            if (step.id == null) {
                 step.project = TMController.getActiveProject();
                 step.script = script;
             }
 
             // what's your favourite position?
-            if(ScriptStep.count("script.id = ? and position = ?", script.getId(), step.position) > 0) {
+            if (ScriptStep.count("script.id = ? and position = ?", script.getId(), step.position) > 0) {
                 Query query = JPA.em().createQuery("update ScriptStep s set s.position = s.position + 1 where s.script.id = :scriptId and s.position > :position");
                 query.setParameter("scriptId", script.getId());
                 query.setParameter("position", step.position - 1);
@@ -123,7 +94,7 @@ public class Repository extends TMController {
             }
 
             // TODO is there not a "createOrUpdate"
-            if(step.id == null) {
+            if (step.id == null) {
                 boolean created = step.create();
                 if (!created) {
                     error();
@@ -148,18 +119,4 @@ public class Repository extends TMController {
         long totalRecords = ScriptStep.count("script.id", scriptId);
         TableController.renderJSON(steps, ScriptStep.class, totalRecords, sColumns, sEcho);
     }
-
-
-    private static Script getScript(Long scriptId) {
-        if (scriptId == null) {
-            return null;
-        }
-        Script script = Script.findById(scriptId);
-        if (script == null) {
-            return null;
-        }
-        checkInAccount(script);
-        return script;
-    }
-
 }

@@ -1,42 +1,43 @@
-#{if script == null}
-No script selected
-#{/if}
-#{else}
+<div class="shownOnLoad">
+  No script selected.
+</div>
+<div class="hiddenOnLoad">
+  <button id="createStepButton">Create step</button>
+  <button id="updateStepButton">Edit step</button>
 
-#{dialog id:'createStepDialog', title:'Create a step', loadAction:@Repository.stepDialog('scriptId': script.id),
-openDialogButtonText:'Script step', submitButtonText:'Create step', type:'create', width: 500, height: 500}
-<script type="text/javascript">
-  function createStepDialogSubmissionCallback() {
-    refreshTableContents("stepTable", false);
-  }
-</script>
-#{/dialog}
+  <table class="display" id="stepTable">
+    <thead>
+    <tr>
+      <th>Nr</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Expected results</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
+<div id="createStepDialog" title="Create a step">
+  #{ox.form id:'createStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep',
+  create:true}
+  #{ox.field field:'step.name', label:'Name' /}
+  #{ox.field field:'step.position', label:'Position' /}
+  #{ox.field field:'step.description', label:'Description' /}
+  #{ox.field field:'step.expectedResult', label:'Expected result' /}
+  #{/ox.form}
+</div>
 
-#{dialog id:'updateStepDialog', title:'Edit a step', loadAction:@Repository.stepDialog(':scriptId', ':stepId'),
-openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'update', width: 500, height: 500}
-<script type="text/javascript">
-  function updateStepDialogSubmissionCallback() {
-    refreshTableContents("stepTable", false);
-  }
-  function updateStepDialogLoadActionParams() {
-    return {scriptId: '${script.id}', stepId: getSelectedRowId($('#stepTable').dataTable()) }
-  }
-</script>
-#{/dialog}
-
-
-<table class="display" id="stepTable">
-  <thead>
-  <tr>
-    <th>Nr</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Expected results</th>
-  </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div id="updateStepDialog" title="Create a step">
+  #{ox.form id:'updateStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep'}
+  #{ox.field field:'step.name', label:'Name' /}
+  #{ox.field field:'step.position', label:'Position' /}
+  #{ox.field field:'step.description', label:'Description' /}
+  #{ox.field field:'step.expectedResult', label:'Expected result' /}
+  #{ox.field field:'step.id', hidden:true /}
+  <input type="hidden" name="scriptId">
+  #{/ox.form}
+</div>
 
 
 <script type="text/javascript">
@@ -52,12 +53,15 @@ openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'u
         {"sName": "descriptionHTML"},
         {"sName": "expectedResultHTML"}
       ],
-      "sAjaxSource": "@{Repository.stepData('scriptId': script.id)}",
+      "sAjaxSource": "@{Repository.stepData()}",
       "bProcessing": true,
       "bServerSide": true,
       "bFilter": false,
+      "bSort": false,
       "bLengthChange": false,
       "iDisplayLength": 10,
+      "bScrollCollapse": true,
+      "bAutoWidth": false,
       "bInfo": false,
       "oLanguage": {
         "sZeroRecords": "No steps defined yet"
@@ -65,15 +69,77 @@ openDialogButtonText:'Edit Script step', submitButtonText:'Update step', type:'u
     };
     #{/tabularasa.init}
 
-    <!-- when no step is selected, we do not want to make edition possible -->
-    $('#updateStepDialogOpenDialogButton').button('disable');
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
+    }
 
     handleRowSelection("stepTable", function() {
-      $('#updateStepDialogOpenDialogButton').button('enable');
+      $('#updateStepButton').button('enable');
+    });
+
+    $('#createStepButton').button({icons: {primary: 'ui-icon-plus'}});
+    $('#createStepButton').click(function() {
+      $('#createStepDialog').dialog('open');
+    });
+
+    $('#createStepForm').oxForm({
+      submissionCallback: function() {
+        refreshTableContents("stepTable", false);
+      }
+    });
+
+    $('#createStepDialog').dialog({
+      autoOpen: false,
+      width: 500,
+      height: 400,
+      draggable: true,
+      resizable: false,
+      modal: true,
+      buttons: {
+        "Create step": function() {
+          $('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')});
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+          $('#createStepForm').resetForm();
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $('#updateStepButton').button({icons: {primary: 'ui-icon-pencil'}});
+    $('#updateStepButton').button('disable');
+    $('#updateStepButton').click(function() {
+      $('#updateStepDialog').dialog('open');
+    });
+
+    $('#updateStepForm').oxForm({
+      submissionCallback: function() {
+        refreshTableContents("stepTable", false);
+      },
+      loadAction: '@{Repository.stepDetailsData()}'
     });
 
 
-
+    $('#updateStepDialog').dialog({
+      autoOpen: false,
+      width: 500,
+      height: 400,
+      draggable: true,
+      resizable: false,
+      modal: true,
+      open: function() {
+        $('#updateStepForm').oxForm('load', getSelectedRowId($('#stepTable').dataTable()), {scriptId: getSelectedNodeId('repositoryTree')});
+      },
+      buttons: {
+        "Update step": function() {
+          $('#updateStepForm').submit();
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
   });
 </script>
-#{/else}
