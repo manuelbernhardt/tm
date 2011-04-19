@@ -31,12 +31,22 @@
         </div>
         <div id="schedule">
           #{ox.form action:@Preparation.editSchedule(), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
-            #{ox.field field:'instance.responsible', label:'Assigned to' /}
-            #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
-            #{input.submit /}
+          #{ox.field field:'instance.responsible', label:'Assigned to' /}
+          #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
+          #{input.submit /}
           #{/ox.form}
         </div>
         <div id="testData">
+          <form id="instanceParamForm" method="POST" action="@{Preparation.editData()}" data-bind="submit: submitForm">
+            <table id="instanceParamTable" class="display">
+              <thead>
+              <th>Parameter</th>
+              <th>Value</th>
+              </thead>
+              <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+            </table>
+            <button type="submit" id="saveParamsButton">Save</button>
+          </form>
 
         </div>
       </div>
@@ -49,6 +59,13 @@
 
 
 #{set 'moreScripts'}
+<script type="text/html" id="paramRowTemplate">
+  <tr>
+    <td><span data-bind="text: name"></span></td>
+    <td><input id="paramValue" type="text" data-bind="name: id, value: value"></td>
+  </tr>
+</script>
+
 <script type="text/javascript">
 
   $(document).ready(function () {
@@ -60,28 +77,59 @@
       }
     });
 
+    var paramViewModel = {'submitForm': function(formElement) {
+      $.ajax({
+        url: $(formElement).attr('action'),
+        type: 'POST',
+        data: $.extend({instanceId: getSelectedNodeId('scriptCycleTree')}, {params: ko.mapping.toJSON(paramViewModel)}),
+        success: function() {
+          $('#saveParamsButton').button('disable');
+        },
+        error: function() {
+          alert("Something went wrong, please try again");
+        }
+      });
+      return false;
+    }};
+
     $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
     $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["instance", "default"])) {
         var instanceId = getNodeIdFromData(data);
-        $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
 
-          // tags
+        // tags
+        $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
           tokens.clearTokens();
           $(data).each(function() {
             tokens.addToken(this.id, this.name);
           });
-
-          // schedule
-          $('#scheduleForm').oxForm('load', instanceId);
         });
 
+        // schedule
+        $('#scheduleForm').oxForm('load', instanceId);
+
+        // instance parameters
+        $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
+          if (!ko.mapping.isMapped(paramViewModel)) {
+            $.extend(paramViewModel, ko.mapping.fromJS(data));
+            ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
+          } else {
+            ko.mapping.updateFromJS(paramViewModel, data);
+          }
+          // apply focus listeners for the save button
+          $('#instanceParamForm').find('input').each(function(index, value) {
+            $(value).focus(function() {
+              $('#saveParamsButton').button('enable');
+            });
+          });
+        });
       }
     });
 
     function getScriptQuery() {
       return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
     }
+
     function getInstanceQuery() {
       return {'instanceId': getSelectedNodeId('scriptCycleTree')};
     }
@@ -94,9 +142,11 @@
       allowCreation: true,
       creationText: "Create new tag"
     });
+
     function getTagSearchURL() {
-      return '@{Preparation.allTags()}?instanceId='+getSelectedNodeId('scriptCycleTree');
+      return '@{Preparation.allTags()}?instanceId=' + getSelectedNodeId('scriptCycleTree');
     }
+
     $('#tagsSaveButton').button();
     $('#tagsForm li.token-input-input-token').focus(function() {
       $('#tagsSaveButton').button('enable');
@@ -112,10 +162,11 @@
     });
 
     $('#scheduleForm').oxForm({
-      loadAction: '@{Preparation.loadScheduleData()}',
+      loadAction: '@{Preparation.scheduleData()}',
       submissionParameters: getInstanceQuery
     });
 
+    $('#saveParamsButton').button();
   });
 
 </script>

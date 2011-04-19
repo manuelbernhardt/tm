@@ -356,7 +356,7 @@ function removeDialogs() {
             })
 
         }
-    }
+    };
 
     $.fn.oxForm = function(method) {
 
@@ -398,14 +398,17 @@ $.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
         $.extend(formData, additionalData);
     }
     $.each(ko.toJS(viewModelData), function(key, value) {
-        if (key.startsWith('value_')) {
+        if (key.indexOf('value_')) {
             formData[key.substring(6).replace(/_/g, '.')] = value;
         }
         if (key == 'authenticityToken') {
             formData[key] = value;
         }
     });
+    return postJson(url, formData, callback);
+};
 
+function postJson(url, formData, callback) {
     return jQuery.ajax({
         type: 'POST',
         url: url,
@@ -415,13 +418,4 @@ $.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
     }).success(callback).error(function (jqhr, text) {
         alert(text);
     });
-}
-
-/**
- * Various global utilities
- */
-if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function (str) {
-        return !this.indexOf(str);
-    }
 }
