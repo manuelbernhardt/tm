@@ -9,7 +9,41 @@
     #{/box}
   </div>
   <div class="right_tree">
-    <div id="scriptDetails">No script selected</div>
+
+    #{box 'Test Script'}
+    <div class="left_tree">
+      #{include 'Preparation/instanceCreateDialog.html' /}
+      <div id="scriptCycleTree" class="tree"></div>
+    </div>
+    <div class="right_tree">
+
+      <div id="innerTabs">
+        <ul>
+          <li><a href="#tagsTab"><span>Tags</span></a></li>
+          <li><a href="#schedule"><span>Schedule</span></a></li>
+          <li><a href="#testData"><span>Test data</span></a></li>
+        </ul>
+        <div id="tagsTab">
+          <form id="tagsForm" action="@{Preparation.addTags()}" method="post">
+            <input name="tags" id="tags" type="text"/>
+            <button id="tagsSaveButton">Save</button>
+          </form>
+        </div>
+        <div id="schedule">
+          #{ox.form action:@Preparation.editSchedule(), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
+            #{ox.field field:'instance.responsible', label:'Assigned to' /}
+            #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
+            #{input.submit /}
+          #{/ox.form}
+        </div>
+        <div id="testData">
+
+        </div>
+      </div>
+
+    </div>
+    #{/box}
+
   </div>
 </div>
 
@@ -18,8 +52,70 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
+
     $("#repositoryTree").tree({types: repositoryTreeTypes});
-    #{tree.selectionListener treeId:"repositoryTree", type:"scriptNode", types:["default", 'script'], action:@Preparation.scriptContent(), targetId:"scriptDetails" /}
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["script", "default"])) {
+        jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+      }
+    });
+
+    $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+    $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["instance", "default"])) {
+        var instanceId = getNodeIdFromData(data);
+        $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
+
+          // tags
+          tokens.clearTokens();
+          $(data).each(function() {
+            tokens.addToken(this.id, this.name);
+          });
+
+          // schedule
+          $('#scheduleForm').oxForm('load', instanceId);
+        });
+
+      }
+    });
+
+    function getScriptQuery() {
+      return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
+    }
+    function getInstanceQuery() {
+      return {'instanceId': getSelectedNodeId('scriptCycleTree')};
+    }
+
+    $('#innerTabs').tabs();
+
+    var tokens = $('#tags').tokenInput(getTagSearchURL, {
+      preventDuplicates: true,
+      tokenValue: 'name',
+      allowCreation: true,
+      creationText: "Create new tag"
+    });
+    function getTagSearchURL() {
+      return '@{Preparation.allTags()}?instanceId='+getSelectedNodeId('scriptCycleTree');
+    }
+    $('#tagsSaveButton').button();
+    $('#tagsForm li.token-input-input-token').focus(function() {
+      $('#tagsSaveButton').button('enable');
+    });
+    $('#tagsForm').ajaxForm({
+      success: function() {
+        $('#tagsSaveButton').button('disable');
+      },
+      beforeSubmit: function(arr, $form, options) {
+        arr.push({name:'instanceId', value: getSelectedNodeId('scriptCycleTree')});
+        return true;
+      }
+    });
+
+    $('#scheduleForm').oxForm({
+      loadAction: '@{Preparation.loadScheduleData()}',
+      submissionParameters: getInstanceQuery
+    });
+
   });
 
 </script>

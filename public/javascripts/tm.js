@@ -276,7 +276,8 @@ function removeDialogs() {
                                         var oxFormData = $(formElement).data('oxForm');
                                         var additionalData = null;
                                         if (typeof oxFormData.submissionParameters !== 'undefined') {
-                                            additionalData = oxFormData.submissionParameters;
+                                            additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
+
                                         }
                                         $.postKnockoutJSJson($(formElement).attr('action'), this, additionalData, function(submitData) {
                                             var sCallback = oxFormData.submissionCallback;
@@ -332,14 +333,13 @@ function removeDialogs() {
                 }
                 $this.ajaxSubmit({
                     success: function() {
-
                         if (typeof oxFormData.submissionCallback == 'function') {
                             oxFormData.submissionCallback.call();
                         }
                         $('#' + $this.attr('id') + '_submit').button('disable');
                         $this.resetForm();
                     },
-                    data: oxFormData.submissionParameters
+                    data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters
                 });
             }
         },

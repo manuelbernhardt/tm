@@ -20,7 +20,7 @@
                             "id" : n.attr ? extractId(n.attr("id")) : -1,
                             "treeId" : treeId,
                             "type" : n.attr ? n.attr("rel") : "",
-                            "args" : settings.args ? settings.args : {}
+                            "args" : settings.args ? (typeof settings.args == 'function' ? settings.args.call() : settings.args) : {}
                         };
                     }
                 }

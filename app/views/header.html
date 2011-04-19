@@ -8,6 +8,7 @@
   <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/demo_table_jui.css'}">
   <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jstree/style.css'}">
   <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery.tagsinput.css'}">
+  <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/token-input.css'}">
   <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
   #{get 'moreStyles' /}
   <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
@@ -31,7 +32,7 @@
   <script src="@{'/public/javascripts/treeTypes.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jquery.hotkeys.js'}" type="text/javascript" charset="utf-8"></script>
   <script src="@{'/public/javascripts/jquery.selectbox.js'}" type="text/javascript" charset="utf-8"></script>
-
+  <script src="@{'/public/javascripts/jquery.tokeninput.js'}" type="text/javascript" charset="utf-8"></script>
   *{client-side routing for the tree}*
   <script type="text/javascript">
       var treeChildrenRouteAction = #{jsAction @TMTreeController.getChildren() /}

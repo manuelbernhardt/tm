@@ -20,7 +20,7 @@
       var $tree = jQuery.jstree._reference('#scriptCycleTree');
       var selectedNode = $tree.get_selected();
       if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
-        selectedNode.data("args", {scriptId: "${script.id}"});
+        selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
         $tree.delete_node(selectedNode);
         refreshCycleTree();
       }
@@ -47,7 +47,7 @@
 
           if (valid) {
             var name = selectedNode.text();
-            $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: "${script.id}"}}}, null, true);
+            $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: getSelectedNodeId('repositoryTree')}}}, null, true);
             refreshCycleTree();
             $(this).dialog("close");
           }

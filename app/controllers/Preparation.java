@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import models.tm.User;
@@ -10,6 +9,7 @@ import models.tm.test.InstanceParam;
 import models.tm.test.Script;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
+import play.data.validation.Valid;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -30,16 +30,14 @@ public class Preparation extends TMController {
         render(instance);
     }
 
-    public static void tags(Long instanceId) {
-        Instance instance = Lookups.getInstance(instanceId);
-        instance.refresh();
-        List<Tag> tags = instance.tags;
-        render(instance, tags);
-    }
-
     public static void schedule(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
         render(instance);
+    }
+
+    public static void loadScheduleData(Long baseObjectId, String[] fields) {
+        Instance instance = Lookups.getInstance(baseObjectId);
+        renderFields(instance, fields);
     }
 
     public static void testData(Long instanceId) {
@@ -47,9 +45,14 @@ public class Preparation extends TMController {
         render(instance);
     }
 
-    public static void allTags(Long instanceId, String term) {
+    public static void tags(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
-        Lookups.allTags(instance.project, term);
+        Lookups.tags(instance);
+    }
+
+    public static void allTags(Long instanceId, String q) {
+        Instance instance = Lookups.getInstance(instanceId);
+        Lookups.allTags(instance.project, q);
     }
 
     public static void addTags(Long instanceId, String tags) {
@@ -72,13 +75,15 @@ public class Preparation extends TMController {
         ok();
     }
 
-    public static void editSchedule(Long instanceId, Long responsibleId, Date plannedExecution) {
-        Instance instance = Lookups.getInstance(instanceId);
-        User responsible = User.<User>findById(responsibleId);
+    public static void editSchedule(Long instanceId, @Valid Instance instance) {
+        // here we sort of cheat; instead of making Play! happy and passing all the 1000 parameters necessary for it to properly bind the instance, we just copy over the
+        // parameters given by the "stale" instance.
+        Instance existing = Lookups.getInstance(instanceId);
+        User responsible = instance.responsible;
         checkInAccount(responsible);
-        instance.responsible = responsible;
-        instance.plannedExecution = plannedExecution;
-        instance.save();
+        existing.responsible = responsible;
+        existing.plannedExecution = instance.plannedExecution;
+        existing.save();
         ok();
     }
 

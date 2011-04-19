@@ -30,7 +30,11 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
     }
 
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
-        Script script = getScript(args.get("scriptId"));
+        String sId = args.get("scriptId");
+        if(sId.equals("-1")) {
+            return null;
+        }
+        Script script = getScript(sId);
         final CycleChildProducer cycleChildProducer = new CycleChildProducer(script);
 
         if (parentId == -1) {
