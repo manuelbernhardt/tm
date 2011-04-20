@@ -41,22 +41,12 @@ public class Execution extends TMController {
         render(releases, users);
     }
 
-    public static void content(Long instanceId) {
-        Instance instance = Lookups.getInstance(instanceId);
-        render(instance);
-    }
-
-    public static void runContent(Long runId) {
-        Run run = Lookups.getRun(runId);
-        render(run);
-    }
-
     public static void allUsers() {
         Lookups.allUsers();
     }
 
-    public static void allTags(String term) {
-        Lookups.allTags(getActiveProject(), term);
+    public static void allTags(String q) {
+        Lookups.allTags(getActiveProject(), q);
     }
 
 
@@ -158,6 +148,9 @@ public class Execution extends TMController {
 
     public static void createRunDialog(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
+        if (instance == null) {
+            notFound();
+        }
 
         // create the run
         Run run = new Run();

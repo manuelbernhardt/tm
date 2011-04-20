@@ -2,7 +2,7 @@
 #{set title:'Test execution' /}
 
 #{box 'Filters'}
-  #{include 'Execution/filter.html'/}
+#{include 'Execution/filter.html'/}
 #{/box}
 
 <br/>
@@ -29,45 +29,11 @@
 
       #{box 'Runs for test instance'}
 
-      #{dialog id:'createRunDialog', class:'box-content', height:600, width:800,
-      loadAction:@Execution.createRunDialog(':instanceId'), submitButtonText:'Save', openDialogButtonText:'Run Test
-      Instance'}
-      <script type="text/javascript">
-        function createRunDialogLoadActionParams() {
-          return { instanceId: getSelectedRowId($('#instanceTable').dataTable()) };
-        }
-        function createRunDialogLoadActionCallback() {
-          // refresh the data table that shows the runs, as we just created a new one
-          $("#runTable").dataTable().fnDraw(false);
-        }
-        function createRunDialogSubmissionCallback() {
-          refreshTableContents("runTable", false);
-          refreshTableContents("instanceTable", false);
-        }
-      </script>
-      #{/dialog}
+      <div id="createRunButton">Run Test Instance</div>
+      <div id="updateRunButton">Edit Test Run</div>
 
-      #{dialog id:'updateRunDialog', class:'box-content', height:600, width:800,
-      loadAction:@Execution.updateRunDialog(':runId'), submitButtonText:'Save', openDialogButtonText:'Edit Test Run',
-      openButtonDisabled:true}
-      <script type="text/javascript">
-        function updateRunDialogLoadActionParams() {
-          return { runId: getSelectedRowId($('#runTable').dataTable()) };
-        }
-        function updateRunDialogLoadActionCallback() {
-          // refresh the data table that shows the runs as we may have changed some data
-          $("#runTable").dataTable().fnDraw(false);
-        }
-        function updateRunDialogSubmissionCallback() {
-          $('#runForm').ajaxSubmit(function() {
-            refreshTableContents("runStepTable", false);
-            refreshTableContents("runTable", false);
-            refreshTableContents("instanceTable", false);
-          });
-        }
-      </script>
-      #{/dialog}
-
+      <div id="createRunDialog" title="Run Test Instance"></div>
+      <div id="updateRunDialog" title="Update Test Run"></div>
 
       <table class="display" id="runTable">
         <thead>
@@ -126,7 +92,7 @@
         "sZeroRecords": "No test instances found"
       },
       "fnDrawCallback": function() {
-        $('#runTable').dataTable().fnDraw(true);
+        refreshTableContents('runTable', true);
       }
     };
     #{/tabularasa.init}
@@ -154,7 +120,7 @@
         "sZeroRecords": "No runs performed yet"
       },
       "fnDrawCallback": function() {
-        $('#runStepTable').dataTable().fnDraw(true);
+        refreshTableContents('runStepTable', true);
       }
     };
     #{/tabularasa.init}
@@ -202,15 +168,66 @@
     }
 
     handleRowSelection('instanceTable', function(selectedRowId) {
-      removeDialogs();
-      refreshTableContents('runTable', false);
+      $('#createRunButton').button('enable');
+      refreshTableContents('runTable', true);
     });
 
     handleRowSelection('runTable', function(selectedRowId) {
+      $('#updateRunButton').button('enable');
       $('#runStepTable').dataTable().fnDraw(true);
-      $('#updateRunDialogOpenDialogButton').button("enable");
     });
 
+    $('#createRunButton').button({disabled: true}).click(function() {
+      $('#createRunDialog').dialog('open')
+    });
+
+    $('#createRunDialog').dialog({
+      autoOpen: false,
+      width: 800,
+      height: 'auto',
+      draggable: true,
+      resizable: false,
+      modal: true,
+      open: function() {
+        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) });
+      },
+      buttons: {
+        "Save": function() {
+          $('#runForm').ajaxSubmit();
+          refreshTableContents('instanceTable');
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $('#updateRunButton').button({disabled: true}).click(function() {
+      $('#updateRunDialog').dialog('open')
+    });
+
+    $('#updateRunDialog').dialog({
+      autoOpen: false,
+      width: 800,
+      height: 'auto',
+      draggable: true,
+      resizable: false,
+      modal: true,
+      open: function() {
+        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId($('#runTable').dataTable()) });
+      },
+      buttons: {
+        "Save": function() {
+          $('#runForm').ajaxSubmit();
+          refreshTableContents('instanceTable', false);
+          $(this).dialog("close");
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
+    });
 
 
   });

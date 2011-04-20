@@ -50,16 +50,10 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $('#filter').button().click(function(event) {
-      event.preventDefault();
-      refreshTableContents("instanceTable", false);
-    });
-
-    // auto-filter, doesn't yet work for tags
-    $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
-      $(el).change(function() {
-        refreshTableContents("instanceTable", false);
-      });
+    $('#tags').tokenInput('@{Execution.allTags()}', {
+      preventDuplicates: true,
+      tokenValue: 'name',
+      allowCreation: false
     });
 
     $('#dateFrom, #dateTo').datepicker({
@@ -68,12 +62,21 @@
       gotoCurrent: true
     });
 
-    $('#tags').tagsInput({
-      'autocomplete_url': "@{Execution.allTags()}",
-      'autocomplete': {minLength: 0},
-      'height':'30px',
-      'width':'400px',
-      'defaultText':'add a tag'
+    $('#filter').button().click(function(event) {
+      event.preventDefault();
+      refreshTableContents("instanceTable", false);
+    });
+
+    // auto-filter
+    $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
+      $(el).change(function() {
+        refreshTableContents("instanceTable", false);
+      });
+    });
+    $('#instanceFilterForm ul.token-input-list').focus(function() {
+      refreshTableContents("instanceTable", false);
+    }).blur(function() {
+      refreshTableContents("instanceTable", false);
     });
   });
 </script>

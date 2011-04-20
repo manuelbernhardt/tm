@@ -40,6 +40,11 @@ function refreshTableContents(tableId, completeRefresh) {
             "sName": "user"
         });
     }
+    if(completeRefresh) {
+        $(dataTable.fnSettings().aoData).each(function () {
+            $(this.nTr).removeClass('row_selected');
+        });
+    }
     dataTable.fnDraw(completeRefresh);
 }
 

@@ -39,13 +39,6 @@ No test run selected
 <script type="text/javascript">
   $(document).ready(function () {
 
-    <!-- this is called by the createRun dialog in the content.html template when a created dialog is cancelled -->
-    function createRunDialogCancelCallback() {
-      // remove the newly created run
-      var deleteAction = #{jsAction @Execution.deleteRun(':runId') /}
-      $.post(deleteAction({runId: '${run.id}'}));
-    }
-
     $('.editParam').editable('@{Execution.updateParameter("runId": run.id)}', {
       callback : function(value, settings) {
         // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.

@@ -170,16 +170,12 @@
     }
 
     // tags
-    var tokens = $('#tags').tokenInput(getTagSearchURL, {
+    $('#tags').tokenInput('@{Preparation.allTags()}', {
       preventDuplicates: true,
       tokenValue: 'name',
       allowCreation: true,
       creationText: "Create new tag"
     });
-
-    function getTagSearchURL() {
-      return '@{Preparation.allTags()}?instanceId=' + getSelectedNodeId('scriptCycleTree');
-    }
 
     $('#tagsSaveButton').button();
     $('#tagsForm li.token-input-input-token').focus(function() {
