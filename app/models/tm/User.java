@@ -9,13 +9,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
 
+import controllers.TMController;
 import models.account.Account;
-import models.deadbolt.RoleHolder;
 import models.account.AccountEntity;
 import models.account.Auth;
+import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
-import play.data.binding.NoBinding;
 import play.data.validation.Valid;
 
 /**
@@ -73,7 +73,7 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<User> listByAccount(Long accountId) {
-        return User.find("from User u where u.authentication.account.id = ?", accountId).fetch();
+        return User.find("from User u where u.authentication.active = true and u.authentication.account.id = ?", accountId).fetch();
     }
 
     public static List<User> listByProject(Long projectId) {
@@ -100,5 +100,13 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
             }
         }
         return res;
+    }
+
+    public static List<User> listByActiveProject() {
+        return User.find("from User u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<User>fetch();
+    }
+
+    public static User findById(Long id) {
+        return User.find("from User u where u.authentication.active = true and u.id = ?", id).<User>first();
     }
 }

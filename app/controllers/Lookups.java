@@ -94,7 +94,7 @@ public class Lookups extends TMController {
 
     @Util
     public static void allUsers() {
-        List<User> users = User.find("from User u where u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<User>fetch();
+        List<User> users = User.listByActiveProject();
         Controller.renderJSON(users, userSerializer);
     }
 
