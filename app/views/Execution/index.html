@@ -72,6 +72,10 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
+    // temporary - hopefully
+    var fullDrawInstanceTable = true;
+    var fullDrawRunTable = true;
+
     #{tabularasa.init tableId:'instanceTable'}
     var instanceTableParameters = {
       "aoColumns": [
@@ -92,7 +96,8 @@
         "sZeroRecords": "No test instances found"
       },
       "fnDrawCallback": function() {
-        refreshTableContents('runTable', true);
+        refreshTableContents('runStepTable', fullDrawInstanceTable);
+        fullDrawInstanceTable = true;
       }
     };
     #{/tabularasa.init}
@@ -120,7 +125,8 @@
         "sZeroRecords": "No runs performed yet"
       },
       "fnDrawCallback": function() {
-        refreshTableContents('runStepTable', true);
+        refreshTableContents('runStepTable', fullDrawRunTable);
+        fullDrawRunTable = true;
       }
     };
     #{/tabularasa.init}
@@ -169,12 +175,13 @@
 
     handleRowSelection('instanceTable', function(selectedRowId) {
       $('#createRunButton').button('enable');
+      fullDrawRunTable = true;
       refreshTableContents('runTable', true);
     });
 
     handleRowSelection('runTable', function(selectedRowId) {
       $('#updateRunButton').button('enable');
-      $('#runStepTable').dataTable().fnDraw(true);
+      refreshTableContents('runStepTable', true);
     });
 
     $('#createRunButton').button({disabled: true}).click(function() {
@@ -194,7 +201,8 @@
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit();
-          refreshTableContents('instanceTable');
+          fullDrawInstanceTable = false;
+          refreshTableContents('instanceTable', false);
           $(this).dialog("close");
         },
         "Cancel": function() {
@@ -220,6 +228,7 @@
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit();
+          fullDrawInstanceTable = false;
           refreshTableContents('instanceTable', false);
           $(this).dialog("close");
         },

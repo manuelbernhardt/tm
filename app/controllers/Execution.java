@@ -212,10 +212,8 @@ public class Execution extends TMController {
             if (param.startsWith(ACTUAL_RESULT)) {
                 String id = param.substring(ACTUAL_RESULT.length());
                 RunStep step = getRunStep(id, run);
-                if (paramValue != null && paramValue.length() > 0) {
-                    step.actualResult = paramValue;
-                    step.save();
-                }
+                step.actualResult = paramValue;
+                step.save();
             } else if (param.startsWith(STATUS)) {
                 String id = param.substring(STATUS.length());
                 RunStep step = getRunStep(id, run);
