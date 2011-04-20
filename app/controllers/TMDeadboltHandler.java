@@ -36,7 +36,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
 
         String userName = Secure.Security.connected();
 
-        Auth a = Auth.find("byEmail", userName).first();
+        Auth a = Auth.find("byEmailAndActive", userName, true).first();
         crh.addRoles(a.getRoles());
 
         User u = User.find("byAuthentication", a).first();

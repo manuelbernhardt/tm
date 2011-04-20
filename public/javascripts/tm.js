@@ -53,10 +53,13 @@ function refreshTableContents(tableId, completeRefresh) {
  * @param dataTable DataTable instance
  */
 function getSelectedRowId(dataTable) {
+    return getSelectedRowColumn(dataTable, 0);
+}
+
+function getSelectedRowColumn(dataTable, columnIndex) {
     var anSelected = fnGetSelected(dataTable);
     var tr = anSelected[0];
-    var selectedObject = $($(tr).children('td')[0]).text();
-    return selectedObject;
+    return $($(tr).children('td')[columnIndex]).text();
 }
 
 /**

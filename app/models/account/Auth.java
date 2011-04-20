@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import play.data.binding.NoBinding;
 import play.data.validation.Email;
 import play.data.validation.Password;
 import play.data.validation.Required;
@@ -46,7 +47,8 @@ public class Auth extends TemporalModel implements RoleHolder {
     @Column(nullable = false)
     public String password;
 
-    public Boolean active;
+    @NoBinding
+    public Boolean active = true;
 
     public String getFullName() {
         return firstName + " " + lastName;

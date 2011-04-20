@@ -6,16 +6,22 @@
 
     #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.User',
     openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
-      <script type="text/javascript">
-        function newUserDialogSubmissionCallback() {
-          refreshTableContents("tab", false);
-        }
-      </script>
-      #{input.field field:'user.authentication.firstName', label:'First Name' /}
-      #{input.field field:'user.authentication.lastName', label:'Last Name' /}
-      #{input.field field:'user.authentication.email', label:'Email' /}
-      #{input.field field:'user.authentication.password', label:'Password' /}
+    <script type="text/javascript">
+      function newUserDialogSubmissionCallback() {
+        refreshTableContents("tab", false);
+      }
+    </script>
+    #{input.field field:'user.authentication.firstName', label:'First Name' /}
+    #{input.field field:'user.authentication.lastName', label:'Last Name' /}
+    #{input.field field:'user.authentication.email', label:'Email' /}
+    #{input.field field:'user.authentication.password', label:'Password' /}
     #{/formDialog}
+
+    <button id="removeUserButton">Remove</button>
+
+    <div id="dialog-confirm" title="Confirm user removal">
+      <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="confirmationMessage"></span></p>
+    </div>
 
     <table class="display" id="tab">
       <thead>
@@ -67,18 +73,6 @@
       "bInfo": false,
       "oLanguage": {
         "sZeroRecords": "No users defined yet"
-      },
-      // select a user if one was selected server-side (via the controller)
-      "fnDrawCallback": function() {
-        if ('${selectedUser}'.length > 0) {
-          $(tabDataTable.fnSettings().aoData).each(function () {
-            var nTr = $(this.nTr)[0];
-            if ($($(nTr).children('td')[0]).text() == '${selectedUser}') {
-              $(this.nTr).addClass('row_selected');
-            }
-          });
-          reloadTabs(${selectedUser});
-        }
       }
     };
     #{/tabularasa.init}
@@ -88,7 +82,36 @@
     function reloadTabs(selectedUser) {
       var links = ['@{admin.Users.userDetails()}', '@{admin.Users.projects()}', '@{admin.Users.account()}'];
       selectTab(links, selectedUser, 'user', $('#innerTabs'));
+      $("#removeUserButton").button('enable');
     }
+
+    $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-minus'}}).click(function () {
+      $("#dialog-confirm").dialog('open');
+    });
+
+    $("#dialog-confirm").dialog({
+      autoOpen: false,
+      resizable: false,
+      width:300,
+      height: 'auto',
+      modal: true,
+      open: function() {
+        $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
+      },
+      buttons: {
+        "Remove the user": function() {
+          $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId($('#tab').dataTable())}, function() {
+            refreshTableContents('tab', false);
+            $("#removeUserButton").button('disable');
+          });
+          $(this).dialog("close");
+        },
+        Cancel: function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
   });
 
 </script>

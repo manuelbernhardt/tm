@@ -35,8 +35,8 @@ public class TMController extends Controller {
     @Before
     public static void setConnectedUser() {
         if (Security.isConnected()) {
-            // FIXME search by account, too!
-            Auth a = Auth.find("byEmail", Security.connected()).first();
+            // TODO FIXME search by account, too!
+            Auth a = Auth.find("byEmailAndActive", Security.connected(), true).<Auth>first();
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
 
@@ -49,8 +49,8 @@ public class TMController extends Controller {
 
     public static User getConnectedUser() {
         if (Security.isConnected()) {
-            // FIXME search by account, too!
-            User user = User.find("from User u where u.authentication.email = ?", Security.connected()).first();
+            // TODO FIXME search by account, too!
+            User user = User.find("from User u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).<User>first();
             return user;
         } else {
             // TODO test this!

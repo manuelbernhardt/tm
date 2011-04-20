@@ -30,10 +30,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void index() {
-        List<Auth> users = Auth.findAll();
-        // this is how we'd select a user by default
-//        Long selectedUser = 2l;
-//        render(users, selectedUser);
+        List<Auth> users = Auth.find("active = true").<Auth>fetch();
         render(users);
     }
 
@@ -88,6 +85,19 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void removeUser(Long userId) {
+        Auth u = Auth.findById(userId);
+        if(u != null) {
+            u.active = false;
+            u.save();
+        } else {
+            // TODO logging
+            notFound();
+        }
+        ok();
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void edit(User user) {
         if (Validation.hasErrors()) {
             // TODO test if this works
@@ -109,9 +119,9 @@ public class Users extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             String sLike = "%" + sSearch + "%";
-            query = User.find("from User u where u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
+            query = User.find("from User u where u.authentication.active = true and u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
         } else {
-            query = User.all().from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = User.find("authentication.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<User> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = User.count();
