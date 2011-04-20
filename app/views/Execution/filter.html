@@ -1,0 +1,79 @@
+<div class="container">
+  <form id="instanceFilterForm" action="index.html">
+    <div class="left_column">
+      <div class="field">
+        <label for="cycle">Test cycle</label>
+        <select id="cycle" name="cycle">
+          <option value="">Select a cycle</option>
+          #{list items:releases, as:'release'}
+          <optgroup label="${release.name}">
+            #{list items:release.getTestCycles(), as:'cycle'}
+            <option value="${cycle.id}">${cycle.name}</option>
+            #{/list}
+          </optgroup>
+          #{/list}
+        </select>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="">Select a status</option>
+          #{list items:models.tm.test.ExecutionStatus.values(), as:'s'}
+          <option value="${s.getPosition()}">${s}</option>
+          #{/list}
+        </select>
+      </div>
+      <div class="field">
+        <label for="tags">Tags</label>
+        <input id="tags" name="tags" type="text">
+      </div>
+    </div>
+    <div class="right_column">
+      <div class="field">
+        <label for="responsible">Assigned to</label>
+        <select id="responsible" name="responsible">
+          <option value="">Select a person</option>
+          #{list items:users, as:'user'}
+          <option value="${user.getId()}">${user.getFullName()}</option>
+          #{/list}
+        </select>
+      </div>
+      <div class="field">
+        <label for="dateFrom">Planned execution between</label>
+        <input id="dateFrom" type="text" name="dateFrom">
+        <input id="dateTo" type="text" name="dateTo">
+      </div>
+      <button id="filter">Filter</button>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#filter').button().click(function(event) {
+      event.preventDefault();
+      refreshTableContents("instanceTable", false);
+    });
+
+    // auto-filter, doesn't yet work for tags
+    $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
+      $(el).change(function() {
+        refreshTableContents("instanceTable", false);
+      });
+    });
+
+    $('#dateFrom, #dateTo').datepicker({
+      numberOfMonths: 3,
+      showButtonPanel: true,
+      gotoCurrent: true
+    });
+
+    $('#tags').tagsInput({
+      'autocomplete_url': "@{Execution.allTags()}",
+      'autocomplete': {minLength: 0},
+      'height':'30px',
+      'width':'400px',
+      'defaultText':'add a tag'
+    });
+  });
+</script>

@@ -2,56 +2,8 @@
 #{set title:'Test execution' /}
 
 #{box 'Filters'}
-<div class="container">
-  <form id="instanceFilterForm" action="index.html">
-    <div class="left_column">
-      <div class="field">
-        <label for="cycle">Test cycle</label>
-        <select id="cycle" name="cycle">
-          <option value="">Select a cycle</option>
-          #{list items:releases, as:'release'}
-          <optgroup label="${release.name}">
-            #{list items:release.getTestCycles(), as:'cycle'}
-            <option value="${cycle.id}">${cycle.name}</option>
-            #{/list}
-          </optgroup>
-          #{/list}
-        </select>
-      </div>
-      <div class="field">
-        <label for="status">Status</label>
-        <select id="status" name="status">
-          <option value="">Select a status</option>
-          #{list items:models.tm.test.ExecutionStatus.values(), as:'s'}
-          <option value="${s.getPosition()}">${s}</option>
-          #{/list}
-        </select>
-      </div>
-      <div class="field">
-        <label for="tags">Tags</label>
-        <input id="tags" name="tags" type="text">
-      </div>
-    </div>
-    <div class="right_column">
-      <div class="field">
-        <label for="responsible">Assigned to</label>
-        <select id="responsible" name="responsible">
-          <option value="">Select a person</option>
-          #{list items:users, as:'user'}
-          <option value="${user.getId()}">${user.getFullName()}</option>
-          #{/list}
-        </select>
-      </div>
-      <div class="field">
-        <label for="dateFrom">Planned execution between</label>
-        <input id="dateFrom" type="text" name="dateFrom">
-        <input id="dateTo" type="text" name="dateTo">
-      </div>
-      <button id="filter">Filter</button>
-    </div>
-  </form>
-  #{/box}
-</div>
+  #{include 'Execution/filter.html'/}
+#{/box}
 
 <br/>
 
@@ -73,7 +25,79 @@
   </div>
 
   <div class="right_table">
-    <div id="content">No test instance selected</div>
+    <div id="content">
+
+      #{box 'Runs for test instance'}
+
+      #{dialog id:'createRunDialog', class:'box-content', height:600, width:800,
+      loadAction:@Execution.createRunDialog(':instanceId'), submitButtonText:'Save', openDialogButtonText:'Run Test
+      Instance'}
+      <script type="text/javascript">
+        function createRunDialogLoadActionParams() {
+          return { instanceId: getSelectedRowId($('#instanceTable').dataTable()) };
+        }
+        function createRunDialogLoadActionCallback() {
+          // refresh the data table that shows the runs, as we just created a new one
+          $("#runTable").dataTable().fnDraw(false);
+        }
+        function createRunDialogSubmissionCallback() {
+          refreshTableContents("runTable", false);
+          refreshTableContents("instanceTable", false);
+        }
+      </script>
+      #{/dialog}
+
+      #{dialog id:'updateRunDialog', class:'box-content', height:600, width:800,
+      loadAction:@Execution.updateRunDialog(':runId'), submitButtonText:'Save', openDialogButtonText:'Edit Test Run',
+      openButtonDisabled:true}
+      <script type="text/javascript">
+        function updateRunDialogLoadActionParams() {
+          return { runId: getSelectedRowId($('#runTable').dataTable()) };
+        }
+        function updateRunDialogLoadActionCallback() {
+          // refresh the data table that shows the runs as we may have changed some data
+          $("#runTable").dataTable().fnDraw(false);
+        }
+        function updateRunDialogSubmissionCallback() {
+          $('#runForm').ajaxSubmit(function() {
+            refreshTableContents("runStepTable", false);
+            refreshTableContents("runTable", false);
+            refreshTableContents("instanceTable", false);
+          });
+        }
+      </script>
+      #{/dialog}
+
+
+      <table class="display" id="runTable">
+        <thead>
+        <tr>
+          <th>Execution date</th>
+          <th>Tester</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="runContent">
+        <table class="display" id="runStepTable">
+          <thead>
+          <tr>
+            <th>Nr</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Expected results</th>
+            <th>Actual results</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      #{/box}
+
+    </div>
   </div>
 
 </div>
@@ -81,33 +105,6 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-
-    $('#filter').button().click(function(event) {
-      event.preventDefault();
-      refreshTableContents("instanceTable", false);
-    });
-
-    // auto-filter, doesn't yet work for tags
-    $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
-      $(el).change(function() {
-        refreshTableContents("instanceTable", false);
-      });
-    });
-
-    $('#dateFrom, #dateTo').datepicker({
-      numberOfMonths: 3,
-      showButtonPanel: true,
-      gotoCurrent: true
-    });
-
-    $('#tags').tagsInput({
-      'autocomplete_url': "@{Execution.allTags()}",
-      'autocomplete': {minLength: 0},
-      'height':'30px',
-      'width':'400px',
-      'defaultText':'add a tag'
-    });
-
 
     #{tabularasa.init tableId:'instanceTable'}
     var instanceTableParameters = {
@@ -127,6 +124,62 @@
       "bInfo": false,
       "oLanguage": {
         "sZeroRecords": "No test instances found"
+      },
+      "fnDrawCallback": function() {
+        $('#runTable').dataTable().fnDraw(true);
+      }
+    };
+    #{/tabularasa.init}
+
+    #{tabularasa.init tableId:'runTable'}
+    var runTableParameters = {
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone" },
+        {"sName": "executionDate"},
+        {"sName": "tester.fullName"},
+        {"sName": "executionStatus"}
+      ],
+      "aoSorting": [
+        [0, "desc"]
+      ],
+      "sAjaxSource": "@{Execution.runs()}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "oLanguage": {
+        "sZeroRecords": "No runs performed yet"
+      },
+      "fnDrawCallback": function() {
+        $('#runStepTable').dataTable().fnDraw(true);
+      }
+    };
+    #{/tabularasa.init}
+
+    #{tabularasa.init tableId:'runStepTable'}
+    var runStepTableParameters = {
+      "aoColumns": [
+        {"sName": "id", "sClass": "sNone" },
+        {"sName": "position"},
+        {"sName": "name"},
+        {"sName": "descriptionHTML"},
+        {"sName": "expectedResultHTML"},
+        {"sName": "actualResult"},
+        {"sName": "executionStatus"}
+      ],
+      "sAjaxSource": "@{Execution.runSteps()}",
+      "bProcessing": true,
+      "bServerSide": true,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "oLanguage": {
+        "sZeroRecords": "No run steps defined"
       }
     };
     #{/tabularasa.init}
@@ -140,15 +193,25 @@
         parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
         parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
       }
+      if (tableId == 'runTable') {
+        parameters.push({"name": "instanceId", "value": getSelectedRowId($('#instanceTable').dataTable())});
+      }
+      if (tableId == 'runStepTable') {
+        parameters.push({"name": "runId", "value": getSelectedRowId($('#runTable').dataTable())});
+      }
     }
 
     handleRowSelection('instanceTable', function(selectedRowId) {
       removeDialogs();
-      $.get('@{Execution.content()}', { instanceId: selectedRowId }, function(data) {
-        $('#content').html(data);
-      });
-
+      refreshTableContents('runTable', false);
     });
+
+    handleRowSelection('runTable', function(selectedRowId) {
+      $('#runStepTable').dataTable().fnDraw(true);
+      $('#updateRunDialogOpenDialogButton').button("enable");
+    });
+
+
 
   });
 </script>
