@@ -7,6 +7,7 @@ import models.tm.Defect;
 import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.Script;
+import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
@@ -22,14 +23,18 @@ public class Requirements extends TMController {
         render();
     }
 
-    public static void requirementDetails(Long requirementId) {
-        Requirement requirement = Lookups.getRequirement(requirementId);
-        render(requirement);
-    }
-
     public static void requirementsDetailsData(Long baseObjectId, String[] fields) {
         Object base = Lookups.getRequirement(baseObjectId);
         renderFields(base, fields);
+    }
+
+    public static void tags(Long requirementId) {
+        Requirement requirement = Lookups.getRequirement(requirementId);
+        Lookups.tags(requirement.tags);
+    }
+
+    public static void allTags(String q) {
+        Lookups.allTags(getActiveProject(), Tag.TagType.REQUIREMENT, q);
     }
 
     public static void linkScript(Long requirementId, Long scriptId) {
@@ -78,11 +83,16 @@ public class Requirements extends TMController {
         TableController.renderJSON(defects, Defect.class, totalRecords, sColumns, sEcho);
     }
 
-    public static void edit(@Valid Requirement requirement) {
+    public static void edit(@Valid Requirement requirement, String tags) {
         checkInAccount(requirement);
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
+        }
+
+        requirement.tags = getTags(tags, Tag.TagType.REQUIREMENT);
+        if(requirement.tags.isEmpty()) {
+            requirement.tags.clear();
         }
         requirement.save();
         ok();

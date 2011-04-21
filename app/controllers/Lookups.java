@@ -99,14 +99,13 @@ public class Lookups extends TMController {
     }
 
     @Util
-    public static void tags(Instance instance) {
-        List<Tag> tags = instance.tags;
+    public static void tags(List<Tag> tags) {
         renderJSON(tags, tagSerializer);
     }
 
     @Util
     public static void allTags(Project project, Tag.TagType type, String term) {
-        List<Tag> tags = Tag.find("from Tag t where t.project = ? and t.name like ?", project, term + "%").fetch();
+        List<Tag> tags = Tag.find("from Tag t where t.type = ? and t.project = ? and lower(t.name) like ?", type, project, term + "%").fetch();
         renderJSON(tags, tagSerializer);
     }
 

@@ -17,6 +17,7 @@ import models.account.AccountEntity;
 import models.account.Auth;
 import models.tm.Project;
 import models.tm.User;
+import models.tm.test.Tag;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -98,6 +99,35 @@ public class TMController extends Controller {
         }
     }
 
+    /**
+     * Returns a list of Tag instances given a comma-separated list of strings (tag names)
+     *
+     * @param tags a comma-separated list of strings
+     * @param type the type of tags
+     * @return a list of {@link Tag} instances
+     */
+    @Util
+    public static List<Tag> getTags(String tags, Tag.TagType type) {
+        if (tags == null) {
+            return null;
+        }
+        List<Tag> tagList = new ArrayList<Tag>();
+        for (String name : tags.split(",")) {
+            Tag t = Tag.find("from Tag t where t.name = ? and t.type = '" + type.name() + "' and t.project = ?", name.trim(), getActiveProject()).first();
+            if (t == null && name.trim().length() > 0) {
+                t = new Tag();
+                t.name = name.trim();
+                t.project = getActiveProject();
+                t.type = type;
+                t.create();
+            }
+            if (!tagList.contains(t)) {
+                tagList.add(t);
+            }
+        }
+        return tagList;
+    }
+
     private final static DateFormat df = new SimpleDateFormat(play.Play.configuration.getProperty("date.format"));
 
     /**
@@ -139,7 +169,7 @@ public class TMController extends Controller {
                     // since we did resolve the required field paths beforehand, we can safely rely on our parent being already resolved
                     String parent = s.substring(0, s.lastIndexOf("."));
                     Object parentValue = values.get(parent);
-                    if(parentValue != null) {
+                    if (parentValue != null) {
                         values.put(s, getValue(parentValue, s.substring(parent.length() + 1, s.length())));
                     } else {
                         // "nullable pointer"... we just ignore it in this case
@@ -152,8 +182,8 @@ public class TMController extends Controller {
         for (String r : sortedFields) {
             Object val = values.get(r);
             // Gson doesn't help here, for some reason it ignores the data format setting in lists...
-            if(val instanceof Date) {
-                val = df.format((Date)val);
+            if (val instanceof Date) {
+                val = df.format((Date) val);
             }
             result.put("value_" + r.replaceAll("\\.", "_"), val == null ? "" : val);
         }

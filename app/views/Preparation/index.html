@@ -170,7 +170,7 @@
     }
 
     // tags
-    $('#tags').tokenInput('@{Preparation.allTags()}', {
+    var tokens = $('#tags').tokenInput('@{Preparation.allTags()}', {
       preventDuplicates: true,
       tokenValue: 'name',
       allowCreation: true,

@@ -23,7 +23,10 @@
           loadAction:@Requirements.requirementsDetailsData()}
           #{ox.field field:'requirement.name', label:'Name' /}
           #{ox.field field:'requirement.description', label:'Description' /}
-          #{ox.field field:'requirement.type', label:'Type' /}
+          <div class="field">
+            <label for="tags">Tags</label>
+            <input name="tags" id="tags" type="text"/>
+          </div>
           *{the following fields are necessary because play can't bind stuff automatically yet}*
           #{ox.field field:'requirement.id', hidden:true /}
           #{ox.field field:'requirement.type.id', hidden:true /}
@@ -63,9 +66,21 @@
 
     $('#requirementForm').oxForm({
       loadAction: '@{Requirements.requirementsDetailsData()}',
+      // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
+      submissionParameters: function() {
+        return {tags: $('#tags').val() };
+      },
       submissionCallback: function() {
         refreshTree('requirementTree');
       }
+    });
+
+    // tags
+    var tokens = $('#tags').tokenInput('@{Requirements.allTags()}', {
+      preventDuplicates: true,
+      tokenValue: 'name',
+      allowCreation: true,
+      creationText: "Create new tag"
     });
 
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
@@ -73,7 +88,18 @@
         $('.shownOnLoad').hide();
         $('.hiddenOnLoad').show();
 
-        $('#requirementForm').oxForm('load', getSelectedNodeId('requirementTree'));
+        var requirementId = getSelectedNodeId('requirementTree');
+        $('#requirementForm').oxForm('load', requirementId);
+
+        // tags data loading
+        $.getJSON('@{Requirements.tags()}', {requirementId: requirementId}, function(data) {
+          tokens.clearTokens();
+          $(data).each(function() {
+            tokens.addToken(this.id, this.name);
+          });
+        });
+
+
         reloadTables();
       }
     });

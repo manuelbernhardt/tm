@@ -2,7 +2,8 @@ package models.tm.test;
 
 /**
  * Execution Status for {@link Instance}, {@link Run} and {@link RunStep}.
-` *
+ * ` *
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public enum ExecutionStatus {
@@ -38,8 +39,8 @@ public enum ExecutionStatus {
     }
 
     public static ExecutionStatus fromPosition(Integer position) {
-        for(ExecutionStatus status : ExecutionStatus.values()) {
-            if(status.getPosition().equals(position)) {
+        for (ExecutionStatus status : ExecutionStatus.values()) {
+            if (status.getPosition().equals(position)) {
                 return status;
             }
         }

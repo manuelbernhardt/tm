@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.test.Script;
+import models.tm.test.Tag;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import tree.persistent.Node;
@@ -33,6 +34,9 @@ public class Requirement extends ProjectModel implements Node {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public User createdBy;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Tag> tags;
 
     @Override
     public Object clone() throws CloneNotSupportedException {

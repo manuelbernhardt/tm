@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -24,7 +23,7 @@ public class Preparation extends TMController {
 
     public static void tags(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
-        Lookups.tags(instance);
+        Lookups.tags(instance.tags);
     }
 
     public static void allTags(String q) {
@@ -54,20 +53,7 @@ public class Preparation extends TMController {
 
     public static void updateTags(Long instanceId, String tags) {
         Instance instance = Lookups.getInstance(instanceId);
-        List<Tag> tagList = new ArrayList<Tag>();
-        for (String name : tags.split(",")) {
-            Tag t = Tag.find("from Tag t where t.name = ? and t.project = ?", name, instance.project).first();
-            if (t == null) {
-                t = new Tag();
-                t.name = name;
-                t.project = instance.project;
-                t.create();
-            }
-            if (!tagList.contains(t)) {
-                tagList.add(t);
-            }
-        }
-        instance.tags = tagList;
+        instance.tags = getTags(tags, Tag.TagType.TESTINSTANCE);
         instance.save();
         ok();
     }

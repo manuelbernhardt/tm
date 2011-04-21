@@ -406,17 +406,13 @@ $.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
         $.extend(formData, additionalData);
     }
     $.each(ko.toJS(viewModelData), function(key, value) {
-        if (key.indexOf('value_')) {
+        if (key.indexOf('value_') == 0) {
             formData[key.substring(6).replace(/_/g, '.')] = value;
         }
         if (key == 'authenticityToken') {
             formData[key] = value;
         }
     });
-    return postJson(url, formData, callback);
-};
-
-function postJson(url, formData, callback) {
     return jQuery.ajax({
         type: 'POST',
         url: url,
@@ -426,4 +422,4 @@ function postJson(url, formData, callback) {
     }).success(callback).error(function (jqhr, text) {
         alert(text);
     });
-}
+};

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -26,6 +28,8 @@ public class Tag extends ProjectModel {
 
     public enum TagType {REQUIREMENT, TESTSCRIPT, TESTINSTANCE, DEFECT}
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     public TagType type;
 
     @Override
