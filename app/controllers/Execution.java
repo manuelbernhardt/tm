@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
 import util.FilterQuery;
+import util.Logger;
 
 /**
  * TODO security
@@ -229,13 +230,11 @@ public class Execution extends TMController {
                             step.save();
                         }
                     } catch (NumberFormatException nfe) {
-                        // TODO logging
-                        nfe.printStackTrace();
-                        error();
+                        Logger.error(Logger.LogType.TECHNICAL, nfe, "Could not parse status, paramValue '%s', project id %s, user %s", paramValue, getActiveProject().getId(), Security.connected());
+                        error("Error reading status of step " + step.name);
                     } catch (IllegalArgumentException iae) {
-                        // TODO logging
-                        iae.printStackTrace();
-                        error();
+                        Logger.error(Logger.LogType.TECHNICAL, iae, "Could not infer step from position %s, project id %s, user %s", paramValue, getActiveProject().getId(), Security.connected());
+                        error("Error retrieving status of step " + step.name);
                     }
                 } else {
                     // no status picked
@@ -266,9 +265,8 @@ public class Execution extends TMController {
             try {
                 run.delete();
             } catch (Throwable t) {
-                // TODO logging
-                t.printStackTrace();
-                error();
+                Logger.error(Logger.LogType.TECHNICAL, t, "Could not delete run %s", runId);
+                error("Error deleting run");
             }
         }
         ok();
@@ -280,9 +278,9 @@ public class Execution extends TMController {
             notFound("Could not find run " + runId);
         }
         if (id.startsWith(PARAM)) {
+            String param = id.substring(PARAM.length());
             try {
                 // param_id_UUID
-                String param = id.substring(PARAM.length());
                 param = param.substring(0, param.indexOf("_"));
                 Long pId = Long.parseLong(param);
                 RunParam runParam = Lookups.getRunParam(pId);
@@ -293,11 +291,11 @@ public class Execution extends TMController {
                 runParam.save();
                 renderText(value);
             } catch (NumberFormatException nfe) {
-                // TODO logging
-                nfe.printStackTrace();
-                error();
+                Logger.error(Logger.LogType.TECHNICAL, nfe, "Could not parse parameter ID '%s'", param);
+                error("Could not update parameter");
             }
         } else {
+            Logger.error(Logger.LogType.SECURITY, "Invalid parameter '%s'", id);
             error("Wrong parameter id");
         }
     }
@@ -311,16 +309,11 @@ public class Execution extends TMController {
                 if (step != null) {
                     checkInAccount(step);
                 }
-
-
             } catch (NumberFormatException nfe) {
-                // TODO log this and report (security)
-                nfe.printStackTrace();
+                Logger.error(Logger.LogType.TECHNICAL, nfe, "Invalid parameter '%s'", id);
             }
             return step;
         }
         return null;
     }
-
-
 }
