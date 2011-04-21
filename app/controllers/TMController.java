@@ -108,21 +108,20 @@ public class TMController extends Controller {
      */
     @Util
     public static List<Tag> getTags(String tags, Tag.TagType type) {
-        if (tags == null) {
-            return null;
-        }
         List<Tag> tagList = new ArrayList<Tag>();
-        for (String name : tags.split(",")) {
-            Tag t = Tag.find("from Tag t where t.name = ? and t.type = '" + type.name() + "' and t.project = ?", name.trim(), getActiveProject()).first();
-            if (t == null && name.trim().length() > 0) {
-                t = new Tag();
-                t.name = name.trim();
-                t.project = getActiveProject();
-                t.type = type;
-                t.create();
-            }
-            if (!tagList.contains(t)) {
-                tagList.add(t);
+        if (tags != null) {
+            for (String name : tags.split(",")) {
+                Tag t = Tag.find("from Tag t where t.name = ? and t.type = '" + type.name() + "' and t.project = ?", name.trim(), getActiveProject()).first();
+                if (t == null && name.trim().length() > 0) {
+                    t = new Tag();
+                    t.name = name.trim();
+                    t.project = getActiveProject();
+                    t.type = type;
+                    t.create();
+                }
+                if (!tagList.contains(t)) {
+                    tagList.add(t);
+                }
             }
         }
         return tagList;

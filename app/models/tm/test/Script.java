@@ -3,6 +3,7 @@ package models.tm.test;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -28,6 +29,9 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
 
     @MaxSize(5000)
     public String description;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Tag> tags;
 
     @Override
     public Object clone() throws CloneNotSupportedException {

@@ -10,6 +10,7 @@ import models.tm.test.InstanceParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptParam;
 import models.tm.test.ScriptStep;
+import models.tm.test.Tag;
 import org.apache.commons.lang.StringEscapeUtils;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -30,6 +31,16 @@ public class Repository extends TMController {
         renderFields(base, fields);
     }
 
+    public static void tags(Long scriptId) {
+        Script script = Lookups.getScript(scriptId);
+        Lookups.tags(script.tags);
+    }
+
+    public static void allTags(String q) {
+        Lookups.allTags(getActiveProject(), Tag.TagType.TESTSCRIPT, q);
+    }
+
+
     public static void stepDetailsData(Long scriptId, Long baseObjectId, String[] fields) {
         Script script = Lookups.getTestScript(scriptId);
         // TODO do this right
@@ -37,11 +48,15 @@ public class Repository extends TMController {
         renderFields(step, fields);
     }
 
-    public static void editScript(@Valid Script script) {
+    public static void editScript(@Valid Script script, String tags) {
         checkInAccount(script);
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
+        }
+        script.tags = getTags(tags, Tag.TagType.TESTSCRIPT);
+        if(script.tags.isEmpty()) {
+            script.tags.clear();
         }
         script.save();
         ok();

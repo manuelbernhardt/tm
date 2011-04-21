@@ -33,7 +33,7 @@
 <script type="text/javascript">
     $.metadata.setType('html5');
     $(document).ready(function() {
-      $('#${_id} :input[type!="submit"][type!="hidden"]').each(function(index, item) {
+      $('#${_id} :input[type!="submit"][type!="hidden"].oxfield').each(function(index, item) {
         $(item).focus(function() {
           var b = $('#${_id}_submit');
           if(b) {

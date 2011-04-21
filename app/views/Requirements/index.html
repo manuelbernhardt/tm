@@ -83,6 +83,10 @@
       creationText: "Create new tag"
     });
 
+    $('#scriptDetailsForm li.token-input-input-token').change(function() {
+      $('#scriptDetailsForm_submit').button('enable');
+    });
+
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["requirement", "default"])) {
         $('.shownOnLoad').hide();
@@ -98,7 +102,6 @@
             tokens.addToken(this.id, this.name);
           });
         });
-
 
         reloadTables();
       }

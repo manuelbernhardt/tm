@@ -1,7 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Test Scripts repository' /}
 
-
 <div class="container">
   <div class="left_tree">
     <div id="actions">
@@ -27,6 +26,10 @@
           #{ox.form action:@Repository.editScript(), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
             #{ox.field field:'script.name', label:'Name' /}
             #{ox.field field:'script.description', label:'Description' /}
+            <div class="field">
+              <label for="tags">Tags</label>
+              <input name="tags" id="tags" type="text"/>
+            </div>
             *{the following fields are necessary because play can't bind stuff automatically yet}*
             #{ox.field field:'script.id', hidden:true /}
             #{ox.field field:'script.project.id', hidden:true /}
@@ -77,10 +80,32 @@
         $('.shownOnLoad').hide();
         $('.hiddenOnLoad').show();
 
-        $('#scriptDetailsForm').oxForm('load', getSelectedNodeId('repositoryTree'));
+        var scriptId = getSelectedNodeId('repositoryTree');
+
+        $('#scriptDetailsForm').oxForm('load', scriptId);
+
+        // tags data loading
+        $.getJSON('@{Repository.tags()}', {scriptId: scriptId}, function(data) {
+          tokens.clearTokens();
+          $(data).each(function() {
+            tokens.addToken(this.id, this.name);
+          });
+        });
 
         reloadTables();
       }
+    });
+
+    // tags
+    var tokens = $('#tags').tokenInput('@{Repository.allTags()}', {
+      preventDuplicates: true,
+      tokenValue: 'name',
+      allowCreation: true,
+      creationText: "Create new tag"
+    });
+
+    $('#scriptDetailsForm li.token-input-input-token').change(function() {
+      $('#scriptDetailsForm_submit').button('enable');
     });
 
     $(function () {
@@ -103,6 +128,10 @@
 
     $('#scriptDetailsForm').oxForm({
       loadAction: '@{Repository.scriptDetailsData()}',
+      // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
+      submissionParameters: function() {
+        return {tags: $('#tags').val() };
+      },
       submissionCallback: function() {
         refreshTree('repositoryTree');
       }
