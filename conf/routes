@@ -5,7 +5,7 @@
 # Import Secure routes
 *       /                                               module:secure
 
-GET     /?                                              Dashboard.index
+GET     /                                               Dashboard.index
 
 GET     /requirements/?                                 Requirements.index
 GET     /requirements/{requirementId}/details           Requirements.requirementDetails
