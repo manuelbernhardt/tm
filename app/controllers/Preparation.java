@@ -28,7 +28,7 @@ public class Preparation extends TMController {
     }
 
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), q);
+        Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
     }
 
     public static void schedule(Long baseObjectId, String[] fields) {

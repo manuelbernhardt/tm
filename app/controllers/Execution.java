@@ -18,6 +18,7 @@ import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.RunStep;
 import models.tm.test.ScriptStep;
+import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
@@ -46,7 +47,7 @@ public class Execution extends TMController {
     }
 
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), q);
+        Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
     }
 
 
