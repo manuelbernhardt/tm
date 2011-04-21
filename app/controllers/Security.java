@@ -2,12 +2,19 @@ package controllers;
 
 import models.account.Auth;
 import models.tm.User;
+import util.Logger;
 
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {
         Auth a = Auth.find("byEmailAndActive", username, true).first();
-        return a != null && a.connect(password);
+        boolean success = a != null && a.connect(password);
+        if(success) {
+            Logger.info(Logger.LogType.AUTHENTICATION, "Authenticated user '%s'", username);
+        } else {
+            Logger.warn(Logger.LogType.AUTHENTICATION, "Unsuccessful authentication attempt by user '%s'", username);
+        }
+        return success;
     }
 
     static void onAuthenticated() {

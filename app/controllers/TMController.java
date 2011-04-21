@@ -23,6 +23,7 @@ import play.mvc.Controller;
 import play.mvc.Util;
 import play.mvc.With;
 import play.templates.JavaExtensions;
+import util.Logger;
 
 /**
  * Parent controller for the TM application.
@@ -37,6 +38,7 @@ public class TMController extends Controller {
     public static void setConnectedUser() {
         if (Security.isConnected()) {
             // TODO FIXME search by account, too!
+            // TODO caching
             Auth a = Auth.find("byEmailAndActive", Security.connected(), true).<Auth>first();
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
@@ -59,8 +61,7 @@ public class TMController extends Controller {
             try {
                 Secure.login();
             } catch (Throwable throwable) {
-                // TODO
-                throwable.printStackTrace();
+                Logger.error(Logger.LogType.TECHNICAL, throwable, "Error while logging in user upon connected user query through getConnectedUser()");
             }
 
         }

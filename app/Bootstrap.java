@@ -9,6 +9,7 @@ import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
+import util.Logger;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -17,6 +18,9 @@ import play.test.Fixtures;
 public class Bootstrap extends Job {
     @Override
     public void doJob() throws Exception {
+
+        // for the fun of it
+        Logger.info(Logger.LogType.TECHNICAL, "\n=== Ground control to major Tom\n=== Commencing countdown engines on");
 
         // this is a Bootstrap job for the development mode, making it easy to re-create data and schema elements out of nowhere
         // for production, we'll need to export the schema creation into a consolidated script
@@ -38,5 +42,7 @@ public class Bootstrap extends Job {
                 }
             }
         }
+
+        Logger.info(Logger.LogType.TECHNICAL, "\n=== This is major Tom to ground control\n=== I'm stepping through the door\n=== and I'm in floating in the most perculiar way\n=== and the stars look very different today");
     }
 }

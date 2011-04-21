@@ -11,6 +11,7 @@ import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
 import models.tm.User;
 import play.mvc.Controller;
+import util.Logger;
 
 public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     public void beforeRoleCheck() {
@@ -22,8 +23,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
                     Secure.login();
                 }
             } catch (Throwable t) {
-                // TODO handle me
-                t.printStackTrace();
+                Logger.error(Logger.LogType.TECHNICAL, t, "Error before role check while calling Secure.login");
             }
         }
     }
@@ -46,6 +46,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     }
 
     public void onAccessFailure(String controllerClassName) {
+        Logger.warn(Logger.LogType.SECURITY, "Access failure for controller '%s', user is '%s'", controllerClassName, Security.connected());
         forbidden();
     }
 
