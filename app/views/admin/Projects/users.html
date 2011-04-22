@@ -6,13 +6,12 @@ No project selected
 <div id="treeDiv">
   <button id="assign_user">Role</button>
   <button id="unassign_user">Remove</button>
-  <div id="rolesUserTree" class="tree"></div>
+  <div id="rolesUserTree" class="tree" style="width: 300px;"></div>
 </div>
 
 <div id="assignDialog" title="Assign a role to a user" class="modalDialog">
   <form id="assignForm">
     <fieldset>
-
       <label for="roles">Role</label>
       #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
       ui-corner-all", id:'roles'}
