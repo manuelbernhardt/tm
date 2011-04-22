@@ -2,7 +2,7 @@
 
     $.fn.tree = function(options) {
 
-        var settings = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ]};
+        var settings = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller", "dnd" ]};
         if (options) {
             $.extend(settings, options);
         }
@@ -25,10 +25,15 @@
                     }
                 }
             },
+            "crrm": {
+                "move": {
+                    "always_copy": "multitree"
+                }
+            },
             "themeroller": {
                 "item": ""
             },
-            "types" : settings.types,
+            "types" : settings.types ,
             "ui": {
                 "select_limit": 1
             },

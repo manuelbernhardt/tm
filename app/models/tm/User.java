@@ -17,6 +17,7 @@ import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
 import play.data.validation.Valid;
+import play.templates.JavaExtensions;
 
 /**
  * User for the TM application.
@@ -105,6 +106,10 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     public static List<User> listByActiveProject() {
         return User.find("from User u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<User>fetch();
     }
+
+    public static List<User> listUsersInAccountRole(AccountRole role) {
+         return User.find("from User u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<User>fetch();
+     }
 
     public static User findById(Long id) {
         return User.find("from User u where u.authentication.active = true and u.id = ?", id).<User>first();

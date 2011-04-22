@@ -10,7 +10,8 @@
   </ul>
   <div id="accountDetails">
     <div class="container">
-    #{ox.form id:'accountDetailsForm', action:@admin.AccountSettings.updateDetails(), baseClass:'models.account.Account'}
+      #{ox.form id:'accountDetailsForm', action:@admin.AccountSettings.updateDetails(),
+      baseClass:'models.account.Account'}
       <div class="left_column">
         #{box 'Contact'}
         #{ox.field field:'account.contactFirstName', label:'Contact first name' /}
@@ -35,27 +36,36 @@
         #{ox.field field:'account.id', hidden:true /}
         #{input.submit /}
       </div>
-    #{/ox.form}
+      #{/ox.form}
     </div>
   </div>
   <div id="administrators">
+    <div class="container">
+      <div class="left_column">
+        <div id="adminRolesTree"></div>
+      </div>
+      <div class="right_column">
+        <div id="userTree"></div>
+      </div>
+    </div>
+    <div id="usageDashboard">
+    </div>
+    <div id="settings">
+
+    </div>
 
   </div>
-  <div id="usageDashboard">
 
-  </div>
-  <div id="settings">
-    
-  </div>
+  <script type="text/javascript">
+    $('#tabs').tabs();
 
-</div>
+    $('#accountDetailsForm').oxForm({
+      loadAction: '@{admin.AccountSettings.accountDetails()}'
+    });
 
-<script type="text/javascript">
-  $('#tabs').tabs();
+    $('#accountDetailsForm').oxForm('load', -1);
 
-  $('#accountDetailsForm').oxForm({
-    loadAction: '@{admin.AccountSettings.accountDetails()}'
-  });
+    $("#adminRolesTree").tree({types: adminRolesTreeTypes});
+    $("#userTree").tree({types: userTreeTypes});
 
-  $('#accountDetailsForm').oxForm('load', -1);
-</script>
+  </script>

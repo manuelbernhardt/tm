@@ -185,3 +185,58 @@ var approachTreeTypes = {
         }
     }
 };
+
+var userTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for user
+            },
+            "start_drag" : true,
+            "move_node" : true,
+            "copy_node": true,
+            "delete_node" : false,
+            "remove" : false
+        },
+        "root" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        }
+    }
+};
+
+var adminRolesTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for user
+            },
+            "start_drag" : false,
+            "move_node" : true,
+            "delete_node" : true,
+            "remove" : true
+        },
+        "adminRole" : {
+            "valid_children" : [ "default", "user" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        }
+    }
+};

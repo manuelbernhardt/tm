@@ -89,6 +89,7 @@ public class Users extends TMController {
         Auth u = Auth.findById(userId);
         if(u != null) {
             u.active = false;
+            // TODO actually also retrieve the TMUser and clear all roles!
             u.save();
         } else {
             // TODO logging
