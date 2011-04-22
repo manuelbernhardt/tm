@@ -1,2 +1,61 @@
 #{extends 'admin/main.html' /}
 #{set title:'Account settings' /}
+
+<div id="tabs">
+  <ul>
+    <li><a href="#accountDetails"><span>Account details</span></a></li>
+    <li><a href="#administrators"><span>Administrators</span></a></li>
+    <li><a href="#usageDashboard"><span>Usage dashboard</span></a></li>
+    <li><a href="#settings"><span>Settings</span></a></li>
+  </ul>
+  <div id="accountDetails">
+    <div class="container">
+    #{ox.form id:'accountDetailsForm', action:@admin.AccountSettings.updateDetails(), baseClass:'models.account.Account'}
+      <div class="left_column">
+        #{box 'Contact'}
+        #{ox.field field:'account.contactFirstName', label:'Contact first name' /}
+        #{ox.field field:'account.contactLastName', label:'Contact last name' /}
+        #{ox.field field:'account.email', label:'Email' /}
+        #{ox.field field:'account.phone', label:'Phone' /}
+        #{/box}
+        #{box 'Billing'}
+        #{ox.field field:'account.vatCode', label:'VAT code' /}
+        #{/box}
+      </div>
+      <div class="right_column">
+        #{box 'Address'}
+        #{ox.field field:'account.address.street1', label:'Street 1' /}
+        #{ox.field field:'account.address.street2', label:'Street 2' /}
+        #{ox.field field:'account.address.postalCode', label:'Postal code' /}
+        #{ox.field field:'account.address.city', label:'City' /}
+        #{ox.field field:'account.address.city', label:'Country' /}
+        #{/box}
+      </div>
+      <div style="clear:both; float:right;">
+        #{ox.field field:'account.id', hidden:true /}
+        #{input.submit /}
+      </div>
+    #{/ox.form}
+    </div>
+  </div>
+  <div id="administrators">
+
+  </div>
+  <div id="usageDashboard">
+
+  </div>
+  <div id="settings">
+    
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $('#tabs').tabs();
+
+  $('#accountDetailsForm').oxForm({
+    loadAction: '@{admin.AccountSettings.accountDetails()}'
+  });
+
+  $('#accountDetailsForm').oxForm('load', -1);
+</script>

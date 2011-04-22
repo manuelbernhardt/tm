@@ -48,6 +48,7 @@ POST    /admin/approach/editCycle                       admin.Approach.editCycle
 POST    /admin/approach/editRelease                     admin.Approach.editRelease
 GET     /admin/projectRoles/{projectId}/data            admin.ProjectRoles.data
 POST    /admin/projectRoles/edit                        admin.ProjectRoles.edit
+GET     /admin/account                                  admin.AccountSettings.index
 
 *       /                                               module:tree
 

@@ -235,7 +235,9 @@ public class FormTags extends FastTags {
                 }
 
             } else {
-                body.setProperty("fieldType", clazz.getName());
+                String message = "You passed a path without base object identifier... probably this is wrong.";
+                throw new TemplateExecutionException(template.template, fromLine, message, new TagInternalException(message));
+//                body.setProperty("fieldType", clazz.getName());
             }
         }
         body.call();

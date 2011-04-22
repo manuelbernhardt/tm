@@ -261,6 +261,19 @@ function removeDialogs() {
 /**
  * jQuery plugin for ox.forms
  *
+ * Configuration parameters:
+ * - loadAction: URL of the action that will render field valuen given a list of fields
+ * - submissionParameters: additional parameters sent upon form submission
+ * - submissionCallback: callback ran after form submission
+ *
+ * Methods:
+ *
+ * - load(objectId, submissionParameters)
+ *   loads the form data given an objectId. it is possible to pass additional submission parameters
+ *
+ * - submitCreateForm(submissionParameters)
+ *   submits a new form, eventually with additional parameters
+ *
  */
 (function($) {
 
