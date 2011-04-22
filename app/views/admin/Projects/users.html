@@ -4,111 +4,36 @@ No project selected
 #{else}
 
 <div id="treeDiv">
-  <button id="assign_user">Role</button>
-  <button id="unassign_user">Remove</button>
-  <div id="rolesUserTree" class="tree" style="width: 300px;"></div>
+  <button id="removeRoleButton">Remove</button>
+  <div class="container">
+    <div class="left_column">
+      <div id="projectRolesAssignmentTree"></div>
+    </div>
+    <div class="right_column">
+      <div id="userTree"></div>
+    </div>
+  </div>
 </div>
 
-<div id="assignDialog" title="Assign a role to a user" class="modalDialog">
-  <form id="assignForm">
-    <fieldset>
-      <label for="roles">Role</label>
-      #{select 'roles', items:projectRoles, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content
-      ui-corner-all", id:'roles'}
-      #{option -1} Please select a role #{/option}
-      #{/select}
+  <script type="text/javascript">
 
-      <label for="users">User</label>
-      #{select 'users', items:accountUsers, valueProperty:'id', labelProperty:'fullName', class:"text ui-widget-content
-      ui-corner-all", id:'users'}
-      #{option -1} Please select a user #{/option}
-      #{/select}
-    </fieldset>
-  </form>
-</div>
+    $(document).ready(function () {
 
-<script type="text/javascript">
+      $("#projectRolesAssignmentTree").tree({"args" : {"projectId": "${project.id}"}, types: projectRolesAssignmentTreeTypes});
+      $("#userTree").tree({types: userTreeTypes});
 
-  $(document).ready(function () {
+      $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function() {
+        $("#projectRolesAssignmentTree").jstree("remove", null);
+      });
 
-    $("#assignDialog").dialog({
-      autoOpen: false,
-      height: 300,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Assign role": function() {
-          registerSelectNoneValidator();
-
-          var selectedRoleId = $('#roles option:selected').val();
-          var selectedUserId = $('#users option:selected').val();
-
-          var v = $("#assignForm").validate({
-            rules: {
-              users: {selectNone: true},
-              roles: {selectNone: true}
-            },
-            messages: {
-              users: "Please select a user",
-              roles: "Please select a role"
-            }
-          });
-
-          // programmatic validation
-          var valid = v.form();
-
-          if (valid) {
-
-            // select the role node in the tree as we may have only selected it through the form
-            var $tree = jQuery.jstree._reference('#rolesUserTree');
-            var roleNode = getTreeNode(selectedRoleId);
-            $tree.select_node(roleNode);
-
-            // create the assignment by adding a node to the tree
-            var name = $('#users option:selected').text();
-            $("#rolesUserTree").jstree("create", null, "last", {attr: {"rel":"default"}, data: name, metadata: {args: {userId: selectedUserId, roleId: selectedRoleId}}}, null, true);
-            $(this).dialog("close");
-          }
-
-        },
-        Cancel: function() {
-          $("#assignForm").validate().resetForm();
-          $(this).dialog("close");
+      $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
+        if (isSelectedNodeType(data, ["default", "user"])) {
+          $('#removeRoleButton').button('enable');
+        } else {
+          $('#removeRoleButton').button('disable');
         }
-      }
-    });
+      });
 
-    $("#assign_user").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
-      $("#assignDialog").dialog("open");
     });
-
-    $("#unassign_user").button({icons: {primary: 'ui-icon-minus'}}).click(function() {
-      var $tree = jQuery.jstree._reference('#rolesUserTree');
-      var selectedNode = $tree.get_selected();
-      if ($tree._get_type(selectedNode) == "default") {
-        var selectedUserId = selectedNode.attr("id");
-        var selectedRoleId = $tree._get_parent(selectedNode).attr("id");
-        $tree.delete_node(selectedNode);
-      }
-    });
-
-    $("#rolesUserTree").tree({"args" : {"projectId": "${project.id}"}, types: rolesUserTreeTypes});
-    /** Selection handler **/
-    $("#rolesUserTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, "role")) {
-        var roleId = data.rslt.obj.attr("id");
-        // automatically select the role in the selector of the dialog
-        $('#roles').val(roleId);
-      } else {
-        // try the parent
-        var parent = data.inst._get_parent(data.rslt.obj);
-        if (typeof parent !== 'undefined') {
-          var roleId = parent.attr("id");
-          $('#roles').val(roleId);
-        }
-      }
-    });
-
-  });
-</script>
-#{/else}
+  </script>
+  #{/else}

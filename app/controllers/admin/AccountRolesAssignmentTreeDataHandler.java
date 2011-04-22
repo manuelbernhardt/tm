@@ -1,9 +1,10 @@
-package controllers;
+package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import controllers.TMController;
 import models.tm.AccountRole;
 import models.tm.User;
 import tree.JSTreeNode;
@@ -15,13 +16,13 @@ import util.Logger;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class AdminRolesTree implements TreeDataHandler {
+public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
 
     public static final String ADMIN_ROLE = "adminRole";
     public static final String USER = "default";
 
     public String getName() {
-        return "adminRolesTree";
+        return "accountRolesAssignmentTree";
     }
 
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
@@ -86,7 +87,7 @@ public class AdminRolesTree implements TreeDataHandler {
             return false;
         }
         if (!u.isInAccount(TMController.getUserAccount())) {
-            Logger.error(Logger.LogType.SECURITY, "Trying to assign user to role in wrong account, target user id '%s', role type '%s', current user %s", id, role.name(), Security.connected());
+            Logger.error(Logger.LogType.SECURITY, "Trying to assign user to role in wrong account, target user id '%s', role type '%s', current user %s", id, role.name(), TMController.getConnectedUser().authentication.email);
             return false;
         }
         for (String unitRole : role.getUnitRoles()) {
@@ -103,7 +104,7 @@ public class AdminRolesTree implements TreeDataHandler {
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         User u = User.findById(id);
         if (u == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove administration role '%s', operation performed by user '%s'", id, parentId, Security.connected());
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove administration role '%s', operation performed by user '%s'", id, parentId, TMController.getConnectedUser().authentication.email);
             return false;
         }
         for (String unitRole : AccountRole.getById(parentId).getUnitRoles()) {

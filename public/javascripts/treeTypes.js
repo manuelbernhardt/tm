@@ -140,20 +140,34 @@ var projectTreeTypes = {
     }
 };
 
-var rolesUserTreeTypes = {
+var projectRolesAssignmentTreeTypes = {
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
-        "default" : { // user
+        "default" : {
             "valid_children" : "none",
             "icon" : {
-                "image" : "/public/images/jstree/file.png" // TODO user icon
-            }
+                "image" : "/public/images/jstree/file.png" // TODO icon for user
+            },
+            "start_drag" : false,
+            "move_node" : true,
+            "delete_node" : true,
+            "remove" : true
         },
-        "role" : {
-            "valid_children" : [ "default" ],
+        "projectRole" : {
+            "valid_children" : [ "default", "user" ],
             "icon" : {
-                "image" : "/public/images/jstree/folder.png" // TODO role icon
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        },
+        "root" : {
+            "valid_children" : ["projectRole"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
             },
             "start_drag" : false,
             "move_node" : false,

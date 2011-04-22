@@ -9,6 +9,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import models.tm.Project;
 import models.tm.Requirement;
+import models.tm.Role;
 import models.tm.User;
 import models.tm.test.Instance;
 import models.tm.test.Run;
@@ -89,6 +90,19 @@ public class Lookups extends TMController {
         }
         checkInAccount(runParam);
         return runParam;
+    }
+
+    @Util
+    public static Role getRole(Long roleId) {
+        Role role = null;
+        if (roleId != null) {
+            role = Role.<Role>findById(roleId);
+        }
+        if (role == null) {
+            return null;
+        }
+        checkInAccount(role);
+        return role;
     }
 
 

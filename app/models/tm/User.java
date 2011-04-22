@@ -107,6 +107,11 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
         return User.find("from User u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<User>fetch();
     }
 
+    public static List<User> listUsersInProjectRole(Long roleId) {
+        return User.find("select u from User u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<User>fetch();
+     }
+
+
     public static List<User> listUsersInAccountRole(AccountRole role) {
          return User.find("from User u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<User>fetch();
      }
