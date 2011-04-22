@@ -77,10 +77,12 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
         return false;
     }
 
-    public void copy(Long id, Long target, Long position) {
+    public boolean copy(Long id, Long target, Long position) {
+        return false;
     }
 
-    public void move(Long id, String type, Long target, String targetType, Long position) {
+    public boolean move(Long id, String type, Long target, String targetType, Long position) {
+        return false;
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

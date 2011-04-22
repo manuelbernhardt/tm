@@ -25,17 +25,25 @@ public class AdminRolesTree implements TreeDataHandler {
     }
 
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
-        final AccountRoleChildProducer userAdminChildProducer = new AccountRoleChildProducer(AccountRole.USER_ADMIN);
-        final AccountRoleChildProducer projectAdminChildProducer = new AccountRoleChildProducer(AccountRole.PROJECT_ADMIN);
-        final AccountRoleChildProducer accountAdminChildProducer = new AccountRoleChildProducer(AccountRole.ACCOUNT_ADMIN);
+        final ChildProducer rootProducer = new ChildProducer() {
+            final AccountRoleChildProducer userAdminChildProducer = new AccountRoleChildProducer(AccountRole.USER_ADMIN);
+            final AccountRoleChildProducer projectAdminChildProducer = new AccountRoleChildProducer(AccountRole.PROJECT_ADMIN);
+            final AccountRoleChildProducer accountAdminChildProducer = new AccountRoleChildProducer(AccountRole.ACCOUNT_ADMIN);
+
+            public List<JSTreeNode> produce(Long id) {
+                SimpleNode userAdmin = new SimpleNode(1l, "User administration", ADMIN_ROLE, true, true, userAdminChildProducer);
+                SimpleNode projectAdmin = new SimpleNode(2l, "Project administration", ADMIN_ROLE, true, true, projectAdminChildProducer);
+                SimpleNode accountAdmin = new SimpleNode(3l, "Account administration", ADMIN_ROLE, true, true, accountAdminChildProducer);
+                List<JSTreeNode> results = new ArrayList<JSTreeNode>();
+                results.add(userAdmin);
+                results.add(projectAdmin);
+                results.add(accountAdmin);
+                return results;
+            }
+        };
         if (parentId == -1) {
-            SimpleNode userAdmin = new SimpleNode(1l, "User administration", ADMIN_ROLE, true, true, userAdminChildProducer);
-            SimpleNode projectAdmin = new SimpleNode(2l, "Project administration", ADMIN_ROLE, true, true, projectAdminChildProducer);
-            SimpleNode accountAdmin = new SimpleNode(3l, "Account administration", ADMIN_ROLE, true, true, accountAdminChildProducer);
             List<JSTreeNode> results = new ArrayList<JSTreeNode>();
-            results.add(userAdmin);
-            results.add(projectAdmin);
-            results.add(accountAdmin);
+            results.add(new SimpleNode(1l, "Administrative roles", "root", true, true, rootProducer));
             return results;
         }
         return null;
@@ -67,7 +75,10 @@ public class AdminRolesTree implements TreeDataHandler {
         return false;
     }
 
-    public void copy(Long id, Long target, Long position) {
+    public boolean copy(Long id, Long target, Long position) {
+        if(target == null || target == -1) {
+            return false;
+        }
         AccountRole role = null;
         if (target == 2l) {
             role = AccountRole.PROJECT_ADMIN;
@@ -77,17 +88,23 @@ public class AdminRolesTree implements TreeDataHandler {
             role = AccountRole.ACCOUNT_ADMIN;
         }
         User u = User.findById(id);
+        if(User.listUsersInAccountRole(role).contains(u)) {
+            // do nothing
+            return false;
+        }
         if (!u.isInAccount(TMController.getUserAccount())) {
             Logger.error(Logger.LogType.SECURITY, "Trying to assign user to role in wrong account, target user id '%s', role type '%s', current user %s", id, role.name(), Security.connected());
-            return;
+            return false;
         }
         for (String unitRole : role.getUnitRoles()) {
             u.accountRoles.add(unitRole);
         }
         u.save();
+        return true;
     }
 
-    public void move(Long id, String type, Long target, String targetType, Long position) {
+    public boolean move(Long id, String type, Long target, String targetType, Long position) {
+        return false;
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

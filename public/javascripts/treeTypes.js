@@ -237,6 +237,16 @@ var adminRolesTreeTypes = {
             "move_node" : false,
             "delete_node" : false,
             "remove" : false
+        },
+        "root" : {
+            "valid_children" : ["adminRole"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
         }
     }
 };
