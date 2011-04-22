@@ -79,7 +79,7 @@ public class ParameterHandler {
                 if (rp.value == null) {
                     matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">enter a value</div>");
                 } else {
-                    matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">" + rp.value +"</div>");
+                    matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">" + rp.value + "</div>");
                 }
             } else if (p instanceof ScriptParam) {
                 matcher.appendReplacement(sb, "<div class=\"viewParam\">" + ((ScriptParam) p).name + "</div>");

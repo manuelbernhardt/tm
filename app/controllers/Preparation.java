@@ -11,6 +11,7 @@ import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
+import util.Logger;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -103,8 +104,7 @@ public class Preparation extends TMController {
             }
 
         } catch(Throwable t) {
-            // todo logging
-            t.printStackTrace();
+            Logger.error(Logger.LogType.TECHNICAL, t, "Could not extract JSON parameters for test instance parameter update, instanceId is '%s' and JSON string is '%s'", instanceId, paramsJson);
             error();
         }
         ok();
