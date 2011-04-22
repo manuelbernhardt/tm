@@ -31,9 +31,9 @@ public class AdminRolesTree implements TreeDataHandler {
             final AccountRoleChildProducer accountAdminChildProducer = new AccountRoleChildProducer(AccountRole.ACCOUNT_ADMIN);
 
             public List<JSTreeNode> produce(Long id) {
-                SimpleNode userAdmin = new SimpleNode(1l, "User administration", ADMIN_ROLE, true, true, userAdminChildProducer);
-                SimpleNode projectAdmin = new SimpleNode(2l, "Project administration", ADMIN_ROLE, true, true, projectAdminChildProducer);
-                SimpleNode accountAdmin = new SimpleNode(3l, "Account administration", ADMIN_ROLE, true, true, accountAdminChildProducer);
+                SimpleNode userAdmin = new SimpleNode(AccountRole.USER_ADMIN.getId(), "User administration", ADMIN_ROLE, true, true, userAdminChildProducer);
+                SimpleNode projectAdmin = new SimpleNode(AccountRole.PROJECT_ADMIN.getId(), "Project administration", ADMIN_ROLE, true, true, projectAdminChildProducer);
+                SimpleNode accountAdmin = new SimpleNode(AccountRole.ACCOUNT_ADMIN.getId(), "Account administration", ADMIN_ROLE, true, true, accountAdminChildProducer);
                 List<JSTreeNode> results = new ArrayList<JSTreeNode>();
                 results.add(userAdmin);
                 results.add(projectAdmin);
@@ -79,14 +79,7 @@ public class AdminRolesTree implements TreeDataHandler {
         if(target == null || target == -1) {
             return false;
         }
-        AccountRole role = null;
-        if (target == 2l) {
-            role = AccountRole.PROJECT_ADMIN;
-        } else if (target == 1l) {
-            role = AccountRole.USER_ADMIN;
-        } else if (target == 3l) {
-            role = AccountRole.ACCOUNT_ADMIN;
-        }
+        AccountRole role = AccountRole.getById(target);
         User u = User.findById(id);
         if(User.listUsersInAccountRole(role).contains(u)) {
             // do nothing
@@ -108,6 +101,15 @@ public class AdminRolesTree implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        return false;
+        User u = User.findById(id);
+        if (u == null) {
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove administration role '%s', operation performed by user '%s'", id, parentId, Security.connected());
+            return false;
+        }
+        for (String unitRole : AccountRole.getById(parentId).getUnitRoles()) {
+            u.accountRoles.remove(unitRole);
+        }
+        u.save();
+        return true;
     }
 }

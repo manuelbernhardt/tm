@@ -48,6 +48,7 @@
     </div>
     <br>
 
+    <button id="removeRoleButton">Remove</button>
     <div class="container">
       <div class="left_column">
         <div id="adminRolesTree"></div>
@@ -73,7 +74,21 @@
 
     $('#accountDetailsForm').oxForm('load', -1);
 
+    $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
+      $("#adminRolesTree").jstree("remove", null);
+    });
     $("#adminRolesTree").tree({types: adminRolesTreeTypes});
     $("#userTree").tree({types: userTreeTypes});
+
+    $("#adminRolesTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["default", "user"])) {
+        $('#removeRoleButton').button('enable');
+      }
+      if (isSelectedNodeType(data, ["root", "adminRole"])) {
+        $('#removeRoleButton').button('disable');
+      }
+
+    });
+
 
   </script>

@@ -11,13 +11,15 @@ import models.general.UnitRole;
  */
 public enum AccountRole {
 
-    ACCOUNT_ADMIN(UnitRole.ACCOUNTADMIN),
-    PROJECT_ADMIN(UnitRole.PROJECTCREATE, UnitRole.PROJECTEDIT, UnitRole.PROJECTDELETE),
-    USER_ADMIN(UnitRole.USERCREATE, UnitRole.USEREDIT, UnitRole.USERDELETE);
+    USER_ADMIN(1l, UnitRole.USERCREATE, UnitRole.USEREDIT, UnitRole.USERDELETE),
+    PROJECT_ADMIN(2l, UnitRole.PROJECTCREATE, UnitRole.PROJECTEDIT, UnitRole.PROJECTDELETE),
+    ACCOUNT_ADMIN(3l, UnitRole.ACCOUNTADMIN);
 
-    private String[] unitRoles;
+    private final Long id;
+    private final String[] unitRoles;
 
-    AccountRole(String... unitRoles) {
+    AccountRole(Long id, String... unitRoles) {
+        this.id = id;
         this.unitRoles = unitRoles;
     }
 
@@ -25,7 +27,20 @@ public enum AccountRole {
         return Arrays.asList(unitRoles);
     }
 
-    public List<AccountRole> getAccountRole(List<String> unitRoles) {
+    public Long getId() {
+        return this.id;
+    }
+
+    public static AccountRole getById(Long id) {
+        for(AccountRole r : values()) {
+            if(r.getId().equals(id)) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No admin role with id " + id);
+    }
+
+    public static List<AccountRole> getAccountRole(List<String> unitRoles) {
         List<AccountRole> roles = new ArrayList<AccountRole>();
         boolean hasProjectCreate, hasProjectEdit, hasProjectDelete;
         boolean hasUserCreate, hasUserEdit, hasUserDelete;
