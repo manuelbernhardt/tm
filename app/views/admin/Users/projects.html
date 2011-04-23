@@ -66,10 +66,13 @@ $(document).ready(function () {
 
         // programmatic validation
         var valid = v.form();
+        alert("valid " + valid);
 
         if (valid) {
           var name = $('#roles option:selected').text();
-          $("#projectRolesTree").jstree("create", null, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
+          alert("name " + name);
+          alert("selectedRoleId " + selectedRoleId);
+          $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
           var treeContainer = $("#projectRolesTree");
           jQuery.jstree._reference(treeContainer).refresh();
           jQuery.jstree._reference(treeContainer).deselect_all();
@@ -100,7 +103,7 @@ $(document).ready(function () {
 
   $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});
 
-  // pre-select assingment form fields based on what we select in the tree
+  // pre-select assignment form fields based on what we select in the tree
   $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
     // category selected
     if (data.inst._get_type(data.rslt.obj) == "category") {
