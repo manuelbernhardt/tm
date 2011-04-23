@@ -66,12 +66,9 @@ $(document).ready(function () {
 
         // programmatic validation
         var valid = v.form();
-        alert("valid " + valid);
 
         if (valid) {
           var name = $('#roles option:selected').text();
-          alert("name " + name);
-          alert("selectedRoleId " + selectedRoleId);
           $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
           var treeContainer = $("#projectRolesTree");
           jQuery.jstree._reference(treeContainer).refresh();
