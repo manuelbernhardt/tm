@@ -8,7 +8,7 @@ import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
-import models.account.Auth;
+import models.account.User;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
@@ -30,7 +30,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void index() {
-        List<Auth> users = Auth.find("active = true").<Auth>fetch();
+        List<User> users = User.find("active = true").<User>fetch();
         render(users);
     }
 
@@ -86,7 +86,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void removeUser(Long userId) {
-        Auth u = Auth.findById(userId);
+        User u = User.findById(userId);
         if(u != null) {
             u.active = false;
             // TODO actually also retrieve the TMUser and clear all roles!

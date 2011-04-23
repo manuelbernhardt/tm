@@ -12,7 +12,7 @@ import javax.persistence.OrderColumn;
 import controllers.TMController;
 import models.account.Account;
 import models.account.AccountEntity;
-import models.account.Auth;
+import models.account.User;
 import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
@@ -29,7 +29,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
     @Valid
-    public Auth authentication;
+    public User authentication;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public Project activeProject;

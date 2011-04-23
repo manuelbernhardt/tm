@@ -1,13 +1,13 @@
 package controllers;
 
-import models.account.Auth;
+import models.account.User;
 import models.tm.TMUser;
 import util.Logger;
 
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {
-        Auth a = Auth.find("byEmailAndActive", username, true).first();
+        User a = User.find("byEmailAndActive", username, true).first();
         boolean success = a != null && a.connect(password);
         if(success) {
             Logger.info(Logger.LogType.AUTHENTICATION, "Authenticated user '%s'", username);

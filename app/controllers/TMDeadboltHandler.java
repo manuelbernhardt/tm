@@ -5,7 +5,7 @@ import java.util.List;
 
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
-import models.account.Auth;
+import models.account.User;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
@@ -36,7 +36,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
 
         String userName = Secure.Security.connected();
 
-        Auth a = Auth.find("byEmailAndActive", userName, true).first();
+        User a = User.find("byEmailAndActive", userName, true).first();
         crh.addRoles(a.getRoles());
 
         TMUser u = TMUser.find("byAuthentication", a).first();

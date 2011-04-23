@@ -1,98 +1,98 @@
 account.Account(oxiras):
     name: Oxiras ApS
 
-account.Auth(gwenAuth):
+account.User(gwenAuth):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-account.Auth(manuAuth):
+account.User(manuAuth):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
 
-account.Auth(nathalieAuth):
+account.User(nathalieAuth):
     firstName: Nathalie
     lastName: Van Haaster
     email: nathalie@example.com
     password: nathalie
     account: oxiras
 
-account.Auth(vroniAuth):
+account.User(vroniAuth):
     firstName: Vroni
     lastName: Bodmann
     email: vroni@example.com
     password: vroni
     account: oxiras
 
-account.Auth(tamaraAuth):
+account.User(tamaraAuth):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
     account: oxiras
 
-account.Auth(christianAuth):
+account.User(christianAuth):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
     password: christian
     account: oxiras
 
-account.Auth(testUserUserAdminAuth):
+account.User(testUserUserAdminAuth):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
     password: testUserUserAdmin
     account: oxiras
 
-account.Auth(testUserProjectAdminAuth):
+account.User(testUserProjectAdminAuth):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
     password: testUserProjectAdmin
     account: oxiras
 
-account.Auth(testUserAccountAdminAuth):
+account.User(testUserAccountAdminAuth):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
     password: testUserAccountAdmin
     account: oxiras
 
-account.Auth(testUserRequirementsOnlyAuth):
+account.User(testUserRequirementsOnlyAuth):
     firstName: Eddie
     lastName: Larrisson
     email: RequirementsOnly@testUser.com
     password: testUserRequirementsOnly
     account: oxiras
 
-account.Auth(testUserTestRepositoryOnlyAuth):
+account.User(testUserTestRepositoryOnlyAuth):
     firstName: William
     lastName: Windows
     email: TestRepositoryOnly@testUser.com
     password: testUserTestRepositoryOnly
     account: oxiras
 
-account.Auth(testUserTestPreparationOnlyAuth):
+account.User(testUserTestPreparationOnlyAuth):
     firstName: Scala
     lastName: Johansson
     email: TestPreparationOnly@testUser.com
     password: testUserTestPreparationOnly
     account: oxiras
 
-account.Auth(testUserTestExecutionOnlyAuth):
+account.User(testUserTestExecutionOnlyAuth):
     firstName: Lenny
     lastName: Linux
     email: TestExecutionOnly@testUser.com
     password: testUserTestExecutionOnly
     account: oxiras
 
-account.Auth(testUserDefectsOnlyAuth):
+account.User(testUserDefectsOnlyAuth):
     firstName: Mona Lisa
     lastName: Harddrive
     email: DefectsOnly@testUser.com

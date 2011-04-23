@@ -17,22 +17,22 @@ import play.data.validation.Required;
 import play.libs.Crypto;
 
 /**
- * Generic user authentication. Does not extend AccountModel because natural IDs are not necessary.
+ * Generic user. Does not extend AccountModel because natural IDs are not necessary.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class Auth extends TemporalModel implements RoleHolder {
+public class User extends TemporalModel implements RoleHolder {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;
 
-    @Column(nullable = false)
     @Required
+    @Column(nullable = false)
     public String firstName;
 
-    @Column(nullable = false)
     @Required
+    @Column(nullable = false)
     public String lastName;
 
     @Email

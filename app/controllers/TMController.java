@@ -14,7 +14,7 @@ import java.util.Map;
 import controllers.deadbolt.Deadbolt;
 import models.account.Account;
 import models.account.AccountEntity;
-import models.account.Auth;
+import models.account.User;
 import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.test.Tag;
@@ -39,7 +39,7 @@ public class TMController extends Controller {
         if (Security.isConnected()) {
             // TODO FIXME search by account, too!
             // TODO caching
-            Auth a = Auth.find("byEmailAndActive", Security.connected(), true).<Auth>first();
+            User a = User.find("byEmailAndActive", Security.connected(), true).<User>first();
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
 
