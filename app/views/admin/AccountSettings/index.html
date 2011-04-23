@@ -44,6 +44,7 @@
     Assign administrative roles to users by dragging them into the desired role.
     #{/}
     <button id="removeRoleButton">Remove</button>
+    <div id="searchBox" style="float:right;">Search: <input id="userSearchInput" type="text"></div>
     <div class="container">
       <div class="left_column">
         <div id="accountRolesAssignmentTree" class="tree"></div>
@@ -72,8 +73,14 @@
     $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
       $("#accountRolesAssignmentTree").jstree("remove", null);
     });
-    $("#accountRolesAssignmentTree").tree({types: adminRolesTreeTypes, plugins: ["dnd"]});
-    $("#userTree").tree({types: userTreeTypes, plugins: ["dnd"]});
+    $("#accountRolesAssignmentTree").tree({
+      types: adminRolesTreeTypes,
+      plugins: ["dnd"]
+    });
+    $("#userTree").tree({
+      types: userTreeTypes,
+      plugins: ["dnd", "search"]
+    });
 
     $("#accountRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["default", "user"])) {
@@ -81,8 +88,9 @@
       } else {
         $('#removeRoleButton').button('disable');
       }
-
     });
-
+    $('#userSearchInput').keyup(function() {
+      $("#userTree").jstree("search", $(this).val());
+    });
 
   </script>

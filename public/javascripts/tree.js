@@ -3,22 +3,9 @@
     $.fn.tree = function(options) {
 
         var settings = {};
-        var defaults = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ]};
-        if (options) {
-            $.extend(settings, options);
 
-            if(options.plugins) {
-                $.merge(defaults.plugins, options.plugins);
-            }
-        }
-        $.extend(settings, defaults);
-
-        var treeId = this.attr("id");
-
-        this.jstree({
-
-            "plugins" : settings.plugins,
-
+        var defaults = {
+            "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
             "json_data" : {
                 "ajax" : {
                     "url" : treeChildrenRouteAction(),
@@ -27,7 +14,7 @@
                             "id" : n.attr ? extractId(n.attr("id")) : -1,
                             "treeId" : treeId,
                             "type" : n.attr ? n.attr("rel") : "",
-                            "args" : settings.args ? (typeof settings.args == 'function' ? settings.args.call() : settings.args) : {}
+                            "args" : options.args ? (typeof options.args == 'function' ? options.args.call() : options.args) : {}
                         };
                     }
                 }
@@ -40,9 +27,13 @@
             "themeroller": {
                 "item": ""
             },
-            "types" : settings.types,
+            "types" : options.types,
             "ui": {
                 "select_limit": 1
+            },
+            "search": {
+                "case_insensitive": true,
+                "show_only_matches": true
             },
             "hotkeys": {
                 "Ctrl+x" : function() {
@@ -52,7 +43,20 @@
                     this.paste(null)
                 }
             }
-        }).bind("create.jstree",
+        };
+
+        $.extend(settings, defaults);
+
+        if (options) {
+            $.extend(settings, options);
+            if (options.plugins) {
+                settings.plugins = $.merge(options.plugins, defaults.plugins);
+            }
+        }
+
+        var treeId = this.attr("id");
+
+        this.jstree(settings).bind("create.jstree",
                 function (e, data) {
                     $.post(treeCreateRouteAction(),
                     {
