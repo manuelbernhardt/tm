@@ -53,7 +53,7 @@ public class TMController extends Controller {
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
             // TODO FIXME search by account, too!
-            TMUser user = TMUser.find("from TMUser u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).<TMUser>first();
+            TMUser user = TMUser.find("from TMUser u where u.user.email = ? and u.user.active = true", Security.connected()).<TMUser>first();
             return user;
         } else {
             // TODO test this!
@@ -69,7 +69,7 @@ public class TMController extends Controller {
     }
 
     public static Account getUserAccount() {
-        return getConnectedUser().authentication.account;
+        return getConnectedUser().user.account;
     }
 
     /**

@@ -54,7 +54,7 @@ public class Users extends TMController {
                 notFound();
             } else {
                 checkInAccount(user);
-                List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.authentication.account.getId());
+                List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.user.account.getId());
                 render("/admin/Users/projects.html", user, projectCategories);
             }
         } else {
@@ -79,7 +79,7 @@ public class Users extends TMController {
             render("@index", user);
         }
 
-        user.authentication.account = getConnectedUser().authentication.account;
+        user.user.account = getConnectedUser().user.account;
         user.create();
         index();
     }
@@ -120,9 +120,9 @@ public class Users extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             String sLike = "%" + sSearch + "%";
-            query = TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
+            query = TMUser.find("from TMUser u where u.user.active = true and u.user.firstName like ? or u.user.lastName like ?", sLike, sLike);
         } else {
-            query = TMUser.find("authentication.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = TMUser.find("user.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<TMUser> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = TMUser.count();

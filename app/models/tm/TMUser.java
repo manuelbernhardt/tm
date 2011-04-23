@@ -29,7 +29,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
     @Valid
-    public User authentication;
+    public User user;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     public Project activeProject;
@@ -42,7 +42,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     public List<Role> projectRoles;
 
     public String getFullName() {
-        return authentication.firstName + " " + authentication.lastName;
+        return user.firstName + " " + user.lastName;
     }
 
     @Override
@@ -70,11 +70,11 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public boolean isInAccount(Account account) {
-        return authentication.account.getId().equals(account.getId());
+        return user.account.getId().equals(account.getId());
     }
 
     public static List<TMUser> listByAccount(Long accountId) {
-        return TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.account.id = ?", accountId).fetch();
+        return TMUser.find("from TMUser u where u.user.active = true and u.user.account.id = ?", accountId).fetch();
     }
 
     public static List<TMUser> listByProject(Long projectId) {
@@ -104,7 +104,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listByActiveProject() {
-        return TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
+        return TMUser.find("from TMUser u where u.user.active = true and u.user.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
     }
 
     public static List<TMUser> listUsersInProjectRole(Long roleId) {
@@ -112,10 +112,10 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {
-        return TMUser.find("from TMUser u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<TMUser>fetch();
+        return TMUser.find("from TMUser u join u.accountRoles r where u.user.active = true and u.user.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<TMUser>fetch();
     }
 
     public static TMUser findById(Long id) {
-        return TMUser.find("from TMUser u where u.authentication.active = true and u.id = ?", id).<TMUser>first();
+        return TMUser.find("from TMUser u where u.user.active = true and u.id = ?", id).<TMUser>first();
     }
 }
