@@ -15,6 +15,7 @@ import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
+import util.Logger;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -107,7 +108,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
             boolean created = ti.create();
             if (!created) {
-                // TODO log error
+                Logger.error(Logger.LogType.TECHNICAL, "Could not create test instance");
                 return null;
             }
 
