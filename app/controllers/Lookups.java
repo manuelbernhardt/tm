@@ -39,6 +39,18 @@ public class Lookups extends TMController {
         return script;
     }
 
+    @Util
+    public static User getUser(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        User user = User.<User>findById(userId);
+        if (user == null) {
+            return null;
+        }
+        checkInAccount(user);
+        return user;
+    }
 
     @Util
     public static Instance getInstance(Long instanceId) {

@@ -43,11 +43,11 @@ public class Logger {
         play.Logger.error(e, message, args);
     }
 
-    public static void fatal(String message, Object... args) {
+    public static void fatal(LogType type, String message, Object... args) {
         play.Logger.error(message, args);
     }
 
-    public static void fatal(Throwable e, String message, Object... args) {
+    public static void fatal(LogType type, Throwable e, String message, Object... args) {
         play.Logger.error(e, message, args);
     }
 

@@ -72,8 +72,8 @@
     $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
       $("#accountRolesAssignmentTree").jstree("remove", null);
     });
-    $("#accountRolesAssignmentTree").tree({types: adminRolesTreeTypes});
-    $("#userTree").tree({types: userTreeTypes});
+    $("#accountRolesAssignmentTree").tree({types: adminRolesTreeTypes, plugins: ["dnd"]});
+    $("#userTree").tree({types: userTreeTypes, plugins: ["dnd"]});
 
     $("#accountRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["default", "user"])) {

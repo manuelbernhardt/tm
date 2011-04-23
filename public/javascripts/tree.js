@@ -2,10 +2,17 @@
 
     $.fn.tree = function(options) {
 
-        var settings = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller", "dnd" ]};
+        var settings = {};
+        var defaults = {"plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ]};
         if (options) {
             $.extend(settings, options);
+
+            if(options.plugins) {
+                $.merge(defaults.plugins, options.plugins);
+            }
         }
+        $.extend(settings, defaults);
+
         var treeId = this.attr("id");
 
         this.jstree({
@@ -33,7 +40,7 @@
             "themeroller": {
                 "item": ""
             },
-            "types" : settings.types ,
+            "types" : settings.types,
             "ui": {
                 "select_limit": 1
             },

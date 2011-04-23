@@ -92,15 +92,9 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
         }
         Role role = Lookups.getRole(target);
 
-        // TODO FIXME !!! replace everwhere User.findById by a proper Lookup!
-        User u = User.findById(id);
+        User u = Lookups.getUser(id);
         if(User.listUsersInProjectRole(role.getId()).contains(u)) {
             // do nothing
-            return false;
-        }
-        // TODO remove once the above is done
-        if (!u.isInAccount(TMController.getUserAccount())) {
-            Logger.error(Logger.LogType.SECURITY, "Trying to assign user to role in wrong account, target user id '%s', role type '%s', current user %s", id, role.name, TMController.getConnectedUser().authentication.email);
             return false;
         }
         u.projectRoles.add(role);
@@ -113,16 +107,15 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        // TODO FIXME !!! replace everwhere User.findById by a proper Lookup!
-        User u = User.findById(id);
+        User u = Lookups.getUser(id);
         if (u == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove project role '%s', operation performed by user '%s'", id, parentId, TMController.getConnectedUser().authentication.email);
             return false;
         }
         Role role = Lookups.getRole(parentId);
         if(role == null) {
-            // TODO logging
-
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find role with id '%s' in order to remove it from user '%s', operation performed by user '%s'", parentId, id, TMController.getConnectedUser().authentication.email);
+            return false;
         }
         u.projectRoles.remove(role);
         u.save();
