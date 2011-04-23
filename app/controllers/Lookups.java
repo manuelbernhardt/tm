@@ -15,6 +15,7 @@ import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.Script;
+import models.tm.test.ScriptStep;
 import models.tm.test.Tag;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -25,6 +26,32 @@ import play.mvc.Util;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Lookups extends TMController {
+
+    @Util
+    public static User getUser(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        User user = User.<User>findById(userId);
+        if (user == null) {
+            return null;
+        }
+        checkInAccount(user);
+        return user;
+    }
+
+    @Util
+    public static Requirement getRequirement(Long requirementId) {
+        if (requirementId == null) {
+            return null;
+        }
+        Requirement requirement = Requirement.<Requirement>findById(requirementId);
+        if (requirement == null) {
+            return null;
+        }
+        checkInAccount(requirement);
+        return requirement;
+    }
 
     @Util
     public static Script getScript(Long scriptId) {
@@ -40,17 +67,18 @@ public class Lookups extends TMController {
     }
 
     @Util
-    public static User getUser(Long userId) {
-        if (userId == null) {
+    public static ScriptStep getScriptStep(Long scriptStepId) {
+        if (scriptStepId == null) {
             return null;
         }
-        User user = User.<User>findById(userId);
-        if (user == null) {
+        ScriptStep scriptStep = ScriptStep.<ScriptStep>findById(scriptStepId);
+        if (scriptStep == null) {
             return null;
         }
-        checkInAccount(user);
-        return user;
+        checkInAccount(scriptStep);
+        return scriptStep;
     }
+
 
     @Util
     public static Instance getInstance(Long instanceId) {
@@ -118,6 +146,8 @@ public class Lookups extends TMController {
     }
 
 
+
+
     @Util
     public static void allUsers() {
         List<User> users = User.listByActiveProject();
@@ -137,30 +167,6 @@ public class Lookups extends TMController {
 
     // TODO generify these serializers
     private static final UserSerializer userSerializer = new UserSerializer();
-
-    public static Script getTestScript(Long scriptId) {
-        if (scriptId == null) {
-            return null;
-        }
-        Script script = Script.findById(scriptId);
-        if (script == null) {
-            return null;
-        }
-        checkInAccount(script);
-        return script;
-    }
-
-    static Requirement getRequirement(Long requirementId) {
-        if (requirementId == null) {
-            return null;
-        }
-        Requirement requirement = Requirement.<Requirement>findById(requirementId);
-        if (requirement == null) {
-            return null;
-        }
-        checkInAccount(requirement);
-        return requirement;
-    }
 
     private static class UserSerializer implements JsonSerializer<User> {
         public JsonElement serialize(User user, Type type, JsonSerializationContext context) {

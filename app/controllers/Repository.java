@@ -16,6 +16,7 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import util.Logger;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -42,9 +43,7 @@ public class Repository extends TMController {
 
 
     public static void stepDetailsData(Long scriptId, Long baseObjectId, String[] fields) {
-        Script script = Lookups.getTestScript(scriptId);
-        // TODO do this right
-        ScriptStep step = (baseObjectId != null ? ScriptStep.<ScriptStep>findById(baseObjectId) : null);
+        ScriptStep step = Lookups.getScriptStep(baseObjectId);
         renderFields(step, fields);
     }
 
@@ -55,7 +54,7 @@ public class Repository extends TMController {
             error();
         }
         script.tags = getTags(tags, Tag.TagType.TESTSCRIPT);
-        if(script.tags.isEmpty()) {
+        if (script.tags.isEmpty()) {
             script.tags.clear();
         }
         script.save();
@@ -64,7 +63,8 @@ public class Repository extends TMController {
 
     public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
         if (scriptId == null) {
-            error();
+            Logger.error(Logger.LogType.TECHNICAL, "Could not update script step '%s', no scriptId passed");
+            error("Could not update script step, no script ID passed");
         }
         Script script = Script.findById(scriptId);
         if (script == null) {

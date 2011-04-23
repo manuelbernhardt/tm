@@ -2,6 +2,7 @@ package models.tm.test;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -11,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 import models.tm.ProjectModel;
 import models.tm.User;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
 
@@ -22,9 +24,11 @@ import tree.persistent.NodeName;
 public class Script extends ProjectModel implements Node, ParameterHolder {
 
     @NodeName
+    @Required
+    @Column(nullable = false)
     public String name;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public User createdBy;
 
     @MaxSize(5000)
