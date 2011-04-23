@@ -54,7 +54,7 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     public List<? extends models.deadbolt.Role> getRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
 
-        for(String accountRole : accountRoles) {
+        for (String accountRole : accountRoles) {
             res.add(UnitRole.role(accountRole));
         }
 
@@ -81,11 +81,11 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
         // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
         List<User> res = new ArrayList<User>();
         Project project = Project.<Project>findById(projectId);
-        if(project == null) {
+        if (project == null) {
             return null;
         }
-        for(User u : User.listByAccount(project.account.getId())) {
-            if(u.getProjects().contains(project)) {
+        for (User u : User.listByAccount(project.account.getId())) {
+            if (u.getProjects().contains(project)) {
                 res.add(u);
             }
         }
@@ -95,8 +95,8 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
     public List<Project> getProjects() {
         // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
         List<Project> res = new ArrayList<Project>();
-        for(Role r : projectRoles) {
-            if(!res.contains(r.project)) {
+        for (Role r : projectRoles) {
+            if (!res.contains(r.project)) {
                 res.add(r.project);
             }
         }
@@ -109,12 +109,11 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
 
     public static List<User> listUsersInProjectRole(Long roleId) {
         return User.find("select u from User u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<User>fetch();
-     }
-
+    }
 
     public static List<User> listUsersInAccountRole(AccountRole role) {
-         return User.find("from User u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<User>fetch();
-     }
+        return User.find("from User u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<User>fetch();
+    }
 
     public static User findById(Long id) {
         return User.find("from User u where u.authentication.active = true and u.id = ?", id).<User>first();
