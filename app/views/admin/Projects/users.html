@@ -8,6 +8,7 @@ No project selected
   Assign project roles to users by dragging them into the desired role.
   #{/}
   <button id="removeRoleButton">Remove</button>
+  <div id="searchBox" style="float:right;">Search: <input id="userSearchInput" type="text"></div>
   <div class="container">
     <div class="left_column">
       <div id="projectRolesAssignmentTree"></div>
@@ -23,7 +24,7 @@ No project selected
     $(document).ready(function () {
 
       $("#projectRolesAssignmentTree").tree({"args" : {"projectId": "${project.id}"}, types: projectRolesAssignmentTreeTypes, plugins: ["dnd"]});
-      $("#userTree").tree({types: userTreeTypes, plugins: ["dnd"]});
+      $("#userTree").tree({types: userTreeTypes, plugins: ["dnd", "search"]});
 
       $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function() {
         $("#projectRolesAssignmentTree").jstree("remove", null);
@@ -36,6 +37,11 @@ No project selected
           $('#removeRoleButton').button('disable');
         }
       });
+
+      $('#userSearchInput').keyup(function() {
+        $("#userTree").jstree("search", $(this).val());
+      });
+
 
     });
   </script>
