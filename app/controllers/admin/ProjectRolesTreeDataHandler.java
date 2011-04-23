@@ -13,7 +13,7 @@ import tree.TreeDataHandler;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
-import models.tm.User;
+import models.tm.TMUser;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -32,7 +32,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
         if (parentId == -1) {
             Long userId = Long.parseLong(args.get("userId"));
-            User u = User.findById(userId);
+            TMUser u = TMUser.findById(userId);
             if (u == null) {
                 // TODO logging
                 return new ArrayList<JSTreeNode>();
@@ -92,10 +92,10 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
     private static class CategoryChildProducer implements ChildProducer {
 
-        final private User user;
+        final private TMUser user;
         final private ChildProducer projectChildProducer;
 
-        private CategoryChildProducer(ChildProducer projectChildProducer, User user) {
+        private CategoryChildProducer(ChildProducer projectChildProducer, TMUser user) {
             this.projectChildProducer = projectChildProducer;
             this.user = user;
         }
@@ -114,9 +114,9 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
     private static class ProjectChildProducer implements ChildProducer {
 
-        private final User user;
+        private final TMUser user;
 
-        private ProjectChildProducer(User user) {
+        private ProjectChildProducer(TMUser user) {
             this.user = user;
         }
 

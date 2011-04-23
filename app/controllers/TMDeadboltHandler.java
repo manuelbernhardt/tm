@@ -9,7 +9,7 @@ import models.account.Auth;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
-import models.tm.User;
+import models.tm.TMUser;
 import play.mvc.Controller;
 import util.Logger;
 
@@ -39,7 +39,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
         Auth a = Auth.find("byEmailAndActive", userName, true).first();
         crh.addRoles(a.getRoles());
 
-        User u = User.find("byAuthentication", a).first();
+        TMUser u = TMUser.find("byAuthentication", a).first();
         crh.addRoles(u.getRoles());
 
         return crh;

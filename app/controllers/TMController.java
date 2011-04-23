@@ -16,7 +16,7 @@ import models.account.Account;
 import models.account.AccountEntity;
 import models.account.Auth;
 import models.tm.Project;
-import models.tm.User;
+import models.tm.TMUser;
 import models.tm.test.Tag;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -50,10 +50,10 @@ public class TMController extends Controller {
         }
     }
 
-    public static User getConnectedUser() {
+    public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
             // TODO FIXME search by account, too!
-            User user = User.find("from User u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).<User>first();
+            TMUser user = TMUser.find("from TMUser u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).<TMUser>first();
             return user;
         } else {
             // TODO test this!

@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.TMController;
+import models.tm.TMUser;
 import tree.simple.ChildProducer;
 import tree.JSTreeNode;
 import tree.simple.SimpleNode;
 import tree.TreeDataHandler;
 import models.tm.Role;
-import models.tm.User;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -48,7 +48,7 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
             return null;
         }
         Role role = Role.findById(roleId);
-        User user = User.findById(userId);
+        TMUser user = TMUser.findById(userId);
         if (role == null || user == null) {
             return null;
         } else {
@@ -95,8 +95,8 @@ public class RolesUserTreeDataHandler implements TreeDataHandler {
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
-            List<User> users = User.find("select u from User u, Role r where r in elements(u.projectRoles) and r.id = ?", id).fetch();
-            for (User u : users) {
+            List<TMUser> users = TMUser.find("select u from TMUser u, Role r where r in elements(u.projectRoles) and r.id = ?", id).fetch();
+            for (TMUser u : users) {
                 JSTreeNode n = new SimpleNode(u.id, u.getFullName(), "default", false, false, null);
                 res.add(n);
             }

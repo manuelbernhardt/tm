@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.ProjectModel;
-import models.tm.User;
+import models.tm.TMUser;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import tree.persistent.Node;
@@ -29,7 +29,7 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
     public String name;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
-    public User createdBy;
+    public TMUser createdBy;
 
     @MaxSize(5000)
     public String description;

@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 import models.tm.Defect;
 import models.tm.ProjectModel;
 import models.tm.approach.TestCycle;
-import models.tm.User;
+import models.tm.TMUser;
 import play.db.jpa.JPABase;
 import play.templates.JavaExtensions;
 
@@ -38,7 +38,7 @@ public class Instance extends ProjectModel {
     public Integer status;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
-    public User responsible;
+    public TMUser responsible;
 
     public Date plannedExecution;
 

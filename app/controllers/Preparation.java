@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import models.tm.User;
+import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Tag;
@@ -63,7 +63,7 @@ public class Preparation extends TMController {
         // here we sort of cheat; instead of making Play! happy and passing all the 1000 parameters necessary for it to properly bind the instance, we just copy over the
         // parameters given by the "stale" instance.
         Instance existing = Lookups.getInstance(instanceId);
-        User responsible = instance.responsible;
+        TMUser responsible = instance.responsible;
         checkInAccount(responsible);
         existing.responsible = responsible;
         existing.plannedExecution = instance.plannedExecution;

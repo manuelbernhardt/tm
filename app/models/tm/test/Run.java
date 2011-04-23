@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.ProjectModel;
-import models.tm.User;
+import models.tm.TMUser;
 import play.db.jpa.JPA;
 import play.db.jpa.JPABase;
 
@@ -32,7 +32,7 @@ public class Run extends ProjectModel implements ParameterHolder {
     public Instance instance;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
-    public User tester;
+    public TMUser tester;
 
     public Date executionDate;
 

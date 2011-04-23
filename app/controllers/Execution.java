@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 import controllers.deadbolt.Deadbolt;
 import controllers.tabularasa.TableController;
-import models.tm.User;
+import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.test.ExecutionStatus;
 import models.tm.test.Instance;
@@ -39,7 +39,7 @@ public class Execution extends TMController {
 
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
-        List<User> users = User.listByProject(getActiveProject().getId());
+        List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
         render(releases, users);
     }
 

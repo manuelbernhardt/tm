@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializer;
 import models.tm.Project;
 import models.tm.Requirement;
 import models.tm.Role;
-import models.tm.User;
+import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunParam;
@@ -28,11 +28,11 @@ import play.mvc.Util;
 public class Lookups extends TMController {
 
     @Util
-    public static User getUser(Long userId) {
+    public static TMUser getUser(Long userId) {
         if (userId == null) {
             return null;
         }
-        User user = User.<User>findById(userId);
+        TMUser user = TMUser.<TMUser>findById(userId);
         if (user == null) {
             return null;
         }
@@ -150,7 +150,7 @@ public class Lookups extends TMController {
 
     @Util
     public static void allUsers() {
-        List<User> users = User.listByActiveProject();
+        List<TMUser> users = TMUser.listByActiveProject();
         Controller.renderJSON(users, userSerializer);
     }
 
@@ -168,8 +168,8 @@ public class Lookups extends TMController {
     // TODO generify these serializers
     private static final UserSerializer userSerializer = new UserSerializer();
 
-    private static class UserSerializer implements JsonSerializer<User> {
-        public JsonElement serialize(User user, Type type, JsonSerializationContext context) {
+    private static class UserSerializer implements JsonSerializer<TMUser> {
+        public JsonElement serialize(TMUser user, Type type, JsonSerializationContext context) {
             JsonObject object = new JsonObject();
             object.addProperty("id", user.id);
             object.addProperty("label", user.getFullName());

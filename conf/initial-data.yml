@@ -214,7 +214,7 @@ tm.Role(tmViewOnly):
          - testExecView
          - defectView
 
-tm.User(gwen):
+tm.TMUser(gwen):
     authentication: gwenAuth
     activeProject: testManagementApplication
     accountRoles:
@@ -229,7 +229,7 @@ tm.User(gwen):
        - tmTestLead
        - demViewOnly
 
-tm.User(manu):
+tm.TMUser(manu):
     authentication: manuAuth
     activeProject: testManagementApplication
     accountRoles:
@@ -245,26 +245,26 @@ tm.User(manu):
        - tmViewOnly
        - demViewOnly
 
-tm.User(nathalie):
+tm.TMUser(nathalie):
     authentication: nathalieAuth
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
-tm.User(vroni):
+tm.TMUser(vroni):
     authentication: vroniAuth
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
-tm.User(tamara):
+tm.TMUser(tamara):
     authentication: tamaraAuth
     activeProject: testManagementApplication
     projectRoles:
        - demViewOnly
        - tmTestExecution
 
-tm.User(christian):
+tm.TMUser(christian):
     authentication: christianAuth
     accountRoles:
        - accountAdmin
@@ -278,46 +278,46 @@ tm.User(christian):
     projectRoles:
        - tmTestLead
 
-tm.User(testUserAccountAdmin):
+tm.TMUser(testUserAccountAdmin):
     authentication: testUserAccountAdminAuth
     accountRoles:
        - accountAdmin
 
-tm.User(testUserProjectAdmin):
+tm.TMUser(testUserProjectAdmin):
     authentication: testUserProjectAdminAuth
     accountRoles:
        - projectCreate
        - projectEdit
        - projectDelete
 
-tm.User(testUserUserAdmin):
+tm.TMUser(testUserUserAdmin):
     authentication: testUserUserAdminAuth
     accountRoles:
        - userCreate
        - userEdit
        - userDelete
 
-tm.User(testUserRequirementsOnly):
+tm.TMUser(testUserRequirementsOnly):
     authentication: testUserRequirementsOnlyAuth
     projectRoles:
        -  tmRequirements
 
-tm.User(testUserTestRepositoryOnly):
+tm.TMUser(testUserTestRepositoryOnly):
     authentication: testUserTestRepositoryOnlyAuth
     projectRoles:
        -  tmTestDesigner
 
-tm.User(testUserTestPreparationOnly):
+tm.TMUser(testUserTestPreparationOnly):
     authentication: testUserTestPreparationOnlyAuth
     projectRoles:
        -  tmTestPreparation
 
-tm.User(testUserTestExecutionOnly):
+tm.TMUser(testUserTestExecutionOnly):
     authentication: testUserTestExecutionOnlyAuth
     projectRoles:
        -  tmTestExecution
 
-tm.User(testUserDefectsOnly):
+tm.TMUser(testUserDefectsOnly):
     authentication: testUserDefectsOnlyAuth
     projectRoles:
        -  tmDefects

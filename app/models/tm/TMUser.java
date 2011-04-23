@@ -25,7 +25,7 @@ import play.templates.JavaExtensions;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class User extends TemporalModel implements RoleHolder, AccountEntity {
+public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
     @Valid
@@ -73,18 +73,18 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
         return authentication.account.getId().equals(account.getId());
     }
 
-    public static List<User> listByAccount(Long accountId) {
-        return User.find("from User u where u.authentication.active = true and u.authentication.account.id = ?", accountId).fetch();
+    public static List<TMUser> listByAccount(Long accountId) {
+        return TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.account.id = ?", accountId).fetch();
     }
 
-    public static List<User> listByProject(Long projectId) {
+    public static List<TMUser> listByProject(Long projectId) {
         // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
-        List<User> res = new ArrayList<User>();
+        List<TMUser> res = new ArrayList<TMUser>();
         Project project = Project.<Project>findById(projectId);
         if (project == null) {
             return null;
         }
-        for (User u : User.listByAccount(project.account.getId())) {
+        for (TMUser u : TMUser.listByAccount(project.account.getId())) {
             if (u.getProjects().contains(project)) {
                 res.add(u);
             }
@@ -103,19 +103,19 @@ public class User extends TemporalModel implements RoleHolder, AccountEntity {
         return res;
     }
 
-    public static List<User> listByActiveProject() {
-        return User.find("from User u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<User>fetch();
+    public static List<TMUser> listByActiveProject() {
+        return TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
     }
 
-    public static List<User> listUsersInProjectRole(Long roleId) {
-        return User.find("select u from User u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<User>fetch();
+    public static List<TMUser> listUsersInProjectRole(Long roleId) {
+        return TMUser.find("select u from TMUser u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<TMUser>fetch();
     }
 
-    public static List<User> listUsersInAccountRole(AccountRole role) {
-        return User.find("from User u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<User>fetch();
+    public static List<TMUser> listUsersInAccountRole(AccountRole role) {
+        return TMUser.find("from TMUser u join u.accountRoles r where u.authentication.active = true and u.authentication.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<TMUser>fetch();
     }
 
-    public static User findById(Long id) {
-        return User.find("from User u where u.authentication.active = true and u.id = ?", id).<User>first();
+    public static TMUser findById(Long id) {
+        return TMUser.find("from TMUser u where u.authentication.active = true and u.id = ?", id).<TMUser>first();
     }
 }

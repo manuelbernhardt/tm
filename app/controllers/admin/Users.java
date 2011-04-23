@@ -13,7 +13,7 @@ import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
-import models.tm.User;
+import models.tm.TMUser;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.mvc.Router;
@@ -37,9 +37,9 @@ public class Users extends TMController {
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void userDetails(Long userId) {
         Router.ActionDefinition action = Router.reverse("admin.Users.edit");
-        User user = null;
+        TMUser user = null;
         if (userId != null) {
-            user = User.findById(userId);
+            user = TMUser.findById(userId);
             checkInAccount(user);
         }
         render("/general/userProfile.html", action, user);
@@ -47,9 +47,9 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void projects(Long userId) {
-        User user = null;
+        TMUser user = null;
         if (userId != null) {
-            user = User.findById(userId);
+            user = TMUser.findById(userId);
             if (user == null) {
                 notFound();
             } else {
@@ -64,16 +64,16 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void account(Long userId) {
-        User user = null;
+        TMUser user = null;
         if (userId != null) {
-            user = User.findById(userId);
+            user = TMUser.findById(userId);
         }
         render("/admin/Users/account.html", user);
     }
 
 
     @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void create(User user) {
+    public static void create(TMUser user) {
         if (Validation.hasErrors()) {
             // TODO add some flash message
             render("@index", user);
@@ -99,7 +99,7 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void edit(User user) {
+    public static void edit(TMUser user) {
         if (Validation.hasErrors()) {
             // TODO test if this works
             // display a message at least with the validation errors?
@@ -120,12 +120,12 @@ public class Users extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             String sLike = "%" + sSearch + "%";
-            query = User.find("from User u where u.authentication.active = true and u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
+            query = TMUser.find("from TMUser u where u.authentication.active = true and u.authentication.firstName like ? or u.authentication.lastName like ?", sLike, sLike);
         } else {
-            query = User.find("authentication.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = TMUser.find("authentication.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
         }
-        List<User> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
-        long totalRecords = User.count();
+        List<TMUser> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
+        long totalRecords = TMUser.count();
         TableController.renderJSON(people, User.class, totalRecords, sColumns, sEcho);
     }
 

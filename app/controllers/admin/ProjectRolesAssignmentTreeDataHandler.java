@@ -8,7 +8,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import models.tm.Project;
 import models.tm.Role;
-import models.tm.User;
+import models.tm.TMUser;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -68,8 +68,8 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
-            List<User> users = User.listUsersInProjectRole(id);
-            for (User u : users) {
+            List<TMUser> users = TMUser.listUsersInProjectRole(id);
+            for (TMUser u : users) {
                 JSTreeNode n = new SimpleNode(u.id, u.getFullName(), "default", false, false, null);
                 res.add(n);
             }
@@ -92,8 +92,8 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
         }
         Role role = Lookups.getRole(target);
 
-        User u = Lookups.getUser(id);
-        if(User.listUsersInProjectRole(role.getId()).contains(u)) {
+        TMUser u = Lookups.getUser(id);
+        if(TMUser.listUsersInProjectRole(role.getId()).contains(u)) {
             // do nothing
             return false;
         }
@@ -107,7 +107,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        User u = Lookups.getUser(id);
+        TMUser u = Lookups.getUser(id);
         if (u == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove project role '%s', operation performed by user '%s'", id, parentId, TMController.getConnectedUser().authentication.email);
             return false;

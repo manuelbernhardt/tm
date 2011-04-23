@@ -1,7 +1,7 @@
 package controllers;
 
 import models.account.Auth;
-import models.tm.User;
+import models.tm.TMUser;
 import util.Logger;
 
 public class Security extends Secure.Security {
@@ -18,7 +18,7 @@ public class Security extends Secure.Security {
     }
 
     static void onAuthenticated() {
-        User u = User.find("from User u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).first();
+        TMUser u = TMUser.find("from TMUser u where u.authentication.email = ? and u.authentication.active = true", Security.connected()).first();
 
         // bind the basic session variables
         // we really want to keep the user session as thin as possible as it is sent at each request

@@ -1,7 +1,7 @@
 import java.util.List;
 
 import models.SchemaCreation;
-import models.tm.User;
+import models.tm.TMUser;
 import models.tree.jpa.TreeNode;
 import org.hibernate.Session;
 import play.Play;
@@ -25,7 +25,7 @@ public class Bootstrap extends Job {
         // this is a Bootstrap job for the development mode, making it easy to re-create data and schema elements out of nowhere
         // for production, we'll need to export the schema creation into a consolidated script
         if (Play.mode == Play.Mode.DEV) {
-            if (User.count() == 0) {
+            if (TMUser.count() == 0) {
 
                 // for development: create triggers && validate model
                 SchemaCreation schemaCreation = new SchemaCreation(((Session) JPA.em().getDelegate()).getSessionFactory());

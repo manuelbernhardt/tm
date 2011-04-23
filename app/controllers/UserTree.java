@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import models.tm.User;
+import models.tm.TMUser;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -28,8 +28,8 @@ public class UserTree implements TreeDataHandler {
         final ChildProducer rootChildProducer = new ChildProducer() {
             public List<JSTreeNode> produce(Long id) {
                 List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-                List<User> users = User.listByAccount(TMController.getUserAccount().getId());
-                for (User u : users) {
+                List<TMUser> users = TMUser.listByAccount(TMController.getUserAccount().getId());
+                for (TMUser u : users) {
                     nodes.add(new SimpleNode(u.getId(), u.getFullName(), USER, false, false, null));
                 }
                 return nodes;

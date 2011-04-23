@@ -6,7 +6,7 @@ import java.util.Map;
 
 import controllers.TMController;
 import models.tm.AccountRole;
-import models.tm.User;
+import models.tm.TMUser;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -60,8 +60,8 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> result = new ArrayList<JSTreeNode>();
-            List<User> users = User.listUsersInAccountRole(accountRole);
-            for (User u : users) {
+            List<TMUser> users = TMUser.listUsersInAccountRole(accountRole);
+            for (TMUser u : users) {
                 result.add(new SimpleNode(u.getId(), u.getFullName(), USER, false, false, null));
             }
             return result;
@@ -81,8 +81,8 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
             return false;
         }
         AccountRole role = AccountRole.getById(target);
-        User u = User.findById(id);
-        if(User.listUsersInAccountRole(role).contains(u)) {
+        TMUser u = TMUser.findById(id);
+        if(TMUser.listUsersInAccountRole(role).contains(u)) {
             // do nothing
             return false;
         }
@@ -102,7 +102,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        User u = User.findById(id);
+        TMUser u = TMUser.findById(id);
         if (u == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove administration role '%s', operation performed by user '%s'", id, parentId, TMController.getConnectedUser().authentication.email);
             return false;
