@@ -126,7 +126,7 @@ public class Users extends TMController {
         }
         List<TMUser> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = TMUser.count();
-        TableController.renderJSON(people, User.class, totalRecords, sColumns, sEcho);
+        TableController.renderJSON(people, TMUser.class, totalRecords, sColumns, sEcho);
     }
 
     public static void projectOptions(Long categoryId, Long accountId) {

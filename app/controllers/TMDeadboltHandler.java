@@ -39,7 +39,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
         User a = User.find("byEmailAndActive", userName, true).first();
         crh.addRoles(a.getRoles());
 
-        TMUser u = TMUser.find("byAuthentication", a).first();
+        TMUser u = TMUser.find("byUser", a).first();
         crh.addRoles(u.getRoles());
 
         return crh;

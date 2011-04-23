@@ -61,14 +61,14 @@ In the view of creating more products that can be used in an integrated fashion 
 #### general.Account
 An account represents a company account that pays bills
 
-#### general.User
+#### account.User
 A user represents a human user and is the handle for authentication and role holding.
 
 #### general.UnitRole
 Represents a concrete role existing in the application (interface and controllers).
 This entity is not persisted, it is part of the general AAA mechanism.
 
-#### tm.User
-The Test Management extends the general.User and holds additional tm-specific data (assigned projects, active project, ...)
+#### tm.TMUser
+The Test Management extends the account.User and holds additional tm-specific data (assigned projects, active project, ...)
 
 

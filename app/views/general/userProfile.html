@@ -16,13 +16,13 @@ No user selected
   }
 </script>
 
-  #{input.field field:'user.authentication.firstName', label:'First Name' /}
-  #{input.field field:'user.authentication.lastName', label:'Last Name' /}
-  #{input.field field:'user.authentication.email', label:'Email' /}
-  #{input.field field:'user.authentication.phone', label:'Phone' /}
+  #{input.field field:'user.user.firstName', label:'First Name' /}
+  #{input.field field:'user.user.lastName', label:'Last Name' /}
+  #{input.field field:'user.user.email', label:'Email' /}
+  #{input.field field:'user.user.phone', label:'Phone' /}
   <input type="hidden" name="user.id" value="${user.id}"/>
-  <input type="hidden" name="user.authentication.id" value="${user.authentication.id}"/>
-  <input type="hidden" name="user.authentication.account.id" value="${user.authentication.account.id}"/>
+  <input type="hidden" name="user.user.id" value="${user.user.id}"/>
+  <input type="hidden" name="user.user.account.id" value="${user.user.account.id}"/>
   #{input.submit /}
 
 #{/input.form}

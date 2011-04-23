@@ -157,7 +157,7 @@ function selectCategory(categoryId, callback) {
   $('#roles').find('option').remove().end();
   $('#roles').addOption('-1', 'Please select a role');
   $('#roles').attr('disabled', true);
-  $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.authentication.account.id}'}, false, callback);
+  $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.user.account.id}'}, false, callback);
 }
 
 function selectProject(projectId, callback) {

@@ -1,98 +1,98 @@
 account.Account(oxiras):
     name: Oxiras ApS
 
-account.User(gwenAuth):
+account.User(gwenUser):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-account.User(manuAuth):
+account.User(manuUser):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
 
-account.User(nathalieAuth):
+account.User(nathalieUser):
     firstName: Nathalie
     lastName: Van Haaster
     email: nathalie@example.com
     password: nathalie
     account: oxiras
 
-account.User(vroniAuth):
+account.User(vroniUser):
     firstName: Vroni
     lastName: Bodmann
     email: vroni@example.com
     password: vroni
     account: oxiras
 
-account.User(tamaraAuth):
+account.User(tamaraUser):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
     account: oxiras
 
-account.User(christianAuth):
+account.User(christianUser):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
     password: christian
     account: oxiras
 
-account.User(testUserUserAdminAuth):
+account.User(testUserUserAdminUser):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
     password: testUserUserAdmin
     account: oxiras
 
-account.User(testUserProjectAdminAuth):
+account.User(testUserProjectAdminUser):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
     password: testUserProjectAdmin
     account: oxiras
 
-account.User(testUserAccountAdminAuth):
+account.User(testUserAccountAdminUser):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
     password: testUserAccountAdmin
     account: oxiras
 
-account.User(testUserRequirementsOnlyAuth):
+account.User(testUserRequirementsOnlyUser):
     firstName: Eddie
     lastName: Larrisson
     email: RequirementsOnly@testUser.com
     password: testUserRequirementsOnly
     account: oxiras
 
-account.User(testUserTestRepositoryOnlyAuth):
+account.User(testUserTestRepositoryOnlyUser):
     firstName: William
     lastName: Windows
     email: TestRepositoryOnly@testUser.com
     password: testUserTestRepositoryOnly
     account: oxiras
 
-account.User(testUserTestPreparationOnlyAuth):
+account.User(testUserTestPreparationOnlyUser):
     firstName: Scala
     lastName: Johansson
     email: TestPreparationOnly@testUser.com
     password: testUserTestPreparationOnly
     account: oxiras
 
-account.User(testUserTestExecutionOnlyAuth):
+account.User(testUserTestExecutionOnlyUser):
     firstName: Lenny
     lastName: Linux
     email: TestExecutionOnly@testUser.com
     password: testUserTestExecutionOnly
     account: oxiras
 
-account.User(testUserDefectsOnlyAuth):
+account.User(testUserDefectsOnlyUser):
     firstName: Mona Lisa
     lastName: Harddrive
     email: DefectsOnly@testUser.com
@@ -215,7 +215,7 @@ tm.Role(tmViewOnly):
          - defectView
 
 tm.TMUser(gwen):
-    authentication: gwenAuth
+    user: gwenUser
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -230,7 +230,7 @@ tm.TMUser(gwen):
        - demViewOnly
 
 tm.TMUser(manu):
-    authentication: manuAuth
+    user: manuUser
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -246,26 +246,26 @@ tm.TMUser(manu):
        - demViewOnly
 
 tm.TMUser(nathalie):
-    authentication: nathalieAuth
+    user: nathalieUser
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(vroni):
-    authentication: vroniAuth
+    user: vroniUser
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(tamara):
-    authentication: tamaraAuth
+    user: tamaraUser
     activeProject: testManagementApplication
     projectRoles:
        - demViewOnly
        - tmTestExecution
 
 tm.TMUser(christian):
-    authentication: christianAuth
+    user: christianUser
     accountRoles:
        - accountAdmin
        - userCreate
@@ -279,46 +279,46 @@ tm.TMUser(christian):
        - tmTestLead
 
 tm.TMUser(testUserAccountAdmin):
-    authentication: testUserAccountAdminAuth
+    user: testUserAccountAdminUser
     accountRoles:
        - accountAdmin
 
 tm.TMUser(testUserProjectAdmin):
-    authentication: testUserProjectAdminAuth
+    user: testUserProjectAdminUser
     accountRoles:
        - projectCreate
        - projectEdit
        - projectDelete
 
 tm.TMUser(testUserUserAdmin):
-    authentication: testUserUserAdminAuth
+    user: testUserUserAdminUser
     accountRoles:
        - userCreate
        - userEdit
        - userDelete
 
 tm.TMUser(testUserRequirementsOnly):
-    authentication: testUserRequirementsOnlyAuth
+    user: testUserRequirementsOnlyUser
     projectRoles:
        -  tmRequirements
 
 tm.TMUser(testUserTestRepositoryOnly):
-    authentication: testUserTestRepositoryOnlyAuth
+    user: testUserTestRepositoryOnlyUser
     projectRoles:
        -  tmTestDesigner
 
 tm.TMUser(testUserTestPreparationOnly):
-    authentication: testUserTestPreparationOnlyAuth
+    user: testUserTestPreparationOnlyUser
     projectRoles:
        -  tmTestPreparation
 
 tm.TMUser(testUserTestExecutionOnly):
-    authentication: testUserTestExecutionOnlyAuth
+    user: testUserTestExecutionOnlyUser
     projectRoles:
        -  tmTestExecution
 
 tm.TMUser(testUserDefectsOnly):
-    authentication: testUserDefectsOnlyAuth
+    user: testUserDefectsOnlyUser
     projectRoles:
        -  tmDefects
 
@@ -520,6 +520,7 @@ tm.test.ScriptFolder(testScriptFolderAdminProjects):
 tm.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
+    createdBy: gwen
 
 tm.test.ScriptParam(projectCategoryScriptParam):
     project: testManagementApplication
@@ -558,14 +559,17 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
 tm.test.Script(testScriptAdminProjectsEdit):
     project: testManagementApplication
     name: Edit project details
+    createdBy: gwen
 
 tm.test.ScriptFolder(testScriptFolderRequirements):
     project: testManagementApplication
     name: Requirements
+    createdBy: gwen
 
 tm.test.Script(testScriptRequirement1):
     project: testManagementApplication
     name: Register new requirement
+    createdBy: gwen
 
 tree.jpa.TreeNode(repositoryTreeNode13):
     level: 0
@@ -638,18 +642,22 @@ tree.jpa.TreeNode(repositoryTreeNode19):
 tm.test.Tag(administrationTag):
     project: testManagementApplication
     name: Administration
+    type: TESTINSTANCE
 
 tm.test.Tag(usersTag):
     project: testManagementApplication
     name: Users
+    type: TESTINSTANCE
 
 tm.test.Tag(projectsTag):
     project: testManagementApplication
     name: Projects
+    type: TESTINSTANCE
 
 tm.test.Tag(requirementsTag):
     project: testManagementApplication
     name: Requirements
+    type: TESTINSTANCE
 
 tm.test.Instance(createNewProjectST1):
     project: testManagementApplication
