@@ -23,8 +23,15 @@ No project selected
 
     $(document).ready(function () {
 
-      $("#projectRolesAssignmentTree").tree({"args" : {"projectId": "${project.id}"}, types: projectRolesAssignmentTreeTypes, plugins: ["dnd"]});
-      $("#userTree").tree({types: userTreeTypes, plugins: ["dnd", "search"]});
+      $("#projectRolesAssignmentTree").tree({
+        args : {"projectId": "${project.id}"},
+        types: projectRolesAssignmentTreeTypes,
+        plugins: ["dnd"]
+      });
+      $("#userTree").tree({
+        types: userTreeTypes,
+        plugins: ["dnd", "search"]
+      });
 
       $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function() {
         $("#projectRolesAssignmentTree").jstree("remove", null);
