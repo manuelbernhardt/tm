@@ -13,12 +13,30 @@ public abstract class TMTree extends AbstractTree {
 
     @Override
     protected TreeStorage getStorage() {
-        return new JPATreeStorage(ProjectTreeNode.class) {
+        return new TMJPATreeStorage();
+    }
 
-            @Override
-            public GenericTreeNode getNewTreeNode() {
-                return new ProjectTreeNode(TMTreeController.projectThreadLocal.get());
-            }
-        };
+    private static class TMJPATreeStorage extends JPATreeStorage {
+
+        public TMJPATreeStorage() {
+            super(ProjectTreeNode.class);
+        }
+
+        @Override
+        public GenericTreeNode getNewTreeNode() {
+            return new ProjectTreeNode(TMTreeController.projectThreadLocal.get());
+        }
+
+        @Override
+        public GenericTreeNode persistTreeNode(GenericTreeNode node) {
+            ProjectTreeNode treeNode = (ProjectTreeNode) node;
+            treeNode.create();
+            return node;
+        }
+
+        @Override
+        public GenericTreeNode getTreeNode(Long nodeId, String type, String treeId) {
+            return super.getTreeNode(nodeId, type, treeId);    //To change body of overridden methods use File | Settings | File Templates.
+        }
     }
 }
