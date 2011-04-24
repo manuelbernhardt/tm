@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.Query;
 
 import controllers.TMController;
 import models.account.Account;
@@ -17,7 +18,7 @@ import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
 import play.data.validation.Valid;
-import play.templates.JavaExtensions;
+import play.db.jpa.JPA;
 
 /**
  * User for the TM application.
@@ -112,7 +113,10 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {
-        return TMUser.find("from TMUser u join u.accountRoles r where u.user.active = true and u.user.account = ? and r in ('" + JavaExtensions.join(role.getUnitRoles(), "','") + "') group by u", TMController.getUserAccount()).<TMUser>fetch();
+        Query query = JPA.em().createQuery("select u from TMUser u join u.accountRoles r where u.user.active = true and u.user.account = :account and r in (:unitRoles) group by u");
+        query.setParameter("account", TMController.getUserAccount());
+        query.setParameter("unitRoles", role.getUnitRoles());
+        return query.getResultList();
     }
 
     public static TMUser findById(Long id) {
