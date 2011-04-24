@@ -4,16 +4,13 @@ import java.util.Map;
 
 import models.tm.test.Script;
 import models.tm.test.ScriptFolder;
-import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class RepositoryTree extends AbstractTree {
-
-    public static final String REPOSITORY_TREE = "repositoryTree";
+public class RepositoryTree extends TMTree {
 
     @Override
     protected NodeType[] getNodes() {

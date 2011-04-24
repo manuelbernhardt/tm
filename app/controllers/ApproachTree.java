@@ -5,14 +5,13 @@ import java.util.Map;
 import models.tm.Project;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
-import tree.persistent.AbstractTree;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ApproachTree extends AbstractTree {
+public class ApproachTree extends TMTree {
 
     public static final String APPROACH_TREE = "approachTree";
 

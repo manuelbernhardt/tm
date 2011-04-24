@@ -2,18 +2,15 @@ package controllers;
 
 import java.util.Map;
 
-import tree.persistent.AbstractTree;
-import tree.persistent.Node;
-import tree.persistent.NodeType;
 import models.tm.Requirement;
 import models.tm.RequirementFolder;
+import tree.persistent.Node;
+import tree.persistent.NodeType;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class RequirementTree extends AbstractTree {
-
-    public static final String REQUIREMENT_TREE = "requirementTree";
+public class RequirementTree extends TMTree {
 
     @Override
     protected NodeType[] getNodes() {
