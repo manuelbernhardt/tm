@@ -1,6 +1,7 @@
 import java.util.List;
 
 import models.SchemaCreation;
+import models.tm.ProjectTreeNode;
 import models.tm.TMUser;
 import models.tree.jpa.TreeNode;
 import org.hibernate.Session;
@@ -35,8 +36,8 @@ public class Bootstrap extends Job {
                 Fixtures.loadModels("initial-data.yml");
 
                 // fix the treeNodes
-                List<TreeNode> rootNodes = TreeNode.find("from TreeNode n where n.threadRoot is null").fetch();
-                for (TreeNode n : rootNodes) {
+                List<ProjectTreeNode> rootNodes = TreeNode.find("from ProjectTreeNode n where n.threadRoot is null").fetch();
+                for (ProjectTreeNode n : rootNodes) {
                     n.threadRoot = n;
                     n.save();
                 }
