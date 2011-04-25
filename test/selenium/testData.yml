@@ -1,98 +1,98 @@
 account.Account(oxiras):
     name: Oxiras ApS
 
-account.User(gwenAuth):
+account.User(gwenUser):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
     account: oxiras
 
-account.User(manuAuth):
+account.User(manuUser):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
     account: oxiras
 
-account.User(nathalieAuth):
+account.User(nathalieUser):
     firstName: Nathalie
     lastName: Van Haaster
     email: nathalie@example.com
     password: nathalie
     account: oxiras
 
-account.User(vroniAuth):
+account.User(vroniUser):
     firstName: Vroni
     lastName: Bodmann
     email: vroni@example.com
     password: vroni
     account: oxiras
 
-account.User(tamaraAuth):
+account.User(tamaraUser):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
     account: oxiras
 
-account.User(christianAuth):
+account.User(christianUser):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
     password: christian
     account: oxiras
 
-account.User(testUserUserAdminAuth):
+account.User(testUserUserAdminUser):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
     password: testUserUserAdmin
     account: oxiras
 
-account.User(testUserProjectAdminAuth):
+account.User(testUserProjectAdminUser):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
     password: testUserProjectAdmin
     account: oxiras
 
-account.User(testUserAccountAdminAuth):
+account.User(testUserAccountAdminUser):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
     password: testUserAccountAdmin
     account: oxiras
 
-account.User(testUserRequirementsOnlyAuth):
+account.User(testUserRequirementsOnlyUser):
     firstName: Eddie
     lastName: Larrisson
     email: RequirementsOnly@testUser.com
     password: testUserRequirementsOnly
     account: oxiras
 
-account.User(testUserTestRepositoryOnlyAuth):
+account.User(testUserTestRepositoryOnlyUser):
     firstName: William
     lastName: Windows
     email: TestRepositoryOnly@testUser.com
     password: testUserTestRepositoryOnly
     account: oxiras
 
-account.User(testUserTestPreparationOnlyAuth):
+account.User(testUserTestPreparationOnlyUser):
     firstName: Scala
     lastName: Johansson
     email: TestPreparationOnly@testUser.com
     password: testUserTestPreparationOnly
     account: oxiras
 
-account.User(testUserTestExecutionOnlyAuth):
+account.User(testUserTestExecutionOnlyUser):
     firstName: Lenny
     lastName: Linux
     email: TestExecutionOnly@testUser.com
     password: testUserTestExecutionOnly
     account: oxiras
 
-account.User(testUserDefectsOnlyAuth):
+account.User(testUserDefectsOnlyUser):
     firstName: Mona Lisa
     lastName: Harddrive
     email: DefectsOnly@testUser.com
@@ -215,7 +215,7 @@ tm.Role(tmViewOnly):
          - defectView
 
 tm.TMUser(gwen):
-    authentication: gwenAuth
+    user: gwenUser
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -230,7 +230,7 @@ tm.TMUser(gwen):
        - demViewOnly
 
 tm.TMUser(manu):
-    authentication: manuAuth
+    user: manuUser
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -246,26 +246,26 @@ tm.TMUser(manu):
        - demViewOnly
 
 tm.TMUser(nathalie):
-    authentication: nathalieAuth
+    user: nathalieUser
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(vroni):
-    authentication: vroniAuth
+    user: vroniUser
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(tamara):
-    authentication: tamaraAuth
+    user: tamaraUser
     activeProject: testManagementApplication
     projectRoles:
        - demViewOnly
        - tmTestExecution
 
 tm.TMUser(christian):
-    authentication: christianAuth
+    user: christianUser
     accountRoles:
        - accountAdmin
        - userCreate
@@ -279,46 +279,46 @@ tm.TMUser(christian):
        - tmTestLead
 
 tm.TMUser(testUserAccountAdmin):
-    authentication: testUserAccountAdminAuth
+    user: testUserAccountAdminUser
     accountRoles:
        - accountAdmin
 
 tm.TMUser(testUserProjectAdmin):
-    authentication: testUserProjectAdminAuth
+    user: testUserProjectAdminUser
     accountRoles:
        - projectCreate
        - projectEdit
        - projectDelete
 
 tm.TMUser(testUserUserAdmin):
-    authentication: testUserUserAdminAuth
+    user: testUserUserAdminUser
     accountRoles:
        - userCreate
        - userEdit
        - userDelete
 
 tm.TMUser(testUserRequirementsOnly):
-    authentication: testUserRequirementsOnlyAuth
+    user: testUserRequirementsOnlyUser
     projectRoles:
        -  tmRequirements
 
 tm.TMUser(testUserTestRepositoryOnly):
-    authentication: testUserTestRepositoryOnlyAuth
+    user: testUserTestRepositoryOnlyUser
     projectRoles:
        -  tmTestDesigner
 
 tm.TMUser(testUserTestPreparationOnly):
-    authentication: testUserTestPreparationOnlyAuth
+    user: testUserTestPreparationOnlyUser
     projectRoles:
        -  tmTestPreparation
 
 tm.TMUser(testUserTestExecutionOnly):
-    authentication: testUserTestExecutionOnlyAuth
+    user: testUserTestExecutionOnlyUser
     projectRoles:
        -  tmTestExecution
 
 tm.TMUser(testUserDefectsOnly):
-    authentication: testUserDefectsOnlyAuth
+    user: testUserDefectsOnlyUser
     projectRoles:
        -  tmDefects
 
@@ -360,7 +360,7 @@ tm.Requirement(technicalReq1):
     name: Datatables need to be sortable
     type: technical
 
-tree.jpa.TreeNode(requirementTreeNode1):
+tm.ProjectTreeNode(requirementTreeNode1):
     level: 0
     name: Requirement management
     nodeId: 1
@@ -368,8 +368,9 @@ tree.jpa.TreeNode(requirementTreeNode1):
     path: 1
     treeId: requirementTree
     type: requirementFolder
+    project: testManagementApplication
 
-tree.jpa.TreeNode(requirementTreeNode2):
+tm.ProjectTreeNode(requirementTreeNode2):
     level: 1
     name: List requirements (tree)
     nodeId: 1
@@ -378,8 +379,9 @@ tree.jpa.TreeNode(requirementTreeNode2):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
+    project: testManagementApplication
 
-tree.jpa.TreeNode(requirementTreeNode3):
+tm.ProjectTreeNode(requirementTreeNode3):
     level: 1
     name: Display requirement details
     nodeId: 2
@@ -388,8 +390,9 @@ tree.jpa.TreeNode(requirementTreeNode3):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
+    project: testManagementApplication
 
-tree.jpa.TreeNode(requirementTreeNode4):
+tm.ProjectTreeNode(requirementTreeNode4):
     level: 1
     name: Display entities linked to requirement
     nodeId: 3
@@ -398,8 +401,9 @@ tree.jpa.TreeNode(requirementTreeNode4):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
+    project: testManagementApplication
 
-tree.jpa.TreeNode(requirementTreeNode5):
+tm.ProjectTreeNode(requirementTreeNode5):
     level: 0
     name: Cross concerns
     nodeId: 2
@@ -407,8 +411,9 @@ tree.jpa.TreeNode(requirementTreeNode5):
     path: 5
     treeId: requirementTree
     type: requirementFolder
+    project: testManagementApplication
 
-tree.jpa.TreeNode(requirementTreeNode6):
+tm.ProjectTreeNode(requirementTreeNode6):
     level: 1
     name: Datatables need to be sortable
     nodeId: 4
@@ -417,6 +422,7 @@ tree.jpa.TreeNode(requirementTreeNode6):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode5
+    project: testManagementApplication
 
 tm.approach.Release(releaseProto):
     project: testManagementApplication
@@ -448,7 +454,7 @@ tm.approach.Release(releaseV1):
     project: testManagementApplication
     name: V1
 
-tree.jpa.TreeNode(approachTreeNode7):
+tm.ProjectTreeNode(approachTreeNode7):
     level: 0
     name: Proto
     nodeId: 1
@@ -456,8 +462,9 @@ tree.jpa.TreeNode(approachTreeNode7):
     path: 7
     treeId: approachTree
     type: release
+    project: testManagementApplication
 
-tree.jpa.TreeNode(approachTreeNode8):
+tm.ProjectTreeNode(approachTreeNode8):
     level: 1
     name: Unit Test
     nodeId: 1
@@ -466,8 +473,9 @@ tree.jpa.TreeNode(approachTreeNode8):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
+    project: testManagementApplication
 
-tree.jpa.TreeNode(approachTreeNode9):
+tm.ProjectTreeNode(approachTreeNode9):
     level: 1
     name: System Test
     nodeId: 2
@@ -476,8 +484,9 @@ tree.jpa.TreeNode(approachTreeNode9):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
+    project: testManagementApplication
 
-tree.jpa.TreeNode(approachTreeNode10):
+tm.ProjectTreeNode(approachTreeNode10):
     level: 1
     name: User Acceptance Test
     nodeId: 3
@@ -486,8 +495,9 @@ tree.jpa.TreeNode(approachTreeNode10):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
+    project: testManagementApplication
 
-tree.jpa.TreeNode(approachTreeNode11):
+tm.ProjectTreeNode(approachTreeNode11):
     level: 0
     name: Beta
     nodeId: 2
@@ -495,8 +505,9 @@ tree.jpa.TreeNode(approachTreeNode11):
     path: 11
     treeId: approachTree
     type: release
+    project: testManagementApplication
 
-tree.jpa.TreeNode(approachTreeNode12):
+tm.ProjectTreeNode(approachTreeNode12):
     level: 0
     name: V1
     nodeId: 3
@@ -504,6 +515,7 @@ tree.jpa.TreeNode(approachTreeNode12):
     path: 12
     treeId: approachTree
     type: release
+    project: testManagementApplication
 
 tm.test.ScriptFolder(testScriptFolderAdmin):
     project: testManagementApplication
@@ -520,6 +532,7 @@ tm.test.ScriptFolder(testScriptFolderAdminProjects):
 tm.test.Script(testScriptAdminProjectsCreate):
     project: testManagementApplication
     name: Create new project
+    createdBy: gwen
 
 tm.test.ScriptParam(projectCategoryScriptParam):
     project: testManagementApplication
@@ -558,16 +571,19 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
 tm.test.Script(testScriptAdminProjectsEdit):
     project: testManagementApplication
     name: Edit project details
+    createdBy: gwen
 
 tm.test.ScriptFolder(testScriptFolderRequirements):
     project: testManagementApplication
     name: Requirements
+    createdBy: gwen
 
 tm.test.Script(testScriptRequirement1):
     project: testManagementApplication
     name: Register new requirement
+    createdBy: gwen
 
-tree.jpa.TreeNode(repositoryTreeNode13):
+tm.ProjectTreeNode(repositoryTreeNode13):
     level: 0
     name: Administration
     nodeId: 1
@@ -575,8 +591,9 @@ tree.jpa.TreeNode(repositoryTreeNode13):
     path: 13
     treeId: repositoryTree
     type: scriptFolder
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode14):
+tm.ProjectTreeNode(repositoryTreeNode14):
     level: 1
     name: Users
     nodeId: 2
@@ -585,8 +602,9 @@ tree.jpa.TreeNode(repositoryTreeNode14):
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode15):
+tm.ProjectTreeNode(repositoryTreeNode15):
     level: 1
     name: Projects
     nodeId: 3
@@ -595,8 +613,9 @@ tree.jpa.TreeNode(repositoryTreeNode15):
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode16):
+tm.ProjectTreeNode(repositoryTreeNode16):
     level: 2
     name: Create new project
     nodeId: 1
@@ -605,8 +624,9 @@ tree.jpa.TreeNode(repositoryTreeNode16):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode17):
+tm.ProjectTreeNode(repositoryTreeNode17):
     level: 2
     name: Edit project details
     nodeId: 2
@@ -615,8 +635,9 @@ tree.jpa.TreeNode(repositoryTreeNode17):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode18):
+tm.ProjectTreeNode(repositoryTreeNode18):
     level: 0
     name: Requirement Management
     nodeId: 4
@@ -624,8 +645,9 @@ tree.jpa.TreeNode(repositoryTreeNode18):
     path: 18
     treeId: repositoryTree
     type: scriptFolder
+    project: testManagementApplication
 
-tree.jpa.TreeNode(repositoryTreeNode19):
+tm.ProjectTreeNode(repositoryTreeNode19):
     level: 1
     name: Register new requirement
     nodeId: 3
@@ -634,22 +656,27 @@ tree.jpa.TreeNode(repositoryTreeNode19):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode18
+    project: testManagementApplication
 
 tm.test.Tag(administrationTag):
     project: testManagementApplication
     name: Administration
+    type: TESTINSTANCE
 
 tm.test.Tag(usersTag):
     project: testManagementApplication
     name: Users
+    type: TESTINSTANCE
 
 tm.test.Tag(projectsTag):
     project: testManagementApplication
     name: Projects
+    type: TESTINSTANCE
 
 tm.test.Tag(requirementsTag):
     project: testManagementApplication
     name: Requirements
+    type: TESTINSTANCE
 
 tm.test.Instance(createNewProjectST1):
     project: testManagementApplication
@@ -724,6 +751,7 @@ tm.test.Run(createNewProjectST2Run1):
     tester: gwen
     executionDate: 2011-03-19 09:45:23
     status: 3
+    temporary: false
 
 tm.test.RunStep(createNewProjectST2Run1Step1):
     project: testManagementApplication
