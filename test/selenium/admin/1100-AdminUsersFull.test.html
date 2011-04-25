@@ -16,10 +16,10 @@
 
     // Attempt new user creation
     click('newUserDialogSubmitButton')
-    type('user_authentication_firstName','John')
-    type('user_authentication_lastName','Doe')
-    type('user_authentication_email','email@newUser.com')
-    type('user_authentication_password','test')
+    type('user_user_firstName','John')
+    type('user_user_lastName','Doe')
+    type('user_user_email','email@newUser.com')
+    type('user_user_password','test')
     click('//button[@type='button']')
 
     // Verify new user listed in user table
@@ -28,25 +28,25 @@
 
     // Check content of user details edit form
     click('//table[@id='tab']/tbody/tr[7]/td[2]')
-    verifyElementPresent('user_authentication_firstName')
-    verifyValue('user_authentication_firstName','John')
-    verifyElementPresent('user_authentication_lastName')
-    verifyValue('user_authentication_lastName','Doe')
-    verifyElementPresent('user_authentication_email')
-    verifyValue('user_authentication_email','email@newUser.com')
-    verifyElementPresent('user_authentication_phone')
-    verifyValue('user_authentication_phone')
+    verifyElementPresent('user_user_firstName')
+    verifyValue('user_user_firstName','John')
+    verifyElementPresent('user_user_lastName')
+    verifyValue('user_user_lastName','Doe')
+    verifyElementPresent('user_user_email')
+    verifyValue('user_user_email','email@newUser.com')
+    verifyElementPresent('user_user_phone')
+    verifyValue('user_user_phone')
     verifyElementPresent('profileForm_submit')
 
     // Perform user details change
-    type('user_authentication_lastName','Smith')
-    type('user_authentication_email','john@smith.com')
+    type('user_user_lastName','Smith')
+    type('user_user_email','john@smith.com')
     click('profileForm_submit')
 
     // Check values are saved after form submition both in user table and user details tab
     verifyText('//table[@id='tab']/tbody/tr[7]/td[3]','Smith')
-    verifyElementPresent('user_authentication_lastName')
-    verifyValue('user_authentication_lastName','Smith')
+    verifyElementPresent('user_user_lastName')
+    verifyValue('user_user_lastName','Smith')
 
 
     // PROJECT ROLES ASSIGNMENT
