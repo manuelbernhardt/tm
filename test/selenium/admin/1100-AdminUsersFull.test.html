@@ -20,22 +20,24 @@
     type('user_user_lastName','Doe')
     type('user_user_email','email@newUser.com')
     type('user_user_password','test')
-    click('//button[@type='button']')
+    click('//div[7]/div[3]/div/button[1]')
 
     // Verify new user listed in user table
-    verifyText('//table[@id='tab']/tbody/tr[7]/td[2]','John')
-    verifyText('//table[@id='tab']/tbody/tr[7]/td[3]','Doe')
+    type('//input[@type='text']','Doe')
+    fireEvent('//input[@type='text']','keyup')
+    waitForText('//table[@id='tab']/tbody/tr/td[2]','John')
+    verifyText('//table[@id='tab']/tbody/tr/td[3]','Doe')
 
     // Check content of user details edit form
-    click('//table[@id='tab']/tbody/tr[7]/td[2]')
+    click('//table[@id='tab']/tbody/tr/td[3]')
     verifyElementPresent('user_user_firstName')
-    verifyValue('user_user_firstName','John')
+    waitForValue('user_user_firstName','John')
     verifyElementPresent('user_user_lastName')
-    verifyValue('user_user_lastName','Doe')
+    waitForValue('user_user_lastName','Doe')
     verifyElementPresent('user_user_email')
-    verifyValue('user_user_email','email@newUser.com')
+    waitForValue('user_user_email','email@newUser.com')
     verifyElementPresent('user_user_phone')
-    verifyValue('user_user_phone')
+    waitForValue('user_user_phone')
     verifyElementPresent('profileForm_submit')
 
     // Perform user details change
@@ -44,36 +46,42 @@
     click('profileForm_submit')
 
     // Check values are saved after form submition both in user table and user details tab
-    verifyText('//table[@id='tab']/tbody/tr[7]/td[3]','Smith')
+    type('//input[@type='text']','Smith')
+    fireEvent('//input[@type='text']','keyup')
+    waitForText('//table[@id='tab']/tbody/tr/td[3]','Smith')
     verifyElementPresent('user_user_lastName')
     verifyValue('user_user_lastName','Smith')
 
 
     // PROJECT ROLES ASSIGNMENT
     click('//a[@id='projectsLink']/span')
-    verifyElementPresent('assign-role')
-    verifyElementPresent('unassign-role')
+    waitForElementPresent('assign-role')
+    waitForElementPresent('unassign-role')
 
     // Assign role
     click('assign-role')
+    waitForElementPresent('categories','label=2011')
     select('categories','label=2011')
     click('//option[@value='1']')
+    waitForElementPresent('projects','label=Test Management Application')
     select('projects','label=Test Management Application')
     click('//select[@id='projects']/option[3]')
+    waitForElementPresent('roles','label=Test Lead')
     select('roles','label=Test Lead')
     click('//div[11]/div/button[1]')
 
     // Verify role assignment before and after tab reload
-    verifyTextPresent('2011')
-    verifyTextPresent('Test Management Application')
-    verifyTextPresent('Test Lead')
+    waitForTextPresent('2011')
+    waitForTextPresent('Test Management Application')
+    waitForTextPresent('Test Lead')
     click('//a[@id='userDetailsLink']/span')
     click('//a[@id='projectsLink']/span')
-    verifyTextPresent('2011')
-    verifyTextPresent('Test Management Application')
-    verifyTextPresent('Test Lead')
+    waitForTextPresent('2011')
+    waitForTextPresent('Test Management Application')
+    waitForTextPresent('Test Lead')
 
     // Remove role
+    waitForElementPresent('link=Test Lead')
     click('link=Test Lead')
     click('unassign-role')
 
