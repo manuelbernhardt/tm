@@ -1,0 +1,20 @@
+#{fixture delete:'all', load:'selenium/testData.yml' /}
+
+#{selenium 'Test 1011-Admin Users Access from TM Negative'}
+
+    // Attempt login
+    clearSession()
+    open('/')
+    assertTextPresent('Oxiras Test Management Suite')
+    type('username', 'ProjectAdmin@testUser.com')
+    type('password', 'testUserProjectAdmin')
+    clickAndWait('signin')
+
+    // Verify that the user in correctly logged in
+    verifyTextPresent('Dashboard')
+
+    // Verify that not link to user administration is available
+    click('adminButton')
+    verifyElementNotPresent('adminUsersLink')
+
+#{/selenium}

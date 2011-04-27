@@ -2,8 +2,15 @@
 
 #{selenium 'Test 1100-Admin Users Full'}
 
-    // Try to access the user administration area and check that it contains the expected tabs
+    // Perform log in the administration area
+    clearSession()
     open('/admin')
+    assertTextPresent('Oxiras Test Management Suite')
+    type('username', 'gwenael.alizon@oxiras.com')
+    type('password', 'gwen')
+    clickAndWait('signin')
+
+    // Try to access the user administration area and check that it contains the expected tabs
     clickAndWait('//ul[@id='tabs_header']/li[1]/a/span')
     verifyElementPresent('//a[@id='userDetailsLink']/span')
     verifyElementPresent('//a[@id='projectsLink']/span')
