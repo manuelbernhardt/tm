@@ -69,7 +69,7 @@
     click('assign-role')
     waitForElementPresent('categories','label=2011')
     select('categories','label=2011')
-    click('//option[@value='1']')
+    click('//select[@id='categories']/option[@value='1']')
     waitForElementPresent('projects','label=Test Management Application')
     select('projects','label=Test Management Application')
     click('//select[@id='projects']/option[3]')
