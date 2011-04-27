@@ -64,10 +64,9 @@
     click('assign-role')
     waitForElementPresent('categories','label=2011')
     select('categories','label=2011')
-    click('//select[@id='categories']/option[@value='1']')
-    waitForElementPresent('//select[@id='projects']/option[3]')
-    click('//select[@id='projects']/option[3]')
-    waitForElementPresent('roles','label=Test Lead')
+    waitForElementPresent('projects', 'label=Test Management Application')
+    select('projects', 'label=Test Management Application')
+    waitForElementPresent('roles', 'label=Test Lead')
     select('roles','label=Test Lead')
     click('//div[11]/div/button[1]')
 
