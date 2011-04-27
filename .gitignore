@@ -2,6 +2,7 @@ tmp/
 modules/
 .DS_Store
 application.log
+application.log.*
 tm.iml
 test-result/
 lib/
