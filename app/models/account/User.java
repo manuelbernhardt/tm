@@ -51,7 +51,7 @@ public class User extends TemporalModel implements RoleHolder {
     public Boolean active = true;
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        return new StringBuilder().append(firstName).append(" ").append(lastName).toString();
     }
 
     public String getPassword() {
@@ -75,5 +75,9 @@ public class User extends TemporalModel implements RoleHolder {
 
     private void setAccountRoles(List<UnitRole> res) {
         // TODO
+    }
+
+    public String getDebugString() {
+        return new StringBuilder().append(getFullName()).append(", id ").append(id).append(", account ").append(account.name).toString();
     }
 }

@@ -21,6 +21,8 @@ import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.mvc.Router;
 import play.mvc.With;
+import play.templates.JavaExtensions;
+import util.Logger;
 
 /**
  * TODO security checks
@@ -109,21 +111,23 @@ public class Users extends TMController {
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void updateAccountRoles(Long userId, boolean userAdmin, boolean projectAdmin, boolean accountAdmin) {
         List<String> accountRoles = new ArrayList<String>();
-        if(userAdmin) {
+        if (userAdmin) {
             accountRoles.addAll(AccountRole.USER_ADMIN.getUnitRoles());
         }
-        if(projectAdmin) {
+        if (projectAdmin) {
             accountRoles.addAll(AccountRole.PROJECT_ADMIN.getUnitRoles());
         }
-        if(accountAdmin) {
+        if (accountAdmin) {
             accountRoles.addAll(AccountRole.ACCOUNT_ADMIN.getUnitRoles());
         }
         TMUser user = Lookups.getUser(userId);
-        if(user != null) {
+        if (user != null) {
+            Logger.info(Logger.LogType.ADMIN, "Updating roles of user '%s' to contain '%s'", user.user.getDebugString(), JavaExtensions.join(accountRoles, ", "));
             user.accountRoles.clear();
             user.accountRoles.addAll(accountRoles);
             user.save();
         } else {
+            Logger.fatal(Logger.LogType.SECURITY, "Attempting to update account roles of unknown user '%s'", userId);
             notFound();
         }
         ok();
@@ -133,11 +137,15 @@ public class Users extends TMController {
     public static void removeUser(Long userId) {
         User u = User.findById(userId);
         if (u != null) {
+            Logger.info(Logger.LogType.ADMIN, "Deactivating user '%s'", u.getDebugString());
             u.active = false;
-            // TODO actually also retrieve the TMUser and clear all roles!
             u.save();
+            TMUser tmUser = TMUser.find("from TMUser tmu where tmu.user = ?", u).first();
+            tmUser.accountRoles.clear();
+            tmUser.projectRoles.clear();
+            tmUser.save();
         } else {
-            // TODO logging
+            Logger.fatal(Logger.LogType.SECURITY, "Attempting to deactivate unknown user '%s'", userId);
             notFound();
         }
         ok();

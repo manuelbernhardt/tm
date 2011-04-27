@@ -31,7 +31,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
         Long projectId = Long.parseLong(args.get("projectId"));
         Project project = Project.findById(projectId);
         if(!project.isInAccount(TMController.getUserAccount())) {
-            Logger.error(Logger.LogType.SECURITY, "Project not in account, project ID '%s', connected user '%s'", projectId, TMController.getConnectedUser().user.email);
+            Logger.error(Logger.LogType.SECURITY, "Project not in account, project ID '%s'", projectId);
         }
         final RoleChildProducer roleChildProducer = new RoleChildProducer();
         final ProjectRoleChildProducer projectRoleChildProducer = new ProjectRoleChildProducer(projectId, roleChildProducer);
@@ -109,12 +109,12 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         TMUser u = Lookups.getUser(id);
         if (u == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove project role '%s', operation performed by user '%s'", id, parentId, TMController.getConnectedUser().user.email);
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove project role '%s'", id, parentId);
             return false;
         }
         Role role = Lookups.getRole(parentId);
         if(role == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find role with id '%s' in order to remove it from user '%s', operation performed by user '%s'", parentId, id, TMController.getConnectedUser().user.email);
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find role with id '%s' in order to remove it from user '%s'", parentId, id);
             return false;
         }
         u.projectRoles.remove(role);
