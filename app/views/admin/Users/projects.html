@@ -120,11 +120,11 @@ $(document).ready(function () {
     } else {
       var roleId = extractId(data.rslt.obj.attr("id"));
       var roleParent = data.inst._get_parent(data.rslt.obj);
-      var pId = extractId(roleParent.attr("id"));
+      var pId = extractId($(roleParent).attr("id"));
       var projectParent = data.inst._get_parent(roleParent);
       var cId = -1;
       if (typeof projectParent !== 'undefined') {
-        cId = extractId(projectParent.attr("id"));
+        cId = extractId($(projectParent).attr("id"));
       }
       selectCategory(cId, function() {
         setCategory(projectParent);
