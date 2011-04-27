@@ -7,6 +7,7 @@ import java.util.List;
 import models.tm.test.Run;
 import play.jobs.Job;
 import play.jobs.On;
+import play.libs.F;
 
 /**
  * TODO logging, including exception logging
@@ -18,7 +19,7 @@ import play.jobs.On;
  * Fire at 12pm (noon) every day *
  */
 @On("0 0 12 * * ?")
-public class TemporaryRunCleanupJob extends Job {
+public class TemporaryRunCleanupJob extends Job<F.None> {
 
     @Override
     public void doJob() throws Exception {

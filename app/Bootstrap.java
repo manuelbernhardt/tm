@@ -9,6 +9,7 @@ import play.Play;
 import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.libs.F;
 import play.test.Fixtures;
 import util.Logger;
 
@@ -16,7 +17,7 @@ import util.Logger;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @OnApplicationStart()
-public class Bootstrap extends Job {
+public class Bootstrap extends Job<F.None> {
     @Override
     public void doJob() throws Exception {
 
