@@ -33,19 +33,15 @@
     type('//input[@type='text']','Doe')
     fireEvent('//input[@type='text']','keyup')
     waitForText('//table[@id='tab']/tbody/tr/td[2]','John')
-    verifyText('//table[@id='tab']/tbody/tr/td[3]','Doe')
+    waitForText('//table[@id='tab']/tbody/tr/td[3]','Doe')
 
     // Check content of user details edit form
     click('//table[@id='tab']/tbody/tr/td[3]')
-    verifyElementPresent('user_user_firstName')
     waitForValue('user_user_firstName','John')
-    verifyElementPresent('user_user_lastName')
     waitForValue('user_user_lastName','Doe')
-    verifyElementPresent('user_user_email')
     waitForValue('user_user_email','email@newUser.com')
-    verifyElementPresent('user_user_phone')
     waitForValue('user_user_phone')
-    verifyElementPresent('profileForm_submit')
+    waitForElementPresent('profileForm_submit')
 
     // Perform user details change
     type('user_user_lastName','Smith')
@@ -56,8 +52,7 @@
     type('//input[@type='text']','Smith')
     fireEvent('//input[@type='text']','keyup')
     waitForText('//table[@id='tab']/tbody/tr/td[3]','Smith')
-    verifyElementPresent('user_user_lastName')
-    verifyValue('user_user_lastName','Smith')
+    waitForValue('user_user_lastName','Smith')
 
 
     // PROJECT ROLES ASSIGNMENT
@@ -70,8 +65,7 @@
     waitForElementPresent('categories','label=2011')
     select('categories','label=2011')
     click('//select[@id='categories']/option[@value='1']')
-    waitForElementPresent('projects','label=Test Management Application')
-    select('projects','label=Test Management Application')
+    waitForElementPresent('//select[@id='projects']/option[3]')
     click('//select[@id='projects']/option[3]')
     waitForElementPresent('roles','label=Test Lead')
     select('roles','label=Test Lead')
