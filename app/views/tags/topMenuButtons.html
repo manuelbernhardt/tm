@@ -6,9 +6,15 @@
 
 <button id="adminButton">Admin</button>
 <ul>
-  <li><a href="@{admin.Users.index()}" id="adminUsersLink">Users</a></li>
-  <li><a href="@{admin.Projects.index()}" id="adminProjectsLink">Projects</a></li>
-  <li><a href="@{admin.AccountSettings.index()}" id="adminAccountSettingsLink">Account & Settings</a></li>
+  #{deadbolt.restrict roles:[[models.general.UnitRole.USERCREATE, models.general.UnitRole.USEREDIT, models.general.UnitRole.USERDELETE]]}
+    <li><a href="@{admin.Users.index()}" id="adminUsersLink">Users</a></li>
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTCREATE, models.general.UnitRole.PROJECTEDIT, models.general.UnitRole.PROJECTDELETE]]}
+    <li><a href="@{admin.Projects.index()}" id="adminProjectsLink">Projects</a></li>
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
+    <li><a href="@{admin.AccountSettings.index()}" id="adminAccountSettingsLink">Account & Settings</a></li>
+  #{/deadbolt.restrict}
 </ul>
 
 <script type="text/javascript">
