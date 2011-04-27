@@ -9,6 +9,7 @@ import javax.persistence.UniqueConstraint;
 import controllers.ApproachTree;
 import controllers.ScriptCycleTreeDataHandler;
 import models.tm.ProjectModel;
+import models.tm.ProjectTreeNode;
 import models.tree.jpa.TreeNode;
 import tree.JSTreeNode;
 import tree.persistent.Node;
@@ -31,11 +32,11 @@ public class Release extends ProjectModel implements Node {
     }
 
     public List<TestCycle> getTestCycles() {
-        TreeNode n = TreeNode.find("from TreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.RELEASE).first();
+        ProjectTreeNode n = TreeNode.find("from ProjectTreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.RELEASE).first();
         List<JSTreeNode> children = n.getChildren();
         List<TestCycle> cycles = new ArrayList<TestCycle>();
         for (JSTreeNode child : children) {
-            cycles.add(TestCycle.<TestCycle>findById(((TreeNode) child).nodeId));
+            cycles.add(TestCycle.<TestCycle>findById(((ProjectTreeNode) child).nodeId));
         }
         return cycles;
     }
