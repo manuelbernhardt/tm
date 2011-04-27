@@ -1,29 +1,40 @@
-#{if account == null}
-No account set
+#{if user == null}
+No user selected
 #{/if}
 #{else}
 
-<fieldset>
-    <legend>Administration roles</legend>
+<form id="accountRolesForm" action="@{admin.Users.updateAccountRoles()}">
+  <div class="field">
+    <input id="userAdmin" name="userAdmin" type="checkbox" ${userAdmin?'checked':''}" />
+    <label for="userAdmin">User administration</label>
+  </div>
+  <div class="field">
+    <input id="projectAdmin" name="projectAdmin" type="checkbox" ${projectAdmin?'checked':''} />
+    <label for="projectAdmin">Project administration</label>
+  </div>
+  <div class="field">
+    <input id="accountAdmin" name="accountAdmin" type="checkbox" ${accountAdmin?'checked':''} />
+    <label for="accountAdmin">Account administration</label>
+  </div>
+  <div class="field">
+    <input type="hidden" name="userId" value="${user.id}"/>
+    <button id="saveButton">Save</button>
+  </div>
 
-    <form name="adminRoles">
+</form>
 
-    <div class="field">
-        <label for="${field.id}">First name</label>
-        <input id="${field.id}" data-validate="${field.validationData}" type="text" name="${field.name}"
-               value="${field.value}" class="${field.errorClass}"/>
-        <span class="error">${field.error}</span>
-    </div>
-
-    <p>
-        <input type="hidden" name="user.id" value="${user.id}"/>
-        <input type="hidden" name="user.user.id" value="${user.user.id}"/>
-        <input type="hidden" name="user.user.account.id" value="${user.user.account.id}"/>
-        <input type="submit" value="Save">
-    </p>
-
-    </form>
-
-</fieldset>
+<script type="text/javascript">
+  $('#saveButton').button({disabled: true}).click(function(event) {
+    event.preventDefault();
+    $('#accountRolesForm').ajaxSubmit(function() {
+      $('#saveButton').button('disable');
+    });
+  });
+  $.each($('#accountRolesForm input[type="checkbox"]'), function(index, el) {
+      $(el).change(function() {
+        $('#saveButton').button('enable');
+      });
+    });
+</script>
 
 #{/else}

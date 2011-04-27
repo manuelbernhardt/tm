@@ -1,15 +1,18 @@
 package controllers.admin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.account.User;
 import models.general.UnitRole;
+import models.tm.AccountRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
@@ -68,7 +71,14 @@ public class Users extends TMController {
         if (userId != null) {
             user = TMUser.findById(userId);
         }
-        render("/admin/Users/account.html", user);
+        boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
+        if (user != null) {
+            List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
+            userAdmin = accountRoles.contains(AccountRole.USER_ADMIN);
+            projectAdmin = accountRoles.contains(AccountRole.PROJECT_ADMIN);
+            accountAdmin = accountRoles.contains(AccountRole.ACCOUNT_ADMIN);
+        }
+        render("/admin/Users/account.html", user, userAdmin, projectAdmin, accountAdmin);
     }
 
 
@@ -85,20 +95,6 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void removeUser(Long userId) {
-        User u = User.findById(userId);
-        if(u != null) {
-            u.active = false;
-            // TODO actually also retrieve the TMUser and clear all roles!
-            u.save();
-        } else {
-            // TODO logging
-            notFound();
-        }
-        ok();
-    }
-
-    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void edit(TMUser user) {
         if (Validation.hasErrors()) {
             // TODO test if this works
@@ -107,6 +103,43 @@ public class Users extends TMController {
             render("@index", user, selectedUser);
         }
         user.save();
+        ok();
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void updateAccountRoles(Long userId, boolean userAdmin, boolean projectAdmin, boolean accountAdmin) {
+        List<String> accountRoles = new ArrayList<String>();
+        if(userAdmin) {
+            accountRoles.addAll(AccountRole.USER_ADMIN.getUnitRoles());
+        }
+        if(projectAdmin) {
+            accountRoles.addAll(AccountRole.PROJECT_ADMIN.getUnitRoles());
+        }
+        if(accountAdmin) {
+            accountRoles.addAll(AccountRole.ACCOUNT_ADMIN.getUnitRoles());
+        }
+        TMUser user = Lookups.getUser(userId);
+        if(user != null) {
+            user.accountRoles.clear();
+            user.accountRoles.addAll(accountRoles);
+            user.save();
+        } else {
+            notFound();
+        }
+        ok();
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void removeUser(Long userId) {
+        User u = User.findById(userId);
+        if (u != null) {
+            u.active = false;
+            // TODO actually also retrieve the TMUser and clear all roles!
+            u.save();
+        } else {
+            // TODO logging
+            notFound();
+        }
         ok();
     }
 

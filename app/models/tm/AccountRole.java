@@ -40,7 +40,7 @@ public enum AccountRole {
         throw new RuntimeException("No admin role with id " + id);
     }
 
-    public static List<AccountRole> getAccountRole(List<String> unitRoles) {
+    public static List<AccountRole> getAccountRoles(List<String> unitRoles) {
         List<AccountRole> roles = new ArrayList<AccountRole>();
         boolean hasProjectCreate, hasProjectEdit, hasProjectDelete;
         boolean hasUserCreate, hasUserEdit, hasUserDelete;
