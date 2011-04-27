@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import controllers.TMController;
-import tree.simple.ChildProducer;
-import tree.JSTreeNode;
-import tree.simple.SimpleNode;
-import tree.TreeDataHandler;
+import controllers.Lookups;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
 import models.tm.TMUser;
+import tree.JSTreeNode;
+import tree.TreeDataHandler;
+import tree.simple.ChildProducer;
+import tree.simple.SimpleNode;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -32,13 +32,8 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
 
         if (parentId == -1) {
             Long userId = Long.parseLong(args.get("userId"));
-            TMUser u = TMUser.findById(userId);
+            TMUser u = Lookups.getUser(userId);
             if (u == null) {
-                // TODO logging
-                return new ArrayList<JSTreeNode>();
-            }
-            if (!u.isInAccount(TMController.getUserAccount())) {
-                // TODO logging
                 return new ArrayList<JSTreeNode>();
             }
 
@@ -61,11 +56,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
             rootNodes.addAll(projects.values());
 
             return rootNodes;
-        } else {
-            System.out.println("WOULOULOU");
-
         }
-
         return null;
     }
 
