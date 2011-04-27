@@ -110,7 +110,7 @@ $(document).ready(function () {
       // project selected
     } else if (data.inst._get_type(data.rslt.obj) == "project") {
       var parent = data.inst._get_parent(data.rslt.obj);
-      selectCategory(extractId(parent.attr("id")));
+      selectCategory(extractId($(parent).attr("id")));
       setCategory(parent);
       var projectId = extractId(data.rslt.obj.attr("id"));
       selectProject(projectId, function() {
@@ -127,7 +127,7 @@ $(document).ready(function () {
         cId = extractId($(projectParent).attr("id"));
       }
       selectCategory(cId, function() {
-        setCategory(projectParent);
+        setCategory($(projectParent));
         selectProject(pId, function() {
           $('#projects').val(pId);
           $('#roles').val(roleId);
