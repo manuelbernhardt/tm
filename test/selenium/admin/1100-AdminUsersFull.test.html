@@ -62,11 +62,11 @@
 
     // Assign role
     click('assign-role')
-    waitForElementPresent('categories','label=2011')
+    waitForElementPresent('//select[@id='categories']/option[2]')
     select('categories','label=2011')
-    waitForElementPresent('projects', 'label=Test Management Application')
+    waitForElementPresent('//select[@id='projects']/option[3]')
     select('projects', 'label=Test Management Application')
-    waitForElementPresent('roles', 'label=Test Lead')
+    waitForElementPresent('//select[@id='roles']/option[1]')
     select('roles','label=Test Lead')
     click('//div[11]/div/button[1]')
 
