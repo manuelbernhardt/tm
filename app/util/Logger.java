@@ -25,12 +25,20 @@ public class Logger {
         play.Logger.info(addUser(message), args);
     }
 
+    public static void info(LogType type, boolean logUser, String message, Object... args) {
+        play.Logger.info(logUser ? addUser(message) : message, args);
+    }
+
     public static void info(LogType type, Throwable e, String message, Object args) {
         play.Logger.info(e, addUser(message), args);
     }
 
     public static void warn(LogType type, String message, Object... args) {
         play.Logger.warn(addUser(message), args);
+    }
+
+    public static void warn(LogType type, boolean logUser, String message, Object... args) {
+        play.Logger.warn(logUser?addUser(message):message, args);
     }
 
     public static void warn(LogType type, Throwable e, String message, Object... args) {

@@ -10,9 +10,9 @@ public class Security extends Secure.Security {
         User a = User.find("byEmailAndActive", username, true).first();
         boolean success = a != null && a.connect(password);
         if(success) {
-            Logger.info(Logger.LogType.AUTHENTICATION, "Authenticated user '%s'", username);
+            Logger.info(Logger.LogType.AUTHENTICATION, false, "Authenticated user '%s'", username);
         } else {
-            Logger.warn(Logger.LogType.AUTHENTICATION, "Unsuccessful authentication attempt by user '%s'", username);
+            Logger.warn(Logger.LogType.AUTHENTICATION, false, "Unsuccessful authentication attempt by user '%s'", username);
         }
         return success;
     }
