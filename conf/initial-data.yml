@@ -1,5 +1,6 @@
 account.Account(oxiras):
     name: Oxiras ApS
+    email: info@oxiras.com
 
 account.User(gwenUser):
     firstName: Gwenael
@@ -124,6 +125,7 @@ tm.Project(world):
 
 tm.Role(demViewOnly):
     name: View only
+    account: oxiras
     project: demenagement
     unitRoles:
          - reqView
@@ -134,6 +136,7 @@ tm.Role(demViewOnly):
 
 tm.Role(tmTestLead):
     name: Test Lead
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - projectEdit
@@ -160,6 +163,7 @@ tm.Role(tmTestLead):
 
 tm.Role(tmRequirements):
     name: Requirement management
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - reqView
@@ -169,6 +173,7 @@ tm.Role(tmRequirements):
 
 tm.Role(tmTestDesigner):
     name: Test Designer
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - testRepoView
@@ -178,6 +183,7 @@ tm.Role(tmTestDesigner):
 
 tm.Role(tmTestPreparation):
     name: Test Preparation
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - testPrepView
@@ -187,6 +193,7 @@ tm.Role(tmTestPreparation):
 
 tm.Role(tmTestExecution):
     name: Test Execution
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - testExecView
@@ -198,6 +205,7 @@ tm.Role(tmTestExecution):
 
 tm.Role(tmDefects):
     name: Defect resolution
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - defectView
@@ -206,6 +214,7 @@ tm.Role(tmDefects):
 
 tm.Role(tmViewOnly):
     name: View only
+    account: oxiras
     project: testManagementApplication
     unitRoles:
          - reqView
@@ -216,6 +225,7 @@ tm.Role(tmViewOnly):
 
 tm.TMUser(gwen):
     user: gwenUser
+    account: oxiras
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -231,6 +241,7 @@ tm.TMUser(gwen):
 
 tm.TMUser(manu):
     user: manuUser
+    account: oxiras
     activeProject: testManagementApplication
     accountRoles:
        - accountAdmin
@@ -247,18 +258,21 @@ tm.TMUser(manu):
 
 tm.TMUser(nathalie):
     user: nathalieUser
+    account: oxiras
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(vroni):
     user: vroniUser
+    account: oxiras
     activeProject: demenagement
     projectRoles:
        - demViewOnly
 
 tm.TMUser(tamara):
     user: tamaraUser
+    account: oxiras
     activeProject: testManagementApplication
     projectRoles:
        - demViewOnly
@@ -266,6 +280,7 @@ tm.TMUser(tamara):
 
 tm.TMUser(christian):
     user: christianUser
+    account: oxiras
     accountRoles:
        - accountAdmin
        - userCreate
@@ -280,11 +295,13 @@ tm.TMUser(christian):
 
 tm.TMUser(testUserAccountAdmin):
     user: testUserAccountAdminUser
+    account: oxiras
     accountRoles:
        - accountAdmin
 
 tm.TMUser(testUserProjectAdmin):
     user: testUserProjectAdminUser
+    account: oxiras
     accountRoles:
        - projectCreate
        - projectEdit
@@ -292,6 +309,7 @@ tm.TMUser(testUserProjectAdmin):
 
 tm.TMUser(testUserUserAdmin):
     user: testUserUserAdminUser
+    account: oxiras
     accountRoles:
        - userCreate
        - userEdit
@@ -299,68 +317,82 @@ tm.TMUser(testUserUserAdmin):
 
 tm.TMUser(testUserRequirementsOnly):
     user: testUserRequirementsOnlyUser
+    account: oxiras
     projectRoles:
        -  tmRequirements
 
 tm.TMUser(testUserTestRepositoryOnly):
     user: testUserTestRepositoryOnlyUser
+    account: oxiras
     projectRoles:
        -  tmTestDesigner
 
 tm.TMUser(testUserTestPreparationOnly):
     user: testUserTestPreparationOnlyUser
+    account: oxiras
     projectRoles:
        -  tmTestPreparation
 
 tm.TMUser(testUserTestExecutionOnly):
     user: testUserTestExecutionOnlyUser
+    account: oxiras
     projectRoles:
        -  tmTestExecution
 
 tm.TMUser(testUserDefectsOnly):
     user: testUserDefectsOnlyUser
+    account: oxiras
     projectRoles:
        -  tmDefects
 
 tm.RequirementType(functional):
     project: testManagementApplication
+    account: oxiras
     position: 1
     type: Functional
 
 tm.RequirementType(technical):
     project: testManagementApplication
+    account: oxiras
     position: 2
     type: Technical
 
 tm.RequirementFolder(functionalReqFolder):
     project: testManagementApplication
+    account: oxiras
     name: Requirement management
 
 tm.Requirement(functionalReq1):
     project: testManagementApplication
+    account: oxiras
     name: List requirements (tree)
     type: functional
 
 tm.Requirement(functionalReq2):
     project: testManagementApplication
+    account: oxiras
     name: Display requirement details
     type: functional
 
 tm.Requirement(functionalReq3):
     project: testManagementApplication
+    account: oxiras
     name: Display entities linked to requirement
     type: functional
 
 tm.RequirementFolder(crossConcernsFolder):
     project: testManagementApplication
+    account: oxiras
     name: Cross concerns
 
 tm.Requirement(technicalReq1):
     project: testManagementApplication
+    account: oxiras
     name: Datatables need to be sortable
     type: technical
 
 tm.ProjectTreeNode(requirementTreeNode1):
+    account: oxiras
     level: 0
     name: Requirement management
     nodeId: 1
@@ -371,6 +403,7 @@ tm.ProjectTreeNode(requirementTreeNode1):
     project: testManagementApplication
 
 tm.ProjectTreeNode(requirementTreeNode2):
+    account: oxiras
     level: 1
     name: List requirements (tree)
     nodeId: 1
@@ -382,6 +415,7 @@ tm.ProjectTreeNode(requirementTreeNode2):
     project: testManagementApplication
 
 tm.ProjectTreeNode(requirementTreeNode3):
+    account: oxiras
     level: 1
     name: Display requirement details
     nodeId: 2
@@ -393,6 +427,7 @@ tm.ProjectTreeNode(requirementTreeNode3):
     project: testManagementApplication
 
 tm.ProjectTreeNode(requirementTreeNode4):
+    account: oxiras
     level: 1
     name: Display entities linked to requirement
     nodeId: 3
@@ -404,6 +439,7 @@ tm.ProjectTreeNode(requirementTreeNode4):
     project: testManagementApplication
 
 tm.ProjectTreeNode(requirementTreeNode5):
+    account: oxiras
     level: 0
     name: Cross concerns
     nodeId: 2
@@ -414,6 +450,7 @@ tm.ProjectTreeNode(requirementTreeNode5):
     project: testManagementApplication
 
 tm.ProjectTreeNode(requirementTreeNode6):
+    account: oxiras
     level: 1
     name: Datatables need to be sortable
     nodeId: 4
@@ -425,36 +462,43 @@ tm.ProjectTreeNode(requirementTreeNode6):
     project: testManagementApplication
 
 tm.approach.Release(releaseProto):
+    account: oxiras
     project: testManagementApplication
     name: Proto
 
 tm.approach.TestCycle(unitTest):
+    account: oxiras
     project: testManagementApplication
     name: Unit test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
 tm.approach.TestCycle(systemTest):
+    account: oxiras
     project: testManagementApplication
     name: System Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
 tm.approach.TestCycle(userAcceptanceTest):
+    account: oxiras
     project: testManagementApplication
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
 tm.approach.Release(releaseBeta):
+    account: oxiras
     project: testManagementApplication
     name: Beta
 
 tm.approach.Release(releaseV1):
+    account: oxiras
     project: testManagementApplication
     name: V1
 
 tm.ProjectTreeNode(approachTreeNode7):
+    account: oxiras
     level: 0
     name: Proto
     nodeId: 1
@@ -465,6 +509,7 @@ tm.ProjectTreeNode(approachTreeNode7):
     project: testManagementApplication
 
 tm.ProjectTreeNode(approachTreeNode8):
+    account: oxiras
     level: 1
     name: Unit Test
     nodeId: 1
@@ -476,6 +521,7 @@ tm.ProjectTreeNode(approachTreeNode8):
     project: testManagementApplication
 
 tm.ProjectTreeNode(approachTreeNode9):
+    account: oxiras
     level: 1
     name: System Test
     nodeId: 2
@@ -487,6 +533,7 @@ tm.ProjectTreeNode(approachTreeNode9):
     project: testManagementApplication
 
 tm.ProjectTreeNode(approachTreeNode10):
+    account: oxiras
     level: 1
     name: User Acceptance Test
     nodeId: 3
@@ -498,6 +545,7 @@ tm.ProjectTreeNode(approachTreeNode10):
     project: testManagementApplication
 
 tm.ProjectTreeNode(approachTreeNode11):
+    account: oxiras
     level: 0
     name: Beta
     nodeId: 2
@@ -508,6 +556,7 @@ tm.ProjectTreeNode(approachTreeNode11):
     project: testManagementApplication
 
 tm.ProjectTreeNode(approachTreeNode12):
+    account: oxiras
     level: 0
     name: V1
     nodeId: 3
@@ -518,33 +567,40 @@ tm.ProjectTreeNode(approachTreeNode12):
     project: testManagementApplication
 
 tm.test.ScriptFolder(testScriptFolderAdmin):
+    account: oxiras
     project: testManagementApplication
     name: Administration
 
 tm.test.ScriptFolder(testScriptFolderAdminUsers):
+    account: oxiras
     project: testManagementApplication
     name: Users
 
 tm.test.ScriptFolder(testScriptFolderAdminProjects):
+    account: oxiras
     project: testManagementApplication
     name: Projects
 
 tm.test.Script(testScriptAdminProjectsCreate):
+    account: oxiras
     project: testManagementApplication
     name: Create new project
     createdBy: gwen
 
 tm.test.ScriptParam(projectCategoryScriptParam):
+    account: oxiras
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     name: projectCategory
 
 tm.test.ScriptParam(projectNameScriptParam):
+    account: oxiras
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     name: projectName
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
+    account: oxiras
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 1
@@ -553,6 +609,7 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     expectedResult: Projects administration page is shown
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
+    account: oxiras
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 2
@@ -561,6 +618,7 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     expectedResult: A new node appears in the tree under the selected project category
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
+    account: oxiras
     project: testManagementApplication
     script: testScriptAdminProjectsCreate
     position: 3
@@ -569,21 +627,25 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     expectedResult: "New project \u003C\u003C\u003CprojectName\u003E\u003E\u003E is available"
 
 tm.test.Script(testScriptAdminProjectsEdit):
+    account: oxiras
     project: testManagementApplication
     name: Edit project details
     createdBy: gwen
 
 tm.test.ScriptFolder(testScriptFolderRequirements):
+    account: oxiras
     project: testManagementApplication
     name: Requirements
     createdBy: gwen
 
 tm.test.Script(testScriptRequirement1):
+    account: oxiras
     project: testManagementApplication
     name: Register new requirement
     createdBy: gwen
 
 tm.ProjectTreeNode(repositoryTreeNode13):
+    account: oxiras
     level: 0
     name: Administration
     nodeId: 1
@@ -594,6 +656,7 @@ tm.ProjectTreeNode(repositoryTreeNode13):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode14):
+    account: oxiras
     level: 1
     name: Users
     nodeId: 2
@@ -605,6 +668,7 @@ tm.ProjectTreeNode(repositoryTreeNode14):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode15):
+    account: oxiras
     level: 1
     name: Projects
     nodeId: 3
@@ -616,6 +680,7 @@ tm.ProjectTreeNode(repositoryTreeNode15):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode16):
+    account: oxiras
     level: 2
     name: Create new project
     nodeId: 1
@@ -627,6 +692,7 @@ tm.ProjectTreeNode(repositoryTreeNode16):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode17):
+    account: oxiras
     level: 2
     name: Edit project details
     nodeId: 2
@@ -638,6 +704,7 @@ tm.ProjectTreeNode(repositoryTreeNode17):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode18):
+    account: oxiras
     level: 0
     name: Requirement Management
     nodeId: 4
@@ -648,6 +715,7 @@ tm.ProjectTreeNode(repositoryTreeNode18):
     project: testManagementApplication
 
 tm.ProjectTreeNode(repositoryTreeNode19):
+    account: oxiras
     level: 1
     name: Register new requirement
     nodeId: 3
@@ -659,26 +727,31 @@ tm.ProjectTreeNode(repositoryTreeNode19):
     project: testManagementApplication
 
 tm.test.Tag(administrationTag):
+    account: oxiras
     project: testManagementApplication
     name: Administration
     type: TESTINSTANCE
 
 tm.test.Tag(usersTag):
+    account: oxiras
     project: testManagementApplication
     name: Users
     type: TESTINSTANCE
 
 tm.test.Tag(projectsTag):
+    account: oxiras
     project: testManagementApplication
     name: Projects
     type: TESTINSTANCE
 
 tm.test.Tag(requirementsTag):
+    account: oxiras
     project: testManagementApplication
     name: Requirements
     type: TESTINSTANCE
 
 tm.test.Instance(createNewProjectST1):
+    account: oxiras
     project: testManagementApplication
     name: Create new project
     script: testScriptAdminProjectsCreate
@@ -690,6 +763,7 @@ tm.test.Instance(createNewProjectST1):
       - projectsTag
 
 tm.test.Instance(createNewProjectST2):
+    account: oxiras
     project: testManagementApplication
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
@@ -701,6 +775,7 @@ tm.test.Instance(createNewProjectST2):
       - projectsTag
 
 tm.test.Instance(editProjectDetails):
+    account: oxiras
     project: testManagementApplication
     name: Edit project details
     script: testScriptAdminProjectsEdit
@@ -712,30 +787,35 @@ tm.test.Instance(editProjectDetails):
       - projectsTag
 
 tm.test.InstanceParam(projectCategoryNewProjectST1InstanceParam):
+    account: oxiras
     project: testManagementApplication
     scriptParam: projectCategoryScriptParam
     instance: createNewProjectST1
     value:
 
 tm.test.InstanceParam(projectCategoryNewProjectST2InstanceParam):
+    account: oxiras
     project: testManagementApplication
     scriptParam: projectCategoryScriptParam
     instance: createNewProjectST2
     value: "2011"
 
 tm.test.InstanceParam(projectNameNewProjectST1InstanceParam):
+    account: oxiras
     project: testManagementApplication
     scriptParam: projectNameScriptParam
     instance: createNewProjectST1
     value: SAP Roll-out Denmark
 
 tm.test.InstanceParam(projectNameNewProjectST2InstanceParam):
+    account: oxiras
     project: testManagementApplication
     scriptParam: projectNameScriptParam
     instance: createNewProjectST2
     value: SAP Roll-out Finland
 
 tm.test.Instance(registerNewRequirement):
+    account: oxiras
     project: testManagementApplication
     name: Register new requirement
     script: testScriptRequirement1
@@ -746,6 +826,7 @@ tm.test.Instance(registerNewRequirement):
       - requirementsTag
 
 tm.test.Run(createNewProjectST2Run1):
+    account: oxiras
     project: testManagementApplication
     instance: createNewProjectST2
     tester: gwen
@@ -754,6 +835,7 @@ tm.test.Run(createNewProjectST2Run1):
     temporary: false
 
 tm.test.RunStep(createNewProjectST2Run1Step1):
+    account: oxiras
     project: testManagementApplication
     run: createNewProjectST2Run1
     position: 1
@@ -764,6 +846,7 @@ tm.test.RunStep(createNewProjectST2Run1Step1):
     status: 2
 
 tm.test.RunStep(createNewProjectST2Run1Step2):
+    account: oxiras
     project: testManagementApplication
     run: createNewProjectST2Run1
     position: 2
@@ -774,6 +857,7 @@ tm.test.RunStep(createNewProjectST2Run1Step2):
     status: 3
 
 tm.test.RunStep(createNewProjectST2Run1Step3):
+    account: oxiras
     project: testManagementApplication
     run: createNewProjectST2Run1
     position: 3
@@ -784,29 +868,33 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     status: 2
 
 tm.Defect(defect1):
+    account: oxiras
     project: testManagementApplication
     name: The application does not start
     submittedBy: gwen
     assignedTo: manu
 
 tm.Defect(defect2):
+    account: oxiras
     project: demenagement
     name: Test for naturalID
     submittedBy: nathalie
 
 tm.Defect(defect3):
+    account: oxiras
     project: testManagementApplication
     name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
 
 tm.Defect(defect4):
+    account: oxiras
     project: demenagement
     name: Box is not at the right place
     submittedBy: vroni
 
 tm.Defect(defect5):
+    account: oxiras
     project: demenagement
     name: Old couch is still not removed
     submittedBy: nathalie
-

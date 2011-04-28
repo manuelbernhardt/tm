@@ -74,7 +74,7 @@ public class User extends TemporalModel implements RoleHolder {
     }
 
     private void setAccountRoles(List<UnitRole> res) {
-        // TODO
+        // there are no cross-product account roles yet.
     }
 
     public String getDebugString() {

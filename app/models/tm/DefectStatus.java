@@ -14,4 +14,8 @@ public class DefectStatus extends ProjectModel {
     public Integer position;
     public String name;
 
+    public DefectStatus(Project project) {
+        super(project);
+    }
+
 }

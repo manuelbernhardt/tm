@@ -11,13 +11,13 @@ public class SeleniumTestDataLoader {
 
     public SeleniumTestDataLoader() {
         Fixtures.deleteDatabase();
-        Fixtures.loadModels("selenium/testData.yml");
+        Fixtures.loadModels("initial-data.yml");
 
-                // fix the treeNodes
-                List<ProjectTreeNode> rootNodes = TreeNode.find("from ProjectTreeNode n where n.threadRoot is null").fetch();
-                for (ProjectTreeNode n : rootNodes) {
-                    n.threadRoot = n;
-                    n.save();
-                }
+        // fix the treeNodes
+        List<ProjectTreeNode> rootNodes = TreeNode.find("from ProjectTreeNode n where n.threadRoot is null").fetch();
+        for (ProjectTreeNode n : rootNodes) {
+            n.threadRoot = n;
+            n.save();
+        }
     }
 }

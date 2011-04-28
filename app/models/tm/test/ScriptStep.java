@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import controllers.ParameterHandler;
+import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
@@ -37,6 +38,10 @@ public class ScriptStep extends ProjectModel {
 
     @MaxSize(5000)
     public String expectedResult;
+
+    public ScriptStep(Project project) {
+        super(project);
+    }
 
     public String getDescriptionHTML() {
         return ParameterHandler.applyClass(description, this.script, ParameterHandler.VIEW_CLASS);

@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 
 /**
@@ -21,6 +22,7 @@ public class ScriptParam extends ProjectModel implements Param {
     public String name;
 
 
-
-
+    public ScriptParam(Project project) {
+        super(project);
+    }
 }

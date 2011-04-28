@@ -17,6 +17,7 @@ import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
 import models.tm.TMUser;
+import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.mvc.Router;
@@ -30,27 +31,25 @@ import util.Logger;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @With(Deadbolt.class)
-@Restrict(UnitRole.ACCOUNTADMIN)
 public class Users extends TMController {
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USEREDIT)
     public static void index() {
         List<User> users = User.find("active = true").<User>fetch();
         render(users);
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USEREDIT)
     public static void userDetails(Long userId) {
         Router.ActionDefinition action = Router.reverse("admin.Users.edit");
-        TMUser user = null;
-        if (userId != null) {
-            user = TMUser.findById(userId);
-            checkInAccount(user);
+        TMUser user = Lookups.getUser(userId);
+        if (user == null) {
+            notFound();
         }
         render("/general/userProfile.html", action, user);
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USEREDIT)
     public static void projects(Long userId) {
         TMUser user = null;
         if (userId != null) {
@@ -84,7 +83,7 @@ public class Users extends TMController {
     }
 
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USERCREATE)
     public static void create(TMUser user) {
         if (Validation.hasErrors()) {
             // TODO add some flash message
@@ -92,12 +91,13 @@ public class Users extends TMController {
         }
 
         user.user.account = getConnectedUser().user.account;
+        user.account = getConnectedUser().user.account;
         user.create();
         index();
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void edit(TMUser user) {
+    @Restrict(UnitRole.USEREDIT)
+    public static void edit(@Valid TMUser user) {
         if (Validation.hasErrors()) {
             // TODO test if this works
             // display a message at least with the validation errors?
@@ -133,7 +133,7 @@ public class Users extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USERDELETE)
     public static void removeUser(Long userId) {
         User u = User.findById(userId);
         if (u != null) {
@@ -151,7 +151,7 @@ public class Users extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrict(UnitRole.USEREDIT)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -170,6 +170,7 @@ public class Users extends TMController {
         TableController.renderJSON(people, TMUser.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.USEREDIT)
     public static void projectOptions(Long categoryId, Long accountId) {
         if (categoryId == null || accountId == null) {
             error();
@@ -194,8 +195,9 @@ public class Users extends TMController {
         }
     }
 
+    @Restrict(UnitRole.USEREDIT)
     public static void rolesOptions(Long projectId) {
-        if (projectId == null || projectId == null) {
+        if (projectId == null) {
             error();
         } else {
             Project p = Project.findById(projectId);

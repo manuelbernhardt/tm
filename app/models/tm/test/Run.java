@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.TMUser;
 import play.db.jpa.JPA;
@@ -37,6 +38,10 @@ public class Run extends ProjectModel implements ParameterHolder {
     public Date executionDate;
 
     public Integer status;
+
+    public Run(Project project) {
+        super(project);
+    }
 
     public List<RunStep> getSteps() {
         return RunStep.find("from RunStep r where r.run = ?", this).<RunStep>fetch();

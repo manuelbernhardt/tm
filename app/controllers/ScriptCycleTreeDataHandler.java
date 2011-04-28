@@ -100,8 +100,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
             if (!cycle.isInAccount(TMController.getUserAccount()) || !script.isInAccount(TMController.getUserAccount())) {
                 return null;
             }
-            Instance ti = new Instance();
-            ti.project = script.project;
+            Instance ti = new Instance(script.project);
             ti.testCycle = cycle;
             ti.script = script;
             ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
@@ -114,7 +113,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
 
             // create the InstanceParams
             for(ScriptParam param : script.getParams()) {
-                InstanceParam instanceParam = new InstanceParam();
+                InstanceParam instanceParam = new InstanceParam(script.project);
                 instanceParam.scriptParam = param;
                 instanceParam.instance = ti;
                 instanceParam.project = param.project;

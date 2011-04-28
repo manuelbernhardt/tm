@@ -2,6 +2,7 @@ package models.tm.test;
 
 import javax.persistence.*;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 
 /**
@@ -18,5 +19,8 @@ public class InstanceParam extends ProjectModel {
     public Instance instance;
 
     public String value;
-    
+
+    public InstanceParam(Project project) {
+        super(project);
+    }
 }

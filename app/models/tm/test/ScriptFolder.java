@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
@@ -17,6 +18,10 @@ public class ScriptFolder extends ProjectModel implements Node {
 
     @NodeName
     public String name;
+
+    public ScriptFolder(Project project) {
+        super(project);
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

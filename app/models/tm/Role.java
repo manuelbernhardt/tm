@@ -27,6 +27,10 @@ public class Role extends ProjectModel {
     @OrderColumn
     public List<String> unitRoles = new ArrayList<String>();
 
+    public Role(Project project) {
+        super(project);
+    }
+
     public List<UnitRole> getAuthenticationUnitRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
         for(String r : unitRoles) {

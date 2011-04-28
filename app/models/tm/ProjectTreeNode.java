@@ -29,10 +29,14 @@ import tree.persistent.NodeType;
 public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
+    public Account account;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public Project project;
 
     public ProjectTreeNode(Project project) {
         this.project = project;
+        this.account = project.account;
     }
 
     public boolean isInAccount(Account account) {

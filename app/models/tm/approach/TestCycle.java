@@ -7,6 +7,7 @@ import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
 import controllers.ScriptCycleTreeDataHandler;
+import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;
 import play.data.validation.MaxSize;
@@ -29,6 +30,10 @@ public class TestCycle extends ProjectModel implements Node {
     public Date fromDate;
 
     public Date toDate;
+
+    public TestCycle(Project project) {
+        super(project);
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

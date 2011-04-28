@@ -52,8 +52,7 @@ public class ParameterHandler {
     public static List<ScriptParam> getScriptParameters(String text, Script script) {
         List<ScriptParam> res = new ArrayList<ScriptParam>();
         for (String p : getParameterNames(text)) {
-            ScriptParam param = new ScriptParam();
-            param.project = script.project;
+            ScriptParam param = new ScriptParam(script.project);
             param.script = script;
             param.name = p;
             res.add(param);

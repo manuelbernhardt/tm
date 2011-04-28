@@ -11,6 +11,7 @@
     clickAndWait('signin')
 
     // Try to access the user administration area and check that it contains the expected tabs
+    waitForElementPresent('//ul[@id='tabs_header']/li[2]/a/span')
     clickAndWait('//ul[@id='tabs_header']/li[2]/a/span')
     verifyElementPresent('create_category')
     verifyElementPresent('create_project')

@@ -155,7 +155,7 @@ public class Execution extends TMController {
         }
 
         // create the run
-        Run run = new Run();
+        Run run = new Run(getActiveProject());
         run.project = instance.project;
         run.instance = instance;
         run.tester = getConnectedUser();
@@ -167,7 +167,7 @@ public class Execution extends TMController {
 
         // copy the steps
         for (ScriptStep step : instance.script.getSteps()) {
-            RunStep runStep = new RunStep();
+            RunStep runStep = new RunStep(getActiveProject());
             runStep.project = instance.project;
             runStep.run = run;
             runStep.executionStatus = ExecutionStatus.NOT_RUN;
@@ -182,7 +182,7 @@ public class Execution extends TMController {
 
         // copy the parameters
         for (InstanceParam param : instance.getParams()) {
-            RunParam runParam = new RunParam();
+            RunParam runParam = new RunParam(getActiveProject());
             runParam.project = instance.project;
             runParam.run = run;
 

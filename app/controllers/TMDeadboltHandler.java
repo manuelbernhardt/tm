@@ -5,7 +5,9 @@ import java.util.List;
 
 import controllers.deadbolt.DeadboltHandler;
 import controllers.deadbolt.ExternalizedRestrictionsAccessor;
+import controllers.deadbolt.RestrictedResourcesHandler;
 import models.account.User;
+import models.deadbolt.AccessResult;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
@@ -14,6 +16,7 @@ import play.mvc.Controller;
 import util.Logger;
 
 public class TMDeadboltHandler extends Controller implements DeadboltHandler {
+
     public void beforeRoleCheck() {
 
         if (!Security.isConnected()) {
@@ -53,6 +56,14 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     public ExternalizedRestrictionsAccessor getExternalizedRestrictionsAccessor() {
         return new ExternalizedRestrictionsAccessor() {
             public ExternalizedRestrictions getExternalizedRestrictions(String name) {
+                return null;
+            }
+        };
+    }
+
+    public RestrictedResourcesHandler getRestrictedResourcesHandler() {
+        return new RestrictedResourcesHandler() {
+            public AccessResult checkAccess(List<String> resourceNames) {
                 return null;
             }
         };

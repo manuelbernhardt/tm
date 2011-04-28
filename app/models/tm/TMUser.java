@@ -28,6 +28,9 @@ import play.db.jpa.JPA;
 @Entity
 public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
+    public Account account;
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, optional = false)
     @Valid
     public User user;

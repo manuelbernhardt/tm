@@ -30,15 +30,17 @@ public class RequirementTree extends TMTree {
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
+        // TODO security check roles
+
         if(type.getNodeClass().equals(RequirementFolder.class)) {
-            RequirementFolder folder = new RequirementFolder();
+            RequirementFolder folder = new RequirementFolder(TMController.getActiveProject());
             folder.name = name;
             folder.project = TMController.getActiveProject();
             return folder;
         }
 
         if(type.getNodeClass().equals(Requirement.class)) {
-            Requirement requirement = new Requirement();
+            Requirement requirement = new Requirement(TMController.getActiveProject());
             requirement.name = name;
             requirement.project = TMController.getActiveProject();
             requirement.createdBy = TMController.getConnectedUser();

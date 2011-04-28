@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import controllers.ParameterHandler;
+import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
 
@@ -39,6 +40,10 @@ public class RunStep extends ProjectModel {
 
     public Integer status;
 
+    public RunStep(Project project) {
+        super(project);
+    }
+
     public String getDescriptionHTML() {
         return ParameterHandler.applyClass(description, this.run, ParameterHandler.VIEW_CLASS);
     }
@@ -54,7 +59,6 @@ public class RunStep extends ProjectModel {
     public String getExpectedResultEditableHTML() {
         return ParameterHandler.applyClass(expectedResult, this.run, ParameterHandler.EDIT_CLASS);
     }
-
 
     @Transient
     public ExecutionStatus executionStatus;

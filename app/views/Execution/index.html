@@ -203,6 +203,7 @@
           $('#runForm').ajaxSubmit();
           fullDrawInstanceTable = false;
           refreshTableContents('instanceTable', false);
+          refreshTableContents('runTable', false);
           $(this).dialog("close");
         },
         "Cancel": function() {
@@ -211,7 +212,7 @@
       }
     });
 
-    $('#updateRunButton').button({disabled: true}).click(function() {
+    $('#updateRunButton').button({icons: {primary: 'ui-icon-pencil'}, disabled: true}).click(function() {
       $('#updateRunDialog').dialog('open')
     });
 

@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.TMUser;
 import play.data.validation.MaxSize;
@@ -36,6 +37,10 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
+
+    public Script(Project project) {
+        super(project);
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

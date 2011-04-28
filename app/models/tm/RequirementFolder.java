@@ -21,6 +21,10 @@ public class RequirementFolder extends ProjectModel implements Node {
     @NodeName
     public String name;
 
+    public RequirementFolder(Project project) {
+        super(project);
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         // TODO

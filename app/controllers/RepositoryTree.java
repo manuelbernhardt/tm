@@ -30,15 +30,17 @@ public class RepositoryTree extends TMTree {
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
+        // TODO security check roles
+
         if(type.getNodeClass().equals(ScriptFolder.class)) {
-            ScriptFolder folder = new ScriptFolder();
+            ScriptFolder folder = new ScriptFolder(TMController.getActiveProject());
             folder.name = name;
             folder.project = TMController.getActiveProject();
             return folder;
         }
 
         if(type.getNodeClass().equals(Script.class)) {
-            Script script = new Script();
+            Script script = new Script(TMController.getActiveProject());
             script.name = name;
             script.project = TMController.getActiveProject();
             script.createdBy = TMController.getConnectedUser();

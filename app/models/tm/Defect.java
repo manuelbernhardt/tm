@@ -32,8 +32,14 @@ public class Defect extends ProjectModel {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
 
+    public Defect(Project project) {
+        super(project);
+    }
+
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");
     }
-    
+
+
+
 }

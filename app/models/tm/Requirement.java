@@ -38,14 +38,17 @@ public class Requirement extends ProjectModel implements Node {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Tag> tags;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public List<Script> linkedScripts;
+
+    public Requirement(Project project) {
+        super(project);
+    }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         // TODO
         return super.clone();
     }
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-    public List<Script> linkedScripts;
-
 
 }

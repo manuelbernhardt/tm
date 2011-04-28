@@ -8,6 +8,7 @@ import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
 import controllers.ScriptCycleTreeDataHandler;
+import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;
 import models.tree.jpa.TreeNode;
@@ -24,6 +25,10 @@ public class Release extends ProjectModel implements Node {
 
     @NodeName
     public String name;
+
+    public Release(Project project) {
+        super(project);
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

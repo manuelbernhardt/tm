@@ -33,10 +33,5 @@ public abstract class TMTree extends AbstractTree {
             treeNode.create();
             return node;
         }
-
-        @Override
-        public GenericTreeNode getTreeNode(Long nodeId, String type, String treeId) {
-            return super.getTreeNode(nodeId, type, treeId);    //To change body of overridden methods use File | Settings | File Templates.
-        }
     }
 }

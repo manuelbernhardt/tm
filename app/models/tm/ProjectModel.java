@@ -15,10 +15,18 @@ import models.general.CompositeModel;
 public class ProjectModel extends CompositeModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
+    public Account account;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public Project project;
 
     public boolean isInAccount(Account account) {
         // TODO add logging here
-        return project.account.getId().equals(account.getId());
+        return this.account.getId().equals(account.getId());
+    }
+
+    public ProjectModel(Project project) {
+        this.project = project;
+        this.account = project.account;
     }
 }

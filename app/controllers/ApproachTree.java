@@ -37,22 +37,19 @@ public class ApproachTree extends TMTree {
         if(projectId == null) {
             return null;
         }
-        Project project = Project.findById(Long.parseLong(projectId));
 
-        // TODO check role as well
-        if(!project.isInAccount(TMController.getUserAccount())) {
-            return null;
-        }
+        // TODO SECURITY check role (project edition)
+        Project project = Lookups.getProject(Long.parseLong(projectId));
 
         if(type.getNodeClass().equals(TestCycle.class)) {
-            TestCycle cycle = new TestCycle();
+            TestCycle cycle = new TestCycle(project);
             cycle.name = name;
             cycle.project = project;
             return cycle;
         }
 
         if(type.getNodeClass().equals(Release.class)) {
-            Release release = new Release();
+            Release release = new Release(project);
             release.name = name;
             release.project = project;
             return release;

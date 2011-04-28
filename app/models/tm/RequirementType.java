@@ -14,6 +14,10 @@ public class RequirementType extends ProjectModel {
     public Integer position;
     public String type;
 
+    public RequirementType(Project project) {
+        super(project);
+    }
+
     @Override
     public String toString() {
         return type;

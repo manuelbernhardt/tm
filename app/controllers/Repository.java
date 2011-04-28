@@ -63,7 +63,7 @@ public class Repository extends TMController {
 
     public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
         if (scriptId == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not update script step '%s', no scriptId passed");
+            Logger.error(Logger.LogType.TECHNICAL, "Could not update script step '%s', no scriptId passed", step.name);
             error("Could not update script step, no script ID passed");
         }
         Script script = Script.findById(scriptId);
@@ -86,8 +86,7 @@ public class Repository extends TMController {
                     p.create();
                     // propagate creation of a new param to all instances of this script
                     for (Instance i : script.getInstances()) {
-                        InstanceParam ip = new InstanceParam();
-                        ip.project = i.project;
+                        InstanceParam ip = new InstanceParam(i.project);
                         ip.instance = i;
                         ip.scriptParam = p;
                         ip.create();
@@ -97,7 +96,8 @@ public class Repository extends TMController {
 
             // for new steps only
             if (step.id == null) {
-                step.project = TMController.getActiveProject();
+                step.account = script.account;
+                step.project = script.project;
                 step.script = script;
             }
 

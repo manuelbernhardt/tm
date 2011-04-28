@@ -115,9 +115,8 @@ public class TMController extends Controller {
             for (String name : tags.split(",")) {
                 Tag t = Tag.find("from Tag t where t.name = ? and t.type = '" + type.name() + "' and t.project = ?", name.trim(), getActiveProject()).first();
                 if (t == null && name.trim().length() > 0) {
-                    t = new Tag();
+                    t = new Tag(getActiveProject());
                     t.name = name.trim();
-                    t.project = getActiveProject();
                     t.type = type;
                     t.create();
                 }

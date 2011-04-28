@@ -1,5 +1,9 @@
 package models.general;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -52,6 +56,14 @@ public class UnitRole implements models.deadbolt.Role {
 
     public static UnitRole role(String role) {
         return new UnitRole(role);
+    }
+
+    public static List<UnitRole> roles(Collection<String> unitRoles) {
+        List<UnitRole> roles = new ArrayList<UnitRole>();
+        for(String r : unitRoles) {
+            roles.add(role(r));
+        }
+        return roles;
     }
 
     @Override

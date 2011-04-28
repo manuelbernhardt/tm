@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Project;
 import models.tm.ProjectModel;
 
 /**
@@ -21,4 +22,8 @@ public class RunParam extends ProjectModel implements Param {
     public String name;
 
     public String value;
+
+    public RunParam(Project project) {
+        super(project);
+    }
 }

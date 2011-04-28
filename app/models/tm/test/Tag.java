@@ -32,6 +32,10 @@ public class Tag extends ProjectModel {
     @Column(nullable = false)
     public TagType type;
 
+    public Tag(Project project) {
+        super(project);
+    }
+
     @Override
     public String toString() {
         return name;
