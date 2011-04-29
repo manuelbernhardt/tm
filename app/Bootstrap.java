@@ -1,11 +1,15 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.List;
 
 import models.SchemaCreation;
+import models.account.Account;
 import models.tm.ProjectTreeNode;
 import models.tm.TMUser;
 import models.tree.jpa.TreeNode;
 import org.hibernate.Session;
 import play.Play;
+import play.db.DB;
 import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
@@ -27,15 +31,29 @@ public class Bootstrap extends Job<F.None> {
         // this is a Bootstrap job for the development mode, making it easy to re-create data and schema elements out of nowhere
         // for production, we'll need to export the schema creation into a consolidated script
         if (Play.mode == Play.Mode.DEV) {
-            if (TMUser.count() == 0) {
+            // create schema?
+            Connection c = DB.getConnection();
+            ResultSet triggers = c.createStatement().executeQuery("SELECT * FROM INFORMATION_SCHEMA.TRIGGERS WHERE TRIGGER_SCHEMA = '" + DB.getConnection().getCatalog() + "'");
+            if (!triggers.first()) {
+                System.out.println();
+                System.out.println();
+                System.out.println(String.format("=== SCHEMA CREATION ON SCHEMA %s ===", c.getCatalog()));
+                System.out.println();
+                System.out.println();
+
+                // trigger JPA schema creation
+                TMUser.count();
 
                 // for development: create triggers && validate model
                 SchemaCreation schemaCreation = new SchemaCreation(((Session) JPA.em().getDelegate()).getSessionFactory());
                 schemaCreation.validateCompositeModels();
                 schemaCreation.createTriggers();
+            }
+            c.close();
 
+            if (Account.count() == 0) {
+                Fixtures.deleteDatabase();
                 Fixtures.loadModels("initial-data.yml");
-
                 // fix the treeNodes
                 List<ProjectTreeNode> rootNodes = TreeNode.find("from ProjectTreeNode n where n.threadRoot is null").fetch();
                 for (ProjectTreeNode n : rootNodes) {

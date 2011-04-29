@@ -17,6 +17,7 @@ import models.account.User;
 import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import org.hibernate.annotations.Filter;
 import play.data.validation.Valid;
 import play.db.jpa.JPA;
 
@@ -26,6 +27,7 @@ import play.db.jpa.JPA;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
+@Filter(name = "account")
 public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)

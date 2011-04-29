@@ -18,6 +18,8 @@ import models.account.User;
 import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.test.Tag;
+import org.hibernate.Session;
+import play.db.jpa.JPA;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -49,6 +51,21 @@ public class TMController extends Controller {
 
         }
     }
+
+    @Before
+    public static void setAccountFilter() {
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("YADAAA");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        Long accountId = getConnectedUser().account.getId();
+        ((Session) JPA.em().getDelegate()).enableFilter("account").setParameter("account_id", accountId);
+    }
+
 
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {

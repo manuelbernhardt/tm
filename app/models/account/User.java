@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import org.hibernate.annotations.Filter;
 import play.data.binding.NoBinding;
 import play.data.validation.Email;
 import play.data.validation.Password;
@@ -22,6 +23,7 @@ import play.libs.Crypto;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
+@Filter(name = "account")
 public class User extends TemporalModel implements RoleHolder {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)

@@ -3,6 +3,8 @@ package models.general;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.Filter;
+
 /**
  * A composite model, which has a "natural" identifier. The naturalIdentifier mechanism is implemented by means of MySQL triggers.
  *
@@ -12,6 +14,7 @@ import javax.persistence.MappedSuperclass;
  */
 
 @MappedSuperclass
+@Filter(name = "account")
 public class CompositeModel extends TemporalModel {
 
     @Column(insertable = false, updatable = false, columnDefinition = "bigint(20) NOT NULL DEFAULT -1")
