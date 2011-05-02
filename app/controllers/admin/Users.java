@@ -43,9 +43,6 @@ public class Users extends TMController {
     public static void userDetails(Long userId) {
         Router.ActionDefinition action = Router.reverse("admin.Users.edit");
         TMUser user = Lookups.getUser(userId);
-        if (user == null) {
-            notFound();
-        }
         render("/general/userProfile.html", action, user);
     }
 
