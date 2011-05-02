@@ -17,6 +17,7 @@ import models.account.User;
 import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Filters;
 import play.data.validation.Valid;
@@ -46,6 +47,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     public List<String> accountRoles = new ArrayList<String>();
 
     @ManyToMany(cascade = {CascadeType.REFRESH})
+    @BatchSize(size = 10)
     public List<Role> projectRoles;
 
     public String getFullName() {

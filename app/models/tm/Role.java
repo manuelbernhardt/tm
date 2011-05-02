@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.general.UnitRole;
+import org.hibernate.annotations.BatchSize;
 import play.data.validation.Required;
 
 /**
@@ -17,6 +18,7 @@ import play.data.validation.Required;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
+@BatchSize(size = 10)
 public class Role extends ProjectModel {
 
     @Column(nullable = false)

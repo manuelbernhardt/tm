@@ -3,7 +3,6 @@ package models.general;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,10 +20,5 @@ public class TemporalModel extends Model {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created", nullable = false, insertable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT '0000-00-00 00:00:00'")
-	public Date created;
-
-	@PrePersist
-	protected void onCreate() {
-		created = new Date();
-	}
+	public Date created = new Date();
 }
