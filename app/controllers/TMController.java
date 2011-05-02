@@ -45,7 +45,7 @@ public class TMController extends Controller {
             renderArgs.put("firstName", a.firstName);
             renderArgs.put("lastName", a.lastName);
 
-            if (!request.controller.startsWith("admin")) {
+            if (hasActiveProject()) {
                 renderArgs.put("activeProject", getActiveProject());
             }
 
@@ -62,6 +62,11 @@ public class TMController extends Controller {
         // active users filter
         ((Session) JPA.em().getDelegate()).enableFilter("activeUser").setParameter("active", true);
         ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
+
+        if (hasActiveProject()) {
+            ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", getActiveProject().getId());
+        }
+
     }
 
 
@@ -92,7 +97,7 @@ public class TMController extends Controller {
      */
     public static Project getActiveProject() {
 
-        if (request.controller.startsWith("admin")) {
+        if (!hasActiveProject()) {
             throw new RuntimeException("Active project can't be fetched in the admin area");
         }
 
@@ -104,6 +109,15 @@ public class TMController extends Controller {
             }
         }
         return null;
+    }
+
+    /**
+     * Does this controller have the concept of active project
+     *
+     * @return <code>true</code> if this is not an admin controller
+     */
+    private static boolean hasActiveProject() {
+        return !request.controller.startsWith("admin");
     }
 
     @Util
