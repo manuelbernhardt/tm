@@ -35,7 +35,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.USEREDIT)
     public static void index() {
-        List<User> users = User.find("active = true").<User>fetch();
+        List<User> users = User.findAll();
         render(users);
     }
 
@@ -138,9 +138,12 @@ public class Users extends TMController {
         User u = User.findById(userId);
         if (u != null) {
             Logger.info(Logger.LogType.ADMIN, "Deactivating user '%s'", u.getDebugString());
+
+            TMUser tmUser = TMUser.find("from TMUser tmu where tmu.user = ?", u).first();
+
             u.active = false;
             u.save();
-            TMUser tmUser = TMUser.find("from TMUser tmu where tmu.user = ?", u).first();
+
             tmUser.accountRoles.clear();
             tmUser.projectRoles.clear();
             tmUser.save();
@@ -161,9 +164,9 @@ public class Users extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             String sLike = "%" + sSearch + "%";
-            query = TMUser.find("from TMUser u where u.user.active = true and u.user.firstName like ? or u.user.lastName like ?", sLike, sLike);
+            query = TMUser.find("from TMUser u where u.user.firstName like ? or u.user.lastName like ?", sLike, sLike);
         } else {
-            query = TMUser.find("user.active = true").from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = TMUser.find("from TMUser u").from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<TMUser> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = TMUser.count();

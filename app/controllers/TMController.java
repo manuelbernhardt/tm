@@ -53,25 +53,21 @@ public class TMController extends Controller {
     }
 
     @Before
-    public static void setAccountFilter() {
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("YADAAA");
-        System.out.println();
-        System.out.println();
-        System.out.println();
+    public static void setFilters() {
+
+        // account filter
         Long accountId = getConnectedUser().account.getId();
         ((Session) JPA.em().getDelegate()).enableFilter("account").setParameter("account_id", accountId);
+
+        // active users filter
+        ((Session) JPA.em().getDelegate()).enableFilter("activeUser").setParameter("active", true);
+        ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
     }
 
 
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
-            // TODO FIXME search by account, too!
-            TMUser user = TMUser.find("from TMUser u where u.user.email = ? and u.user.active = true", Security.connected()).<TMUser>first();
-            return user;
+            return TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
         } else {
             // TODO test this!
             flash.put("url", "GET".equals(request.method) ? request.url : "/");

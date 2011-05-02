@@ -18,7 +18,7 @@ public class Security extends Secure.Security {
     }
 
     static void onAuthenticated() {
-        TMUser u = TMUser.find("from TMUser u where u.user.email = ? and u.user.active = true", Security.connected()).first();
+        TMUser u = TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).first();
 
         // bind the basic session variables
         // we really want to keep the user session as thin as possible as it is sent at each request

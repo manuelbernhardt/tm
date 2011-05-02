@@ -2,13 +2,13 @@ package models.account;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
-import models.general.TemporalModel;
 import models.general.UnitRole;
 import org.hibernate.annotations.Filter;
 import play.data.binding.NoBinding;
@@ -18,16 +18,14 @@ import play.data.validation.Required;
 import play.libs.Crypto;
 
 /**
- * Generic user. Does not extend AccountModel because natural IDs are not necessary.
+ * Generic user.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Filter(name = "account")
-public class User extends TemporalModel implements RoleHolder {
-
-    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
-    public Account account;
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})})
+@Filter(name = "activeUser")
+public class User extends AccountModel implements RoleHolder {
 
     @Required
     @Column(nullable = false)
@@ -69,7 +67,7 @@ public class User extends TemporalModel implements RoleHolder {
         return this.password.equals(Crypto.passwordHash(password));
     }
 
-    public List<? extends models.deadbolt.Role> getRoles() {
+    public List<? extends Role> getRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
         setAccountRoles(res);
         return res;

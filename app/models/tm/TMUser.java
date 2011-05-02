@@ -18,6 +18,7 @@ import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
 import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.Filters;
 import play.data.validation.Valid;
 import play.db.jpa.JPA;
 
@@ -27,7 +28,7 @@ import play.db.jpa.JPA;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Filter(name = "account")
+@Filters({@Filter(name = "account"), @Filter(name="activeTMUser")})
 public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
@@ -80,7 +81,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listByAccount(Long accountId) {
-        return TMUser.find("from TMUser u where u.user.active = true and u.user.account.id = ?", accountId).fetch();
+        return TMUser.find("from TMUser u where u.user.account.id = ?", accountId).fetch();
     }
 
     public static List<TMUser> listByProject(Long projectId) {
@@ -110,7 +111,7 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listByActiveProject() {
-        return TMUser.find("from TMUser u where u.user.active = true and u.user.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
+        return TMUser.find("from TMUser u where and u.user.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
     }
 
     public static List<TMUser> listUsersInProjectRole(Long roleId) {
@@ -118,13 +119,13 @@ public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
     }
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {
-        Query query = JPA.em().createQuery("select u from TMUser u join u.accountRoles r where u.user.active = true and u.user.account = :account and r in (:unitRoles) group by u");
+        Query query = JPA.em().createQuery("select u from TMUser u join u.accountRoles r where u.user.account = :account and r in (:unitRoles) group by u");
         query.setParameter("account", TMController.getUserAccount());
         query.setParameter("unitRoles", role.getUnitRoles());
         return query.getResultList();
     }
 
     public static TMUser findById(Long id) {
-        return TMUser.find("from TMUser u where u.user.active = true and u.id = ?", id).<TMUser>first();
+        return TMUser.find("from TMUser u where u.id = ?", id).<TMUser>first();
     }
 }
