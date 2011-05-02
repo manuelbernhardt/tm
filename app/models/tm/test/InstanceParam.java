@@ -6,7 +6,7 @@ import models.tm.Project;
 import models.tm.ProjectModel;
 
 /**
- * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
+ * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
