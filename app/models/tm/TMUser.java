@@ -112,7 +112,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     }
 
     public static List<TMUser> listByActiveProject() {
-        return TMUser.find("from TMUser u where and u.user.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
+        return TMUser.find("from TMUser u where and u.user.account = ? and exists(from u.projectRoles r where r.project = ?)", TMController.getConnectedUserAccount(), TMController.getActiveProject()).<TMUser>fetch();
     }
 
     public static List<TMUser> listUsersInProjectRole(Long roleId) {
@@ -121,7 +121,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {
         Query query = JPA.em().createQuery("select u from TMUser u join u.accountRoles r where u.user.account = :account and r in (:unitRoles) group by u");
-        query.setParameter("account", TMController.getUserAccount());
+        query.setParameter("account", TMController.getConnectedUserAccount());
         query.setParameter("unitRoles", role.getUnitRoles());
         return query.getResultList();
     }

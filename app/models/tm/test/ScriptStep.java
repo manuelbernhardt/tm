@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import controllers.ParameterHandler;
+import util.ParameterHandler;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;

@@ -1,9 +1,10 @@
-package controllers;
+package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import controllers.TMController;
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.TMUser;
@@ -32,7 +33,7 @@ public class UserTree implements TreeDataHandler, TreeRoleHolder {
         final ChildProducer rootChildProducer = new ChildProducer() {
             public List<JSTreeNode> produce(Long id) {
                 List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-                List<TMUser> users = TMUser.listByAccount(TMController.getUserAccount().getId());
+                List<TMUser> users = TMUser.listByAccount(TMController.getConnectedUserAccount().getId());
                 for (TMUser u : users) {
                     nodes.add(new SimpleNode(u.getId(), u.getFullName(), USER, false, false, null));
                 }

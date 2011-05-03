@@ -30,6 +30,7 @@ import util.Logger;
 /**
  * Parent controller for the TM application.
  * Sets common view template data such as username, visible menu elements, ...
+ * Contains common utility methods.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -69,7 +70,6 @@ public class TMController extends Controller {
 
     }
 
-
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
             return TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
@@ -86,7 +86,7 @@ public class TMController extends Controller {
         return null;
     }
 
-    public static Account getUserAccount() {
+    public static Account getConnectedUserAccount() {
         return getConnectedUser().user.account;
     }
 
@@ -122,8 +122,8 @@ public class TMController extends Controller {
 
     @Util
     public static void checkInAccount(AccountEntity accountEntity) {
-        if (!accountEntity.isInAccount(getUserAccount())) {
-            Logger.fatal(Logger.LogType.SECURITY, "Entity %s with ID %s is not in account %s of user %s", accountEntity.getClass(), accountEntity.getId(), getUserAccount().name, Security.connected());
+        if (!accountEntity.isInAccount(getConnectedUserAccount())) {
+            Logger.fatal(Logger.LogType.SECURITY, "Entity %s with ID %s is not in account %s of user %s", accountEntity.getClass(), accountEntity.getId(), getConnectedUserAccount().name, Security.connected());
             unauthorized();
         }
     }
@@ -154,6 +154,11 @@ public class TMController extends Controller {
         }
         return tagList;
     }
+
+
+    /////////////////////////////////////////////////////////////
+    // The following code is used by the ox.form implementation /
+    /////////////////////////////////////////////////////////////
 
     private final static DateFormat df = new SimpleDateFormat(play.Play.configuration.getProperty("date.format"));
 

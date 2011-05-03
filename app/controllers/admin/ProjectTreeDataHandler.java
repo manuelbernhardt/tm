@@ -45,7 +45,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     }
 
     public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
-        Account userAccount = TMController.getUserAccount();
+        Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
             Project project = new Project();
@@ -65,7 +65,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     }
 
     public boolean rename(Long id, String name, String type) {
-        Account userAccount = TMController.getUserAccount();
+        Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             Project p = Project.<Project>findById(id);
             if (!p.isInAccount(userAccount)) {
@@ -129,11 +129,11 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-            for (ProjectCategory pc : ProjectCategory.find("from ProjectCategory pc where pc.account = ?", TMController.getUserAccount()).<ProjectCategory>fetch()) {
+            for (ProjectCategory pc : ProjectCategory.find("from ProjectCategory pc where pc.account = ?", TMController.getConnectedUserAccount()).<ProjectCategory>fetch()) {
                 SimpleNode pdn = new SimpleNode(pc.id, pc.name, CATEGORY, true, true, producer);
                 nodes.add(pdn);
             }
-            for (Project p : Project.find("from Project p where p.projectCategory is null and p.account = ?", TMController.getUserAccount()).<Project>fetch()) {
+            for (Project p : Project.find("from Project p where p.projectCategory is null and p.account = ?", TMController.getConnectedUserAccount()).<Project>fetch()) {
                 SimpleNode pn = new SimpleNode(p.id, p.name, PROJECT, false, false, null);
                 nodes.add(pn);
             }

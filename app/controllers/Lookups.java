@@ -11,13 +11,14 @@ import models.tm.Project;
 import models.tm.Requirement;
 import models.tm.Role;
 import models.tm.TMUser;
+import models.tm.approach.Release;
+import models.tm.approach.TestCycle;
 import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptStep;
 import models.tm.test.Tag;
-import play.mvc.Controller;
 import play.mvc.Util;
 
 /**
@@ -145,21 +146,41 @@ public class Lookups extends TMController {
         return role;
     }
 
-
-
-
     @Util
-    public static void allUsers() {
-        List<TMUser> users = TMUser.listByActiveProject();
-        Controller.renderJSON(users, userSerializer);
+    public static TestCycle getCycle(Long cycleId) {
+        if (cycleId == null) {
+            return null;
+        }
+        TestCycle cycle = TestCycle.findById(cycleId);
+        if (cycle == null) {
+            return null;
+        }
+        checkInAccount(cycle);
+        return cycle;
     }
 
     @Util
+    public static Release getRelease(Long releaseId) {
+        if (releaseId == null) {
+            return null;
+        }
+        Release release = Release.findById(releaseId);
+        if (release == null) {
+            return null;
+        }
+        checkInAccount(release);
+        return release;
+    }
+
+    public static void allUsers() {
+        List<TMUser> users = TMUser.listByActiveProject();
+        renderJSON(users, userSerializer);
+    }
+
     public static void tags(List<Tag> tags) {
         renderJSON(tags, tagSerializer);
     }
 
-    @Util
     public static void allTags(Project project, Tag.TagType type, String term) {
         List<Tag> tags = Tag.find("from Tag t where t.type = ? and t.project = ? and lower(t.name) like ?", type, project, term + "%").fetch();
         renderJSON(tags, tagSerializer);

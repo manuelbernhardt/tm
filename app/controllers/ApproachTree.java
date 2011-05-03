@@ -14,6 +14,8 @@ import tree.persistent.NodeType;
 import static models.general.UnitRole.roles;
 
 /**
+ * Test Approach tree - contains releases and test cycles
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class ApproachTree extends TMTree implements TreeRoleHolder {
@@ -39,21 +41,21 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
         String projectId = args.get("projectId");
-        if(projectId == null) {
+        if (projectId == null) {
             return null;
         }
 
         // TODO SECURITY check role (project edition)
         Project project = Lookups.getProject(Long.parseLong(projectId));
 
-        if(type.getNodeClass().equals(TestCycle.class)) {
+        if (type.getNodeClass().equals(TestCycle.class)) {
             TestCycle cycle = new TestCycle(project);
             cycle.name = name;
             cycle.project = project;
             return cycle;
         }
 
-        if(type.getNodeClass().equals(Release.class)) {
+        if (type.getNodeClass().equals(Release.class)) {
             Release release = new Release(project);
             release.name = name;
             release.project = project;

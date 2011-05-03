@@ -20,13 +20,13 @@ public class Approach extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
     public static void cycleDetails(Long cycleId) {
-        TestCycle cycle = getCycle(cycleId);
+        TestCycle cycle = Lookups.getCycle(cycleId);
         render(cycle);
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
     public static void releaseDetails(Long releaseId) {
-        Release release = getRelease(releaseId);
+        Release release = Lookups.getRelease(releaseId);
         render(release);
     }
 
@@ -54,27 +54,4 @@ public class Approach extends TMController {
     }
 
 
-    private static TestCycle getCycle(Long cycleId) {
-        if (cycleId == null) {
-            return null;
-        }
-        TestCycle cycle = TestCycle.findById(cycleId);
-        if (cycle == null) {
-            return null;
-        }
-        checkInAccount(cycle);
-        return cycle;
-    }
-
-    private static Release getRelease(Long releaseId) {
-        if (releaseId == null) {
-            return null;
-        }
-        Release release = Release.findById(releaseId);
-        if (release == null) {
-            return null;
-        }
-        checkInAccount(release);
-        return release;
-    }
 }

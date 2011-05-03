@@ -17,6 +17,7 @@ import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import util.Logger;
+import util.ParameterHandler;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>

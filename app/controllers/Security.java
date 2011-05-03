@@ -4,6 +4,10 @@ import models.account.User;
 import models.tm.TMUser;
 import util.Logger;
 
+/**
+ * Custom implementation of the {@link Security} class of Play's security module.
+ * This is where the authentication code sits.
+ */
 public class Security extends Secure.Security {
 
     static boolean authenticate(String username, String password) {

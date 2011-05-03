@@ -36,7 +36,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
         Long projectId = Long.parseLong(args.get("projectId"));
         Project project = Project.findById(projectId);
-        if(!project.isInAccount(TMController.getUserAccount())) {
+        if(!project.isInAccount(TMController.getConnectedUserAccount())) {
             Logger.error(Logger.LogType.SECURITY, "Project not in account, project ID '%s'", projectId);
         }
         final RoleChildProducer roleChildProducer = new RoleChildProducer();

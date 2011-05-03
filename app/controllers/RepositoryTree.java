@@ -14,13 +14,15 @@ import static models.general.UnitRole.roles;
 
 
 /**
+ * Test Script repository
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class RepositoryTree extends TMTree implements TreeRoleHolder {
 
     @Override
     protected NodeType[] getNodes() {
-        return new NodeType[] {type(Script.class, false), type(ScriptFolder.class, true)};
+        return new NodeType[]{type(Script.class, false), type(ScriptFolder.class, true)};
     }
 
     @Override
@@ -36,16 +38,14 @@ public class RepositoryTree extends TMTree implements TreeRoleHolder {
     @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
-        // TODO security check roles
-
-        if(type.getNodeClass().equals(ScriptFolder.class)) {
+        if (type.getNodeClass().equals(ScriptFolder.class)) {
             ScriptFolder folder = new ScriptFolder(TMController.getActiveProject());
             folder.name = name;
             folder.project = TMController.getActiveProject();
             return folder;
         }
 
-        if(type.getNodeClass().equals(Script.class)) {
+        if (type.getNodeClass().equals(Script.class)) {
             Script script = new Script(TMController.getActiveProject());
             script.name = name;
             script.project = TMController.getActiveProject();

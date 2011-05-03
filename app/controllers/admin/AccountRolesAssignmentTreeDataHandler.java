@@ -92,7 +92,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
             // do nothing
             return false;
         }
-        if (!u.isInAccount(TMController.getUserAccount())) {
+        if (!u.isInAccount(TMController.getConnectedUserAccount())) {
             Logger.error(Logger.LogType.SECURITY, "Trying to assign user to role in wrong account, target user id '%s', role type '%s'", id, role.name());
             return false;
         }

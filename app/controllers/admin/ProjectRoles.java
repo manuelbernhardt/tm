@@ -9,7 +9,7 @@ import models.tm.Role;
 import play.db.jpa.GenericModel;
 
 /**
- * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
+ * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 public class ProjectRoles extends TMController {
 

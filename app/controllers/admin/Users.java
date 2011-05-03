@@ -175,7 +175,7 @@ public class Users extends TMController {
         if (categoryId == null || accountId == null) {
             error();
         } else {
-            if (!accountId.equals(getUserAccount().getId())) {
+            if (!accountId.equals(getConnectedUserAccount().getId())) {
                 unauthorized();
             }
             List<Project> projects;

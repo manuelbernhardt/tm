@@ -81,7 +81,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (ts == null) {
             return null;
         }
-        if (!ts.isInAccount(TMController.getUserAccount())) {
+        if (!ts.isInAccount(TMController.getConnectedUserAccount())) {
             return null;
         }
         return ts;
@@ -100,7 +100,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             if (cycle == null || script == null) {
                 return null;
             }
-            if (!cycle.isInAccount(TMController.getUserAccount()) || !script.isInAccount(TMController.getUserAccount())) {
+            if (!cycle.isInAccount(TMController.getConnectedUserAccount()) || !script.isInAccount(TMController.getConnectedUserAccount())) {
                 return null;
             }
             Instance ti = new Instance(script.project);
@@ -147,11 +147,11 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             return false;
         }
         Script script = Script.findById(Long.parseLong(scriptId));
-        if (script == null || !script.isInAccount(TMController.getUserAccount())) {
+        if (script == null || !script.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }
         Instance instance = Instance.findById(id);
-        if (instance == null || !instance.isInAccount(TMController.getUserAccount())) {
+        if (instance == null || !instance.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }
         try {

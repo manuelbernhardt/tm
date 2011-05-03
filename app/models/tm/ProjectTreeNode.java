@@ -22,11 +22,14 @@ import tree.persistent.GenericTreeNode;
 import tree.persistent.NodeType;
 
 /**
+ * Implementation of a {@link GenericTreeNode} for TM. This is necessary so as to store project and account ID and to apply
+ * a hibernate filter on them.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
 // TODO FIXME $%^&*( hibernate does not support filters in subclasses so we have to copy-paste the whole TreeNode definition here for now.
-@Filters({@Filter(name="account"), @Filter(name="project")})
+@Filters({@Filter(name = "account"), @Filter(name = "project")})
 public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)

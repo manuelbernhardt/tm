@@ -41,6 +41,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
      * Gets the {@link models.general.UnitRole}-s of the connected user, given a project.
      * If no parameter is passed, only account-level roles are retrieved.
      *
+     * @return a {@link RoleHolder} containing all unit roles (account and project) of the authenticated user
      */
     @Util
     public static RoleHolder getUserRoles(Project project) {
@@ -81,6 +82,9 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
         };
     }
 
+    /**
+     * A utility class to combine Roles from several locations (e.g. account roles and unit roles)
+     */
     public static class CollectingRoleHolder implements RoleHolder {
         List<Role> roles = new ArrayList<Role>();
 

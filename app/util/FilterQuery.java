@@ -11,6 +11,8 @@ import play.libs.F;
 /**
  * Filter query builder. This was quickly hacked together, and has a limited functionality.
  * The Hibernate Criteria API would have been nice to use but it does not support working with collections.
+ * <p/>
+ * TODO screen this for SQL injection!
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */

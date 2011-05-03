@@ -14,7 +14,7 @@ public class AccountSettings extends TMController {
     }
 
     public static void accountDetails(String[] fields) {
-        renderFields(getUserAccount(), fields);
+        renderFields(getConnectedUserAccount(), fields);
     }
 
     public static void updateDetails(@Valid Account account) {

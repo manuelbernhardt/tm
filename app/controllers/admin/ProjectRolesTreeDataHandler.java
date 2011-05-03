@@ -22,6 +22,8 @@ import static models.general.UnitRole.roles;
 
 
 /**
+ * Assignment of project roles to users, in the admin -> users -> projects view.
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
@@ -29,33 +31,6 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
     public static final String ROLE = "default";
     public static final String CATEGORY = "category";
     public static final String PROJECT = "project";
-
-    public static Long editAssignment(Long roleId, Long userId, boolean assign) {
-
-        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
-            return null;
-        }
-        Role role = Role.findById(roleId);
-        TMUser user = TMUser.findById(userId);
-        if (role == null || user == null) {
-            return null;
-        } else {
-            if (!role.isInAccount(TMController.getUserAccount()) || !user.isInAccount(TMController.getUserAccount())) {
-                return null;
-            }
-
-            if (assign && !user.projectRoles.contains(role)) {
-                user.projectRoles.add(role);
-                user.save();
-            } else if (assign && user.projectRoles.contains(role)) {
-                return null;
-            } else if (user.projectRoles.contains(role) && !assign) {
-                user.projectRoles.remove(role);
-                user.save();
-            }
-            return userId;
-        }
-    }
 
     public String getName() {
         return "projectRolesTree";
@@ -117,8 +92,8 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
     private static class CategoryChildProducer implements ChildProducer {
 
         final private TMUser user;
-        final private ChildProducer projectChildProducer;
 
+        final private ChildProducer projectChildProducer;
         private CategoryChildProducer(ChildProducer projectChildProducer, TMUser user) {
             this.projectChildProducer = projectChildProducer;
             this.user = user;
@@ -134,8 +109,8 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
             }
             return ps;
         }
-    }
 
+    }
     private static class ProjectChildProducer implements ChildProducer {
 
         private final TMUser user;
@@ -152,6 +127,34 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
                 }
             }
             return rs;
+        }
+
+    }
+
+    public static Long editAssignment(Long roleId, Long userId, boolean assign) {
+
+        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
+            return null;
+        }
+        Role role = Role.findById(roleId);
+        TMUser user = TMUser.findById(userId);
+        if (role == null || user == null) {
+            return null;
+        } else {
+            if (!role.isInAccount(TMController.getConnectedUserAccount()) || !user.isInAccount(TMController.getConnectedUserAccount())) {
+                return null;
+            }
+
+            if (assign && !user.projectRoles.contains(role)) {
+                user.projectRoles.add(role);
+                user.save();
+            } else if (assign && user.projectRoles.contains(role)) {
+                return null;
+            } else if (user.projectRoles.contains(role) && !assign) {
+                user.projectRoles.remove(role);
+                user.save();
+            }
+            return userId;
         }
     }
 
