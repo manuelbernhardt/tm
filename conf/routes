@@ -50,8 +50,6 @@ GET     /admin/projectRoles/{projectId}/data            admin.ProjectRoles.data
 POST    /admin/projectRoles/edit                        admin.ProjectRoles.edit
 GET     /admin/account                                  admin.AccountSettings.index
 
-*       /                                               module:tree
-
 GET     /tmtree/                                        TMTreeController.getChildren
 POST    /tmtree/create                                  TMTreeController.create
 POST    /tmtree/rename                                  TMTreeController.rename

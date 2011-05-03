@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.Lookups;
+import controllers.TMController;
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
@@ -15,14 +18,44 @@ import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
 
+import static models.general.UnitRole.roles;
+
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ProjectRolesTreeDataHandler implements TreeDataHandler {
+public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
     public static final String ROLE = "default";
     public static final String CATEGORY = "category";
     public static final String PROJECT = "project";
+
+    public static Long editAssignment(Long roleId, Long userId, boolean assign) {
+
+        if (roleId == null || userId == null || roleId == -1 || userId == -1) {
+            return null;
+        }
+        Role role = Role.findById(roleId);
+        TMUser user = TMUser.findById(userId);
+        if (role == null || user == null) {
+            return null;
+        } else {
+            if (!role.isInAccount(TMController.getUserAccount()) || !user.isInAccount(TMController.getUserAccount())) {
+                return null;
+            }
+
+            if (assign && !user.projectRoles.contains(role)) {
+                user.projectRoles.add(role);
+                user.save();
+            } else if (assign && user.projectRoles.contains(role)) {
+                return null;
+            } else if (user.projectRoles.contains(role) && !assign) {
+                user.projectRoles.remove(role);
+                user.save();
+            }
+            return userId;
+        }
+    }
 
     public String getName() {
         return "projectRolesTree";
@@ -61,7 +94,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
     }
 
     public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
-        return RolesUserTreeDataHandler.editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
+        return editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
     }
 
     public boolean rename(Long id, String name, String type) {
@@ -77,7 +110,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        Long r = RolesUserTreeDataHandler.editAssignment(id, Long.parseLong(args.get("userId")), false);
+        Long r = editAssignment(id, Long.parseLong(args.get("userId")), false);
         return r != null;
     }
 
@@ -122,4 +155,19 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler {
         }
     }
 
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+    }
 }

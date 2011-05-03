@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.TMUser;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
+
+import static models.general.UnitRole.roles;
 
 /**
  * Simple tree that only displays users of the current account.
@@ -16,7 +20,7 @@ import tree.simple.SimpleNode;
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class UserTree implements TreeDataHandler {
+public class UserTree implements TreeDataHandler, TreeRoleHolder {
 
     public static final String USER = "user";
 
@@ -63,5 +67,21 @@ public class UserTree implements TreeDataHandler {
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         return false;
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.PROJECTEDIT);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return new ArrayList<UnitRole>();
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return new ArrayList<UnitRole>();
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return new ArrayList<UnitRole>();
     }
 }

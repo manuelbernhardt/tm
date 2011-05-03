@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
 import models.tm.test.Instance;
@@ -17,10 +19,11 @@ import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
 import util.Logger;
 
+import static models.general.UnitRole.roles;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ScriptCycleTreeDataHandler implements TreeDataHandler {
+public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
     public static final String INSTANCE = "default";
     public static final String TEST_CYCLE = "testCycle";
@@ -199,4 +202,19 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler {
         }
     }
 
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.TESTPREPVIEW);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.TESTPREPCREATE);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.TESTPREPEDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.TESTPREPDELETE);
+    }
 }

@@ -1,16 +1,22 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.test.Script;
 import models.tm.test.ScriptFolder;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
 
+import static models.general.UnitRole.roles;
+
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class RepositoryTree extends TMTree {
+public class RepositoryTree extends TMTree implements TreeRoleHolder {
 
     @Override
     protected NodeType[] getNodes() {
@@ -50,4 +56,19 @@ public class RepositoryTree extends TMTree {
         return null;
     }
 
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.TESTREPOVIEW, UnitRole.TESTPREPVIEW, UnitRole.REQEDIT);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.TESTREPOCREATE);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.TESTREPOEDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.TESTREPODELETE);
+    }
 }

@@ -14,7 +14,6 @@ import controllers.TMController;
 import models.account.Account;
 import models.account.AccountEntity;
 import models.account.User;
-import models.deadbolt.RoleHolder;
 import models.general.TemporalModel;
 import models.general.UnitRole;
 import org.hibernate.annotations.BatchSize;
@@ -30,7 +29,7 @@ import play.db.jpa.JPA;
  */
 @Entity
 @Filters({@Filter(name = "account"), @Filter(name="activeTMUser")})
-public class TMUser extends TemporalModel implements RoleHolder, AccountEntity {
+public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
     public Account account;

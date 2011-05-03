@@ -6,17 +6,21 @@ import java.util.Map;
 
 import controllers.TMController;
 import models.account.Account;
-import tree.simple.ChildProducer;
-import tree.JSTreeNode;
-import tree.simple.SimpleNode;
-import tree.TreeDataHandler;
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
+import tree.JSTreeNode;
+import tree.TreeDataHandler;
+import tree.simple.ChildProducer;
+import tree.simple.SimpleNode;
+
+import static models.general.UnitRole.roles;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ProjectTreeDataHandler implements TreeDataHandler {
+public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
 
     public static final String CATEGORY = "category";
@@ -135,5 +139,21 @@ public class ProjectTreeDataHandler implements TreeDataHandler {
             }
             return nodes;
         }
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.PROJECTEDIT);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.PROJECTCREATE);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.PROJECTEDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.PROJECTDELETE);
     }
 }

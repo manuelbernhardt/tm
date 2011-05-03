@@ -1,16 +1,21 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.Requirement;
 import models.tm.RequirementFolder;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
 
+import static models.general.UnitRole.roles;
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class RequirementTree extends TMTree {
+public class RequirementTree extends TMTree implements TreeRoleHolder {
 
     @Override
     protected NodeType[] getNodes() {
@@ -48,5 +53,21 @@ public class RequirementTree extends TMTree {
         }
         
         return null;
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.REQVIEW);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.REQEDIT);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.REQEDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.REQDELETE);
     }
 }

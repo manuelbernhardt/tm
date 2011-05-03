@@ -6,6 +6,8 @@ import java.util.Map;
 
 import controllers.Lookups;
 import controllers.TMController;
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.Role;
 import models.tm.TMUser;
@@ -15,10 +17,14 @@ import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
 import util.Logger;
 
+import static models.general.UnitRole.roles;
+
+
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
+public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
     public static final String PROJECT_ROLE = "projectRole";
     public static final String USER = "default";
@@ -120,5 +126,21 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler {
         u.projectRoles.remove(role);
         u.save();
         return true;
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.USEREDIT);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.USEREDIT);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.USEREDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.USEREDIT);
     }
 }

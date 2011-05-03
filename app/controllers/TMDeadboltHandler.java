@@ -11,8 +11,10 @@ import models.deadbolt.AccessResult;
 import models.deadbolt.ExternalizedRestrictions;
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
+import models.tm.Project;
 import models.tm.TMUser;
 import play.mvc.Controller;
+import play.mvc.Util;
 import util.Logger;
 
 public class TMDeadboltHandler extends Controller implements DeadboltHandler {
@@ -32,16 +34,26 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     }
 
     public RoleHolder getRoleHolder() {
+        return getUserRoles(null);
+    }
+
+    /**
+     * Gets the {@link models.general.UnitRole}-s of the connected user, given a project.
+     * If no parameter is passed, only account-level roles are retrieved.
+     *
+     */
+    @Util
+    public static RoleHolder getUserRoles(Project project) {
         // TODO cache this!
 
-        // we want to collect all roles (Auth roles + TM roles)
         CollectingRoleHolder crh = new CollectingRoleHolder();
 
         String userName = Secure.Security.connected();
 
-        User a = User.find("byEmailAndActive", userName, true).first();
+        User a = User.find("byEmail", userName).first();
         crh.addRoles(a.getRoles());
 
+        // TODO FIXME this needs to be by project (active project)
         TMUser u = TMUser.find("byUser", a).first();
         crh.addRoles(u.getRoles());
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import controllers.TMController;
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.AccountRole;
 import models.tm.TMUser;
 import tree.JSTreeNode;
@@ -13,10 +15,14 @@ import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
 import util.Logger;
 
+import static models.general.UnitRole.roles;
+
+
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
+public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
     public static final String ADMIN_ROLE = "adminRole";
     public static final String USER = "default";
@@ -112,5 +118,21 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler {
         }
         u.save();
         return true;
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.ACCOUNTADMIN);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.ACCOUNTADMIN);
     }
 }

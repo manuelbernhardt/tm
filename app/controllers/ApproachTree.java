@@ -1,17 +1,22 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 
+import models.general.TreeRoleHolder;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
 
+import static models.general.UnitRole.roles;
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class ApproachTree extends TMTree {
+public class ApproachTree extends TMTree implements TreeRoleHolder {
 
     public static final String APPROACH_TREE = "approachTree";
 
@@ -56,5 +61,21 @@ public class ApproachTree extends TMTree {
         }
 
         return null;
+    }
+
+    public List<UnitRole> getViewRoles() {
+        return roles(UnitRole.PROJECTEDIT, UnitRole.TESTPREPEDIT);
+    }
+
+    public List<UnitRole> getCreateRoles() {
+        return roles(UnitRole.PROJECTEDIT);
+    }
+
+    public List<UnitRole> getUpdateRoles() {
+        return roles(UnitRole.PROJECTEDIT);
+    }
+
+    public List<UnitRole> getDeleteRoles() {
+        return roles(UnitRole.PROJECTEDIT);
     }
 }
