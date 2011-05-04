@@ -108,13 +108,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     public List<Project> getProjects() {
         // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
-        List<Project> res = new ArrayList<Project>();
-        for (Role r : projectRoles) {
-            if (!res.contains(r.project)) {
-                res.add(r.project);
-            }
-        }
-        return res;
+        return Project.listByUser(this);
     }
 
     public static List<TMUser> listByActiveProject() {
