@@ -5,7 +5,6 @@
 #{tabLayout}
   #{tabs id:'tabs'}
     #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
-    <!-- TODO update with dynamic (project dependent) restrictions -->
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}
       #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
     #{/deadbolt.restrict}

@@ -29,8 +29,12 @@
 
       #{box 'Runs for test instance'}
 
-      <div id="createRunButton">Run Test Instance</div>
-      <div id="updateRunButton">Edit Test Run</div>
+      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
+        <div id="createRunButton">Run Test Instance</div>
+      #{/deadbolt.restrict}
+      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
+        <div id="updateRunButton">Edit Test Run</div>
+      #{/deadbolt.restrict}
 
       <div id="createRunDialog" title="Run Test Instance"></div>
       <div id="updateRunDialog" title="Update Test Run"></div>

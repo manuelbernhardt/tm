@@ -2,7 +2,9 @@ package controllers;
 
 import java.util.List;
 
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.Project;
 import play.db.jpa.GenericModel;
@@ -12,10 +14,12 @@ import play.db.jpa.GenericModel;
  */
 public class Defects extends TMController {
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void index() {
         render();
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -33,6 +37,7 @@ public class Defects extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.DEFECTCREATE)
     public static void create(Defect defect) {
         defect.project = getActiveProject();
         defect.submittedBy = getConnectedUser();
