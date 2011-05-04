@@ -60,9 +60,11 @@
   </div>
 </div>
 
+#{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTCREATE]]}
 <h2>New defect</h2>
 
 <form action=@{Defects.create()} method="POST">
   Title: <input type="text" name="defect.name" id="defect.name"/>
   <input type="submit" value="Save!"/>
 </form>
+#{/deadbolt.restrict}
