@@ -11,7 +11,7 @@ import controllers.TMController;
  */
 public class Logger {
 
-    public enum LogType {SECURITY, AUTHENTICATION, ADMIN, TECHNICAL}
+    public enum LogType {SECURITY, AUTHENTICATION, ADMIN, TECHNICAL, USER}
 
     public static void debug(String message, Object... args) {
         play.Logger.debug(addUser(message), args);

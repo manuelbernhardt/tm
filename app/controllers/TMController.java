@@ -38,6 +38,8 @@ import util.Logger;
 @With(Deadbolt.class)
 public class TMController extends Controller {
 
+    public static final String USER_KEY = session.getId() + "_user";
+
     /**
      * Set Hibernate filters for multi-tenancy and so on.
      */
@@ -71,6 +73,7 @@ public class TMController extends Controller {
             renderArgs.put("lastName", user.lastName);
             if (controllerHasActiveProject()) {
                 renderArgs.put("activeProject", getActiveProject());
+                renderArgs.put("projects", getConnectedUser().getProjects());
             }
 
             // TODO write a job that goes over this time every 5 minutes and flushes the time to the database
@@ -84,12 +87,11 @@ public class TMController extends Controller {
         // TODO cache this better
         if (Security.isConnected()) {
             // temporary
-            String key = session.getId() + "_user";
-            TMUser u = (TMUser) Cache.get(key);
+            TMUser u = (TMUser) Cache.get(USER_KEY);
             if (u == null) {
                 // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
                 u = TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
-                Cache.set(key, u);
+                Cache.set(USER_KEY, u);
             }
             return u;
         } else {
@@ -130,11 +132,61 @@ public class TMController extends Controller {
         return !request.controller.startsWith("admin");
     }
 
+    /**
+     * Switches the user to a different project
+     *
+     * @param projectId the id of the project to switch to
+     */
+    public static void switchActiveProject(Long projectId) {
+        if (!controllerHasActiveProject()) {
+            // ???
+            Logger.error(Logger.LogType.TECHNICAL, "Attempt to switch to a different active project from the admin area, project ID %s, controller %s", projectId, request.controllerClass.getName());
+            error("Cannot switch to a different project from the administration area");
+        }
+
+        checkAuthenticity();
+        Project project = Lookups.getProject(projectId);
+        if(project == null) {
+            Logger.error(Logger.LogType.SECURITY, "Trying to switch to non-existing project with ID %s", projectId);
+            notFound("Can't find project with ID " + projectId);
+        }
+        TMUser connectedUser = getConnectedUser();
+        connectedUser = connectedUser.merge();
+        if (connectedUser.getProjects().contains(project)) {
+
+            // check if there is enough place on the project we want to switch to
+
+            // effectively switch the user to the project
+            Logger.info(Logger.LogType.USER, "Switching to project '%s'", project.name);
+            connectedUser.activeProject = project;
+            connectedUser.save();
+
+            // invalidate roles caches and others
+            Cache.set(USER_KEY, connectedUser);
+
+            // figure out a way to switch to the current view
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(request.controller);
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            redirect(request.controller + ".index");
+
+        } else {
+            Logger.error(Logger.LogType.SECURITY, "Attempt to switch to project without membership! Project: '%s'", project.name);
+            forbidden("You are not a member of this project.");
+        }
+
+    }
+
     @Util
     public static void checkInAccount(AccountEntity accountEntity) {
         if (!accountEntity.isInAccount(getConnectedUserAccount())) {
             Logger.fatal(Logger.LogType.SECURITY, "Entity %s with ID %s is not in account %s of user %s", accountEntity.getClass(), accountEntity.getId(), getConnectedUserAccount().name, Security.connected());
-            unauthorized();
+            forbidden();
         }
     }
 

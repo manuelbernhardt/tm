@@ -57,7 +57,7 @@ public class TMTreeController extends TMController {
             TreeController.createDirect(treeId, parentId, parentType, position, name, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to create a node for tree %s, parentId %s, parentType %s, name %s, type %s", treeId, parentId, parentType, name, type);
-            unauthorized();
+            forbidden();
         }
     }
 
@@ -66,7 +66,7 @@ public class TMTreeController extends TMController {
             TreeController.removeDirect(treeId, id, parentId, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to delete a node for tree %s, id %s, parentId %s, type %s", treeId, id, parentId, type);
-            unauthorized();
+            forbidden();
         }
     }
 
@@ -75,7 +75,7 @@ public class TMTreeController extends TMController {
             TreeController.renameDirect(treeId, id, name, type);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to rename a node for tree %s, id %s, new name %s, type %s", treeId, id, name, type);
-            unauthorized();
+            forbidden();
         }
     }
 
@@ -84,12 +84,12 @@ public class TMTreeController extends TMController {
             TreeController.moveDirect(treeId, id, type, target, targetType, position, name, copy);
         } else if (!copy && !canUpdate(treeId)) {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to move a node for tree %s, id %s, type %s, target %s", treeId, id, type, target);
-            unauthorized();
+            forbidden();
         } else if (copy && canCreate(treeId)) {
             TreeController.moveDirect(treeId, id, type, target, targetType, position, name, copy);
         } else if (copy && !canCreate(treeId)) {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to copy a node for tree %s, id %s, type %s, target %s", treeId, id, type, target);
-            unauthorized();
+            forbidden();
         }
     }
 
@@ -98,7 +98,7 @@ public class TMTreeController extends TMController {
             TreeController.getChildrenDirect(treeId, id, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to view a node for tree %s, id %s, type %s", treeId, id, type);
-            unauthorized();
+            forbidden();
         }
     }
 

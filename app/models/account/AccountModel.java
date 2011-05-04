@@ -41,4 +41,24 @@ public class AccountModel extends CompositeModel implements AccountEntity {
     public AccountModel(Account account) {
         this.account = account;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AccountModel that = (AccountModel) o;
+
+        if (!account.equals(that.account)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + account.hashCode();
+        return result;
+    }
 }

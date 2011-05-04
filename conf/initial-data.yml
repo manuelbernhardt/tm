@@ -1,5 +1,5 @@
 account.Account(oxiras):
-    name: Oxiras ApS
+    name: 'Oxiras ApS'
     email: info@oxiras.com
 
 account.User(gwenUser):
