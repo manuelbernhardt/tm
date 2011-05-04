@@ -14,6 +14,7 @@ import play.db.jpa.GenericModel;
  */
 public class Defects extends TMController {
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void index() {
         render();
     }
