@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.test.ExecutionStatus;
@@ -51,7 +53,7 @@ public class Execution extends TMController {
         Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
     }
 
-
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void instances(String tableId,
                                  Integer iDisplayStart,
                                  Integer iDisplayLength,
@@ -107,6 +109,7 @@ public class Execution extends TMController {
         TableController.renderJSON(instances, Instance.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void runs(String tableId, Long instanceId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -129,6 +132,7 @@ public class Execution extends TMController {
         TableController.renderJSON(runs, Run.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void runSteps(String tableId, Long runId,
                                 Integer iDisplayStart,
                                 Integer iDisplayLength,
@@ -148,6 +152,7 @@ public class Execution extends TMController {
         TableController.renderJSON(runSteps, RunStep.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.TESTEXECCREATE)
     public static void createRunDialog(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
         if (instance == null) {
@@ -194,11 +199,13 @@ public class Execution extends TMController {
         render("Execution/runExecution.html", run);
     }
 
+    @Restrict(UnitRole.TESTEXECEDIT)
     public static void updateRunDialog(Long runId) {
         Run run = Lookups.getRun(runId);
         render("Execution/runExecution.html", run);
     }
 
+    @Restrict(UnitRole.TESTEXECEDIT)
     public static void updateRun(Long runId) {
         Run run = Lookups.getRun(runId);
         if (run == null) {
@@ -257,6 +264,7 @@ public class Execution extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.TESTEXECDELETE)
     public static void deleteRun(Long runId) {
         Run run = Lookups.getRun(runId);
         if (run == null) {
@@ -272,6 +280,7 @@ public class Execution extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.TESTEXECEDIT)
     public static void updateParameter(Long runId, String id, String value) {
         Run run = Lookups.getRun(runId);
         if (run == null) {
@@ -300,6 +309,7 @@ public class Execution extends TMController {
         }
     }
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     private static RunStep getRunStep(String id, Run run) {
         if (id != null && id.length() > 0) {
             RunStep step = null;
