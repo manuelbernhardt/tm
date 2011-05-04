@@ -30,4 +30,15 @@ public class AccountModel extends CompositeModel implements AccountEntity {
     public boolean isInAccount(Account account) {
         return this.account.getId().equals(account.getId());
     }
+
+    /**
+     * Explicit no-args constructor, necessary for building objects on-the-fly via forms.
+     */
+    public AccountModel() {
+
+    }
+
+    public AccountModel(Account account) {
+        this.account = account;
+    }
 }

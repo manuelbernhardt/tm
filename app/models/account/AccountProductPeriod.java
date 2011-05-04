@@ -23,4 +23,8 @@ public class AccountProductPeriod extends AccountModel {
 
     public Date endDate;
 
+    public AccountProductPeriod(Account account) {
+        super(account);
+    }
+
 }

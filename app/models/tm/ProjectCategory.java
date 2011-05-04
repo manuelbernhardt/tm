@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.account.Account;
 import models.account.AccountModel;
 import play.data.validation.Required;
 
@@ -19,6 +20,11 @@ public class ProjectCategory extends AccountModel {
     @Column(nullable = false)
     @Required
     public String name;
+
+    public ProjectCategory(Account account, String name) {
+        super(account);
+        this.name = name;
+    }
 
     public List<Project> getProjects() {
         return projects(this);

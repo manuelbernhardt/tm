@@ -19,6 +19,7 @@ import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.hibernate.Session;
+import play.cache.Cache;
 import play.db.jpa.JPA;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -37,42 +38,60 @@ import util.Logger;
 @With(Deadbolt.class)
 public class TMController extends Controller {
 
-    @Before
-    public static void setConnectedUser() {
+    /**
+     * Set Hibernate filters for multi-tenancy and so on.
+     */
+    @Before(priority = 0)
+    public static void setFilters() {
         if (Security.isConnected()) {
-            // TODO FIXME search by account, too!
-            // TODO caching
-            User a = User.find("byEmailAndActive", Security.connected(), true).<User>first();
-            renderArgs.put("firstName", a.firstName);
-            renderArgs.put("lastName", a.lastName);
+            // account filter
+            Long accountId = getConnectedUser().account.getId();
+            ((Session) JPA.em().getDelegate()).enableFilter("account").setParameter("account_id", accountId);
 
-            if (hasActiveProject()) {
+            // active users filter
+            ((Session) JPA.em().getDelegate()).enableFilter("activeUser").setParameter("active", true);
+            ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
+
+            // we need to do the lookup for an active project here first, otherwise we enable the filter before passing the parameter.
+            Project p = getActiveProject();
+            if (controllerHasActiveProject()) {
+                ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", p.getId());
+            }
+        }
+    }
+
+    /**
+     * Load user details for rendering, and update the session expiration timestamp.
+     */
+    @Before(priority = 1)
+    public static void loadConnectedUser() {
+        if (Security.isConnected()) {
+            User user = getConnectedUser().user;
+            renderArgs.put("firstName", user.firstName);
+            renderArgs.put("lastName", user.lastName);
+            if (controllerHasActiveProject()) {
                 renderArgs.put("activeProject", getActiveProject());
             }
 
+            // TODO write a job that goes over this time every 5 minutes and flushes the time to the database
+            // TODO but only if it is more recent than the time in the database
+            // TODO also disconnect users for which the session is not active any longer.
+            Cache.set(session.getId() + "_session_expiration", Security.getSessionExpirationTimestamp());
         }
-    }
-
-    @Before
-    public static void setFilters() {
-
-        // account filter
-        Long accountId = getConnectedUser().account.getId();
-        ((Session) JPA.em().getDelegate()).enableFilter("account").setParameter("account_id", accountId);
-
-        // active users filter
-        ((Session) JPA.em().getDelegate()).enableFilter("activeUser").setParameter("active", true);
-        ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
-
-        if (hasActiveProject()) {
-            ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", getActiveProject().getId());
-        }
-
     }
 
     public static TMUser getConnectedUser() {
+        // TODO cache this better
         if (Security.isConnected()) {
-            return TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
+            // temporary
+            String key = session.getId() + "_user";
+            TMUser u = (TMUser) Cache.get(key);
+            if (u == null) {
+                // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
+                u = TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
+                Cache.set(key, u);
+            }
+            return u;
         } else {
             // TODO test this!
             flash.put("url", "GET".equals(request.method) ? request.url : "/");
@@ -96,19 +115,10 @@ public class TMController extends Controller {
      * @return the active {@see Project}
      */
     public static Project getActiveProject() {
-
-        if (!hasActiveProject()) {
+        if (!controllerHasActiveProject()) {
             throw new RuntimeException("Active project can't be fetched in the admin area");
         }
-
-        // TODO freaking cache this or we have an extra query each time we create a project-related entity!
-        if (session.get("activeProject") != null) {
-            Long id = Long.valueOf(session.get("activeProject"));
-            if (id != null) {
-                return Project.findById(id);
-            }
-        }
-        return null;
+        return getConnectedUser().activeProject;
     }
 
     /**
@@ -116,7 +126,7 @@ public class TMController extends Controller {
      *
      * @return <code>true</code> if this is not an admin controller
      */
-    private static boolean hasActiveProject() {
+    private static boolean controllerHasActiveProject() {
         return !request.controller.startsWith("admin");
     }
 

@@ -1,5 +1,6 @@
 package models.tm;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,13 +36,17 @@ public class Project extends AccountModel {
     public Integer reservedSeats;
 
     public Integer maxAvailableSeats;
-    
-    public Project() {
 
-    }
-
-    public Project(String name, Account account) {
+    public Project(String name, Account account, ProjectCategory category) {
+        super(account);
         this.account = account;
         this.name = name;
+        this.projectCategory = category;
     }
+
+    public static List<Project> listByUser(TMUser user) {
+        return Project.find("from Project p join Role r join TMUser u where r.project = p and r in elements (u.projectRoles)").<Project>fetch();
+    }
+
+
 }

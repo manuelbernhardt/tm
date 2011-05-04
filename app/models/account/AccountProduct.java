@@ -23,4 +23,8 @@ public class AccountProduct extends AccountModel {
 
     public Double pricePerSeatMonth;
 
+    public AccountProduct(Account account) {
+        super(account);
+    }
+
 }

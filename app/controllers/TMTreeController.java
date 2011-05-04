@@ -19,7 +19,7 @@ import util.Logger;
 /**
  * Wrapper of the TreeController for TM (extending TMController means we inherit the routes and @Before methods).
  * Handles authorization and security.
- *
+ * <p/>
  * TODO optimization - caching for canXXX() methods
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -34,15 +34,17 @@ public class TMTreeController extends TMController {
      */
     @Before
     public static void setProjectFilter() {
-        @SuppressWarnings("unchecked")
-        Long projectId = params.get("args[projectId]", Long.class);
-        if (projectId != null) {
-            Project project = Lookups.getProject(projectId);
-            projectThreadLocal.set(project);
-        } else {
-            projectThreadLocal.set(getActiveProject());
+        if (Security.isConnected()) {
+            @SuppressWarnings("unchecked")
+            Long projectId = params.get("args[projectId]", Long.class);
+            if (projectId != null) {
+                Project project = Lookups.getProject(projectId);
+                projectThreadLocal.set(project);
+            } else {
+                projectThreadLocal.set(getActiveProject());
+            }
+            ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", projectThreadLocal.get().getId());
         }
-        ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", projectThreadLocal.get().getId());
     }
 
     @After

@@ -48,14 +48,11 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
-            Project project = new Project();
-            project.account = userAccount;
-            project.name = name;
-            project.projectCategory = category;
+            Project project = new Project(name, userAccount, category);
             project.create(userAccount);
             return project.id;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
-            ProjectCategory category = new ProjectCategory();
+            ProjectCategory category = new ProjectCategory(userAccount, name);
             category.name = name;
             category.account = userAccount;
             category.create(userAccount);
