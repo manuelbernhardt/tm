@@ -39,6 +39,7 @@ public class Execution extends TMController {
     public static final String STATUS = "status_";
     public static final String PARAM = "param_";
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
         List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
