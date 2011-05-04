@@ -57,6 +57,8 @@ POST    /tmtree/move                                    TMTreeController.move
 DELETE  /tmtree/remove                                  TMTreeController.remove
 
 
+*       /                                               module:deadbolt
+
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
