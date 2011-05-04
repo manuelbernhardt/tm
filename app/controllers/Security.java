@@ -2,10 +2,8 @@ package controllers;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.List;
 
 import models.account.User;
-import models.tm.Project;
 import models.tm.TMUser;
 import play.mvc.Util;
 import util.Logger;
@@ -34,12 +32,7 @@ public class Security extends Secure.Security {
         u.sessionExpirationTime = getSessionExpirationTimestamp();
 
         if (u.activeProject == null) {
-            // try fetching the first project where this user has any role
-            // TODO make the "default project" for a new user configurable
-            List<Project> projects = u.getProjects();
-            if (!projects.isEmpty()) {
-                u.activeProject = projects.get(0);
-            }
+            u.initializeActiveProject();
         }
 
         u.save();

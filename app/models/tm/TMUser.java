@@ -55,6 +55,18 @@ public class TMUser extends TemporalModel implements AccountEntity {
     @BatchSize(size = 10)
     public List<Role> projectRoles;
 
+    public boolean initializeActiveProject() {
+        // try fetching the first project where this user has any role
+        // TODO make the "default project" for a new user configurable
+        List<Project> projects = getProjects();
+        if (!projects.isEmpty()) {
+            activeProject = projects.get(0);
+            save();
+            return true;
+        }
+        return false;
+    }
+
     public String getFullName() {
         return user.firstName + " " + user.lastName;
     }

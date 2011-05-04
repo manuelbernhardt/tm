@@ -55,9 +55,13 @@ public class TMController extends Controller {
             ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
 
             // we need to do the lookup for an active project here first, otherwise we enable the filter before passing the parameter.
-            Project p = getActiveProject();
             if (controllerHasActiveProject()) {
-                ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", p.getId());
+                Project p = getActiveProject();
+                if (p != null) {
+                    ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", p.getId());
+                } else {
+                    getConnectedUser().<TMUser>merge().initializeActiveProject();
+                }
             }
         }
     }
@@ -146,7 +150,7 @@ public class TMController extends Controller {
 
         checkAuthenticity();
         Project project = Lookups.getProject(projectId);
-        if(project == null) {
+        if (project == null) {
             Logger.error(Logger.LogType.SECURITY, "Trying to switch to non-existing project with ID %s", projectId);
             notFound("Can't find project with ID " + projectId);
         }

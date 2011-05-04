@@ -18,7 +18,7 @@ public class TemporalModel extends Model {
     @Column(name = "updated", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     public Date updated;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created", nullable = false, insertable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT '0000-00-00 00:00:00'")
-	public Date created = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created", nullable = false, insertable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT '0000-00-00 00:00:00'")
+    public Date created = new Date();
 }

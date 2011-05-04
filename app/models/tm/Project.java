@@ -45,7 +45,7 @@ public class Project extends AccountModel {
     }
 
     public static List<Project> listByUser(TMUser user) {
-        return Project.find("select p from Project p, Role r, TMUser u where u.id = ? and r.project = p and r in elements (u.projectRoles)", user.getId()).<Project>fetch();
+        return Project.find("select p from Project p, Role r, TMUser u where u.id = ? and r.project = p and r in elements (u.projectRoles) group by p", user.getId()).<Project>fetch();
     }
 
     @Override

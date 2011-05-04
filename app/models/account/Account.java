@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 
 import models.general.Address;
 import models.general.TemporalModel;
-import play.data.binding.NoBinding;
 import play.data.validation.Email;
 
 /**
@@ -15,7 +14,6 @@ import play.data.validation.Email;
 @Entity
 public class Account extends TemporalModel {
 
-    @NoBinding
     @Column(nullable = false)
     public String name;
 
