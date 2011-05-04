@@ -36,7 +36,7 @@ public class Security extends Secure.Security {
         if (u.activeProject == null) {
             // try fetching the first project where this user has any role
             // TODO make the "default project" for a new user configurable
-            List<Project> projects = Project.listByUser(u);
+            List<Project> projects = u.getProjects();
             if (!projects.isEmpty()) {
                 u.activeProject = projects.get(0);
             }
