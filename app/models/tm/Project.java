@@ -45,7 +45,7 @@ public class Project extends AccountModel {
     }
 
     public static List<Project> listByUser(TMUser user) {
-        return Project.find("from Project p join Role r join TMUser u where r.project = p and r in elements (u.projectRoles)").<Project>fetch();
+        return Project.find("select p from Project p, Role r, TMUser u where r.project = p and r in elements (u.projectRoles)").<Project>fetch();
     }
 
     @Override
