@@ -1,5 +1,6 @@
 account.Account(oxiras):
     name: Oxiras ApS
+    subdomain: oxiras
     email: info@oxiras.com
 
 account.User(gwenUser):

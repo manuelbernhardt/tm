@@ -17,6 +17,9 @@ public class Account extends TemporalModel {
     @Column(nullable = false)
     public String name;
 
+    @Column(nullable = false)
+    public String subdomain;
+
     public String contactFirstName;
 
     public String contactLastName;

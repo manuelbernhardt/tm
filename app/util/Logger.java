@@ -49,6 +49,10 @@ public class Logger {
         play.Logger.error(addUser(message), args);
     }
 
+    public static void error(LogType type, boolean logUser, String message, Object... args) {
+        play.Logger.error(logUser?addUser(message):message, args);
+    }
+
     public static void error(LogType type, Throwable e, String message, Object... args) {
         play.Logger.error(e, addUser(message), args);
     }

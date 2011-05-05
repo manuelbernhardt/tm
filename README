@@ -1,3 +1,8 @@
 Oxiras Test Management Suite
 
 (C) 2011 Oxiras ApS
+
+Installation requirements for development:
+- mysql databases (tm, tmTest)
+- following statement in /etc/hosts
+  127.0.0.1 oxiras.localhost
