@@ -3,7 +3,9 @@ package controllers;
 import java.util.List;
 import javax.persistence.Query;
 
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
@@ -24,15 +26,18 @@ import util.ParameterHandler;
  */
 public class Repository extends TMController {
 
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void index() {
         render();
     }
 
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void scriptDetailsData(Long baseObjectId, String[] fields) {
         Object base = Lookups.getScript(baseObjectId);
         renderFields(base, fields);
     }
 
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void tags(Long scriptId) {
         Script script = Lookups.getScript(scriptId);
         Lookups.tags(script.tags);
@@ -42,12 +47,13 @@ public class Repository extends TMController {
         Lookups.allTags(getActiveProject(), Tag.TagType.TESTSCRIPT, q);
     }
 
-
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void stepDetailsData(Long scriptId, Long baseObjectId, String[] fields) {
         ScriptStep step = Lookups.getScriptStep(baseObjectId);
         renderFields(step, fields);
     }
 
+    @Restrict(UnitRole.TESTREPOEDIT)
     public static void editScript(@Valid Script script, String tags) {
         checkInAccount(script);
         if (Validation.hasErrors()) {
@@ -62,6 +68,7 @@ public class Repository extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.TESTREPOEDIT)
     public static void createOrUpdateStep(@Valid ScriptStep step, Long scriptId) {
         if (scriptId == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not update script step '%s', no scriptId passed", step.name);
@@ -125,6 +132,7 @@ public class Repository extends TMController {
         }
     }
 
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void steps(String tableId, Long scriptId,
                              Integer iDisplayStart,
                              Integer iDisplayLength,
@@ -137,6 +145,7 @@ public class Repository extends TMController {
         TableController.renderJSON(steps, ScriptStep.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.TESTREPOVIEW)
     public static void linkedRequirements(String tableId,
                                           String sColumns,
                                           String sEcho,

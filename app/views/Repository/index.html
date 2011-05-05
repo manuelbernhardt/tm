@@ -4,9 +4,13 @@
 <div class="container">
   <div class="left_tree">
     <div id="actions">
-      <button id="create_folder">Folder</button>
-      <button id="create_script">Test Script</button>
-      <button id="remove">Remove</button>
+      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
+        <button id="create_folder">Folder</button>
+        <button id="create_script">Test Script</button>
+      #{/deadbolt.restrict}
+      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
+        <button id="remove">Remove</button>
+      #{/deadbolt.restrict}
     </div>
     #{box 'Test Script Repository'}
     <div id="repositoryTree" class="tree" style="border-style:none;"></div>

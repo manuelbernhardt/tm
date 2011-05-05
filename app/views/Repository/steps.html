@@ -2,8 +2,10 @@
   No script selected.
 </div>
 <div class="hiddenOnLoad">
-  <button id="createStepButton">Create step</button>
-  <button id="updateStepButton">Edit step</button>
+  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
+    <button id="createStepButton">Create step</button>
+    <button id="updateStepButton">Edit step</button>
+  #{/deadbolt.restrict}
 
   <table class="display" id="stepTable">
     <thead>
