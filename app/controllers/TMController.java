@@ -233,6 +233,7 @@ public class TMController extends Controller {
         List<String> sortedFields = Arrays.asList(fields);
         Collections.sort(sortedFields);
         for (String f : sortedFields) {
+            f = f.replaceAll("_", "\\.");
             String[] path = f.split("\\.");
             String resolve = path[0];
             for (int i = 1; i < path.length + 1; i++) {
@@ -268,6 +269,7 @@ public class TMController extends Controller {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         for (String r : sortedFields) {
+            r = r.replaceAll("_", "\\.");
             Object val = values.get(r);
             // Gson doesn't help here, for some reason it ignores the data format setting in lists...
             if (val instanceof Date) {

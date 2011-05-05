@@ -2,11 +2,21 @@
   def formBaseClass = _caller.baseClass;
   def baseClass = _baseClass ? _baseClass : formBaseClass;
   def create = _caller.create;
+  def edit = _caller.edit != null ? _caller.edit : true;
 }%
 #{forms.objectField baseClass:baseClass, field:_field}
 #{if _hidden != null && _hidden}
   #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, name:_name, create:create /}
 #{/if}
+#{elseif !edit}
+  *{for the moment, only print out stuff verbatim}*
+  #{forms.field field:_field, baseClass:baseClass, name:_name}
+  <div class="field">
+      <span class="name">${_label}</span>
+      <span id="${field.id}" data-bind="text: value_${field.id}" class="field oxdisplayfield"></span>
+  </div>
+  #{/}
+#{/elseif}
 #{elseif objectField.type == 'text'}
   #{ox.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
 #{/elseif}

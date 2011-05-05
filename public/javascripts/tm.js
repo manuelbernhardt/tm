@@ -283,6 +283,7 @@ function removeDialogs() {
 
                 var $this = $(this);
                 var data = $this.data('oxForm');
+                var authToken = $this.find('input[name="authenticityToken"]');
                 if (!data) {
                     if (options.loadAction) {
                         $this.data('oxForm', {
@@ -291,14 +292,13 @@ function removeDialogs() {
                             'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
                             'fields': getFields($this),
                             'viewModel': {
-                                'authenticityToken': $this.find('input[name="authenticityToken"]').val(),
+                                'authenticityToken': (typeof authToken !== 'undefined' ? authToken.val() : ''),
                                 'submitForm': function(formElement) {
                                     if ($(formElement).validate({meta: 'validate'}).form()) {
                                         var oxFormData = $(formElement).data('oxForm');
                                         var additionalData = null;
                                         if (typeof oxFormData.submissionParameters !== 'undefined') {
                                             additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
-
                                         }
                                         $.postKnockoutJSJson($(formElement).attr('action'), this, additionalData, function(submitData) {
                                             var sCallback = oxFormData.submissionCallback;
@@ -403,6 +403,9 @@ function getFields(form) {
     var fields = [];
     $.each(form.find('.oxfield'), function(index, el) {
         fields.push($(el).attr('name'));
+    });
+    $.each(form.find('.oxdisplayfield'), function(index, el) {
+        fields.push($(el).attr('id'));
     });
     return fields;
 }

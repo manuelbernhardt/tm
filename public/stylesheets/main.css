@@ -42,11 +42,6 @@ h1 {
   text-align: center;
 }
 
-.field {
-  clear: both;
-  margin-bottom: 2px;
-}
-
 .infos {
   color: #666;
   margin-bottom: 5px;
@@ -106,6 +101,11 @@ td.sNone {
 
 /* styles for form elements */
 
+.field {
+  clear: both;
+  margin-bottom: 2px;
+}
+
 label.name {
   display: block;
   float: left;
@@ -113,6 +113,15 @@ label.name {
   text-align: right;
   margin: 6px 5px 0px 0px;
 }
+
+span.name {
+  display: block;
+  float: left;
+  width: 100px;
+  text-align: right;
+  margin: 0px 5px 0px 0px;
+}
+
 
 .formSubmit {
 /* 100px come from the label that has a width of 100, 2px of the inputs that have a margin of 2, and 1 px of the input border */

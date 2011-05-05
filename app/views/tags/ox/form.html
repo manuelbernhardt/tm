@@ -20,7 +20,10 @@
    - _action:       controller action
    - _create:       whether this is a create form
    - _baseClass:    class of the base object to create / edit
+   - _edit:         whether this form should be editable. true by default.
 }*
+
+#{if (_edit != null && _edit) || _edit == null}
 
 #{form action:_action, id:_id, class:'oxForm', "data-bind":'submit: submitForm'}
 *{ the following properties are set so that they can be retrieved in child tags, i.e. in fields }*
@@ -45,3 +48,15 @@
       });
   });
 </script>
+
+#{/if}
+#{elseif _edit != null && !_edit}
+<div class="oxForm" id="${_id}">
+*{ the following properties are set so that they can be retrieved in child tags, i.e. in fields }*
+  %{_body.setProperty('formId', _id); }%
+  %{_body.setProperty('baseClass', _baseClass); }%
+  %{_body.setProperty('create', _create); }%
+  %{_body.setProperty('edit', _edit); }%
+  #{doBody /}
+</div>
+#{/elseif}
