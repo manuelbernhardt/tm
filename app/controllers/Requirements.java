@@ -2,7 +2,9 @@ package controllers;
 
 import java.util.List;
 
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.Requirement;
 import models.tm.test.Instance;
@@ -19,24 +21,29 @@ import play.db.jpa.GenericModel;
  */
 public class Requirements extends TMController {
 
+    @Restrict(UnitRole.REQVIEW)
     public static void index() {
         render();
     }
 
+    @Restrict(UnitRole.REQVIEW)
     public static void requirementsDetailsData(Long baseObjectId, String[] fields) {
         Object base = Lookups.getRequirement(baseObjectId);
         renderFields(base, fields);
     }
 
+    @Restrict(UnitRole.REQVIEW)
     public static void tags(Long requirementId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Lookups.tags(requirement.tags);
     }
 
+    @Restrict(UnitRole.REQEDIT)
     public static void allTags(String q) {
         Lookups.allTags(getActiveProject(), Tag.TagType.REQUIREMENT, q);
     }
 
+    @Restrict(UnitRole.REQEDIT)
     public static void linkScript(Long requirementId, Long scriptId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Script script = Lookups.getScript(scriptId);
@@ -45,6 +52,7 @@ public class Requirements extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.REQEDIT)
     public static void unlinkScript(Long requirementId, Long scriptId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Script script = Lookups.getScript(scriptId);
@@ -53,6 +61,7 @@ public class Requirements extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.REQVIEW)
     public static void linkedScripts(String tableId,
                                      String sColumns,
                                      String sEcho,
@@ -63,6 +72,7 @@ public class Requirements extends TMController {
         TableController.renderJSON(scripts, Script.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.REQVIEW)
     public static void linkedInstances(String tableId,
                                        String sColumns,
                                        String sEcho,
@@ -73,6 +83,7 @@ public class Requirements extends TMController {
         TableController.renderJSON(instances, Instance.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.REQVIEW)
     public static void linkedDefects(String tableId,
                                      String sColumns,
                                      String sEcho,
@@ -83,6 +94,7 @@ public class Requirements extends TMController {
         TableController.renderJSON(defects, Defect.class, totalRecords, sColumns, sEcho);
     }
 
+    @Restrict(UnitRole.REQEDIT)
     public static void edit(@Valid Requirement requirement, String tags) {
         checkInAccount(requirement);
         if (Validation.hasErrors()) {

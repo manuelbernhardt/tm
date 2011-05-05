@@ -1,6 +1,8 @@
 <div id="actions">
-  <button id="linkScript">Script</button>
-  <button id="unlinkScript">Remove</button>
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
+    <button id="linkScript">Script</button>
+    <button id="unlinkScript">Remove</button>
+  #{/deadbolt.restrict}
 </div>
 
 #{box 'Test scripts'}

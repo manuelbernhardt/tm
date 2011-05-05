@@ -4,9 +4,13 @@
 <div class="container">
   <div class="left_tree">
     <div id="actions">
-      <button id="create_folder">Folder</button>
-      <button id="create_requirement">Requirement</button>
-      <button id="remove">Remove</button>
+      #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+        <button id="create_folder">Folder</button>
+        <button id="create_requirement">Requirement</button>
+      #{/deadbolt.restrict}
+      #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+        <button id="remove">Remove</button>
+      #{/deadbolt.restrict}
     </div>
     <div id="requirementTree" class="tree"></div>
   </div>
