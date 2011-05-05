@@ -21,9 +21,8 @@
         <li><a href="#linked"><span>Linked entities</span></a></li>
       </ul>
       <div id="requirementDetails">
-
         <div class="hiddenOnLoad">
-          #{ox.form action:@Requirements.edit(), id:'requirementForm', baseClass:'models.tm.Requirement',
+          #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]), id:'requirementForm', baseClass:'models.tm.Requirement',
           loadAction:@Requirements.requirementsDetailsData()}
           #{ox.field field:'requirement.name', label:'Name' /}
           #{ox.field field:'requirement.description', label:'Description' /}
