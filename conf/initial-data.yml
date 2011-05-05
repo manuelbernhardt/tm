@@ -1,5 +1,5 @@
 account.Account(oxiras):
-    name: 'Oxiras ApS'
+    name: Oxiras ApS
     email: info@oxiras.com
 
 account.User(gwenUser):
@@ -44,60 +44,165 @@ account.User(christianUser):
     password: christian
     account: oxiras
 
-account.User(testUserUserAdminUser):
+account.User(testUserAdminUser):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
-    password: testUserUserAdmin
+    password: testAuth
     account: oxiras
 
-account.User(testUserProjectAdminUser):
+account.User(testProjectAdminUser):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
-    password: testUserProjectAdmin
+    password: testAuth
     account: oxiras
 
-account.User(testUserAccountAdminUser):
+account.User(testAccountAdminUser):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
-    password: testUserAccountAdmin
+    password: testAuth
     account: oxiras
 
-account.User(testUserRequirementsOnlyUser):
+account.User(tmRequirementsViewUser):
     firstName: Eddie
     lastName: Larrisson
-    email: RequirementsOnly@testUser.com
-    password: testUserRequirementsOnly
+    email: RequirementsView@testUser.com
+    password: testAuth
     account: oxiras
 
-account.User(testUserTestRepositoryOnlyUser):
+account.User(tmRequirementsEditUser):
+    firstName: Eddie
+    lastName: Larrisson 2
+    email: RequirementsEdit@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmRequirementsCreateUser):
+    firstName: Eddie
+    lastName: Larrisson 3
+    email: RequirementsCreate@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmRequirementsDeleteUser):
+    firstName: Eddie
+    lastName: Larrisson 4
+    email: RequirementsDelete@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestRepositoryViewUser):
     firstName: William
     lastName: Windows
-    email: TestRepositoryOnly@testUser.com
-    password: testUserTestRepositoryOnly
+    email: TestRepositoryView@testUser.com
+    password: testAuth
     account: oxiras
 
-account.User(testUserTestPreparationOnlyUser):
+account.User(tmTestRepositoryEditUser):
+    firstName: William
+    lastName: Windows 2
+    email: TestRepositoryEdit@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestRepositoryCreateUser):
+    firstName: William
+    lastName: Windows 3
+    email: TestRepositoryCreate@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestRepositoryDeleteUser):
+    firstName: William
+    lastName: Windows 4
+    email: TestRepositoryDelete@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestPreparationViewUser):
     firstName: Scala
     lastName: Johansson
-    email: TestPreparationOnly@testUser.com
-    password: testUserTestPreparationOnly
+    email: TestPreparationView@testUser.com
+    password: testAuth
     account: oxiras
 
-account.User(testUserTestExecutionOnlyUser):
+account.User(tmTestPreparationEditUser):
+    firstName: Scala
+    lastName: Johansson 2
+    email: TestPreparationEdit@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestPreparationCreateUser):
+    firstName: Scala
+    lastName: Johansson 3
+    email: TestPreparationCreate@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestPreparationDeleteUser):
+    firstName: Scala
+    lastName: Johansson 4
+    email: TestPreparationDelete@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestExecutionViewUser):
     firstName: Lenny
     lastName: Linux
-    email: TestExecutionOnly@testUser.com
-    password: testUserTestExecutionOnly
+    email: TestExecutionView@testUser.com
+    password: testAuth
     account: oxiras
 
-account.User(testUserDefectsOnlyUser):
+account.User(tmTestExecutionEditUser):
+    firstName: Lenny
+    lastName: Linux 2
+    email: TestExecutionEdit@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestExecutionCreateUser):
+    firstName: Lenny
+    lastName: Linux 3
+    email: TestExecutionCreate@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmTestExecutionDeleteUser):
+    firstName: Lenny
+    lastName: Linux 4
+    email: TestExecutionDelete@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmDefectsViewUser):
     firstName: Mona Lisa
     lastName: Harddrive
-    email: DefectsOnly@testUser.com
-    password: testUserDefectsOnly
+    email: DefectsView@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmDefectsEditUser):
+    firstName: Mona Lisa
+    lastName: Harddrive 2
+    email: DefectsEdit@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmDefectsCreateUser):
+    firstName: Mona Lisa
+    lastName: Harddrive 3
+    email: DefectsCreate@testUser.com
+    password: testAuth
+    account: oxiras
+
+account.User(tmDefectsDeleteUser):
+    firstName: Mona Lisa
+    lastName: Harddrive 4
+    email: DefectsDelete@testUser.com
+    password: testAuth
     account: oxiras
 
 tm.ProjectCategory(ProjCat2011):
@@ -123,7 +228,7 @@ tm.Project(world):
     account: oxiras
     projectCategory: ProjCat2012
 
-tm.Role(demViewOnly):
+tm.Role(demRoleViewOnly):
     name: View only
     account: oxiras
     project: demenagement
@@ -134,7 +239,7 @@ tm.Role(demViewOnly):
          - testExecView
          - defectView
 
-tm.Role(tmTestLead):
+tm.Role(tmRoleTestLead):
     name: Test Lead
     account: oxiras
     project: testManagementApplication
@@ -161,8 +266,39 @@ tm.Role(tmTestLead):
          - defectEdit
          - defectDelete
 
-tm.Role(tmRequirements):
-    name: Requirement management
+tm.Role(tmRoleRequirementsView):
+    name: (unit) Requirement view
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+
+tm.Role(tmRoleRequirementsEdit):
+    name: (unit) Requirement edit
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - reqEdit
+
+tm.Role(tmRoleRequirementsCreate):
+    name: (unit) Requirement create
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - reqCreate
+
+tm.Role(tmRoleRequirementsDelete):
+    name: (unit) Requirement delete
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - reqView
+         - reqDelete
+
+tm.Role(tmRoleRequirementsAll):
+    name: Requirement all
     account: oxiras
     project: testManagementApplication
     unitRoles:
@@ -171,7 +307,38 @@ tm.Role(tmRequirements):
          - reqEdit
          - reqDelete
 
-tm.Role(tmTestDesigner):
+tm.Role(tmRoleTestRepoView):
+    name: (unit) Test Repository view
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testRepoView
+
+tm.Role(tmRoleTestRepoEdit):
+    name: (unit) Test Repository edit
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testRepoView
+         - testRepoEdit
+
+tm.Role(tmRoleTestRepoCreate):
+    name: (unit) Test Repository create
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testRepoView
+         - testRepoCreate
+
+tm.Role(tmRoleTestRepoDelete):
+    name: (unit) Test Repository delete
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testRepoView
+         - testRepoDelete
+
+tm.Role(tmRoleTestRepoAll):
     name: Test Designer
     account: oxiras
     project: testManagementApplication
@@ -181,8 +348,39 @@ tm.Role(tmTestDesigner):
          - testRepoEdit
          - testRepoDelete
 
-tm.Role(tmTestPreparation):
-    name: Test Preparation
+tm.Role(tmRoleTestPreparationView):
+    name: (unit) Test Preparation view
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testPrepView
+
+tm.Role(tmRoleTestPreparationEdit):
+    name: (unit) Test Preparation edit
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testPrepView
+         - testPrepEdit
+
+tm.Role(tmRoleTestPreparationCreate):
+    name: (unit) Test Preparation create
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testPrepView
+         - testPrepCreate
+
+tm.Role(tmRoleTestPreparationDelete):
+    name: (unit) Test Preparation delete
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testPrepView
+         - testPrepDelete
+
+tm.Role(tmRoleTestPreparationAll):
+    name: (unit) Test Preparation
     account: oxiras
     project: testManagementApplication
     unitRoles:
@@ -191,7 +389,38 @@ tm.Role(tmTestPreparation):
          - testPrepEdit
          - testPrepDelete
 
-tm.Role(tmTestExecution):
+tm.Role(tmRoleTestExecutionView):
+    name: (unit) Test Execution view
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testExecView
+
+tm.Role(tmRoleTestExecutionEdit):
+    name: (unit) Test Execution edit
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testExecView
+         - testExecEdit
+
+tm.Role(tmRoleTestExecutionCreate):
+    name: (unit) Test Execution create
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testExecView
+         - testExecCreate
+
+tm.Role(tmRoleTestExecutionDelete):
+    name: (unit) Test Execution delete
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - testExecView
+         - testExecDelete
+
+tm.Role(tmRoleTestExecution):
     name: Test Execution
     account: oxiras
     project: testManagementApplication
@@ -203,7 +432,38 @@ tm.Role(tmTestExecution):
          - defectCreate
          - defectEdit
 
-tm.Role(tmDefects):
+tm.Role(tmRoleDefectsView):
+    name: (unit) Defect view
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - defectView
+
+tm.Role(tmRoleDefectsEdit):
+    name: (unit) Defect edit
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - defectView
+         - defectEdit
+
+tm.Role(tmRoleDefectsCreate):
+    name: (unit) Defect create
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - defectView
+         - defectCreate
+
+tm.Role(tmRoleDefectsDelete):
+    name: (unit) Defect delete
+    account: oxiras
+    project: testManagementApplication
+    unitRoles:
+         - defectView
+         - defectDelete
+
+tm.Role(tmRoleDefectsResolution):
     name: Defect resolution
     account: oxiras
     project: testManagementApplication
@@ -212,7 +472,7 @@ tm.Role(tmDefects):
          - defectCreate
          - defectEdit
 
-tm.Role(tmViewOnly):
+tm.Role(tmRoleViewOnly):
     name: View only
     account: oxiras
     project: testManagementApplication
@@ -236,8 +496,8 @@ tm.TMUser(gwen):
        - projectEdit
        - projectDelete
     projectRoles:
-       - tmTestLead
-       - demViewOnly
+       - tmRoleTestLead
+       - demRoleViewOnly
 
 tm.TMUser(manu):
     user: manuUser
@@ -252,31 +512,31 @@ tm.TMUser(manu):
        - projectEdit
        - projectDelete
     projectRoles:
-       - tmTestDesigner
-       - tmViewOnly
-       - demViewOnly
+       - tmRoleTestLead
+       - tmRoleViewOnly
+       - demRoleViewOnly
 
 tm.TMUser(nathalie):
     user: nathalieUser
     account: oxiras
     activeProject: demenagement
     projectRoles:
-       - demViewOnly
+       - demRoleViewOnly
 
 tm.TMUser(vroni):
     user: vroniUser
     account: oxiras
     activeProject: demenagement
     projectRoles:
-       - demViewOnly
+       - demRoleViewOnly
 
 tm.TMUser(tamara):
     user: tamaraUser
     account: oxiras
     activeProject: testManagementApplication
     projectRoles:
-       - demViewOnly
-       - tmTestExecution
+       - demRoleViewOnly
+       - tmRoleTestExecution
 
 tm.TMUser(christian):
     user: christianUser
@@ -291,59 +551,149 @@ tm.TMUser(christian):
        - projectDelete
     activeProject: testManagementApplication
     projectRoles:
-       - tmTestLead
+       - tmRoleTestLead
 
-tm.TMUser(testUserAccountAdmin):
-    user: testUserAccountAdminUser
+tm.TMUser(tmUserAccountAdmin):
+    user: testAccountAdminUser
     account: oxiras
     accountRoles:
        - accountAdmin
 
-tm.TMUser(testUserProjectAdmin):
-    user: testUserProjectAdminUser
+tm.TMUser(tmUserProjectAdmin):
+    user: testProjectAdminUser
     account: oxiras
     accountRoles:
        - projectCreate
        - projectEdit
        - projectDelete
 
-tm.TMUser(testUserUserAdmin):
-    user: testUserUserAdminUser
+tm.TMUser(tmUserUserAdmin):
+    user: testUserAdminUser
     account: oxiras
     accountRoles:
        - userCreate
        - userEdit
        - userDelete
 
-tm.TMUser(testUserRequirementsOnly):
-    user: testUserRequirementsOnlyUser
+tm.TMUser(tmUserRequirementsView):
+    user: tmRequirementsViewUser
     account: oxiras
     projectRoles:
-       -  tmRequirements
+       -  tmRoleRequirementsView
 
-tm.TMUser(testUserTestRepositoryOnly):
-    user: testUserTestRepositoryOnlyUser
+tm.TMUser(tmUserRequirementsEdit):
+    user: tmRequirementsEditUser
     account: oxiras
     projectRoles:
-       -  tmTestDesigner
+       -  tmRoleRequirementsEdit
 
-tm.TMUser(testUserTestPreparationOnly):
-    user: testUserTestPreparationOnlyUser
+tm.TMUser(tmUserRequirementsCreate):
+    user: tmRequirementsCreateUser
     account: oxiras
     projectRoles:
-       -  tmTestPreparation
+       -  tmRoleRequirementsCreate
 
-tm.TMUser(testUserTestExecutionOnly):
-    user: testUserTestExecutionOnlyUser
+tm.TMUser(tmUserRequirementsDelete):
+    user: tmRequirementsDeleteUser
     account: oxiras
     projectRoles:
-       -  tmTestExecution
+       -  tmRoleRequirementsDelete
 
-tm.TMUser(testUserDefectsOnly):
-    user: testUserDefectsOnlyUser
+tm.TMUser(tmUserTestRepositoryView):
+    user: tmTestRepositoryViewUser
     account: oxiras
     projectRoles:
-       -  tmDefects
+       -  tmRoleTestRepoView
+
+tm.TMUser(tmUserTestRepositoryEdit):
+    user: tmTestRepositoryEditUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestRepoEdit
+
+tm.TMUser(tmUserTestRepositoryCreate):
+    user: tmTestRepositoryCreateUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestRepoCreate
+
+tm.TMUser(tmTestRepositoryDelete):
+    user: tmTestRepositoryDeleteUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestRepoDelete
+
+tm.TMUser(tmTestPreparationView):
+    user: tmTestPreparationViewUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestPreparationView
+
+tm.TMUser(tmTestPreparationEdit):
+    user: tmTestPreparationEditUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestPreparationEdit
+
+tm.TMUser(tmTestPreparationCreate):
+    user: tmTestPreparationCreateUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestPreparationCreate
+
+tm.TMUser(tmTestPreparationDelete):
+    user: tmTestPreparationDeleteUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestPreparationDelete
+
+tm.TMUser(tmTestExecutionView):
+    user: tmTestExecutionViewUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestExecutionView
+
+tm.TMUser(tmTestExecutionEdit):
+    user: tmTestExecutionEditUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestExecutionEdit
+
+tm.TMUser(tmTestExecutionCreate):
+    user: tmTestExecutionCreateUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestExecutionCreate
+
+tm.TMUser(tmTestExecutionDelete):
+    user: tmTestExecutionDeleteUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleTestExecutionDelete
+
+tm.TMUser(tmDefectsView):
+    user: tmDefectsViewUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleDefectsView
+
+tm.TMUser(tmDefectsEdit):
+    user: tmDefectsEditUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleDefectsEdit
+
+tm.TMUser(tmDefectsCreate):
+    user: tmDefectsCreateUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleDefectsCreate
+
+tm.TMUser(tmDefectsDelete):
+    user: tmDefectsDeleteUser
+    account: oxiras
+    projectRoles:
+       -  tmRoleDefectsDelete
 
 tm.RequirementType(functional):
     project: testManagementApplication
