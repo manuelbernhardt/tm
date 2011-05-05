@@ -38,8 +38,6 @@ import util.Logger;
 @With(Deadbolt.class)
 public class TMController extends Controller {
 
-    public static final String USER_KEY = session.getId() + "_user";
-
     /**
      * Set Hibernate filters for multi-tenancy and so on.
      */
@@ -91,11 +89,11 @@ public class TMController extends Controller {
         // TODO cache this better
         if (Security.isConnected()) {
             // temporary
-            TMUser u = (TMUser) Cache.get(USER_KEY);
+            TMUser u = (TMUser) Cache.get(session.getId() + "_user");
             if (u == null) {
                 // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
                 u = TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
-                Cache.set(USER_KEY, u);
+                Cache.set(session.getId() + "_user", u);
             }
             return u;
         } else {
@@ -166,7 +164,7 @@ public class TMController extends Controller {
             connectedUser.save();
 
             // invalidate roles caches and others
-            Cache.set(USER_KEY, connectedUser);
+            Cache.set(session.getId() + "_user", connectedUser);
 
             // figure out a way to switch to the current view
             System.out.println();
