@@ -381,7 +381,7 @@ tm.Role(tmRoleTestPreparationDelete):
          - testPrepDelete
 
 tm.Role(tmRoleTestPreparationAll):
-    name: (unit) Test Preparation
+    name: Test Preparation
     account: oxiras
     project: testManagementApplication
     unitRoles:
