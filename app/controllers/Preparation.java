@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import controllers.deadbolt.Restrict;
+import models.general.UnitRole;
 import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
@@ -18,24 +20,29 @@ import util.Logger;
  */
 public class Preparation extends TMController {
 
+    @Restrict(UnitRole.TESTPREPVIEW)
     public static void index() {
         render();
     }
 
+    @Restrict(UnitRole.TESTPREPVIEW)
     public static void tags(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
         Lookups.tags(instance.tags);
     }
 
+    @Restrict(UnitRole.TESTPREPVIEW)
     public static void allTags(String q) {
         Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
     }
 
+    @Restrict(UnitRole.TESTPREPVIEW)
     public static void schedule(Long baseObjectId, String[] fields) {
         Instance instance = Lookups.getInstance(baseObjectId);
         renderFields(instance, fields);
     }
 
+    @Restrict(UnitRole.TESTPREPEDIT)
     public static void instanceParameters(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
         List<InstanceParam> parameters = instance.getParams();
@@ -52,6 +59,7 @@ public class Preparation extends TMController {
         renderJSON(params.toString());
     }
 
+    @Restrict(UnitRole.TESTPREPEDIT)
     public static void updateTags(Long instanceId, String tags) {
         Instance instance = Lookups.getInstance(instanceId);
         instance.tags = getTags(tags, Tag.TagType.TESTINSTANCE);
@@ -59,6 +67,7 @@ public class Preparation extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.TESTPREPEDIT)
     public static void updateSchedule(Long instanceId, @Valid Instance instance) {
         // here we sort of cheat; instead of making Play! happy and passing all the 1000 parameters necessary for it to properly bind the instance, we just copy over the
         // parameters given by the "stale" instance.
@@ -71,6 +80,7 @@ public class Preparation extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.TESTPREPEDIT)
     public static void updateParameters(Long instanceId) {
         String paramsJson = params.get("params");
         JsonReader reader = new JsonReader(new StringReader(paramsJson));
