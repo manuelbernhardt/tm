@@ -172,17 +172,20 @@ public class Lookups extends TMController {
         return release;
     }
 
+    @Util
     public static void allUsers() {
         List<TMUser> users = TMUser.listByActiveProject();
         renderJSON(users, userSerializer);
     }
 
+    @Util
     public static void tags(List<Tag> tags) {
         renderJSON(tags, tagSerializer);
     }
 
-    public static void allTags(Project project, Tag.TagType type, String term) {
-        List<Tag> tags = Tag.find("from Tag t where t.type = ? and t.project = ? and lower(t.name) like ?", type, project, term + "%").fetch();
+    @Util
+    public static void allTags(Long projectId, Tag.TagType type, String term) {
+        List<Tag> tags = Tag.find("from Tag t where t.type = ? and t.project.id = ? and lower(t.name) like ?", type, projectId, term + "%").fetch();
         renderJSON(tags, tagSerializer);
     }
 

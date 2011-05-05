@@ -44,7 +44,7 @@ public class Repository extends TMController {
     }
 
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), Tag.TagType.TESTSCRIPT, q);
+        Lookups.allTags(getActiveProject().getId(), Tag.TagType.TESTSCRIPT, q);
     }
 
     @Restrict(UnitRole.TESTREPOVIEW)

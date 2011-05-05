@@ -51,7 +51,7 @@ public class Execution extends TMController {
     }
 
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
+        Lookups.allTags(getActiveProject().getId(), Tag.TagType.TESTINSTANCE, q);
     }
 
     @Restrict(UnitRole.TESTEXECVIEW)

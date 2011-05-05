@@ -40,7 +40,7 @@ public class Requirements extends TMController {
 
     @Restrict(UnitRole.REQEDIT)
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), Tag.TagType.REQUIREMENT, q);
+        Lookups.allTags(getActiveProject().getId(), Tag.TagType.REQUIREMENT, q);
     }
 
     @Restrict(UnitRole.REQEDIT)

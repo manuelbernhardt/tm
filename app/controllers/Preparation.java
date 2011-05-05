@@ -33,7 +33,7 @@ public class Preparation extends TMController {
 
     @Restrict(UnitRole.TESTPREPVIEW)
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject(), Tag.TagType.TESTINSTANCE, q);
+        Lookups.allTags(getActiveProject().getId(), Tag.TagType.TESTINSTANCE, q);
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
