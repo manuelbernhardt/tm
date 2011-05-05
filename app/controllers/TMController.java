@@ -58,7 +58,7 @@ public class TMController extends Controller {
                 if (p != null) {
                     ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", p.getId());
                 } else {
-                    getConnectedUser().<TMUser>merge().initializeActiveProject();
+                    getConnectedUser().initializeActiveProject();
                 }
             }
         }
@@ -86,16 +86,9 @@ public class TMController extends Controller {
     }
 
     public static TMUser getConnectedUser() {
-        // TODO cache this better
         if (Security.isConnected()) {
-            // temporary
-            TMUser u = (TMUser) Cache.get(session.getId() + "_user");
-            if (u == null) {
-                // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
-                u = TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
-                Cache.set(session.getId() + "_user", u);
-            }
-            return u;
+            // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
+            return TMUser.find("from TMUser u where u.user.email = ?", Security.connected()).<TMUser>first();
         } else {
             // TODO test this!
             flash.put("url", "GET".equals(request.method) ? request.url : "/");
@@ -153,7 +146,6 @@ public class TMController extends Controller {
             notFound("Can't find project with ID " + projectId);
         }
         TMUser connectedUser = getConnectedUser();
-        connectedUser = connectedUser.merge();
         if (connectedUser.getProjects().contains(project)) {
 
             // check if there is enough place on the project we want to switch to
