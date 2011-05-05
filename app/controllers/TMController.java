@@ -166,15 +166,7 @@ public class TMController extends Controller {
             // invalidate roles caches and others
             Cache.set(session.getId() + "_user", connectedUser);
 
-            // figure out a way to switch to the current view
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(request.controller);
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
+            // reload the page in the current view
             redirect(request.controller + ".index");
 
         } else {
