@@ -74,7 +74,8 @@ public class FormTags extends FastTags {
         String baseClass = (String) args.get("baseClass");
 
         // store the field name in the form TagContext so that we can retrieve it later
-        TagContext.parent("ox.form").data.put(FIELD + path.replaceAll("\\.", "_"), path);
+        TagContext parent = TagContext.hasParentTag("ox.form") ? TagContext.parent("ox.form") : TagContext.parent("form");
+        parent.data.put(FIELD + path.replaceAll("\\.", "_"), path);
 
         if (obj != null) {
             if (pieces.length > 1) {
