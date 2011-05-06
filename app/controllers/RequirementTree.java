@@ -60,7 +60,7 @@ public class RequirementTree extends TMTree implements TreeRoleHolder {
     }
 
     public List<UnitRole> getCreateRoles() {
-        return roles(UnitRole.REQEDIT);
+        return roles(UnitRole.REQCREATE);
     }
 
     public List<UnitRole> getUpdateRoles() {
