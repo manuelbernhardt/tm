@@ -85,6 +85,7 @@ public class TMController extends Controller {
         }
     }
 
+    @Util
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
             // TODO FIXME search by user account as well - we can only do this once we know the account from the URL
@@ -102,6 +103,7 @@ public class TMController extends Controller {
         return null;
     }
 
+    @Util
     public static Account getConnectedUserAccount() {
         return getConnectedUser().user.account;
     }
@@ -111,6 +113,7 @@ public class TMController extends Controller {
      *
      * @return the active {@see Project}
      */
+    @Util
     public static Project getActiveProject() {
         if (!controllerHasActiveProject()) {
             throw new RuntimeException("Active project can't be fetched in the admin area");
@@ -123,6 +126,7 @@ public class TMController extends Controller {
      *
      * @return <code>true</code> if this is not an admin controller
      */
+    @Util
     private static boolean controllerHasActiveProject() {
         return !request.controller.startsWith("admin");
     }
@@ -269,7 +273,8 @@ public class TMController extends Controller {
             }
             result.put("value_" + r.replaceAll("\\.", "_"), val == null ? "" : val);
         }
-        renderJSON(result);
+        // we use the tagSerializer for our custom Tag-s.
+        renderJSON(result, Lookups.tagSerializer);
     }
 
     @Util

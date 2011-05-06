@@ -5,9 +5,12 @@
   def edit = _caller.edit != null ? _caller.edit : true;
 }%
 #{forms.objectField baseClass:baseClass, field:_field}
-#{if _hidden != null && _hidden}
-  #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, name:_name, create:create /}
+#{if edit && _type != null && _type == 'tags'}
+  #{ox.tagsField field:_field, label:_label, baseClass:baseClass, name:_name /}
 #{/if}
+#{elseif edit && _hidden != null && _hidden}
+  #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, name:_name, create:create /}
+#{/elseif}
 #{elseif !edit}
   *{for the moment, only print out stuff verbatim}*
   #{forms.field field:_field, baseClass:baseClass, name:_name}

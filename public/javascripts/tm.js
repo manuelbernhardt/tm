@@ -40,7 +40,7 @@ function refreshTableContents(tableId, completeRefresh) {
             "sName": "user"
         });
     }
-    if(completeRefresh) {
+    if (completeRefresh) {
         $(dataTable.fnSettings().aoData).each(function () {
             $(this.nTr).removeClass('row_selected');
         });
@@ -438,4 +438,67 @@ $.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
     }).success(callback).error(function (jqhr, text) {
         alert(text);
     });
+};
+
+ko.bindingHandlers.tags = {
+    init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+        // This will be called when the binding is first applied to an element
+        // Set up any initial state, event handlers, etc. here
+        $(element).tokenInput('clearAll');
+        var modelValue = valueAccessor();
+        var tokens = ko.utils.unwrapObservable(modelValue);
+        viewModel.lock = false;
+        $(tokens).each(function() {
+            var token = ko.utils.unwrapObservable(this);
+            $(element).tokenInput('add', token.id(), token.name());
+        });
+
+        /*
+
+        // this is deactivated for the moment, watch http://groups.google.com/group/knockoutjs/browse_thread/thread/69520c7b7cae0f5e
+        // in case it works, we can get rid of the need to send tags in each page on submit. however we then also need to write a play binder for tags.
+
+        $(element).change(function() {
+            if (!viewModel.lock) {
+                viewModel.lock = true;
+                var tokens = $(element).tokenInput('get');
+                if (typeof tokens !== 'undefined') {
+                    var elementValue = ko.observableArray();
+                    $(tokens).each(function() {
+                        elementValue.push(ko.observable({id: ko.observable(this.id), name: ko.observable(this.name)}));
+                    });
+
+                    if (ko.isWriteableObservable(modelValue)) {
+                        modelValue(elementValue);
+                    } else {
+                        var allBindings = allBindingsAccessor();
+                        if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers']['tags'])
+                            allBindings['_ko_property_writers']['tags'](elementValue);
+                    }
+                    viewModel.lock = false;
+                }
+            }
+        });
+
+        */
+
+
+    },
+    update:
+            function(element, valueAccessor, allBindingsAccessor, viewModel) {
+                // This will be called once when the binding is first applied to an element,
+                // and again whenever the associated observable changes value.
+                // Update the DOM element based on the supplied values here.
+                if (!viewModel.lock) {
+                    viewModel.lock = true;
+                    $(element).tokenInput('clearAll');
+                    var value = valueAccessor();
+                    var tokens = ko.utils.unwrapObservable(value);
+                    $(tokens).each(function() {
+                        var token = ko.utils.unwrapObservable(this);
+                        $(element).tokenInput('add', token.id(), token.name());
+                    });
+                    viewModel.lock = false;
+                }
+            }
 };
