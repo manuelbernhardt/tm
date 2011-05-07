@@ -50,7 +50,8 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $('#tags').tokenInput('@{Execution.allTags()}', {
+    $('#tags').tokenInput({
+      url: '@{Execution.allTags()}',
       preventDuplicates: true,
       tokenValue: 'name',
       allowCreation: false

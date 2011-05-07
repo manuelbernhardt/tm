@@ -75,15 +75,59 @@ var KEY = {
     COMMA: 188
 };
 
+    (function($) {
 
-// Expose the .tokenInput function to jQuery as a plugin
-$.fn.tokenInput = function (url_or_data, options) {
-    var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
+        var methods = {
+            init : function(options) {
+                return this.each(function() {
 
-    // FIXME this is a temporary hack, let's hope the original plugin gets an update soon
-    return new $.TokenList(this, url_or_data, settings);
-    
-};
+                    var $this = $(this);
+                    var data = $this.data('tokenInput');
+                    if(!data) {
+                        var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
+                        data = {tokenInput: new $.TokenList($this, options.url, settings)};
+                        $this.data('tokenInput', data);
+                    }
+                    return data.tokenInput;
+                });
+            },
+            clearAll: function() {
+                return this.each(function() {
+                    var $this = $(this);
+                    var tokenInput = $this.data('tokenInput').tokenInput;
+                    tokenInput.clearTokens();
+                });
+            },
+            add: function(id, name) {
+                return this.each(function() {
+                    var $this = $(this);
+                    var tokenInput = $this.data('tokenInput').tokenInput;
+                    tokenInput.addToken(id, name);
+                });
+            },
+            get: function() {
+                var $this = $(this);
+                var tokenInput = $this.data('tokenInput').tokenInput;
+                return tokenInput.getTokens();
+            }
+
+        };
+
+        $.fn.tokenInput = function(method) {
+
+            // Method calling logic
+            if (methods[method]) {
+                return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else if (typeof method === 'object' || ! method) {
+                return methods.init.apply(this, arguments);
+            } else {
+                $.error('Method ' + method + ' does not exist on jQuery.tokenInput');
+            }
+
+        };
+
+
+    })(jQuery);
 
 
 // TokenList class for each input
@@ -344,6 +388,11 @@ $.TokenList = function (input, url_or_data, settings) {
         });
     };
 
+    // FIXME this is a temporary hack, let's hope the original plugin gets an update soon
+    this.getTokens = function() {
+        return saved_tokens;
+    };
+
 
     //
     // Private functions
@@ -540,6 +589,7 @@ $.TokenList = function (input, url_or_data, settings) {
             }
         });
         hidden_input.val(token_values.join(settings.tokenDelimiter));
+        hidden_input.change();
 
     }
 

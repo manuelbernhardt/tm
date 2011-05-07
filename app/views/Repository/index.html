@@ -30,10 +30,7 @@
           #{ox.form action:@Repository.editScript(), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
             #{ox.field field:'script.name', label:'Name' /}
             #{ox.field field:'script.description', label:'Description' /}
-            <div class="field">
-              <label class="name" for="tags">Tags</label>
-              <input name="tags" id="tags" type="text"/>
-            </div>
+            #{ox.field field:'script.tags', label:'Tags', type:'tags' /}
             *{the following fields are necessary because play can't bind stuff automatically yet}*
             #{ox.field field:'script.id', hidden:true /}
             #{ox.field field:'script.account.id', hidden:true /}
@@ -89,20 +86,13 @@
 
         $('#scriptDetailsForm').oxForm('load', scriptId);
 
-        // tags data loading
-        $.getJSON('@{Repository.tags()}', {scriptId: scriptId}, function(data) {
-          tokens.clearTokens();
-          $(data).each(function() {
-            tokens.addToken(this.id, this.name);
-          });
-        });
-
         reloadTables();
       }
     });
 
     // tags
-    var tokens = $('#tags').tokenInput('@{Repository.allTags()}', {
+    var tokens = $('#script_tags').tokenInput({
+      url: '@{Repository.allTags()}',
       preventDuplicates: true,
       tokenValue: 'name',
       allowCreation: true,
@@ -135,7 +125,7 @@
       loadAction: '@{Repository.scriptDetailsData()}',
       // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
       submissionParameters: function() {
-        return {tags: $('#tags').val() };
+        return {tags: $('#script_tags').val() };
       },
       submissionCallback: function() {
         refreshTree('repositoryTree');

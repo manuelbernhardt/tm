@@ -203,7 +203,7 @@ public class Lookups extends TMController {
     }
 
     // TODO generify by making an interface for the autocompletable entities
-    private static final TagSerializer tagSerializer = new TagSerializer();
+    public static final TagSerializer tagSerializer = new TagSerializer();
 
     private static class TagSerializer implements JsonSerializer<Tag> {
         public JsonElement serialize(Tag tag, Type type, JsonSerializationContext context) {
