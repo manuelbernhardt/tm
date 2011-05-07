@@ -41,7 +41,7 @@
               No test instance selected
             </div>
             <div class="instanceHiddenOnLoad" style="display: none;">
-              #{ox.form action:@Preparation.updateSchedule(), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
+              #{ox.form action:@Preparation.updateSchedule(), edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
               #{ox.field field:'instance.responsible', label:'Assigned to' /}
               #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
               #{ox.submit /}
