@@ -12,7 +12,7 @@ import models.tm.test.Tag;
 import play.templates.JavaExtensions;
 
 /**
- * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
+ * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
