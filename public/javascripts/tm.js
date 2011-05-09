@@ -4,18 +4,18 @@
 
 /**
  * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)
- * @param tableId the table ID
+ * @param tableSelector the table ID
  * @param handler the handler to execute on selection
  */
-function handleRowSelection(tableId, handler) {
-    $("#" + tableId + " tbody").click(function(event) {
-        var dataTable = $("#" + tableId).dataTable();
+function handleRowSelection(tableSelector, handler) {
+    $(tableSelector + " tbody").click(function(event) {
+        var dataTable = $(tableSelector).dataTable();
         $(dataTable.fnSettings().aoData).each(function () {
             $(this.nTr).removeClass('row_selected');
         });
         $(event.target.parentNode).addClass('row_selected');
 
-        var selectedRowId = getSelectedRowId('#' + tableId);
+        var selectedRowId = getSelectedRowId(tableSelector);
         if (handler !== null) {
             handler(selectedRowId);
         }

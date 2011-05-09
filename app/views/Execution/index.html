@@ -177,13 +177,13 @@
       }
     }
 
-    handleRowSelection('instanceTable', function(selectedRowId) {
+    handleRowSelection('#instanceTable', function(selectedRowId) {
       $('#createRunButton').button('enable');
       fullDrawRunTable = true;
       refreshTableContents('runTable', true);
     });
 
-    handleRowSelection('runTable', function(selectedRowId) {
+    handleRowSelection('#runTable', function(selectedRowId) {
       $('#updateRunButton').button('enable');
       refreshTableContents('runStepTable', true);
     });
