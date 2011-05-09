@@ -79,7 +79,7 @@ function fnGetSelected(oTableLocal) {
 }
 
 /**
- * Programatically selects a row given an ID (the table must have as first column an "id" column, typically hidden)
+ * Programmatically selects a row given an ID (the table must have as first column an "id" column, typically hidden)
  * @param oTableLocal DataTable instance
  * @param rowId the ID of the row to select
  */
