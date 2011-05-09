@@ -72,7 +72,7 @@
 
     $('#createDefectForm').oxForm({
       submissionCallback: function() {
-        refreshTableContents("defectsTable", false);
+        refreshTableContents('#defectsTable', false);
       }
     });
 
@@ -103,7 +103,7 @@
 
     $('#updateDefectForm').oxForm({
       submissionCallback: function() {
-        refreshTableContents("defectsTable", false);
+        refreshTableContents('#defectsTable', false);
       },
       loadAction: '@{Defects.defectDetails()}'
     });

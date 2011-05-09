@@ -85,7 +85,7 @@
 
     $('#createStepForm').oxForm({
       submissionCallback: function() {
-        refreshTableContents("stepTable", false);
+        refreshTableContents('#stepTable', false);
       }
     });
 
@@ -116,7 +116,7 @@
 
     $('#updateStepForm').oxForm({
       submissionCallback: function() {
-        refreshTableContents("stepTable", false);
+        refreshTableContents('#stepTable', false);
       },
       loadAction: '@{Repository.stepDetailsData()}'
     });

@@ -100,7 +100,7 @@
         "sZeroRecords": "No test instances found"
       },
       "fnDrawCallback": function() {
-        refreshTableContents('runStepTable', fullDrawInstanceTable);
+        refreshTableContents('#runStepTable', fullDrawInstanceTable);
         fullDrawInstanceTable = true;
       }
     };
@@ -129,7 +129,7 @@
         "sZeroRecords": "No runs performed yet"
       },
       "fnDrawCallback": function() {
-        refreshTableContents('runStepTable', fullDrawRunTable);
+        refreshTableContents('#runStepTable', fullDrawRunTable);
         fullDrawRunTable = true;
       }
     };
@@ -180,12 +180,12 @@
     handleRowSelection('#instanceTable', function(selectedRowId) {
       $('#createRunButton').button('enable');
       fullDrawRunTable = true;
-      refreshTableContents('runTable', true);
+      refreshTableContents('#runTable', true);
     });
 
     handleRowSelection('#runTable', function(selectedRowId) {
       $('#updateRunButton').button('enable');
-      refreshTableContents('runStepTable', true);
+      refreshTableContents('#runStepTable', true);
     });
 
     $('#createRunButton').button({disabled: true}).click(function() {
@@ -206,8 +206,8 @@
         "Save": function() {
           $('#runForm').ajaxSubmit();
           fullDrawInstanceTable = false;
-          refreshTableContents('instanceTable', false);
-          refreshTableContents('runTable', false);
+          refreshTableContents('#instanceTable', false);
+          refreshTableContents('#runTable', false);
           $(this).dialog("close");
         },
         "Cancel": function() {
@@ -234,7 +234,7 @@
         "Save": function() {
           $('#runForm').ajaxSubmit();
           fullDrawInstanceTable = false;
-          refreshTableContents('instanceTable', false);
+          refreshTableContents('#instanceTable', false);
           $(this).dialog("close");
         },
         "Cancel": function() {

@@ -65,19 +65,19 @@
 
     $('#filter').button().click(function(event) {
       event.preventDefault();
-      refreshTableContents("instanceTable", false);
+      refreshTableContents('#instanceTable', false);
     });
 
     // auto-filter
     $.each($('#instanceFilterForm').find('input, select'), function(index, el) {
       $(el).change(function() {
-        refreshTableContents("instanceTable", false);
+        refreshTableContents('#instanceTable', false);
       });
     });
     $('#instanceFilterForm ul.token-input-list').focus(function() {
-      refreshTableContents("instanceTable", false);
+      refreshTableContents('#instanceTable', false);
     }).blur(function() {
-      refreshTableContents("instanceTable", false);
+      refreshTableContents('#instanceTable', false);
     });
   });
 </script>

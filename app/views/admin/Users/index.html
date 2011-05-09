@@ -8,7 +8,7 @@
     openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
     <script type="text/javascript">
       function newUserDialogSubmissionCallback() {
-        refreshTableContents("tab", false);
+        refreshTableContents('#tab', false);
       }
     </script>
     #{input.field field:'user.user.firstName', label:'First Name' /}
@@ -101,7 +101,7 @@
       buttons: {
         "Remove the user": function() {
           $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
-            refreshTableContents('tab', false);
+            refreshTableContents('#tab', false);
             $("#removeUserButton").button('disable');
           });
           $(this).dialog("close");

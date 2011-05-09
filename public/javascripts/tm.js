@@ -4,7 +4,7 @@
 
 /**
  * Selection handler for a table row (the table must have as first column an "id" column, typically hidden)
- * @param tableSelector the table ID
+ * @param tableSelector the table selector
  * @param handler the handler to execute on selection
  */
 function handleRowSelection(tableSelector, handler) {
@@ -24,12 +24,12 @@ function handleRowSelection(tableSelector, handler) {
 
 /**
  * Refreshes he contents of a table by calling fnDraw. If a partial refresh is done, the selection state is also kept
- * @param tableId the ID of the table
+ * @param tableSelector the selector of the table
  * @param completeRefresh whether this should also re-draw pagination etc.
  */
-function refreshTableContents(tableId, completeRefresh) {
-    var dataTable = $("#" + tableId).dataTable();
-    var selected = getSelectedRowId("#" + tableId);
+function refreshTableContents(tableSelector, completeRefresh) {
+    var dataTable = $("#" + tableSelector).dataTable();
+    var selected = getSelectedRowId("#" + tableSelector);
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
         // this is the internal API, let's hope it won't change
         dataTable.fnSettings().aoDrawCallback.push({
