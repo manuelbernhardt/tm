@@ -14,7 +14,9 @@
 
     <div class="hiddenOnLoad">
       <div class="left_tree">
-        #{include 'Preparation/instanceCreateDialog.html' /}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
+          #{include 'Preparation/instanceCreateDialog.html' /}
+        #{/deadbolt.restrict}
         <div id="scriptCycleTree" class="tree"></div>
       </div>
       <div class="right_tree">
@@ -53,7 +55,9 @@
               No test instance selected
             </div>
             <div class="instanceHiddenOnLoad" style="display: none;">
+              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
               <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}" data-bind="submit: submitForm">
+              #{/deadbolt.restrict}
                 <table id="instanceParamTable" class="display">
                   <thead>
                   <th>Parameter</th>
@@ -61,8 +65,11 @@
                   </thead>
                   <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
                 </table>
+              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
                 <button type="submit" id="saveParamsButton">Save</button>
               </form>
+              #{/deadbolt.restrict}
+
             </div>
           </div>
         </div>
@@ -131,43 +138,43 @@
       return false;
     }};
 
-    // selection listener for the instance tree
-    $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
-    $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["instance", "default"])) {
-        $('.instanceHiddenOnLoad').show();
-        $('.instanceShownOnLoad').hide();
+      // selection listener for the instance tree
+      $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+      $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+        if (isSelectedNodeType(data, ["instance", "default"])) {
+          $('.instanceHiddenOnLoad').show();
+          $('.instanceShownOnLoad').hide();
 
-        var instanceId = getNodeIdFromData(data);
+          var instanceId = getNodeIdFromData(data);
 
-        // tags data loading
-        $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
-          $('#tags').tokenInput('clearAll');
-          $(data).each(function() {
-            $('#tags').tokenInput('add', this.id, this.name);
-          });
-        });
-
-        // schedule data loading
-        $('#scheduleForm').oxForm('load', instanceId);
-
-        // instance parameter data loading
-        $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
-          if (!ko.mapping.isMapped(paramViewModel)) {
-            $.extend(paramViewModel, ko.mapping.fromJS(data));
-            ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
-          } else {
-            ko.mapping.updateFromJS(paramViewModel, data);
-          }
-          // apply focus listeners for the save button
-          $('#instanceParamForm').find('input').each(function(index, value) {
-            $(value).focus(function() {
-              $('#saveParamsButton').button('enable');
+          // tags data loading
+          $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
+            $('#tags').tokenInput('clearAll');
+            $(data).each(function() {
+              $('#tags').tokenInput('add', this.id, this.name);
             });
           });
-        });
-      }
-    });
+
+          // schedule data loading
+          $('#scheduleForm').oxForm('load', instanceId);
+
+          // instance parameter data loading
+          $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
+            if (!ko.mapping.isMapped(paramViewModel)) {
+              $.extend(paramViewModel, ko.mapping.fromJS(data));
+              ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
+            } else {
+              ko.mapping.updateFromJS(paramViewModel, data);
+            }
+            // apply focus listeners for the save button
+            $('#instanceParamForm').find('input').each(function(index, value) {
+              $(value).focus(function() {
+                $('#saveParamsButton').button('enable');
+              });
+            });
+          });
+        }
+      });
 
     $('#innerTabs').tabs();
 
