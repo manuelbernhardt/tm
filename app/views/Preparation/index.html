@@ -80,12 +80,22 @@
 
 
 #{set 'moreScripts'}
+#{if !util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]) && util.Require.roles([[models.general.UnitRole.TESTPREPVIEW]])}
+<script type="text/html" id="paramRowTemplate">
+  <tr>
+    <td><span data-bind="text: name"></span></td>
+    <td><span id="paramValue" data-bind="text: value"></span></td>
+  </tr>
+</script>
+#{/if}
+#{elseif util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]])}
 <script type="text/html" id="paramRowTemplate">
   <tr>
     <td><span data-bind="text: name"></span></td>
     <td><input id="paramValue" type="text" data-bind="name: id, value: value"></td>
   </tr>
 </script>
+#{/elseif}
 
 <script type="text/javascript">
 
