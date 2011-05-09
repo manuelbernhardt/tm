@@ -69,7 +69,7 @@ No project selected
       });
       $(event.target.parentNode).addClass('row_selected');
 
-      var selectedRole = getSelectedRowId(tabDataTable);
+      var selectedRole = getSelectedRowId('#tab');
       // FIXME this does get executed anyway
       if (typeof selectedRole !== 'undefined') {
         // reloads the role definition

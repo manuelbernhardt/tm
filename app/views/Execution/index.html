@@ -170,10 +170,10 @@
         parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
       }
       if (tableId == 'runTable') {
-        parameters.push({"name": "instanceId", "value": getSelectedRowId($('#instanceTable').dataTable())});
+        parameters.push({"name": "instanceId", "value": getSelectedRowId('#instanceTable')});
       }
       if (tableId == 'runStepTable') {
-        parameters.push({"name": "runId", "value": getSelectedRowId($('#runTable').dataTable())});
+        parameters.push({"name": "runId", "value": getSelectedRowId('#runTable')});
       }
     }
 
@@ -200,7 +200,7 @@
       resizable: false,
       modal: true,
       open: function() {
-        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId($('#instanceTable').dataTable()) });
+        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') });
       },
       buttons: {
         "Save": function() {
@@ -228,7 +228,7 @@
       resizable: false,
       modal: true,
       open: function() {
-        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId($('#runTable').dataTable()) });
+        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') });
       },
       buttons: {
         "Save": function() {

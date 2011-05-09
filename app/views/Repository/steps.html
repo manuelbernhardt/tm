@@ -129,7 +129,7 @@
       resizable: false,
       modal: true,
       open: function() {
-        $('#updateStepForm').oxForm('load', getSelectedRowId($('#stepTable').dataTable()), {scriptId: getSelectedNodeId('repositoryTree')});
+        $('#updateStepForm').oxForm('load', getSelectedRowId('#stepTable'), {scriptId: getSelectedNodeId('repositoryTree')});
       },
       buttons: {
         "Update step": function() {
