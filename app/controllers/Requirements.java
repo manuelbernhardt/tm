@@ -97,6 +97,7 @@ public class Requirements extends TMController {
     @Restrict(UnitRole.REQEDIT)
     public static void edit(@Valid Requirement requirement, String tags) {
         checkInAccount(requirement);
+        checkAuthenticity();
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
