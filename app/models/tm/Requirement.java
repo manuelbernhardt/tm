@@ -26,8 +26,8 @@ public class Requirement extends ProjectModel implements Node {
     @Required
     public String name;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-    public RequirementType type;
+//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+//    public RequirementType type;
 
     @MaxSize(5000)
     public String description;
