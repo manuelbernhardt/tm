@@ -1,7 +1,7 @@
 #{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, formId:_formId, name:_name}
 <div class="field">
     <label class="name" for="${field.id}">${_label}</label>
-    <textarea id="${field.id}" cols="48" rows="5" data-validate="${field.validationData}"  data-bind="${_create == null ? 'value: value_'+_formId+'_'+field.id : ''}"  type="text" name="${field.name}"
+    <textarea id="${field.id}" cols="48" rows="5" data-validate="${field.validationData}"  data-bind="${_create == null ? 'value: value_'+field.id : ''}"  type="text" name="${field.name}"
            class="oxfield ${field.errorClass}">${field.value}</textarea>
     <span class="error">${field.error}</span>
 </div>

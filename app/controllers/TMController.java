@@ -247,12 +247,17 @@ public class TMController extends Controller {
         Map<String, Object> values = new HashMap<String, Object>();
         List<String> toResolve = new ArrayList<String>();
 
+        String formId = fields[0];
+        String[] fieldNames = new String[fields.length - 1];
+        for(int i = 1; i < fields.length; i++) {
+            fieldNames[i - 1] = fields[i];
+        }
+
         // merge required field paths, sorted by length and alphabetical order
-        List<String> sortedFields = Arrays.asList(fields);
+        List<String> sortedFields = Arrays.asList(fieldNames);
         Collections.sort(sortedFields);
         for (String f : sortedFields) {
             f = f.replaceAll("_", "\\.");
-            f = removeFormId(f);
             String[] path = f.split("\\.");
             String resolve = path[0];
             for (int i = 1; i < path.length + 1; i++) {
@@ -289,25 +294,20 @@ public class TMController extends Controller {
         Map<String, Object> result = new HashMap<String, Object>();
         for (String r : sortedFields) {
              r = r.replaceAll("_", "\\.");
-            Object val = values.get(removeFormId(r));
+            Object val = values.get(r);
             // Gson doesn't help here, for some reason it ignores the data format setting in lists...
             if (val instanceof Date) {
                 val = df.format((Date) val);
             }
-            result.put(toKOBindingKey(r), val == null ? "" : val);
+            result.put(toKOBindingKey(r, formId), val == null ? "" : val);
         }
 
         // render the json string using our custom gson serializer
         renderText(gson.toJson(result));
     }
 
-    private static String toKOBindingKey(String r) {
-        return "value_" + r.replaceAll("\\.", "_");
-    }
-
-    private static String removeFormId(String f) {
-        f = f.substring(f.indexOf(".") + 1);
-        return f;
+    private static String toKOBindingKey(String r, String formId) {
+        return "value_" + formId + "_" + r.replaceAll("\\.", "_");
     }
 
     @Util

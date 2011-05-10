@@ -397,16 +397,19 @@ function removeDialogs() {
 
 
 /**
- * Helper method to fetch all fields for the ox.forms
+ * Helper method to fetch all fields for the ox.forms.
+ * The first field is the id of the form.
+ *
  * @param form the form to harvest the fields of
  */
 function getFields(form) {
     var fields = [];
+    fields.push(form.attr('id'));
     $.each(form.find('.oxfield'), function(index, el) {
         fields.push($(el).attr('name'));
     });
     $.each(form.find('.oxdisplayfield'), function(index, el) {
-        fields.push($(el).attr('id'));
+        fields.push($(el).attr('id').substring(form.attr('id').length + 1).replace(/_/g, '.'));
     });
     return fields;
 }

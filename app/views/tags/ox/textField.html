@@ -1,7 +1,7 @@
 #{forms.field field:_field, baseClass:_baseClass, formId:_formId, name:_name}
 <div class="field">
     <label class="name" for="${field.id}">${_label}</label>
-    <input id="${field.id}" data-validate="${field.validationData}" data-bind="${_create == null ? 'value: value_'+_formId+'_'+field.id : ''}" type="text" name="${field.name}"
+    <input id="${field.id}" data-validate="${field.validationData}" data-bind="${_create == null ? 'value: value_'+field.id : ''}" type="text" name="${field.name}"
            class="oxfield ${field.errorClass}" size="30" />
     <span class="error">${field.error}</span>
 </div>
