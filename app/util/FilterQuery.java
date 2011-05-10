@@ -5,9 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import play.db.jpa.JPA;
 import play.libs.F;
-import utils.StringUtils;
+
 
 /**
  * Filter query builder. This was quickly hacked together, and has a limited functionality.
@@ -42,10 +43,10 @@ public class FilterQuery {
         joins.put(label, on + "." + field);
     }
 
-    private String afterWhere = null;
+    private String afterWhere = "";
 
     public void addAfterWhere(String s) {
-        if(!StringUtils.isEmpty(afterWhere)) {
+        if(StringUtils.isNotEmpty(afterWhere)) {
             afterWhere += " ";
         }
         afterWhere += s;
@@ -80,7 +81,7 @@ public class FilterQuery {
                 q += " and";
             }
         }
-        if (afterWhere != null) {
+        if (StringUtils.isNotEmpty(afterWhere)) {
             q += " " + afterWhere;
         }
 
