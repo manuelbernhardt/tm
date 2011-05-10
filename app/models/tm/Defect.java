@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.test.Tag;
+import play.data.validation.MaxSize;
 import play.templates.JavaExtensions;
 
 /**
@@ -19,6 +20,8 @@ import play.templates.JavaExtensions;
 public class Defect extends ProjectModel {
 
     public String name;
+    @MaxSize(8000)
+    public String description;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public TMUser assignedTo;

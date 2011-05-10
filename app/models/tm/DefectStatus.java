@@ -3,6 +3,7 @@ package models.tm;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.List;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -16,6 +17,10 @@ public class DefectStatus extends ProjectModel {
 
     public DefectStatus(Project project) {
         super(project);
+    }
+
+    public static List<DefectStatus> defectStatuses(){
+        return DefectStatus.findAll();
     }
 
 }
