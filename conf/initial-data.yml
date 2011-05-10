@@ -1262,18 +1262,32 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     actualResult:
     status: 2
 
+tm.DefectStatus(defectStatusTMNew):
+    account: oxiras
+    project: testManagementApplication
+    name: New
+    position: 0
+
+tm.DefectStatus(defectStatusDemenagementNew):
+    account: oxiras
+    project: demenagement
+    name: New
+    position: 0
+
 tm.Defect(defect1):
     account: oxiras
     project: testManagementApplication
     name: The application does not start
     submittedBy: gwen
     assignedTo: manu
+    status: defectStatusTMNew
 
 tm.Defect(defect2):
     account: oxiras
     project: demenagement
     name: Test for naturalID
     submittedBy: nathalie
+    status: defectStatusDemenagementNew
 
 tm.Defect(defect3):
     account: oxiras
@@ -1281,15 +1295,18 @@ tm.Defect(defect3):
     name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
+    status: defectStatusTMNew
 
 tm.Defect(defect4):
     account: oxiras
     project: demenagement
     name: Box is not at the right place
     submittedBy: vroni
+    status: defectStatusDemenagementNew
 
 tm.Defect(defect5):
     account: oxiras
     project: demenagement
     name: Old couch is still not removed
     submittedBy: nathalie
+    status: defectStatusDemenagementNew
