@@ -28,8 +28,8 @@ function handleRowSelection(tableSelector, handler) {
  * @param completeRefresh whether this should also re-draw pagination etc.
  */
 function refreshTableContents(tableSelector, completeRefresh) {
-    var dataTable = $("#" + tableSelector).dataTable();
-    var selected = getSelectedRowId("#" + tableSelector);
+    var dataTable = $(tableSelector).dataTable();
+    var selected = getSelectedRowId(tableSelector);
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
         // this is the internal API, let's hope it won't change
         dataTable.fnSettings().aoDrawCallback.push({
