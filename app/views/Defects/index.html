@@ -65,7 +65,7 @@
                 {"sName": "assignedTo"},
                 {"sName": "submittedBy"},
                 {"sName": "status.name"},
-                {"sType": 'date', "sName": "created"}
+                {"sName": "created", "fnRender": function ( oObj ) { return $.format.date(oObj.aData[7], "${play.Play.configuration.getProperty('datetime.format')}"); }}
             ],
             "bServerSide": true,
             "bLengthChange": false,
