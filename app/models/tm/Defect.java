@@ -20,6 +20,7 @@ import play.templates.JavaExtensions;
 public class Defect extends ProjectModel {
 
     public String name;
+
     @MaxSize(8000)
     public String description;
 
@@ -29,7 +30,7 @@ public class Defect extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public TMUser submittedBy;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public DefectStatus status;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
@@ -42,7 +43,4 @@ public class Defect extends ProjectModel {
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");
     }
-
-
-
 }

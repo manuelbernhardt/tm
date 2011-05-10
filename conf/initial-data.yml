@@ -1266,12 +1266,14 @@ tm.DefectStatus(defectStatusTMNew):
     account: oxiras
     project: testManagementApplication
     name: New
+    defaultOnCreation: true
     position: 0
 
 tm.DefectStatus(defectStatusDemenagementNew):
     account: oxiras
     project: demenagement
     name: New
+    defaultOnCreation: true
     position: 0
 
 tm.Defect(defect1):
