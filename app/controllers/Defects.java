@@ -1,6 +1,9 @@
 package controllers;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Query;
 
 import controllers.tabularasa.TableController;
 import models.tm.Defect;
@@ -10,7 +13,6 @@ import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Valid;
 import util.FilterQuery;
-import javax.persistence.Query;
 
 
 /**
@@ -110,6 +112,7 @@ public class Defects extends TMController {
     public static void createDefect(@Valid Defect defect){
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
+        defect.status = DefectStatus.getDefaultDefectStatus();
         defect.create();
         ok();
     }
