@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import play.db.jpa.JPA;
 import play.libs.F;
+import utils.StringUtils;
 
 /**
  * Filter query builder. This was quickly hacked together, and has a limited functionality.
@@ -44,7 +45,10 @@ public class FilterQuery {
     private String afterWhere = null;
 
     public void addAfterWhere(String s) {
-        afterWhere = s;
+        if(!StringUtils.isEmpty(afterWhere)) {
+            afterWhere += " ";
+        }
+        afterWhere += s;
     }
 
     public void addFilter(String condition, String operation, Object value) {
