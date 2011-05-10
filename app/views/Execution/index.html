@@ -1,11 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'Test execution' /}
 
+<button id="filter_button">Filter</button>
+<br/>
+<br/>
+<div id="filter_container">
 #{box 'Filters'}
 #{include 'Execution/filter.html'/}
 #{/box}
-
 <br/>
+</div>
 
 <div class="container ui-widget-content">
 
@@ -245,4 +249,6 @@
 
 
   });
+  toggleFilter('#filter_button', '#filter_container');
+
 </script>
