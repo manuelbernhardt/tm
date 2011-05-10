@@ -42,6 +42,7 @@
         <th>Assigned To</th>
         <th>Raised By</th>
         <th>Status</th>
+        <th>Submitted at</th>
       </tr>
       </thead>
       <tbody></tbody>
@@ -56,16 +57,19 @@
     #{tabularasa.init tableId:'defectsTable'}
         var defectsTableParameters = {
             "aoColumns":[
-                {"sName": "id"},
-                {"sName": "name"},
-                {"sName": "tagNames"},
+                {"sName": "id", "sClass": "sNone"},
+                {"sName": "naturalId"},
+                {"sName": "name", "bSortable": false},
+                // jquery datatable bug, bSortable works as a switch here, turn it off before tagNames and switch it on after, thus tagName is not sortable
+                {"sName": "tagNames", "bSortable": true},
                 {"sName": "assignedTo"},
                 {"sName": "submittedBy"},
-                {"sName": "status"}
+                {"sName": "status.name"},
+                {"sType": 'date', "sName": "created"}
             ],
             "bServerSide": true,
             "bLengthChange": false,
-            "bSort": false,
+            "bSort": true,
             "bFilter": false,
             "iDisplayLength": 10,
             "bInfo": false,
@@ -89,12 +93,7 @@
         parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
         parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
       }
-      if (tableId == 'runTable') {
-        parameters.push({"name": "instanceId", "value": getSelectedRowId($('#instanceTable').dataTable())});
-      }
-      if (tableId == 'runStepTable') {
-        parameters.push({"name": "runId", "value": getSelectedRowId($('#runTable').dataTable())});
-      }
+      
     }
 
     // creating a defect

@@ -18,6 +18,8 @@ import javax.persistence.Query;
  */
 public class Defects extends TMController {
 
+    private static final String[] sortBy = {"id", "name", "tags", "assignedTo", "submittedBy", "status.name", "created"};
+
     public  static void index(){
         List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
         render(users);
@@ -35,7 +37,11 @@ public class Defects extends TMController {
                                Long assignedToId,
                                Long submittedById,
                                Date dateFrom,
-                               Date dateTo){
+                               Date dateTo,
+                               Integer iSortCol_0,
+                               String sSortDir_0){
+
+
 
         FilterQuery fq = new FilterQuery(Defect.class);
 
@@ -81,6 +87,10 @@ public class Defects extends TMController {
         if(dateTo!=null){
             fq.addWhere("o.created <= :dateTo", "dateTo", dateTo);
         }
+
+        if(iSortCol_0!=null)
+            fq.addAfterWhere("order by "+  sortBy[iSortCol_0] + " " + sSortDir_0);
+
 
         Query query = fq.build();
 
