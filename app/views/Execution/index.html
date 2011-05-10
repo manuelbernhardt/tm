@@ -89,7 +89,7 @@
         {"sName": "executionStatus"}
       ],
       "sAjaxSource": "@{Execution.instances()}",
-      "bProcessing": true,
+      "bProcessing": false,
       "bServerSide": true,
       "bLengthChange": false,
       "bSort": false,
@@ -110,7 +110,7 @@
     var runTableParameters = {
       "aoColumns": [
         {"sName": "id", "sClass": "sNone" },
-        {"sName": "executionDate"},
+        {"sName": "executionDate", "fnRender": function ( oObj ) { return $.format.date(oObj.aData[1], "${play.Play.configuration.getProperty('datetime.format')}"); }},
         {"sName": "tester.fullName"},
         {"sName": "executionStatus"}
       ],
@@ -118,7 +118,7 @@
         [0, "desc"]
       ],
       "sAjaxSource": "@{Execution.runs()}",
-      "bProcessing": true,
+      "bProcessing": false,
       "bServerSide": true,
       "bLengthChange": false,
       "bSort": false,
@@ -147,7 +147,7 @@
         {"sName": "executionStatus"}
       ],
       "sAjaxSource": "@{Execution.runSteps()}",
-      "bProcessing": true,
+      "bProcessing": false,
       "bServerSide": true,
       "bLengthChange": false,
       "bSort": false,
