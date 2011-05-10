@@ -507,3 +507,16 @@ ko.bindingHandlers.tags = {
                 }
             }
 };
+
+function toggleFilter(buttonId, divId){
+    $(document).ready(function(){
+        $(buttonId).attr('style','float:right');
+        $(divId).attr('style', 'display:none');
+    });
+    $(buttonId).button({icons: {primary: 'ui-icon-carat-1-e'}});
+
+    $(buttonId).click(function(){
+        $(buttonId +' span.ui-icon').toggleClass('ui-icon-carat-1-s ui-icon-carat-1-e', 'switch');
+        $(divId).slideToggle('slow');
+    });
+}

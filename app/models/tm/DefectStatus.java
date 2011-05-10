@@ -29,4 +29,8 @@ public class DefectStatus extends ProjectModel {
         return DefectStatus.find("defaultOnCreation = true").first();
     }
 
+    public String toString(){
+        return name;
+    }
+
 }

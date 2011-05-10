@@ -106,13 +106,19 @@ public class Defects extends TMController {
 
         List defects = query.getResultList();
 
-        TableController.renderJSON(defects, Defect.class, defects.size(), sColumns, sEcho);
+        TableController.renderJSON(defects, Defect.class, Defect.count(), sColumns, sEcho);
     }
 
-    public static void createDefect(@Valid Defect defect){
+    public static void createDefect(@Valid Defect defect, String tags){
+        defect.submittedBy = getConnectedUser();
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
+        defect.tags = getTags(tags, Tag.TagType.DEFECT);
+        System.out.println(tags);
+        if(defect.tags.isEmpty()) {
+            defect.tags.clear();
+        }
         defect.create();
         ok();
     }
