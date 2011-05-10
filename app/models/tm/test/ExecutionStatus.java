@@ -2,7 +2,7 @@ package models.tm.test;
 
 /**
  * Execution Status for {@link Instance}, {@link Run} and {@link RunStep}.
- * ` *
+ *
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
