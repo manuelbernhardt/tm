@@ -151,7 +151,7 @@
     });
 
     $("#unlinkScript").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
-      $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId($('#scriptTable').dataTable()))}).success(
+      $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
               function(data) {
                 $('#scriptTable').dataTable().fnDraw();
               }).error(

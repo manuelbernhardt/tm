@@ -42,7 +42,7 @@ public class Preparation extends TMController {
         renderFields(instance, fields);
     }
 
-    @Restrict(UnitRole.TESTPREPEDIT)
+    @Restrict(UnitRole.TESTPREPVIEW)
     public static void instanceParameters(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
         List<InstanceParam> parameters = instance.getParams();

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,10 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import controllers.deadbolt.Deadbolt;
 import models.account.Account;
 import models.account.AccountEntity;
 import models.account.User;
+import models.general.TemporalModel;
 import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.test.Tag;
@@ -212,6 +219,21 @@ public class TMController extends Controller {
     // The following code is used by the ox.form implementation /
     /////////////////////////////////////////////////////////////
 
+    static {
+        GsonBuilder builder = new GsonBuilder();
+        // for all model entities we take the approach of serializing them by calling toString by default
+        // in order to catch them all, we do this for everything extending TemporalModel.
+        builder.registerTypeHierarchyAdapter(TemporalModel.class, new JsonSerializer<TemporalModel>() {
+            public JsonElement serialize(TemporalModel t, Type type, JsonSerializationContext jsonSerializationContext) {
+                return jsonSerializationContext.serialize(t.toString());
+            }
+        });
+        builder.registerTypeAdapter(Tag.class, Lookups.tagSerializer);
+        gson = builder.create();
+    }
+
+    private static Gson gson;
+
     private final static DateFormat df = new SimpleDateFormat(play.Play.configuration.getProperty("date.format"));
 
     /**
@@ -273,8 +295,9 @@ public class TMController extends Controller {
             }
             result.put("value_" + r.replaceAll("\\.", "_"), val == null ? "" : val);
         }
-        // we use the tagSerializer for our custom Tag-s.
-        renderJSON(result, Lookups.tagSerializer);
+
+        // render the json string using our custom gson serializer
+        renderText(gson.toJson(result));
     }
 
     @Util

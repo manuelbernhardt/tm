@@ -8,3 +8,11 @@ require:
     - play -> tabularasa 0.2
     - play -> deadbolt 1.4
     - mysql -> mysql-connector-java 5.1.13
+    - provided -> gag 1.0.1
+
+repositories:
+    - provided:
+        type: local
+        artifact: "${application.path}/jar/[module]-[revision].jar"
+        contains:
+          - provided -> *

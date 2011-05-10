@@ -100,7 +100,7 @@
       },
       buttons: {
         "Remove the user": function() {
-          $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId($('#tab').dataTable())}, function() {
+          $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
             refreshTableContents('tab', false);
             $("#removeUserButton").button('disable');
           });

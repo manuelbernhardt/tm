@@ -15,7 +15,7 @@ function handleRowSelection(tableId, handler) {
         });
         $(event.target.parentNode).addClass('row_selected');
 
-        var selectedRowId = getSelectedRowId(dataTable);
+        var selectedRowId = getSelectedRowId('#' + tableId);
         if (handler !== null) {
             handler(selectedRowId);
         }
@@ -29,7 +29,7 @@ function handleRowSelection(tableId, handler) {
  */
 function refreshTableContents(tableId, completeRefresh) {
     var dataTable = $("#" + tableId).dataTable();
-    var selected = getSelectedRowId(dataTable);
+    var selected = getSelectedRowId("#" + tableId);
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
         // this is the internal API, let's hope it won't change
         dataTable.fnSettings().aoDrawCallback.push({
@@ -50,10 +50,11 @@ function refreshTableContents(tableId, completeRefresh) {
 
 /**
  * Gets the ID of the currently selected row
- * @param dataTable DataTable instance
+ * @param tableSelector a selector that gets the datatable
  */
-function getSelectedRowId(dataTable) {
-    return getSelectedRowColumn(dataTable, 0);
+function getSelectedRowId(tableSelector) {
+    var table = $(tableSelector).dataTable();
+    return getSelectedRowColumn(table, 0);
 }
 
 function getSelectedRowColumn(dataTable, columnIndex) {
@@ -79,7 +80,7 @@ function fnGetSelected(oTableLocal) {
 }
 
 /**
- * Programatically selects a row given an ID (the table must have as first column an "id" column, typically hidden)
+ * Programmatically selects a row given an ID (the table must have as first column an "id" column, typically hidden)
  * @param oTableLocal DataTable instance
  * @param rowId the ID of the row to select
  */
