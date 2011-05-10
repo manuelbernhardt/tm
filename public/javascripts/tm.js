@@ -301,7 +301,7 @@ function removeDialogs() {
                                         if (typeof oxFormData.submissionParameters !== 'undefined') {
                                             additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
                                         }
-                                        $.postKnockoutJSJson($(formElement).attr('action'), this, additionalData, function(submitData) {
+                                        $.postKnockoutJSJson($(formElement).attr('action'), $(formElement).attr('id'), this, additionalData, function(submitData) {
                                             var sCallback = oxFormData.submissionCallback;
                                             if (typeof sCallback == 'function') {
                                                 sCallback.call();
@@ -414,17 +414,18 @@ function getFields(form) {
 /**
  * Post knockoutJS form data as JSON string
  * @param url the URL to submit to
- * @param viewModelData the data object, of which keys are of the sort value_some_thing
+ * @param formId ID of the form to submit
+ * @param viewModelData the data object, of which keys are of the sort value_formId_some_thing
  * @param callback the callback to run after successful execution
  */
-$.postKnockoutJSJson = function (url, viewModelData, additionalData, callback) {
+$.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, callback) {
     var formData = {};
     if (additionalData) {
         $.extend(formData, additionalData);
     }
     $.each(ko.toJS(viewModelData), function(key, value) {
         if (key.indexOf('value_') == 0) {
-            formData[key.substring(6).replace(/_/g, '.')] = value;
+            formData[key.substring(7 + id.length).replace(/_/g, '.')] = value;
         }
         if (key == 'authenticityToken') {
             formData[key] = value;

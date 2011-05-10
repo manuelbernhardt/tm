@@ -91,7 +91,7 @@
     });
 
     // tags
-    var tokens = $('#script_tags').tokenInput({
+    var tokens = $('#scriptDetailsForm_script_tags').tokenInput({
       url: '@{Repository.allTags()}',
       preventDuplicates: true,
       tokenValue: 'name',
@@ -125,7 +125,7 @@
       loadAction: '@{Repository.scriptDetailsData()}',
       // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
       submissionParameters: function() {
-        return {tags: $('#script_tags').val() };
+        return {tags: $('#scriptDetailsForm_script_tags').val() };
       },
       submissionCallback: function() {
         refreshTree('repositoryTree');

@@ -1,20 +1,21 @@
 %{
   def formBaseClass = _caller.baseClass;
+  def formId = _caller.formId;
   def baseClass = _baseClass ? _baseClass : formBaseClass;
   def create = _caller.create;
   def edit = _caller.edit != null ? _caller.edit : true;
 }%
-#{forms.objectField baseClass:baseClass, field:_field}
+#{forms.objectField baseClass:baseClass, formId:formId, field:_field}
 #{if edit && _type != null && _type == 'tags'}
-  #{ox.tagsField field:_field, label:_label, baseClass:baseClass, name:_name /}
+  #{ox.tagsField field:_field, label:_label, baseClass:baseClass, formId:formId, name:_name /}
 #{/if}
 #{elseif edit && _hidden != null && _hidden}
-  #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, name:_name, create:create /}
+  #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, formId:formId, name:_name, create:create /}
 #{/elseif}
 #{elseif !edit && _hidden != null && _hidden}#{/elseif}
 #{elseif !edit && _type != 'tags'}
   *{for the moment, only print out stuff verbatim here}*
-  #{forms.field field:_field, baseClass:baseClass, name:_name}
+  #{forms.field field:_field, baseClass:baseClass, formId:formId, name:_name}
   <div class="field">
       <span class="name">${_label}</span>
       <span id="${field.id}" data-bind="text: value_${field.id}" class="oxdisplayfield"></span>
@@ -23,7 +24,7 @@
 #{/elseif}
 #{elseif !edit && _type != null && _type == 'tags'}
   *{for the moment, only print out stuff verbatim here}*
-  #{forms.field field:_field, baseClass:baseClass, name:_name}
+  #{forms.field field:_field, baseClass:baseClass, formId:formId, name:_name}
   <div class="field">
       <span class="name">${_label}</span>
     <div>
@@ -36,22 +37,22 @@
   #{/}
 #{/elseif}
 #{elseif objectField.type == 'text'}
-  #{ox.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
+  #{ox.textField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, name: _name, create:create /}
 #{/elseif}
 #{elseif objectField.type == 'longtext'}
-  #{ox.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
+  #{ox.longtextField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, name: _name, create:create /}
 #{/elseif}
 #{elseif objectField.type == 'date'}
-  #{ox.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
+  #{ox.dateField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, name: _name, create:create /}
 #{/elseif}
 #{elseif objectField.type == 'password'}
-  #{ox.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
+  #{ox.passwordField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, name: _name, create:create /}
 #{/elseif}
 #{elseif objectField.type == 'number'}
-  #{ox.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, name: _name, create:create /}
+  #{ox.numberField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, name: _name, create:create /}
 #{/elseif}
 #{elseif objectField.type == 'relation'}
-  #{ox.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, objectField:objectField, name: _name, create:create, autoComplete: _autoComplete != null && _autoComplete /}
+  #{ox.relationField field:_field, label:_label, baseObject:baseObject, baseClass:baseClass, formId:formId, objectField:objectField, name: _name, create:create, autoComplete: _autoComplete != null && _autoComplete /}
 #{/elseif}
 #{else}
   Problem with the hyperspace flux compensator, syonic variable type is '${objectField.type}'

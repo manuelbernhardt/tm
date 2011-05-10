@@ -58,13 +58,16 @@ public class FormTags extends FastTags {
      * @param fromLine template line number where the tag is defined
      */
     public static void _field(Map<?, ?> args, Closure body, PrintWriter out, GroovyTemplate.ExecutableTemplate template, int fromLine) {
+        TagContext parentForm = TagContext.hasParentTag("ox.form") ? TagContext.parent("ox.form") : TagContext.parent("form");
+
         Map<String, Object> field = new HashMap<String, Object>();
         String path = args.get("field").toString();
         // make it possible to override the name... should be more generic
         Object name = args.get("name") == null ? path : args.get("name");
         field.put("name", name);
         field.put("path", path);
-        field.put("id", path.replace('.', '_'));
+        String parentFormId = (String) args.get("formId");
+        field.put("id", (parentFormId != null ? parentFormId + "_" : "") + path.replace('.', '_'));
         field.put("flash", Scope.Flash.current().get(path));
         field.put("flashArray", field.get("flash") != null && !field.get("flash").toString().isEmpty() ? field.get("flash").toString().split(",") : new String[0]);
         field.put("error", Validation.error(path));
@@ -74,8 +77,7 @@ public class FormTags extends FastTags {
         String baseClass = (String) args.get("baseClass");
 
         // store the field name in the form TagContext so that we can retrieve it later
-        TagContext parent = TagContext.hasParentTag("ox.form") ? TagContext.parent("ox.form") : TagContext.parent("form");
-        parent.data.put(FIELD + path.replaceAll("\\.", "_"), path);
+        parentForm.data.put(FIELD + path.replaceAll("\\.", "_"), path);
 
         if (obj != null) {
             if (pieces.length > 1) {

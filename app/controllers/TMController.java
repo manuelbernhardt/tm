@@ -252,6 +252,7 @@ public class TMController extends Controller {
         Collections.sort(sortedFields);
         for (String f : sortedFields) {
             f = f.replaceAll("_", "\\.");
+            f = removeFormId(f);
             String[] path = f.split("\\.");
             String resolve = path[0];
             for (int i = 1; i < path.length + 1; i++) {
@@ -287,17 +288,26 @@ public class TMController extends Controller {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         for (String r : sortedFields) {
-            r = r.replaceAll("_", "\\.");
-            Object val = values.get(r);
+             r = r.replaceAll("_", "\\.");
+            Object val = values.get(removeFormId(r));
             // Gson doesn't help here, for some reason it ignores the data format setting in lists...
             if (val instanceof Date) {
                 val = df.format((Date) val);
             }
-            result.put("value_" + r.replaceAll("\\.", "_"), val == null ? "" : val);
+            result.put(toKOBindingKey(r), val == null ? "" : val);
         }
 
         // render the json string using our custom gson serializer
         renderText(gson.toJson(result));
+    }
+
+    private static String toKOBindingKey(String r) {
+        return "value_" + r.replaceAll("\\.", "_");
+    }
+
+    private static String removeFormId(String f) {
+        f = f.substring(f.indexOf(".") + 1);
+        return f;
     }
 
     @Util

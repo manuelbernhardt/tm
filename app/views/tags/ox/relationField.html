@@ -1,10 +1,10 @@
-#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, name:_name}
+#{forms.field field:_field, baseObject:_baseObject, baseClass:_baseClass, formId:_formId, name:_name}
 <div class="field">
     <label class="name" for="${_field}">${_label}</label>
 
 #{if !_autoComplete}
 
-  <select id="${_field}" name="${_field}.id" data-bind="${_create == null ? 'value: value_'+field.id+'_id' : ''}" class="oxfield">
+  <select id="${_field}" name="${_field}.id" data-bind="${_create == null ? 'value: value_'+_formId+'_'+field.id+'_id' : ''}" class="oxfield">
       #{ifnot _objectField.required}
           <option value="">(None)</option>
       #{/ifnot}

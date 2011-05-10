@@ -67,7 +67,7 @@
       loadAction: '@{Requirements.requirementsDetailsData()}',
       // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
       submissionParameters: function() {
-        return {tags: $('#requirement_tags').val() };
+        return {tags: $('#requirementForm_requirement_tags').val() };
       },
       submissionCallback: function() {
         refreshTree('requirementTree');
@@ -76,7 +76,7 @@
 
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
     // tags
-    var tokens = $('#requirement_tags').tokenInput({
+    var tokens = $('#requirementForm_requirement_tags').tokenInput({
       url: '@{Requirements.allTags()}',
       preventDuplicates: true,
       tokenValue: 'name',
