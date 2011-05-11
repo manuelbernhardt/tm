@@ -365,6 +365,9 @@ function removeDialogs() {
                 });
             }
         },
+        getFieldId: function(fieldName) {
+            return $this.attr('id') + '_' + fieldName.replace(/./g, '_');
+        },
         destroy : function() {
 
             return this.each(function() {
