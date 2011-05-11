@@ -6,7 +6,7 @@
 #{/set}
 
 #{set 'moreScripts'}
-<script src="@{'/public/javascripts/jquery.dashboard.min.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/jquery.dashboard.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
 
 <script type="text/javascript">
@@ -14,19 +14,71 @@
     // load the templates
     $('body').append('<div id="templates"></div>');
     $("#templates").hide();
-    $("#templates").load("public/templates.html", initDashboard);
+    $("#templates").load("@{'/public/templates.html'}", initDashboard);
 
     // call for the minimal dashboard
     function initDashboard() {
       var dashboard = $('#dashboard').dashboard({
-        json_data : { url: "@{Dashboard.widgets()}" }
+        loadingHtml: "<div class=\"loading\"><img alt=\"Loading, please wait\" src=\"@{'/public/images/loading.gif'}\" /><p>Loading...</p></div>",
+        json_data : { url: "@{Dashboard.widgets()}" },
+        layoutClass:'layout',
+        layout: 'layout-aaa',
+        layouts :
+                [
+                  { title: "Layout1",
+                    id: "layout1",
+                    image: "@{'/public/images/layouts/layout1.png'}",
+                    html: '<div class="layout layout-a"><div class="column first column-first"></div></div>',
+                    classname: 'layout-a'
+                  },
+                  { title: "Layout2",
+                    id: "layout2",
+                    image: "@{'/public/images/layouts/layout2.png'}",
+                    html: '<div class="layout layout-aa"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                    classname: 'layout-aa'
+                  },
+                  { title: "Layout3",
+                    id: "layout3",
+                    image: "@{'/public/images/layouts/layout3.png'}",
+                    html: '<div class="layout layout-ba"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                    classname: 'layout-ba'
+                  },
+                  { title: "Layout4",
+                    id: "layout4",
+                    image: "@{'/public/images/layouts/layout4.png'}",
+                    html: '<div class="layout layout-ab"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                    classname: 'layout-ab'
+                  },
+                  { title: "Layout5",
+                    id: "layout5",
+                    image: "@{'/public/images/layouts/layout5.png'}",
+                    html: '<div class="layout layout-aaa"><div class="column first column-first"></div><div class="column second column-second"></div><div class="column third column-third"></div></div>',
+                    classname: 'layout-aaa'
+                  }
+                ]
       });
       dashboard.init();
     }
 
+    $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
+    $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
+
+    $('#dashboard').live('dashboardLayoutChanged', function() {
+      // TODO get the layout, update the preferences server-side
+      alert(dashboard.getLayout());
+    });
+
   });
 
 </script>
+
+<div class="header_tile_image">
+  <div class="headerbox">
+    <div class="headerlinks" style="float: right;">
+      <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>&nbsp;<span class="headerlink"></span><button class="editlayout headerlink" href="#">Edit layout</button>
+    </div>
+  </div>
+</div>
 
 <div id="dashboard" class="dashboard">
   <div class="layout">
