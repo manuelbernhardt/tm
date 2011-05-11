@@ -1,5 +1,7 @@
 package models.tm;
 
+import java.util.Map;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -21,6 +23,9 @@ public class ProjectWidget extends ProjectModel implements Widget {
     public Integer type;
     public transient WidgetType widgetType;
     public boolean publicWidget = true;
+
+    @ElementCollection
+    public Map<String, String> parameters;
 
     public ProjectWidget(Project project) {
         super(project);
@@ -44,6 +49,10 @@ public class ProjectWidget extends ProjectModel implements Widget {
 
     public WidgetType getType() {
         return widgetType;
+    }
+
+    public Map<String, String> getParameters() {
+        return parameters;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package models.tm;
 
+import java.util.Map;
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -11,5 +13,6 @@ public interface Widget {
     String getColumn();
     boolean isOpen();
     WidgetType getType();
+    Map<String, String> getParameters();
 
 }
