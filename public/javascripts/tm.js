@@ -428,7 +428,7 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
     }
     $.each(ko.toJS(viewModelData), function(key, value) {
         if (key.indexOf('value_') == 0) {
-            formData[key.substring(7 + id.length).replace(/_/g, '.')] = value;
+            formData[key.substring(7 + formId.length).replace(/_/g, '.')] = value;
         }
         if (key == 'authenticityToken') {
             formData[key] = value;
@@ -458,8 +458,6 @@ ko.bindingHandlers.tags = {
             $(element).tokenInput('add', token.id(), token.name());
         });
 
-        /*
-
         // this is deactivated for the moment, watch http://groups.google.com/group/knockoutjs/browse_thread/thread/69520c7b7cae0f5e
         // in case it works, we can get rid of the need to send tags in each page on submit. however we then also need to write a play binder for tags.
 
@@ -468,24 +466,18 @@ ko.bindingHandlers.tags = {
                 viewModel.lock = true;
                 var tokens = $(element).tokenInput('get');
                 if (typeof tokens !== 'undefined') {
-                    var elementValue = ko.observableArray();
+                    var tokenArray = [];
                     $(tokens).each(function() {
-                        elementValue.push(ko.observable({id: ko.observable(this.id), name: ko.observable(this.name)}));
+                        tokenArray.push({id: this.id, name: this.name});
                     });
-
+                    var key = "value_" + $(element).attr('id');
                     if (ko.isWriteableObservable(modelValue)) {
-                        modelValue(elementValue);
-                    } else {
-                        var allBindings = allBindingsAccessor();
-                        if (allBindings['_ko_property_writers'] && allBindings['_ko_property_writers']['tags'])
-                            allBindings['_ko_property_writers']['tags'](elementValue);
+                        viewModel[key](tokenArray);
                     }
                     viewModel.lock = false;
                 }
             }
         });
-
-        */
 
 
     },
@@ -508,15 +500,15 @@ ko.bindingHandlers.tags = {
             }
 };
 
-function toggleFilter(buttonId, divId){
-    $(document).ready(function(){
-        $(buttonId).attr('style','float:right');
+function toggleFilter(buttonId, divId) {
+    $(document).ready(function() {
+        $(buttonId).attr('style', 'float:right');
         $(divId).attr('style', 'display:none');
     });
     $(buttonId).button({icons: {primary: 'ui-icon-carat-1-e'}});
 
-    $(buttonId).click(function(){
-        $(buttonId +' span.ui-icon').toggleClass('ui-icon-carat-1-s ui-icon-carat-1-e', 'switch');
+    $(buttonId).click(function() {
+        $(buttonId + ' span.ui-icon').toggleClass('ui-icon-carat-1-s ui-icon-carat-1-e', 'switch');
         $(divId).slideToggle('slow');
     });
 }
