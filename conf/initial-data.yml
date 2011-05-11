@@ -499,7 +499,7 @@ tm.ProjectWidget(widgetDefectCountByDay):
       ? graphType
       : temporal
       ? temporalField
-      : create
+      : created
       ? xAxis
       : DAY
       ? yAxis
