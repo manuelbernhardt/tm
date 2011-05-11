@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
@@ -13,6 +14,7 @@ import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
+import play.mvc.Before;
 
 /**
  * TODO security
@@ -20,6 +22,8 @@ import play.db.jpa.GenericModel;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Requirements extends TMController {
+
+    public static final Pattern REQ_TAGS = Pattern.compile("^" + "requirement.tags" + "\\[([^\\]]+)\\](.*)$");
 
     @Restrict(UnitRole.REQVIEW)
     public static void index() {
@@ -94,18 +98,20 @@ public class Requirements extends TMController {
         TableController.renderJSON(defects, Defect.class, totalRecords, sColumns, sEcho);
     }
 
+    @Before
+    public static void handleTags() {
+        if (request.actionMethod.equals("edit")) {
+            processTags("requirement.tags", Tag.TagType.REQUIREMENT);
+        }
+    }
+
     @Restrict(UnitRole.REQEDIT)
-    public static void edit(@Valid Requirement requirement, String tags) {
+    public static void edit(@Valid Requirement requirement) {
         checkInAccount(requirement);
         checkAuthenticity();
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
-        }
-
-        requirement.tags = getTags(tags, Tag.TagType.REQUIREMENT);
-        if(requirement.tags.isEmpty()) {
-            requirement.tags.clear();
         }
         requirement.save();
         ok();

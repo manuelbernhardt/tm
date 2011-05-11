@@ -122,10 +122,6 @@
 
     $('#scriptDetailsForm').oxForm({
       loadAction: '@{Repository.scriptDetailsData()}',
-      // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
-      submissionParameters: function() {
-        return {tags: $('#scriptDetailsForm_script_tags').val() };
-      },
       submissionCallback: function() {
         refreshTree('repositoryTree');
       }

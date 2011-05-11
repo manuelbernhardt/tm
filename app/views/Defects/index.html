@@ -133,13 +133,12 @@
     $('#createDefectForm').oxForm({
       submissionCallback: function() {
         refreshTableContents('#defectsTable', false);
-
       }
 
     });
 
     $('#createDefectConfirm').click(function(){
-        $('#createDefectForm').oxForm('submitCreateForm', {tags: $('#createDefectForm_defect_tags').val() });
+        $('#createDefectForm').oxForm('submitCreateForm');
         $('#createDefectDialog').slideUp('slow');
         $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
     });
@@ -178,7 +177,6 @@
       submissionCallback: function() {
         refreshTableContents('#defectsTable', false);
       },
-      submissionParameters: {tags: $('#updateDefectForm_defect_tags').val()},
       loadAction: '@{Defects.defectDetails()}'
     });
 

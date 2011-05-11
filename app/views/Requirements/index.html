@@ -65,10 +65,6 @@
 
     $('#requirementForm').oxForm({
       loadAction: '@{Requirements.requirementsDetailsData()}',
-      // this is a workaround to provide the tag value at submission time, as long as the tags aren't integrated into ox.forms.
-      submissionParameters: function() {
-        return {tags: $('#requirementForm_requirement_tags').val() };
-      },
       submissionCallback: function() {
         refreshTree('requirementTree');
       }
@@ -85,7 +81,9 @@
     });
     #{/deadbolt.restrict}
 
-    $('#scriptDetailsForm li.token-input-input-token').change(function() {
+    $('#scriptDetailsForm ul.token-input-list').focus(function() {
+      $('#scriptDetailsForm_submit').button('enable');
+    }).blur(function() {
       $('#scriptDetailsForm_submit').button('enable');
     });
 

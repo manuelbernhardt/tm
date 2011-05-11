@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -196,9 +197,14 @@ public class TMController extends Controller {
      */
     @Util
     public static List<Tag> getTags(String tags, Tag.TagType type) {
+        return getTags(Arrays.asList(tags.split(",")), type);
+    }
+
+    @Util
+    public static List<Tag> getTags(List<String> tags, Tag.TagType type) {
         List<Tag> tagList = new ArrayList<Tag>();
         if (tags != null) {
-            for (String name : tags.split(",")) {
+            for (String name : tags) {
                 Tag t = Tag.find("from Tag t where t.name = ? and t.type = '" + type.name() + "' and t.project = ?", name.trim(), getActiveProject()).first();
                 if (t == null && name.trim().length() > 0) {
                     t = new Tag(getActiveProject());
@@ -214,6 +220,34 @@ public class TMController extends Controller {
         return tagList;
     }
 
+        @Util
+    public static void processTags(String tagsParameterKey, Tag.TagType type) {
+        List<String> tags = new ArrayList<String>();
+        for (String p : params.all().keySet()) {
+            if (p.startsWith(tagsParameterKey)) {
+                tags.add(p);
+            }
+        }
+        List<String> tagNames = new ArrayList<String>();
+        for (String t : tags) {
+            Matcher m = Requirements.REQ_TAGS.matcher(t);
+            if (m.matches()) {
+                String key = m.group(2);
+                String value = params.get(t);
+                if (key.equals("[name]")) {
+                    tagNames.add(value);
+                }
+                params.remove(t);
+            }
+        }
+        // make the play binding happy
+        List<Tag> tagList = getTags(tagNames, type);
+        List<String> tagIds = new ArrayList<String>();
+        for (Tag tag : tagList) {
+            tagIds.add(tag.getId().toString());
+        }
+        params.put(tagsParameterKey + ".id", tagIds.toArray(new String[tagIds.size()]));
+    }
 
     /////////////////////////////////////////////////////////////
     // The following code is used by the ox.form implementation /
@@ -322,5 +356,4 @@ public class TMController extends Controller {
         }
         return null;
     }
-
 }

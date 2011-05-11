@@ -12,6 +12,7 @@ import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Valid;
+import play.mvc.Before;
 import util.FilterQuery;
 
 
@@ -22,7 +23,7 @@ public class Defects extends TMController {
 
     private static final String[] sortBy = {"id", "name", "tags", "assignedTo", "submittedBy", "status.name", "created"};
 
-    public  static void index(){
+    public static void index() {
         List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
         render(users);
     }
@@ -41,29 +42,28 @@ public class Defects extends TMController {
                                Date dateFrom,
                                Date dateTo,
                                Integer iSortCol_0,
-                               String sSortDir_0){
-
+                               String sSortDir_0) {
 
 
         FilterQuery fq = new FilterQuery(Defect.class);
 
         fq.addFilter("project", "=", getActiveProject());
 
-        if(title!=null && !StringUtils.isEmpty(title)){
-            if(titleCase==null)
-                titleCase=0;
-            switch (titleCase){
-                case(0):
-                    fq.addFilter("name","=", title);
+        if (title != null && !StringUtils.isEmpty(title)) {
+            if (titleCase == null)
+                titleCase = 0;
+            switch (titleCase) {
+                case (0):
+                    fq.addFilter("name", "=", title);
                     break;
-                case(1):
-                    fq.addFilter("name","like", '%' + title + '%');
+                case (1):
+                    fq.addFilter("name", "like", '%' + title + '%');
                     break;
-                case(2):
-                    fq.addFilter("name","like", title + '%');
+                case (2):
+                    fq.addFilter("name", "like", title + '%');
                     break;
-                case(3):
-                    fq.addFilter("name","not like", '%' + title + '%');
+                case (3):
+                    fq.addFilter("name", "not like", '%' + title + '%');
                     break;
             }
         }
@@ -74,24 +74,24 @@ public class Defects extends TMController {
             fq.addWhere("t.name in (:tags)", "tags", Arrays.asList(tags.split(",")));
             fq.addAfterWhere("group by o.id having count(t.id) = " + tags.split(",").length);
         }
-        if(status!=null && !StringUtils.isEmpty(status)){
-             fq.addFilter("status.name","=", status);
+        if (status != null && !StringUtils.isEmpty(status)) {
+            fq.addFilter("status.name", "=", status);
         }
-        if(assignedToId!=null){
-            fq.addFilter("assignedTo.id","=",assignedToId);
+        if (assignedToId != null) {
+            fq.addFilter("assignedTo.id", "=", assignedToId);
         }
-        if(submittedById!=null){
-            fq.addFilter("submittedBy.id","=",submittedById);
+        if (submittedById != null) {
+            fq.addFilter("submittedBy.id", "=", submittedById);
         }
-        if(dateFrom!=null){
+        if (dateFrom != null) {
             fq.addWhere("o.created >= :dateFrom", "dateFrom", dateFrom);
         }
-        if(dateTo!=null){
+        if (dateTo != null) {
             fq.addWhere("o.created <= :dateTo", "dateTo", dateTo);
         }
 
-        if(iSortCol_0!=null)
-            fq.addAfterWhere("order by "+  sortBy[iSortCol_0] + " " + sSortDir_0);
+        if (iSortCol_0 != null)
+            fq.addAfterWhere("order by " + sortBy[iSortCol_0] + " " + sSortDir_0);
 
 
         Query query = fq.build();
@@ -109,21 +109,23 @@ public class Defects extends TMController {
         TableController.renderJSON(defects, Defect.class, Defect.count(), sColumns, sEcho);
     }
 
-    public static void createDefect(@Valid Defect defect, String tags){
+    @Before
+    public static void handleTags() {
+        if (request.actionMethod.equals("createDefect") || request.actionMethod.equals("updateDefect")) {
+            processTags("defect.tags", Tag.TagType.DEFECT);
+        }
+    }
+
+    public static void createDefect(@Valid Defect defect) {
         defect.submittedBy = getConnectedUser();
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
-        defect.tags = getTags(tags, Tag.TagType.DEFECT);
-        System.out.println(tags);
-        if(defect.tags.isEmpty()) {
-            defect.tags.clear();
-        }
         defect.create();
         ok();
     }
 
-    public static void  updateDefect(@Valid Defect defect){
+    public static void updateDefect(@Valid Defect defect) {
         Defect d = Defect.findById(defect.id);
         d.name = defect.name;
         d.description = defect.description;
@@ -133,7 +135,7 @@ public class Defects extends TMController {
         ok();
     }
 
-    public static void defectDetails(Long baseObjectId, String[] fields){
+    public static void defectDetails(Long baseObjectId, String[] fields) {
         Defect defect = Defect.findById(baseObjectId);
         renderFields(defect, fields);
     }

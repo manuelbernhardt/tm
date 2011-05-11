@@ -6,7 +6,6 @@ import javax.persistence.Query;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.Defect;
 import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
@@ -19,7 +18,7 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import util.FilterQuery;
+import play.mvc.Before;
 import util.Logger;
 import util.ParameterHandler;
 
@@ -55,16 +54,19 @@ public class Repository extends TMController {
         renderFields(step, fields);
     }
 
+    @Before
+    public static void handleTags() {
+        if (request.actionMethod.equals("editScript")) {
+            processTags("script.tags", Tag.TagType.TESTSCRIPT);
+        }
+    }
+
     @Restrict(UnitRole.TESTREPOEDIT)
-    public static void editScript(@Valid Script script, String tags) {
+    public static void editScript(@Valid Script script) {
         checkInAccount(script);
         if (Validation.hasErrors()) {
             // TODO handle validation errors in view somehow
             error();
-        }
-        script.tags = getTags(tags, Tag.TagType.TESTSCRIPT);
-        if (script.tags.isEmpty()) {
-            script.tags.clear();
         }
         script.save();
         ok();
