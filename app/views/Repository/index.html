@@ -74,7 +74,11 @@
 
   $(document).ready(function () {
 
-    $('#repositoryTree').tree({types: repositoryTreeTypes});
+    $('#repositoryTree').tree({types: repositoryTreeTypes, onRename: function(name) {
+        var fieldName = '#' +  $('#scriptDetailsForm').oxForm('getFieldId', 'script.name');
+        $(fieldName).val(name);
+    }
+    });
 
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["script", "default"])) {
@@ -87,7 +91,15 @@
 
         reloadTables();
       }
+
     });
+
+//      $('#repositoryTree').change(function() {
+//          var node = getSelectedNode('repositoryTree');
+//          var data =  node.text();
+//          alert(data);
+//          reloadTables();
+//       });
 
     // tags
     var tokens = $('#scriptDetailsForm_script_tags').tokenInput({
