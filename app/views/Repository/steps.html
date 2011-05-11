@@ -71,7 +71,8 @@
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
+        if(tableId=='stepTable')
+            parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
     }
 
     handleRowSelection('#stepTable', function() {
