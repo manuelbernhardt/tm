@@ -186,6 +186,14 @@ function getSelectedNodeId(treeId) {
     return null;
 }
 
+function getSelectedNode(treeId) {
+    var tree = $.jstree._reference($('#' + treeId));
+    if (typeof tree.get_selected().attr('id') !== 'undefined') {
+        return tree.get_selected();
+    }
+    return null;
+}
+
 /**
  * Get a node within a tree by matching its type and ID
  *
@@ -366,7 +374,7 @@ function removeDialogs() {
             }
         },
         getFieldId: function(fieldName) {
-            return $this.attr('id') + '_' + fieldName.replace(/./g, '_');
+            return $(this).attr('id') + '_' + fieldName.replace(/\./g, '_');
         },
         destroy : function() {
 
