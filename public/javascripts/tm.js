@@ -523,3 +523,10 @@ function toggleFilter(buttonId, divId) {
         $(divId).slideToggle('slow');
     });
 }
+
+function adoptGraphSize(){
+   
+    $('.visualize').remove();
+    var width = $('#table').parent().width()-100;
+    $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+}

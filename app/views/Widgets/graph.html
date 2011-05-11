@@ -26,10 +26,7 @@
 <script type="text/javascript">
     var width = $('#table').parent().width()-100;
     $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
-    $(window).resize(function() {
-        $('.visualize').remove();
-        var width = $('#table').parent().width()-100;
-        $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+     $(window).resize(function() {
+       adoptGraphSize();
     });
-
 </script>
