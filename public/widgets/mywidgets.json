@@ -6,7 +6,8 @@
             "column" : "first",
             "editurl" : "public/widgets/editwidget1.html",
             "open" : true,
-            "url" : "public/widgets/widget1.html"
+            "url" : "public/widgets/widget1.html?bla=bli"
+            
         },
         {
             "title" : "Graph",
