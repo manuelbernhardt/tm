@@ -113,6 +113,9 @@
                                 if (!r.status) {
                                     $.jstree.rollback(data.rlbk);
                                 }
+                                if(typeof options.onRename === 'function') {
+                                    options.onRename.call(data.rslt.new_name);
+                                }
                             }
                             );
                 }).bind("move_node.jstree", function (e, data) {
