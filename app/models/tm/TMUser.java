@@ -31,7 +31,7 @@ import play.db.jpa.JPA;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Filters({@Filter(name = "account"), @Filter(name="activeTMUser")})
+@Filters({@Filter(name = "account"), @Filter(name = "activeTMUser")})
 public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
@@ -51,9 +51,13 @@ public class TMUser extends TemporalModel implements AccountEntity {
     @OrderColumn
     public List<String> accountRoles = new ArrayList<String>();
 
-    @ManyToMany(cascade = {CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     @BatchSize(size = 10)
     public List<Role> projectRoles;
+
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+    @BatchSize(size = 10)
+    public List<ProjectWidget> projectWidgets;
 
     public boolean initializeActiveProject() {
         // try fetching the first project where this user has any role
