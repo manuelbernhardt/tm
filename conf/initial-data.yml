@@ -1298,6 +1298,7 @@ tm.DefectStatus(defectStatusDemenagementNew):
     position: 0
 
 tm.Defect(defect1):
+    created: 2011-05-02
     account: oxiras
     project: testManagementApplication
     name: The application does not start
@@ -1313,6 +1314,7 @@ tm.Defect(defect2):
     status: defectStatusDemenagementNew
 
 tm.Defect(defect3):
+    created: 2011-05-03
     account: oxiras
     project: testManagementApplication
     name: Issue with tabularasa
