@@ -17,7 +17,7 @@ import tree.persistent.Node;
 import tree.persistent.NodeName;
 
 /**
- * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
+ * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
