@@ -19,7 +19,7 @@
     // call for the minimal dashboard
     function initDashboard() {
       var dashboard = $('#dashboard').dashboard({
-        json_data : { url: "public/widgets/mywidgets.json" }
+        json_data : { url: "@{Dashboard.widgets()}" }
       });
       dashboard.init();
     }

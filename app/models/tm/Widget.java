@@ -13,6 +13,6 @@ public interface Widget {
     String getColumn();
     boolean isOpen();
     WidgetType getType();
-    Map<String, String> getParameters();
+    Map<String, Object> getParameters();
 
 }

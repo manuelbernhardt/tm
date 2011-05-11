@@ -5,23 +5,31 @@ package models.tm;
  */
 public enum WidgetType {
 
-    GRAPH(0, "viewGraph", "editGraph");
+    GRAPH("graph", "graph", "editGraph");
 
-    Integer key;
+    String key;
     String viewAction;
     String editAction;
 
-    WidgetType(Integer key, String viewAction, String editAction) {
+    WidgetType(String key, String viewAction, String editAction) {
         this.key = key;
         this.viewAction = viewAction;
         this.editAction = editAction;
     }
 
-    public Integer getKey() {
-        return this.key;
+    public String getKey() {
+        return this.key.toString();
     }
 
-    public static WidgetType fromKey(Integer key) {
+    public String getViewAction() {
+        return viewAction;
+    }
+
+    public String getEditAction() {
+        return editAction;
+    }
+
+    public static WidgetType fromKey(String key) {
         for (WidgetType k : WidgetType.values()) {
             if (k.getKey().equals(key)) {
                 return k;
