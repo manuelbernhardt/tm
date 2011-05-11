@@ -6,6 +6,7 @@ import javax.persistence.Query;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
+import models.tm.Defect;
 import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
@@ -18,6 +19,7 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import util.FilterQuery;
 import util.Logger;
 import util.ParameterHandler;
 
@@ -150,9 +152,11 @@ public class Repository extends TMController {
                                           String sColumns,
                                           String sEcho,
                                           Long scriptId) {
-        GenericModel.JPAQuery query = Requirement.find("select r from Requirement r, Script s, Instance i where i.id = ? and s in elements(r.linkedScripts) and i.script = s", scriptId);
+
+        GenericModel.JPAQuery query = Requirement.find("select r from Requirement r join r.linkedScripts s where s.id=?", scriptId);
         List<Requirement> requirements = query.fetch();
         long totalRecords = requirements.size();
+
         TableController.renderJSON(requirements, Requirement.class, totalRecords, sColumns, sEcho);
     }
 

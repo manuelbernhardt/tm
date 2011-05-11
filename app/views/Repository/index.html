@@ -56,7 +56,6 @@
             <th>Requirement ID</th>
             <th>Requirement title</th>
             <th>Tags</th>
-            <th>Status</th>
           </tr>
           </thead>
           <tbody></tbody>
@@ -138,8 +137,7 @@
         {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
         {"sName": "naturalId"},
         {"sName": "name"},
-        {"sName": "tagNames"},
-        {"sName": "status"}
+        {"sName": "tagNames"}
       ],
       "aoSorting": [
         [1, "desc"]
@@ -160,7 +158,9 @@
     };
     #{/tabularasa.init}
 
-
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
+    }
 
 
   });

@@ -12,6 +12,7 @@ import models.tm.test.Script;
 import models.tm.test.Tag;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
+import play.templates.JavaExtensions;
 import tree.persistent.Node;
 import tree.persistent.NodeName;
 
@@ -50,5 +51,10 @@ public class Requirement extends ProjectModel implements Node {
         // TODO
         return super.clone();
     }
+
+    public String getTagNames() {
+        return JavaExtensions.join(tags, ", ");
+    }
+
 
 }
