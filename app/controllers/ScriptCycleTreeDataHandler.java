@@ -20,6 +20,7 @@ import tree.simple.SimpleNode;
 import util.Logger;
 
 import static models.general.UnitRole.roles;
+
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -35,7 +36,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
         String sId = args.get("scriptId");
-        if(sId.equals("-1")) {
+        if (sId.equals("-1")) {
             return null;
         }
         Script script = getScript(sId);
@@ -115,14 +116,14 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             }
 
             // create the InstanceParams
-            for(ScriptParam param : script.getParams()) {
+            for (ScriptParam param : script.getParams()) {
                 InstanceParam instanceParam = new InstanceParam(script.project);
                 instanceParam.scriptParam = param;
                 instanceParam.instance = ti;
                 instanceParam.project = param.project;
                 instanceParam.create();
             }
-            
+
             return ti.getId();
         }
 
@@ -130,6 +131,13 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
     }
 
     public boolean rename(Long id, String name, String type) {
+
+        if (INSTANCE.equals(type)) {
+            Instance instance = Instance.findById(id);
+            instance.name = name;
+            instance.save();
+            return true;
+        }
         return false;
     }
 
