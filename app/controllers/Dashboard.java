@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import models.tm.ProjectWidget;
 import models.tm.TMUser;
 import models.tm.Widget;
-import play.db.jpa.GenericModel;
+import play.db.jpa.JPA;
 import util.Logger;
 
 public class Dashboard extends TMController {
@@ -27,10 +27,10 @@ public class Dashboard extends TMController {
     }
 
     public static void widgets() {
-        List<ProjectWidget> projectWidgets = getConnectedUser().projectWidgets;
+        List<ProjectWidget> projectWidgets = getConnectedUser().getProjectWidgets();
         JsonObject o = new JsonObject();
         JsonArray data = new JsonArray();
-        for(ProjectWidget w : projectWidgets) {
+        for (ProjectWidget w : projectWidgets) {
             data.add(gson.toJsonTree(w));
         }
         o.add("data", data);
@@ -39,7 +39,7 @@ public class Dashboard extends TMController {
     }
 
     public static void changeLayout(String layout) {
-        if(layout != null) {
+        if (layout != null) {
             Logger.info(Logger.LogType.USER, "Changing dashboard layout to %s", layout);
             TMUser u = getConnectedUser();
             u.dashboardLayout = layout;
@@ -52,12 +52,11 @@ public class Dashboard extends TMController {
     }
 
     public static void changeColumn(Long widgetId, String column) {
-        if(column != null) {
+        if (column != null) {
             Logger.info(Logger.LogType.USER, "Changing widget (%n) to column %s", widgetId, column);
-            GenericModel.JPAQuery q = ProjectWidget.find("select pw from ProjectWidget pw where pw.id=?", widgetId);
-            ProjectWidget pw = q.first();
-            pw.column = column;
-            pw.save();
+            JPA.em().createQuery("update ProjectWidget pw set pw.column = :column where pw.id = :widgetId and pw.templateWidget = false and pw.owner = :owner")
+                    .setParameter("column", column).setParameter("widgetId", widgetId).setParameter("owner", getConnectedUser())
+                    .executeUpdate();
             ok();
         } else {
             Logger.error(Logger.LogType.USER, "Layout change with null layout");

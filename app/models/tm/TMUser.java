@@ -55,10 +55,6 @@ public class TMUser extends TemporalModel implements AccountEntity {
     @BatchSize(size = 10)
     public List<Role> projectRoles;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
-    @BatchSize(size = 10)
-    public List<ProjectWidget> projectWidgets;
-
     public String dashboardLayout;
 
     public boolean initializeActiveProject() {
@@ -75,6 +71,10 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     public String getFullName() {
         return user.firstName + " " + user.lastName;
+    }
+
+    public List<ProjectWidget> getProjectWidgets() {
+        return ProjectWidget.listByUser(this);
     }
 
     @Override

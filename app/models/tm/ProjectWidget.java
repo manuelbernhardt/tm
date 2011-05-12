@@ -1,9 +1,12 @@
 package models.tm;
 
+import java.util.List;
 import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyClass;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -35,6 +38,9 @@ public class ProjectWidget extends ProjectModel implements Widget {
     @ElementCollection(targetClass = String.class)
     @MapKeyClass(String.class)
     public Map<String, Object> parameters;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    public TMUser owner;
 
     public ProjectWidget(Project project) {
         super(project);
@@ -97,4 +103,7 @@ public class ProjectWidget extends ProjectModel implements Widget {
         this.widgetType = WidgetType.fromKey(wType);
     }
 
+    public static List<ProjectWidget> listByUser(TMUser tmUser) {
+        return ProjectWidget.find("owner.id = ?", tmUser.getId()).<ProjectWidget>fetch();
+    }
 }

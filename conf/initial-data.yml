@@ -484,59 +484,6 @@ tm.Role(tmRoleViewOnly):
          - testExecView
          - defectView
 
-tm.ProjectWidget(templateWidgetDefectCountByDay):
-    account: oxiras
-    project: testManagementApplication
-    title: Number of defects by day
-    description: Displays the total number of defects created each day
-    creator: Oxiras
-    category: Defects
-    wType: graph
-    publicWidget: true
-    templateWidget: true
-    parameters:
-      ? entity
-      : Defect
-      ? graphType
-      : temporal
-      ? graphLabel
-      : Defects over time
-      ? temporalField
-      : created
-      ? xAxis
-      : DAY
-      ? yAxis
-      : COUNT
-    column: first
-    open: true
-
-tm.ProjectWidget(manuWidgetDefectCountByDay):
-    account: oxiras
-    project: testManagementApplication
-    title: Number of defects by day
-    description: Displays the total number of defects created each day
-    creator: Oxiras
-    category: Defects
-    wType: graph
-    publicWidget: true
-    templateWidget: false
-    parameters:
-      ? entity
-      : Defect
-      ? graphType
-      : temporal
-      ? graphLabel
-      : Defects over time
-      ? temporalField
-      : created
-      ? xAxis
-      : DAY
-      ? yAxis
-      : COUNT
-    column: first
-    open: true
-
-
 tm.TMUser(gwen):
     user: gwenUser
     account: oxiras
@@ -569,8 +516,6 @@ tm.TMUser(manu):
        - tmRoleTestLead
        - tmRoleViewOnly
        - demRoleViewOnly
-    projectWidgets:
-       - manuWidgetDefectCountByDay
 
 tm.TMUser(nathalie):
     user: nathalieUser
@@ -1369,3 +1314,57 @@ tm.Defect(defect5):
     name: Old couch is still not removed
     submittedBy: nathalie
     status: defectStatusDemenagementNew
+
+
+tm.ProjectWidget(templateWidgetDefectCountByDay):
+    account: oxiras
+    project: testManagementApplication
+    title: Number of defects by day
+    description: Displays the total number of defects created each day
+    creator: Oxiras
+    category: Defects
+    wType: graph
+    publicWidget: true
+    templateWidget: true
+    parameters:
+      ? entity
+      : Defect
+      ? graphType
+      : temporal
+      ? graphLabel
+      : Defects over time
+      ? temporalField
+      : created
+      ? xAxis
+      : DAY
+      ? yAxis
+      : COUNT
+    column: first
+    open: true
+
+tm.ProjectWidget(manuWidgetDefectCountByDay):
+    account: oxiras
+    project: testManagementApplication
+    title: Number of defects by day
+    description: Displays the total number of defects created each day
+    creator: Oxiras
+    category: Defects
+    wType: graph
+    publicWidget: true
+    templateWidget: false
+    parameters:
+      ? entity
+      : Defect
+      ? graphType
+      : temporal
+      ? graphLabel
+      : Defects over time
+      ? temporalField
+      : created
+      ? xAxis
+      : DAY
+      ? yAxis
+      : COUNT
+    owner: manu
+    column: first
+    open: true
