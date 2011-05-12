@@ -7,7 +7,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import models.tm.ProjectWidget;
+import models.tm.TMUser;
 import models.tm.Widget;
+import util.Logger;
 
 public class Dashboard extends TMController {
 
@@ -31,7 +33,21 @@ public class Dashboard extends TMController {
             data.add(gson.toJsonTree(w));
         }
         o.add("data", data);
+        o.addProperty("layout", getConnectedUser().dashboardLayout);
         renderJSON(o.toString());
+    }
+
+    public static void changeLayout(String layout) {
+        if(layout != null) {
+            Logger.info(Logger.LogType.USER, "Changing dashboard layout to %s", layout);
+            TMUser u = getConnectedUser();
+            u.dashboardLayout = layout;
+            u.save();
+            ok();
+        } else {
+            Logger.error(Logger.LogType.USER, "Layout change with null layout");
+            error("No layout provided");
+        }
     }
 
 }

@@ -16,13 +16,14 @@
     $("#templates").hide();
     $("#templates").load("@{'/public/templates.html'}", initDashboard);
 
+    var dashboard = null;
+
     // call for the minimal dashboard
     function initDashboard() {
-      var dashboard = $('#dashboard').dashboard({
+      dashboard = $('#dashboard').dashboard({
         loadingHtml: "<div class=\"loading\"><img alt=\"Loading, please wait\" src=\"@{'/public/images/loading.gif'}\" /><p>Loading...</p></div>",
         json_data : { url: "@{Dashboard.widgets()}" },
         layoutClass:'layout',
-        layout: 'layout-aaa',
         layouts :
                 [
                   { title: "Layout1",
@@ -63,9 +64,18 @@
     $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
     $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
 
+
     $('#dashboard').live('dashboardLayoutChanged', function() {
-      // TODO get the layout, update the preferences server-side
-      alert(dashboard.getLayout());
+      jQuery.ajax({
+        type: 'POST',
+        url: '@{Dashboard.changeLayout()}',
+        data: {layout: dashboard.layout.id},
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+        dataType: 'json'
+      }).error(function (jqhr, text) {
+        // TODO
+        alert(text);
+      });
     });
 
   });
@@ -75,7 +85,9 @@
 <div class="header_tile_image">
   <div class="headerbox">
     <div class="headerlinks" style="float: right;">
-      <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>&nbsp;<span class="headerlink"></span><button class="editlayout headerlink" href="#">Edit layout</button>
+      <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>
+      &nbsp;<span class="headerlink"></span>
+      <button class="editlayout headerlink" href="#">Edit layout</button>
     </div>
   </div>
 </div>

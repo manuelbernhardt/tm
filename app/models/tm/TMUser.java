@@ -59,6 +59,8 @@ public class TMUser extends TemporalModel implements AccountEntity {
     @BatchSize(size = 10)
     public List<ProjectWidget> projectWidgets;
 
+    public String dashboardLayout;
+
     public boolean initializeActiveProject() {
         // try fetching the first project where this user has any role
         // TODO make the "default project" for a new user configurable
