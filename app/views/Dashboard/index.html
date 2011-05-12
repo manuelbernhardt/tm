@@ -84,7 +84,17 @@
 
     });
 
-    $('#dashboard').live('widgetDropped', function() {
+    $('#dashboard').live('widgetDropped', function(event, obj) {
+     jQuery.ajax({
+        type: 'POST',
+        url: '@{Dashboard.changeColumn()}',
+        data: {widgetId: obj.widget.id,column: obj.widget.column},
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+        dataType: 'json'
+      }).error(function (jqhr, text) {
+        // TODO
+        alert(text);
+      });
       adoptGraphSize();
     });
 

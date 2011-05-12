@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import models.tm.ProjectWidget;
 import models.tm.TMUser;
 import models.tm.Widget;
+import play.db.jpa.GenericModel;
 import util.Logger;
 
 public class Dashboard extends TMController {
@@ -50,4 +51,17 @@ public class Dashboard extends TMController {
         }
     }
 
+    public static void changeColumn(Long widgetId, String column) {
+        if(column != null) {
+            Logger.info(Logger.LogType.USER, "Changing widget (%n) to column %s", widgetId, column);
+            GenericModel.JPAQuery q = ProjectWidget.find("select pw from ProjectWidget pw where pw.id=?", widgetId);
+            ProjectWidget pw = q.first();
+            pw.column = column;
+            pw.save();
+            ok();
+        } else {
+            Logger.error(Logger.LogType.USER, "Layout change with null layout");
+            error("No layout provided");
+        }
+    }
 }
