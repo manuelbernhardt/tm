@@ -527,6 +527,6 @@ function toggleFilter(buttonId, divId) {
 function adoptGraphSize(){
    
     $('.visualize').remove();
-    var width = $('#table').parent().width()-100;
-    $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+    var width = $('.graphTable').parent().width()-100;
+    $('.graphTable').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
 }

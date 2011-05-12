@@ -1,7 +1,6 @@
-#{extends 'header.html' /}
+%{def tableUUID = play.libs.Codec.UUID();}%
 
-
-<table  style="display:none" id="table" >
+<table class="graphTable" style="display:none" id="table_${tableUUID}" >
     <tbody>
     <thead>
         <tr>
@@ -24,8 +23,8 @@
 </table>
         
 <script type="text/javascript">
-    var width = $('#table').parent().width()-100;
-    $('#table').visualize({type: '${graphAppearance}',title: '${graphTitle}', width: width});
+    var width = $('#table_${tableUUID}').parent().width()-100;
+    $('#table_${tableUUID}').visualize({type: '${graphAppearance}',title: '${graphTitle}', width: width});
      $(window).resize(function() {
        adoptGraphSize();
     });
