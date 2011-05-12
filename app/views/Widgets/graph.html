@@ -1,0 +1,32 @@
+#{extends 'header.html' /}
+
+
+<table  style="display:none" id="table" >
+    <tbody>
+    <thead>
+        <tr>
+            <td></td>
+                #{list items:dateList, as:'date'}
+                    <th scope="col">${date.getClass().equals(Date.class) ? date.format(play.Play.configuration.getProperty('date.format')) : date}</th>
+                #{/list}
+        </tr>
+    </thead>
+    <tr>
+        <th scope="row">Number of defects over time</th>
+
+        #{list items:countList, as:'count'}
+
+            <td>${count}</td>
+
+        #{/list}
+    </tr>
+    </tbody>
+</table>
+        
+<script type="text/javascript">
+    var width = $('#table').parent().width()-100;
+    $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+     $(window).resize(function() {
+       adoptGraphSize();
+    });
+</script>

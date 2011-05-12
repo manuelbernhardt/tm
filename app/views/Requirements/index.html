@@ -61,7 +61,11 @@
 
     $("#innerTabs").tabs();
 
-    $("#requirementTree").tree({types: requirementTreeTypes});
+    $("#requirementTree").tree({types: requirementTreeTypes, onRename: function(name) {
+        var fieldName = '#' +  $('#requirementForm').oxForm('getFieldId', 'requirement.name');
+        $(fieldName).val(name);
+    }
+    });
 
     $('#requirementForm').oxForm({
       loadAction: '@{Requirements.requirementsDetailsData()}',

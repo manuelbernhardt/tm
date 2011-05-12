@@ -76,6 +76,13 @@
         // TODO
         alert(text);
       });
+
+      adoptGraphSize();
+
+    });
+
+    $('#dashboard').live('widgetDropped', function() {
+      adoptGraphSize();
     });
 
   });
@@ -84,7 +91,7 @@
 
 <div class="header_tile_image">
   <div class="headerbox">
-    <div class="headerlinks" style="float: right;">
+    <div class="headerlinks" style="text-align: right; width:100%">
       <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>
       &nbsp;<span class="headerlink"></span>
       <button class="editlayout headerlink" href="#">Edit layout</button>
