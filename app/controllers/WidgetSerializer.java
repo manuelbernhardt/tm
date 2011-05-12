@@ -16,7 +16,7 @@ public class WidgetSerializer implements JsonSerializer<Widget> {
     public JsonElement serialize(Widget widget, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject o = new JsonObject();
         o.addProperty("title", widget.getTitle());
-        o.addProperty("id", widget.getWidgetIdentifier());
+        o.addProperty("id", widget.getId());
         o.addProperty("column", widget.getColumn());
         o.addProperty("open", widget.isOpen());
         o.addProperty("url", Router.reverse("Widgets." + widget.getType().getViewAction(), widget.getParameters()).toString());

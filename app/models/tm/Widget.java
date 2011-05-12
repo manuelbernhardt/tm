@@ -8,11 +8,22 @@ import java.util.Map;
 public interface Widget {
 
     Long getId();
-    String getWidgetIdentifier();
+
     String getTitle();
-    String getColumn();
-    boolean isOpen();
+
+    String getCategory();
+
+    String getDescription();
+
+    String getCreator();
+
+    boolean isTemplate();
+
     WidgetType getType();
+
     Map<String, Object> getParameters();
 
+    String getColumn();
+
+    boolean isOpen();
 }

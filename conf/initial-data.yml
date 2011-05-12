@@ -484,26 +484,58 @@ tm.Role(tmRoleViewOnly):
          - testExecView
          - defectView
 
-tm.ProjectWidget(widgetDefectCountByDay):
+tm.ProjectWidget(templateWidgetDefectCountByDay):
     account: oxiras
     project: testManagementApplication
     title: Number of defects by day
-    widgetIdentifier: defectCountByDay
-    column: first
-    open: true
+    description: Displays the total number of defects created each day
+    creator: Oxiras
+    category: Defects
     wType: graph
     publicWidget: true
+    templateWidget: true
     parameters:
       ? entity
       : Defect
       ? graphType
       : temporal
+      ? graphLabel
+      : Defects over time
       ? temporalField
       : created
       ? xAxis
       : DAY
       ? yAxis
       : COUNT
+    column: first
+    open: true
+
+tm.ProjectWidget(manuWidgetDefectCountByDay):
+    account: oxiras
+    project: testManagementApplication
+    title: Number of defects by day
+    description: Displays the total number of defects created each day
+    creator: Oxiras
+    category: Defects
+    wType: graph
+    publicWidget: true
+    templateWidget: false
+    parameters:
+      ? entity
+      : Defect
+      ? graphType
+      : temporal
+      ? graphLabel
+      : Defects over time
+      ? temporalField
+      : created
+      ? xAxis
+      : DAY
+      ? yAxis
+      : COUNT
+    column: first
+    open: true
+
 
 tm.TMUser(gwen):
     user: gwenUser
@@ -538,7 +570,7 @@ tm.TMUser(manu):
        - tmRoleViewOnly
        - demRoleViewOnly
     projectWidgets:
-       - widgetDefectCountByDay
+       - manuWidgetDefectCountByDay
 
 tm.TMUser(nathalie):
     user: nathalieUser

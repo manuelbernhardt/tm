@@ -23,6 +23,9 @@
       dashboard = $('#dashboard').dashboard({
         loadingHtml: "<div class=\"loading\"><img alt=\"Loading, please wait\" src=\"@{'/public/images/loading.gif'}\" /><p>Loading...</p></div>",
         json_data : { url: "@{Dashboard.widgets()}" },
+        addWidgetSettings: {
+          widgetDirectoryUrl:"@{Widgets.categories()}"
+        },
         layoutClass:'layout',
         layouts :
                 [
