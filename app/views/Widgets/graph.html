@@ -25,7 +25,7 @@
         
 <script type="text/javascript">
     var width = $('#table').parent().width()-100;
-    $('#table').visualize({type: 'bar',title: '${graphTitle}', width: width});
+    $('#table').visualize({type: '${graphAppearance}',title: '${graphTitle}', width: width});
      $(window).resize(function() {
        adoptGraphSize();
     });

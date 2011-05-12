@@ -1,5 +1,10 @@
 package controllers;
 
+import models.tm.Defect;
+import play.db.jpa.JPA;
+import play.libs.F;
+import utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,11 +46,16 @@ public class Widgets extends TMController {
                              String xAxis,
                              String temporalField,
                              String graphTitle,
-                             String graphLabel) {
+                             String graphLabel,
+                             String graphAppearance) {
 
         List<Object[]> objects = null;
         List<Object> countList = new ArrayList<Object>();
         List<Object> dateList = new ArrayList<Object>();
+
+        if (graphAppearance == null || StringUtils.isEmpty(graphAppearance)) {
+            graphAppearance = "bar";
+        }
 
 
         if (graphType != null && graphType.equals("temporal")) {
@@ -81,7 +91,7 @@ public class Widgets extends TMController {
                 dateList.add(d);
             }
 
-            render(countList, dateList, graphTitle, graphLabel);
+            render(countList, dateList, graphTitle, graphLabel, graphAppearance);
 
         } else if (graphType != null && graphType.equals("relational")) {
             StringBuffer sb = new StringBuffer();
@@ -108,7 +118,7 @@ public class Widgets extends TMController {
                 dateList.add(d);
             }
 
-            render(countList, dateList, graphTitle, graphLabel);
+            render(countList, dateList, graphTitle, graphLabel, graphAppearance);
 
         } else {
             objects = Defect.find("select count(d), day(d.created) from Defect d group by day(d.created)").fetch();
@@ -120,7 +130,7 @@ public class Widgets extends TMController {
                 dateList.add(d);
             }
 
-            render(countList, dateList, graphTitle, graphLabel);
+            render(countList, dateList, graphTitle, graphLabel, graphAppearance);
         }
     }
 
