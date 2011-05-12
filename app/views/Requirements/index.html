@@ -85,12 +85,6 @@
     });
     #{/deadbolt.restrict}
 
-    $('#scriptDetailsForm ul.token-input-list').focus(function() {
-      $('#scriptDetailsForm_submit').button('enable');
-    }).blur(function() {
-      $('#scriptDetailsForm_submit').button('enable');
-    });
-
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["requirement", "default"])) {
         $('.shownOnLoad').hide();
