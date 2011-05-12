@@ -103,10 +103,6 @@
       creationText: "Create new tag"
     });
 
-    $('#scriptDetailsForm li.token-input-input-token').change(function() {
-      $('#scriptDetailsForm_submit').button('enable');
-    });
-
     $(function () {
       $("#create_folder").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
         $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}});

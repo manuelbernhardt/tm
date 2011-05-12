@@ -469,9 +469,6 @@ ko.bindingHandlers.tags = {
             $(element).tokenInput('add', token.id(), token.name());
         });
 
-        // this is deactivated for the moment, watch http://groups.google.com/group/knockoutjs/browse_thread/thread/69520c7b7cae0f5e
-        // in case it works, we can get rid of the need to send tags in each page on submit. however we then also need to write a play binder for tags.
-
         $(element).change(function() {
             if (!viewModel.lock) {
                 viewModel.lock = true;

@@ -196,7 +196,7 @@
     });
 
     $('#tagsSaveButton').button();
-    $('#tagsForm li.token-input-input-token').focus(function() {
+    $('#tags').change(function() {
       $('#tagsSaveButton').button('enable');
     });
     $('#tagsForm').ajaxForm({

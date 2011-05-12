@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
@@ -22,8 +21,6 @@ import play.mvc.Before;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Requirements extends TMController {
-
-    public static final Pattern REQ_TAGS = Pattern.compile("^" + "requirement.tags" + "\\[([^\\]]+)\\](.*)$");
 
     @Restrict(UnitRole.REQVIEW)
     public static void index() {

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -220,7 +221,7 @@ public class TMController extends Controller {
         return tagList;
     }
 
-        @Util
+    @Util
     public static void processTags(String tagsParameterKey, Tag.TagType type) {
         List<String> tags = new ArrayList<String>();
         for (String p : params.all().keySet()) {
@@ -230,7 +231,7 @@ public class TMController extends Controller {
         }
         List<String> tagNames = new ArrayList<String>();
         for (String t : tags) {
-            Matcher m = Requirements.REQ_TAGS.matcher(t);
+            Matcher m = tagParameterPattern(tagsParameterKey).matcher(t);
             if (m.matches()) {
                 String key = m.group(2);
                 String value = params.get(t);
@@ -247,6 +248,10 @@ public class TMController extends Controller {
             tagIds.add(tag.getId().toString());
         }
         params.put(tagsParameterKey + ".id", tagIds.toArray(new String[tagIds.size()]));
+    }
+
+    public static Pattern tagParameterPattern(String prefix) {
+        return Pattern.compile("^" + prefix + "\\[([^\\]]+)\\](.*)$");
     }
 
     /////////////////////////////////////////////////////////////
