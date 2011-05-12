@@ -33,11 +33,15 @@ public class Widgets extends TMController {
                              String graphType,
                              String yAxis,
                              String xAxis,
-                             String temporalField) {
+                             String temporalField,
+                             String graphTitle,
+                             String graphLabel) {
 
         List<Object[]> objects = null;
         List<Object> countList = new ArrayList<Object>();
         List<Object> dateList = new ArrayList<Object>();
+
+        
 
         if (graphType != null && graphType.equals("temporal")) {
 
@@ -51,7 +55,7 @@ public class Widgets extends TMController {
             sb.append(" group by ");
             sb.append(transformExpression(xAxis, temporalField)._1);
 
-            System.out.println(sb.toString());
+
             
             try {
                 objects = JPA.em().createQuery(sb.toString()).getResultList();
@@ -73,14 +77,38 @@ public class Widgets extends TMController {
                 dateList.add(d);
             }
 
-            render(countList,dateList);
+            render(countList,dateList, graphTitle, graphLabel);
 
-//        else if(graphType !=null && graphType.equals("relational"))
-//            List<Integer> count = Defect.find("select count(d.status.name) from ? d group by d.status", entity).fetch();
-//            List<String> status = Defect.find("select d.status.name from Defect d group by d.status").fetch();
-//            render(count, status);
-//        }
-        } else {
+        }
+        else if(graphType !=null && graphType.equals("relational")){
+            StringBuffer sb = new StringBuffer();
+            sb.append("select ");
+            sb.append(String.format("count(%s)", xAxis));
+            sb.append(",");
+            sb.append(yAxis);
+            sb.append(" from ");
+            sb.append(entity);
+            sb.append(" group by ");
+            sb.append(yAxis);
+
+            try {
+                objects = JPA.em().createQuery(sb.toString()).getResultList();
+            } catch (Throwable t) {
+                error();
+            }
+
+
+            for (Object[] o : objects) {
+                Object count =  o[0];
+                countList.add(count);
+                Object d =  o[1];
+                dateList.add(d);
+            }
+
+            render(countList,dateList, graphTitle, graphLabel);
+            
+        }
+        else {
             objects = Defect.find("select count(d), day(d.created) from Defect d group by day(d.created)").fetch();
 
             for (Object[] o : objects) {
@@ -90,11 +118,12 @@ public class Widgets extends TMController {
                 dateList.add(d);
             }
 
-            render(countList,dateList);
+            render(countList,dateList, graphTitle, graphLabel);
         }
     }
 
     private static F.Tuple<String, ExpressionType> transformExpression(String axis, String tmp) {
+
         String queryFragment;
         ExpressionType type;
         type = ExpressionType.valueOf(axis.toUpperCase());

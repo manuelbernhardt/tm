@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tr>
-        <th scope="row">Number of defects over time</th>
+        <th scope="row">${graphLabel}</th>
 
         #{list items:countList, as:'count'}
 
@@ -25,7 +25,7 @@
         
 <script type="text/javascript">
     var width = $('#table').parent().width()-100;
-    $('#table').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+    $('#table').visualize({type: 'bar',title: '${graphTitle}', width: width});
      $(window).resize(function() {
        adoptGraphSize();
     });
