@@ -90,7 +90,9 @@ public class Dashboard extends TMController {
             usersWidget.templateWidget = false;
 
             usersWidget.create();
-            ok();
+            JsonObject response = new JsonObject();
+            response.addProperty("id", usersWidget.getId());
+            renderJSON(response.toString());
         } else {
             Logger.error(Logger.LogType.USER, "widgetID is null");
             error("No layout provided");
@@ -98,6 +100,17 @@ public class Dashboard extends TMController {
     }
 
     public static void deleteWidget(Long widgetId){
-        
+        if(widgetId!=null){
+            ProjectWidget projectWidget = ProjectWidget.find("id=? and owner=?", widgetId, getConnectedUser()).<ProjectWidget>first();
+            if(projectWidget!=null){
+                projectWidget.parameters = null;
+                projectWidget.delete();
+            }
+
+        }
+        else{
+            Logger.error(Logger.LogType.USER, "widgetID is null");
+            error("No layout provided");
+        }
     }
 }
