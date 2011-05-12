@@ -3,219 +3,232 @@
 
 
 <div class="container">
-  <div class="left_tree">
-    #{box 'Test Script Repository'}
-    <div id="repositoryTree" class="tree" style="border-style:none;"></div>
-    #{/box}
-  </div>
-  <div class="right_tree">
+    <div class="left_tree">
+        #{box 'Test Script Repository'}
+        <div id="repositoryTree" class="tree" style="border-style:none;"></div>
+        #{/box}
+    </div>
+    <div class="right_tree">
 
-    #{box 'Test Instances'}
+        #{box 'Test Instances'}
 
-    <div class="hiddenOnLoad">
-      <div class="left_tree">
-        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-          #{include 'Preparation/instanceCreateDialog.html' /}
-        #{/deadbolt.restrict}
-        <div id="scriptCycleTree" class="tree"></div>
-      </div>
-      <div class="right_tree">
+        <div class="hiddenOnLoad">
+            <div class="left_tree">
+                #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
+                [models.general.UnitRole.TESTREPOEDIT]]}
+                #{include 'Preparation/instanceCreateDialog.html' /}
+                #{/deadbolt.restrict}
+                <div id="scriptCycleTree" class="tree"></div>
+            </div>
+            <div class="right_tree">
 
-        <div id="innerTabs">
-          <ul>
-            <li><a href="#tagsTab"><span>Tags</span></a></li>
-            <li><a href="#schedule"><span>Schedule</span></a></li>
-            <li><a href="#testData"><span>Test data</span></a></li>
-          </ul>
-          <div id="tagsTab">
-            <div class="instanceShownOnLoad">
-              No test instance selected
-            </div>
-            <div class="instanceHiddenOnLoad" style="display: none;">
-              <form id="tagsForm" action="@{Preparation.updateTags()}" method="post">
-                <input name="tags" id="tags" type="text"/>
-                <button id="tagsSaveButton">Save</button>
-              </form>
-            </div>
-          </div>
-          <div id="schedule">
-            <div class="instanceShownOnLoad">
-              No test instance selected
-            </div>
-            <div class="instanceHiddenOnLoad" style="display: none;">
-              #{ox.form action:@Preparation.updateSchedule(), edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
-              #{ox.field field:'instance.responsible', label:'Assigned to' /}
-              #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
-              #{ox.submit /}
-              #{/ox.form}
-            </div>
-          </div>
-          <div id="testData">
-            <div class="instanceShownOnLoad">
-              No test instance selected
-            </div>
-            <div class="instanceHiddenOnLoad" style="display: none;">
-              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-              <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}" data-bind="submit: submitForm">
-              #{/deadbolt.restrict}
-                <table id="instanceParamTable" class="display">
-                  <thead>
-                  <th>Parameter</th>
-                  <th>Value</th>
-                  </thead>
-                  <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
-                </table>
-              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-                <button type="submit" id="saveParamsButton">Save</button>
-              </form>
-              #{/deadbolt.restrict}
+                <div id="innerTabs">
+                    <ul>
+                        <li><a href="#tagsTab"><span>Tags</span></a></li>
+                        <li><a href="#schedule"><span>Schedule</span></a></li>
+                        <li><a href="#testData"><span>Test data</span></a></li>
+                    </ul>
+                    <div id="tagsTab">
+                        <div class="instanceShownOnLoad">
+                            No test instance selected
+                        </div>
+                        <div class="instanceHiddenOnLoad" style="display: none;">
+                            <form id="tagsForm" action="@{Preparation.updateTags()}" method="post">
+                                <input name="tags" id="tags" type="text"/>
+                                <button id="tagsSaveButton">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="schedule">
+                        <div class="instanceShownOnLoad">
+                            No test instance selected
+                        </div>
+                        <div class="instanceHiddenOnLoad" style="display: none;">
+                            #{ox.form action:@Preparation.updateSchedule(),
+                            edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm',
+                            baseClass:'models.tm.test.Instance'}
+                            #{ox.field field:'instance.responsible', label:'Assigned to' /}
+                            #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
+                            #{ox.submit /}
+                            #{/ox.form}
+                        </div>
+                    </div>
+                    <div id="testData">
+                        <div class="instanceShownOnLoad">
+                            No test instance selected
+                        </div>
+                        <div class="instanceHiddenOnLoad" style="display: none;">
+                            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
+                            [models.general.UnitRole.TESTREPOEDIT]]}
+                            <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}"
+                                  data-bind="submit: submitForm">
+                                #{/deadbolt.restrict}
+                                <table id="instanceParamTable" class="display">
+                                    <thead>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                    </thead>
+                                    <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+                                </table>
+                                #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
+                                [models.general.UnitRole.TESTREPOEDIT]]}
+                                <button type="submit" id="saveParamsButton">Save</button>
+                            </form>
+                            #{/deadbolt.restrict}
 
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+        <div class="shownOnLoad">
+            No test script selected
+        </div>
+
+
+        #{/box}
+
     </div>
-    <div class="shownOnLoad">
-      No test script selected
-    </div>
-
-
-    #{/box}
-
-  </div>
 </div>
 
 
 #{set 'moreScripts'}
 #{if !util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]) && util.Require.roles([[models.general.UnitRole.TESTPREPVIEW]])}
 <script type="text/html" id="paramRowTemplate">
-  <tr>
-    <td><span data-bind="text: name"></span></td>
-    <td><span id="paramValue" data-bind="text: value"></span></td>
-  </tr>
+    <tr>
+        <td><span data-bind="text: name"></span></td>
+        <td><span id="paramValue" data-bind="text: value"></span></td>
+    </tr>
 </script>
 #{/if}
 #{elseif util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]])}
 <script type="text/html" id="paramRowTemplate">
-  <tr>
-    <td><span data-bind="text: name"></span></td>
-    <td><input id="paramValue" type="text" data-bind="name: id, value: value"></td>
-  </tr>
+    <tr>
+        <td><span data-bind="text: name"></span></td>
+        <td><input id="paramValue" type="text" data-bind="name: id, value: value"></td>
+    </tr>
 </script>
 #{/elseif}
 
 <script type="text/javascript">
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    // selection listener for the repository tree
-    $("#repositoryTree").tree({types: repositoryTreeTypes});
-    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["script", "default"])) {
+        // selection listener for the repository tree
+        $("#repositoryTree").tree({types: repositoryTreeTypes});
+        $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ["script", "default"])) {
 
-        $('.instanceHiddenOnLoad').hide();
-        $('.instanceShownOnLoad').show();
-        
-        jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
-        $('.hiddenOnLoad').show();
-        $('.shownOnLoad').hide();
-      }
-    });
+                $('.instanceHiddenOnLoad').hide();
+                $('.instanceShownOnLoad').show();
 
-    // viewModel for instance parameters
-    var paramViewModel = {'submitForm': function(formElement) {
-      $.ajax({
-        url: $(formElement).attr('action'),
-        type: 'POST',
-        data: $.extend({instanceId: getSelectedNodeId('scriptCycleTree')}, {params: ko.mapping.toJSON(paramViewModel)}),
-        success: function() {
-          $('#saveParamsButton').button('disable');
-        },
-        error: function() {
-          alert("Something went wrong, please try again");
-        }
-      });
-      return false;
-    }};
-
-      // selection listener for the instance tree
-      $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
-      $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
-        if (isSelectedNodeType(data, ["instance", "default"])) {
-          $('.instanceHiddenOnLoad').show();
-          $('.instanceShownOnLoad').hide();
-
-          var instanceId = getNodeIdFromData(data);
-
-          // tags data loading
-          $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
-            $('#tags').tokenInput('clearAll');
-            $(data).each(function() {
-              $('#tags').tokenInput('add', this.id, this.name);
-            });
-          });
-
-          // schedule data loading
-          $('#scheduleForm').oxForm('load', instanceId);
-
-          // instance parameter data loading
-          $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
-            if (!ko.mapping.isMapped(paramViewModel)) {
-              $.extend(paramViewModel, ko.mapping.fromJS(data));
-              ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
-            } else {
-              ko.mapping.updateFromJS(paramViewModel, data);
+                jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+                $('.hiddenOnLoad').show();
+                $('.shownOnLoad').hide();
             }
-            // apply focus listeners for the save button
-            $('#instanceParamForm').find('input').each(function(index, value) {
-              $(value).focus(function() {
-                $('#saveParamsButton').button('enable');
-              });
+        });
+
+
+        // viewModel for instance parameters
+        var paramViewModel = {'submitForm': function(formElement) {
+            $.ajax({
+                url: $(formElement).attr('action'),
+                type: 'POST',
+                data: $.extend({instanceId: getSelectedNodeId('scriptCycleTree')}, {params: ko.mapping.toJSON(paramViewModel)}),
+                success: function() {
+                    $('#saveParamsButton').button('disable');
+                },
+                error: function() {
+                    alert("Something went wrong, please try again");
+                }
             });
-          });
+            return false;
+        }};
+
+        // selection listener for the instance tree
+        $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+        $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ["instance", "default"])) {
+                $('.instanceHiddenOnLoad').show();
+                $('.instanceShownOnLoad').hide();
+
+                var instanceId = getNodeIdFromData(data);
+
+                // tags data loading
+                $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
+                    $('#tags').tokenInput('clearAll');
+                    $(data).each(function() {
+                        $('#tags').tokenInput('add', this.id, this.name);
+                    });
+                });
+
+                // schedule data loading
+                $('#scheduleForm').oxForm('load', instanceId);
+
+                // instance parameter data loading
+                $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
+                    if (!ko.mapping.isMapped(paramViewModel)) {
+                        $.extend(paramViewModel, ko.mapping.fromJS(data));
+                        ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
+                    } else {
+                        ko.mapping.updateFromJS(paramViewModel, data);
+                    }
+                    // apply focus listeners for the save button
+                    $('#instanceParamForm').find('input').each(function(index, value) {
+                        $(value).focus(function() {
+                            $('#saveParamsButton').button('enable');
+                        });
+                    });
+                });
+            }
+        });
+
+        $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
+            $('.instanceHiddenOnLoad').hide(); //hide information about instance after it is removed
+            $('.instanceShownOnLoad').show();
+        });
+
+
+        $('#innerTabs').tabs();
+
+        function getScriptQuery() {
+            return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
         }
-      });
 
-    $('#innerTabs').tabs();
+        function getInstanceQuery() {
+            return {'instanceId': getSelectedNodeId('scriptCycleTree')};
+        }
 
-    function getScriptQuery() {
-      return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
-    }
+        // tags
+        $('#tags').tokenInput({
+            url: '@{Preparation.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+        });
 
-    function getInstanceQuery() {
-      return {'instanceId': getSelectedNodeId('scriptCycleTree')};
-    }
+        $('#tagsSaveButton').button();
+        $('#tags').change(function() {
+            $('#tagsSaveButton').button('enable');
+        });
+        $('#tagsForm').ajaxForm({
+            success: function() {
+                $('#tagsSaveButton').button('disable');
+            },
+            beforeSubmit: function(arr, $form, options) {
+                arr.push({name:'instanceId', value: getSelectedNodeId('scriptCycleTree')});
+                return true;
+            }
+        });
 
-    // tags
-    $('#tags').tokenInput({
-      url: '@{Preparation.allTags()}',
-      preventDuplicates: true,
-      tokenValue: 'name',
-      allowCreation: true,
-      creationText: "Create new tag"
+        $('#scheduleForm').oxForm({
+            loadAction: '@{Preparation.schedule()}',
+            submissionParameters: getInstanceQuery
+        });
+
+        $('#saveParamsButton').button();
     });
-
-    $('#tagsSaveButton').button();
-    $('#tags').change(function() {
-      $('#tagsSaveButton').button('enable');
-    });
-    $('#tagsForm').ajaxForm({
-      success: function() {
-        $('#tagsSaveButton').button('disable');
-      },
-      beforeSubmit: function(arr, $form, options) {
-        arr.push({name:'instanceId', value: getSelectedNodeId('scriptCycleTree')});
-        return true;
-      }
-    });
-
-    $('#scheduleForm').oxForm({
-      loadAction: '@{Preparation.schedule()}',
-      submissionParameters: getInstanceQuery
-    });
-
-    $('#saveParamsButton').button();
-  });
 
 </script>
 #{/set}
