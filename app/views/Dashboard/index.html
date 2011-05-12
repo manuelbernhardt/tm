@@ -62,34 +62,23 @@
                 ]
       });
 
-         dashboard.element.live('widgetRemoved', function(event, obj){
-          alert('laal');
-//          jQuery.ajax({
-//            type: 'POST',
-//            url: '@{Dashboard.deleteWidget()}',
-//            data: {widgetId: obj.widget.id},
-//            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-//            dataType: 'json'
-//          }).error(function (jqhr, text) {
-//            // TODO
-//            alert(text);
-//          });
-      });
+        
         dashboard.element.live('dashboardAddWidget',function(e, obj){
-            var widget = obj.widget;
-            dashboard.addWidget({
-                    "id":widget.id,
-                    "title":widget.title,
-                    "url":widget.url,
-                    "metadata":widget.metadata
-                    }, dashboard.element.find('.column:first'));
             jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.addWidget()}',
                 data: {widgetId: obj.widget.id},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-              }).error(function (jqhr, text) {
+              }).success(function(data) {
+                var widget = obj.widget;
+                dashboard.addWidget({
+                        "id":data.id,
+                        "title":widget.title,
+                        "url":widget.url,
+                        "metadata":widget.metadata
+                        }, dashboard.element.find('.column:first'));
+            }).error(function (jqhr, text) {
                 // TODO
                 alert(text);
              });
@@ -98,6 +87,19 @@
               
       dashboard.init();
     }
+
+    $('.widget').live('widgetDeleted', function(event, obj){
+        jQuery.ajax({
+            type: 'POST',
+            url: '@{Dashboard.deleteWidget()}',
+            data: {widgetId: obj.widget.id},
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            dataType: 'json'
+          }).error(function (jqhr, text) {
+            // TODO
+            alert(text);
+          });
+    }) ;
 
     $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
     $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
