@@ -11,7 +11,6 @@ import models.tm.DefectStatus;
 import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
-import play.data.validation.Valid;
 import play.mvc.Before;
 import util.FilterQuery;
 
@@ -116,7 +115,7 @@ public class Defects extends TMController {
         }
     }
 
-    public static void createDefect(@Valid Defect defect) {
+    public static void createDefect(Defect defect) {
         defect.submittedBy = getConnectedUser();
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
@@ -125,7 +124,7 @@ public class Defects extends TMController {
         ok();
     }
 
-    public static void updateDefect(@Valid Defect defect) {
+    public static void updateDefect(Defect defect) {
         Defect d = Defect.findById(defect.id);
         d.name = defect.name;
         d.description = defect.description;
@@ -138,6 +137,13 @@ public class Defects extends TMController {
     public static void defectDetails(Long baseObjectId, String[] fields) {
         Defect defect = Defect.findById(baseObjectId);
         renderFields(defect, fields);
+    }
+
+    //TODO find a way to restrict that random page call delete defect
+    public static void deleteDefect(Long defectId) {
+        Defect defect = Defect.findById(defectId);
+        defect.delete();
+        ok();
     }
 
     public static void allTags(String q) {
