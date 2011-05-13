@@ -1,150 +1,149 @@
 body {
-  margin: 0;
-  color: #333333;
-  font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
+    margin: 0;
+    color: #333333;
+    font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
 }
 
 div.tree {
-  min-width: 250px;
-  width: auto;
-  min-height: 400px;
-  overflow: auto;
+    min-width: 250px;
+    width: auto;
+    min-height: 400px;
+    overflow: auto;
 }
 
 .box-header {
-  margin-top: 5px;
-  padding: 0px 0px 0px 5px;
+    margin-top: 5px;
+    padding: 0px 0px 0px 5px;
 }
 
 .box-content {
-  overflow: hidden;
-  padding: 5px 5px 5px 5px;
+    overflow: hidden;
+    padding: 5px 5px 5px 5px;
 }
 
 .parameter {
-  display: inline;
-  font-weight: bold;
+    display: inline;
+    font-weight: bold;
 }
 
 .viewParam {
-  display: inline;
-  font-weight: bold;
+    display: inline;
+    font-weight: bold;
 }
 
 .editParam {
-  display: inline;
-  font-weight: bold;
-  border-style: dashed;
-  border-width: thin;
+    display: inline;
+    font-weight: bold;
+    border-style: dashed;
+    border-width: thin;
 }
 
 h1 {
-  text-align: center;
+    text-align: center;
 }
 
 .infos {
-  color: #666;
-  margin-bottom: 5px;
+    color: #666;
+    margin-bottom: 5px;
 }
 
 label.error {
-  float: none;
-  color: red;
-  padding-left: .5em;
-  vertical-align: top;
+    float: none;
+    color: red;
+    padding-left: .5em;
+    vertical-align: top;
 }
 
 .hiddenOnLoad {
-  display: none;
+    display: none;
 }
 
 /* container stuff */
 div.container {
 /*border: 1px solid #000000;*/
-  overflow: auto;
-  width: 100%
+    overflow: auto;
+    width: 100%
 }
 
 div.left_table {
-  width: 30%;
-  float: left;
+    width: 30%;
+    float: left;
 }
 
 div.right_table {
-  width: 65%;
-  float: right;
+    width: 65%;
+    float: right;
 }
 
 div.left_tree {
-  width: 20%;
-  float: left;
+    width: 20%;
+    float: left;
 }
 
 div.right_tree {
-  width: 70%;
-  float: right;
+    width: 70%;
+    float: right;
 }
 
 div.right_column {
-  float: right;
-  width: 47%;
+    float: right;
+    width: 47%;
 }
 
 div.left_column {
-  float: left;
-  width: 47%;
+    float: left;
+    width: 47%;
 }
 
 td.sNone {
-  display: none;
+    display: none;
 }
 
 /* styles for form elements */
 
 .field {
-  clear: both;
-  margin-bottom: 2px;
+    clear: both;
+    margin-bottom: 2px;
 }
 
 label.name {
-  display: block;
-  float: left;
-  width: 100px;
-  text-align: right;
-  margin: 6px 5px 0px 0px;
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: right;
+    margin: 6px 5px 0px 0px;
 }
 
 span.name {
-  display: block;
-  float: left;
-  width: 100px;
-  text-align: right;
-  margin: 0px 5px 0px 0px;
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: right;
+    margin: 0px 5px 0px 0px;
 }
-
 
 .formSubmit {
 /* 100px come from the label that has a width of 100, 2px of the inputs that have a margin of 2, and 1 px of the input border */
-  margin-left: 107px;
+    margin-left: 107px;
 }
 
 /* styles for form elements in dialogs */
 
 .ui-dialog input {
-  display: inline;
-  margin-right: 5px;
+    display: inline;
+    margin-right: 5px;
 }
 
 .ui-dialog input.text {
-  margin-bottom: 12px;
-  width: 95%;
-  padding: .4em;
+    margin-bottom: 12px;
+    width: 95%;
+    padding: .4em;
 }
 
 .ui-dialog fieldset {
-  padding: 0;
-  border: 0;
-  margin-top: 25px;
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
 }
 
 /* empty class used as CSS selector, this is a workaround for a jQuery bug */
@@ -154,26 +153,27 @@ div.modalDialog {
 
 /* modified tabs */
 ul#tabs_header {
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
 }
 
 div#top_menu {
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 1000000; /* probably a lower value is enough */
+    position: absolute;
+    right: 20px;
+    top: 0;
+    z-index: 1000000; /* probably a lower value is enough */
+    text-align: right;
 }
 
 .ui-tabs {
-  overflow: hidden; /*add this line */
-  padding: 0.2em;
-  position: relative;
+    overflow: hidden; /*add this line */
+    padding: 0.2em;
+    position: relative;
 }
 
 /* modified buttons */
 .ui-button .ui-button-text {
-  font-size: 12px;
+    font-size: 12px;
 }
