@@ -48,8 +48,10 @@ public class Requirements extends TMController {
     public static void linkScript(Long requirementId, Long scriptId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Script script = Lookups.getScript(scriptId);
-        requirement.linkedScripts.add(script);
-        requirement.save();
+        if (!requirement.linkedScripts.contains(script)) {
+            requirement.linkedScripts.add(script);
+            requirement.save();
+        }
         ok();
     }
 

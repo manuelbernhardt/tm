@@ -1,6 +1,13 @@
 #{extends 'main.html' /}
 #{set title:'Test Scripts repository' /}
 
+#{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+<div id="linkRequirementDialog" title="Assign requirement to test script">
+    <div id="requirementTree" class="tree"></div>
+</div>
+#{/deadbolt.restrict}
+
+
 <div class="container">
     <div class="left_tree">
         <div id="actions">
@@ -52,17 +59,26 @@
                 #{include 'Repository/steps.html' /}
             </div>
             <div id="linkedRequirements">
-                <table class="display" id="requirementTable">
-                    <thead>
-                    <tr>
-                        <th>Requirement ID</th>
-                        <th>Requirement title</th>
-                        <th>Tags</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="hiddenOnLoad">
+                    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
+                    <button id="requirementScriptDialogOpen">Add requirement</button>
+                    #{/deadbolt.restrict}
+                    <table class="display" id="requirementTable">
+                        <thead>
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Requirement title</th>
+                            <th>Tags</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="shownOnLoad">
+                    No script selected.
+                </div>
             </div>
+
 
         </div>
 
@@ -82,18 +98,22 @@
         }
         });
 
+        $("#requirementTree").tree({types: requirementTreeTypes});
+
         $("#repositoryTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["script", "default"])) {
                 $('.shownOnLoad').hide();
                 $('.hiddenOnLoad').show();
 
-                var scriptId = getSelectedNodeId('repositoryTree');
+                $('#requirementScriptDialogOpen').button('enable');
 
+                var scriptId = getSelectedNodeId('repositoryTree');
                 $('#scriptDetailsForm').oxForm('load', scriptId);
 
                 reloadTables();
+            } else {
+                $('#requirementScriptDialogOpen').button('disable');
             }
-
         });
 
         // tags
@@ -161,6 +181,46 @@
             parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
         }
 
+        $("#linkRequirementDialog").dialog({
+            autoOpen: false,
+            height: 550,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Link to test script": function() {
+
+                    var valid = false;
+                    var treeContainer = $("#requirementTree");
+                    var $tree = jQuery.jstree._reference(treeContainer);
+                    var selectedNode = $tree.get_selected();
+                    if (isSelectedNodeOfType($tree, selectedNode, ["default", "requirement"])) {
+                        $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
+                                function(data) {
+                                    $('#requirementTable').dataTable().fnDraw();
+                                }).error(
+                                function() {
+                                    // TODO modal alert
+                                    alert("error")
+                                });
+
+                        refreshTableContents('#requirementTable', false);
+                        $(this).dialog('close');
+                    } else {
+                        // display validation error or message somehow
+                        alert("You need to select a requirement");
+                    }
+
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            }
+
+        });
+
+        $('#requirementScriptDialogOpen').button({icons: {primary: 'ui-icon-plus'}, disabled: true}).click(function () {
+            $('#linkRequirementDialog').dialog('open');
+        });
 
     });
 
