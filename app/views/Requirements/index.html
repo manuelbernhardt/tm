@@ -1,113 +1,117 @@
 #{extends 'main.html' /}
 #{set title:'Requirements' /}
 
-<div class="container">
-  <div class="left_tree">
-    <div id="actions">
-      #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-        <button id="create_folder">Folder</button>
-        <button id="create_requirement">Requirement</button>
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
-        <button id="remove">Remove</button>
-      #{/deadbolt.restrict}
-    </div>
-    <div id="requirementTree" class="tree"></div>
-  </div>
-  <div class="right_tree">
-    <div id="innerTabs">
-      <ul>
-        <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
-        <li><a href="#linked"><span>Linked entities</span></a></li>
-      </ul>
-      <div id="requirementDetails">
-        <div class="hiddenOnLoad">
-          #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]), id:'requirementForm', baseClass:'models.tm.Requirement'}
-            #{ox.field field:'requirement.name', label:'Name' /}
-            #{ox.field field:'requirement.description', label:'Description' /}
-            #{ox.field field:'requirement.tags', label:'Tags', type:'tags' /}
-            *{the following fields are necessary because play can't bind stuff automatically yet}*
-            #{ox.field field:'requirement.id', hidden:true /}
-            #{ox.field field:'requirement.account.id', hidden:true /}
-            #{ox.field field:'requirement.project.id', hidden:true /}
-            #{ox.field field:'requirement.project.account.id', hidden:true /}
-            #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
-            #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
-            #{ox.submit /}
-          #{/ox.form}
-        </div>
-        <div class="shownOnLoad">
-          No requirement selected.
-        </div>
 
-      </div>
-      <div id="linked">
-        <div class="hiddenOnLoad">
-          #{include 'Requirements/linkedEntities.html' /}
+<div class="container">
+    <div class="left_tree">
+        <div id="actions">
+            #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+            <button id="create_folder">Folder</button>
+            <button id="create_requirement">Requirement</button>
+            #{/deadbolt.restrict}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+            <button id="remove">Remove</button>
+            #{/deadbolt.restrict}
         </div>
-        <div class="shownOnLoad">
-          No requirement selected.
-        </div>
-      </div>
+        <div id="requirementTree" class="tree"></div>
     </div>
-  </div>
+    <div class="right_tree">
+        <div id="innerTabs">
+            <ul>
+                <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
+                <li><a href="#linked"><span>Linked entities</span></a></li>
+            </ul>
+            <div id="requirementDetails">
+                <div class="hiddenOnLoad">
+                    #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]),
+                    id:'requirementForm', baseClass:'models.tm.Requirement'}
+                    #{ox.field field:'requirement.name', label:'Name' /}
+                    #{ox.field field:'requirement.description', label:'Description' /}
+                    #{ox.field field:'requirement.tags', label:'Tags', type:'tags' /}
+                    *{the following fields are necessary because play can't bind stuff automatically yet}*
+                    #{ox.field field:'requirement.id', hidden:true /}
+                    #{ox.field field:'requirement.account.id', hidden:true /}
+                    #{ox.field field:'requirement.project.id', hidden:true /}
+                    #{ox.field field:'requirement.project.account.id', hidden:true /}
+                    #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
+                    #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
+                    #{ox.submit /}
+                    #{/ox.form}
+                </div>
+                <div class="shownOnLoad">
+                    No requirement selected.
+                </div>
+
+            </div>
+            <div id="linked">
+                <div class="hiddenOnLoad">
+                    #{include 'Requirements/linkedEntities.html' /}
+                </div>
+                <div class="shownOnLoad">
+                    No requirement selected.
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 #{set 'moreScripts'}
 <script type="text/javascript">
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    $("#innerTabs").tabs();
+        $("#innerTabs").tabs();
 
-    $("#requirementTree").tree({types: requirementTreeTypes, onRename: function(name) {
-        var fieldName = '#' +  $('#requirementForm').oxForm('getFieldId', 'requirement.name');
-        $(fieldName).val(name);
-    }
+        $('.oxdisplayfield').removeClass('field');
+
+        $("#requirementTree").tree({types: requirementTreeTypes, onRename: function(name) {
+            var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
+            $(fieldName).val(name);
+        }
+        });
+
+        $('#requirementForm').oxForm({
+            loadAction: '@{Requirements.requirementsDetailsData()}',
+            submissionCallback: function() {
+                refreshTree('requirementTree');
+            }
+        });
+
+        #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
+        // tags
+        var tokens = $('#requirementForm_requirement_tags').tokenInput({
+            url: '@{Requirements.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+        });
+        #{/deadbolt.restrict}
+
+        $("#requirementTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ["requirement", "default"])) {
+                $('.shownOnLoad').hide();
+                $('.hiddenOnLoad').show();
+
+                var requirementId = getSelectedNodeId('requirementTree');
+                $('#requirementForm').oxForm('load', requirementId);
+
+                reloadTables();
+            }
+        });
+
+        $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
+        });
+        $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+        });
+        $('#remove').button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+            $("#requirementTree").jstree("remove", null);
+        });
+
     });
-
-    $('#requirementForm').oxForm({
-      loadAction: '@{Requirements.requirementsDetailsData()}',
-      submissionCallback: function() {
-        refreshTree('requirementTree');
-      }
-    });
-
-    #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
-    // tags
-    var tokens = $('#requirementForm_requirement_tags').tokenInput({
-      url: '@{Requirements.allTags()}',
-      preventDuplicates: true,
-      tokenValue: 'name',
-      allowCreation: true,
-      creationText: "Create new tag"
-    });
-    #{/deadbolt.restrict}
-
-    $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["requirement", "default"])) {
-        $('.shownOnLoad').hide();
-        $('.hiddenOnLoad').show();
-
-        var requirementId = getSelectedNodeId('requirementTree');
-        $('#requirementForm').oxForm('load', requirementId);
-
-        reloadTables();
-      }
-    });
-
-    $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
-    });
-    $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
-    });
-    $('#remove').button({icons: {primary: 'ui-icon-minus'}}).click(function () {
-      $("#requirementTree").jstree("remove", null);
-    });
-
-  });
 
 </script>
 #{/set}

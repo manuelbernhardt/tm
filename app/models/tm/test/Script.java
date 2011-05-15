@@ -64,4 +64,29 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
         return ScriptParam.find("from ScriptParam p where p.script = ? and p.name = ?", this, name).<ScriptParam>first();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Script script = (Script) o;
+
+        if (createdBy != null ? !createdBy.equals(script.createdBy) : script.createdBy != null) return false;
+        if (description != null ? !description.equals(script.description) : script.description != null) return false;
+        if (!name.equals(script.name)) return false;
+        if (tags != null ? !tags.equals(script.tags) : script.tags != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        return result;
+    }
 }

@@ -29,7 +29,10 @@
       }
     });
 
-    $("#projectTree").tree({types: projectTreeTypes});
+    $("#projectTree").tree({types: projectTreeTypes, onRename: function(name){
+        $('#project_name').val(name);
+    }
+    });
 
     /** Selection listener **/
     $("#projectTree").bind("select_node.jstree", function (e, data) {
