@@ -126,7 +126,7 @@
             refreshWidgetsContent(dashboard);
         });
 
-        $('#dashboard').live('widgetDropped', function() {
+        $('#dashboard').live('widgetDropped', function(event, obj) {
 
             jQuery.ajax({
                 type: 'POST',
