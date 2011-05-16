@@ -250,6 +250,7 @@ public class TMController extends Controller {
         params.put(tagsParameterKey + ".id", tagIds.toArray(new String[tagIds.size()]));
     }
 
+    @Util
     public static Pattern tagParameterPattern(String prefix) {
         return Pattern.compile("^" + prefix + "\\[([^\\]]+)\\](.*)$");
     }
