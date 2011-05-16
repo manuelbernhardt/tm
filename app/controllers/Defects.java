@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.DefectStatus;
 import models.tm.TMUser;
@@ -115,6 +117,7 @@ public class Defects extends TMController {
         }
     }
 
+    @Restrict(UnitRole.DEFECTCREATE)
     public static void createDefect(Defect defect) {
         defect.submittedBy = getConnectedUser();
         defect.account = getConnectedUserAccount();
@@ -124,6 +127,7 @@ public class Defects extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.DEFECTEDIT)
     public static void updateDefect(Defect defect) {
         Defect d = Defect.findById(defect.id);
         d.name = defect.name;
@@ -134,12 +138,13 @@ public class Defects extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void defectDetails(Long baseObjectId, String[] fields) {
         Defect defect = Defect.findById(baseObjectId);
         renderFields(defect, fields);
     }
 
-    //TODO find a way to restrict that random page call delete defect
+    @Restrict(UnitRole.DEFECTDELETE)
     public static void deleteDefect(Long defectId) {
         Defect defect = Defect.findById(defectId);
         defect.delete();

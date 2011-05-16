@@ -538,9 +538,35 @@ function toggleFilter(buttonId, divId) {
     });
 }
 
-function adoptGraphSize(){
-   
+function adoptGraphSize() {
+
     $('.visualize').remove();
-    var width = $('.graphTable').parent().width()-100;
+    var width = $('.graphTable').parent().width() - 100;
     $('.graphTable').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+}
+
+function errorMessage(text, title) {
+    if (title == null) {
+        var title = 'An error has happened';
+    }
+    if (text == null) {
+        var text = 'Message not set!';
+    }
+    title = "<span class='ui-icon ui-icon-alert'> </span> " + title;
+    var errorHtml = "<p><span class='ui-icon ui-icon-alert'></span> " + text + "</p>";
+
+    $('#errorDialog').html(errorHtml);
+    $('#errorDialog').dialog({
+        autoOpen: true,
+        height: 200,
+        width: 300,
+        modal: true,
+        title: title,
+        resizable: false,
+        buttons:{
+            "Close": function() {
+                $(this).dialog('close');
+            }
+        }
+    });
 }
