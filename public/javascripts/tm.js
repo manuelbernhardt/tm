@@ -555,3 +555,9 @@ function errorMessage(text, title) {
         }
     });
 }
+
+function refreshWidgetsContent(dashboard) {
+    $('#dashboard').find('.widget').each(function(index) {
+        dashboard.getWidget($(this).attr('id')).refreshContent();
+    });
+}

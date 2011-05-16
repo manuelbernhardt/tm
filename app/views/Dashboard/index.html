@@ -111,6 +111,7 @@
 
 
         $('#dashboard').live('dashboardLayoutChanged', function() {
+
             jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.changeLayout()}',
@@ -122,7 +123,7 @@
 
             });
 
-            adoptGraphSize();
+            refreshWidgetsContent(dashboard);
         });
 
         $('#dashboard').live('widgetDropped', function() {
