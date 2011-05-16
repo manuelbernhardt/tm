@@ -343,14 +343,12 @@ function removeDialogs() {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
                 var query = {"baseObjectId": id, "fields": oxFormData.fields };
-                var viewModel = oxFormData.viewModel;
                 $.getJSON(oxFormData.loadAction, query, function(data) {
-                    if (!ko.mapping.isMapped(viewModel)) {
-                        viewModel = $.extend(viewModel, ko.mapping.fromJS(data));
-                        ko.applyBindings(viewModel, form);
+                    if (!ko.mapping.isMapped(oxFormData.viewModel)) {
+                        $.extend(oxFormData.viewModel, ko.mapping.fromJS(data));
+                        ko.applyBindings(oxFormData.viewModel, form);
                     } else {
-                        //alert("test: " + viewModel.test);
-                        ko.mapping.updateFromJS(viewModel, data);
+                        ko.mapping.updateFromJS(oxFormData.viewModel, data);
                     }
                 });
             });
@@ -459,69 +457,56 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
 
 ko.bindingHandlers.tags = {
     init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-        // This will be called when the binding is first applied to an element
-        // Set up any initial state, event handlers, etc. here
-        $(element).tokenInput('clearAll');
-        var modelValue = valueAccessor();
-        var tokens = ko.utils.unwrapObservable(modelValue);
         viewModel.lock = false;
-        $.each(tokens, function(index, el) {
-            var token = ko.utils.unwrapObservable(el);
-            var id = typeof token.id === 'function' ? token.id() : token.id;
-            var name = typeof token.name === 'function' ? token.name() : token.name;
-            $(element).tokenInput('add', id, name);
-        });
+        var modelValue = valueAccessor();
 
         $(element).change(function() {
-            alert("change, lock " + viewModel.lock);
             if (!viewModel.lock) {
-                viewModel.lock = true;
                 var tokens = $(element).tokenInput('get');
                 if (typeof tokens !== 'undefined') {
-                    var tokenArray = [];
-                    $.each(tokens, function(index, el) {
-                        tokenArray.push({id: el.id, name: el.name});
-                    });
-        /*
                     if (ko.isWriteableObservable(modelValue)) {
-                        alert("writing update");
-                        var key = "value_" + $(element).attr('id');
-                        var update = {};
-                        update['test'] = "foo";
-                        update[key] = tokenArray;
-                        ko.mapping.updateFromJS(viewModel, update);
+                        var existing = ko.utils.unwrapObservable(modelValue);
+                        var existingNames = [];
+                        $.each(existing, function(index, el) {
+                            existingNames.push(el.name());
+                        });
+                        var updatedNames = [];
+                        $.each(tokens, function(index, el) {
+                            updatedNames.push(el.name);
+                        });
 
-                        var update = {};
-                        var all = ko.utils.unwrapObservable(allBindingsAccessor());
-                        update[key] = tokenArray;
-                        $.extend(all, update);
-                        ko.mapping.updateFromJS(viewModel, all);
+                        // remove elements
+                        $.each(existing, function(index, el) {
+                            if($.inArray(el.name(), updatedNames) < 0) {
+                                modelValue.remove(el);
+                                tokens.splice(index, 1);
+                            }
+                        });
+                        // add new
+                        $.each(tokens, function(index, el) {
+                            if($.inArray(el.name, existingNames) < 0) {
+                                modelValue.push({id: el.id, name: el.name});
+                            }
+                        });
                     }
-        */
-                    viewModel.lock = false;
+
                 }
-            }
+             }
         });
 
 
     },
     update:
             function(element, valueAccessor, allBindingsAccessor, viewModel) {
-//                alert("foo");
-                // This will be called once when the binding is first applied to an element,
-                // and again whenever the associated observable changes value.
-                // Update the DOM element based on the supplied values here.
-                if (!viewModel.lock) {
-                    viewModel.lock = true;
-                    $(element).tokenInput('clearAll');
-                    var value = valueAccessor();
-                    var tokens = ko.utils.unwrapObservable(value);
-                    $(tokens).each(function() {
-                        var token = ko.utils.unwrapObservable(this);
-                        $(element).tokenInput('add', token.id(), token.name());
-                    });
-                    viewModel.lock = false;
-                }
+                viewModel.lock = true;
+                $(element).tokenInput('clearAll');
+                var value = valueAccessor();
+                var tokens = ko.utils.unwrapObservable(value);
+                $(tokens).each(function() {
+                    var token = ko.utils.unwrapObservable(this);
+                    $(element).tokenInput('add', typeof token.id == 'function' ? token.id() : token.id, typeof token.name == 'function' ? token.name() : token.name);
+                });
+                viewModel.lock = false;
             }
 };
 
