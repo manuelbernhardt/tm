@@ -163,7 +163,7 @@ div#top_menu {
     position: absolute;
     right: 20px;
     top: 0;
-    z-index: 1000000; /* probably a lower value is enough */
+    z-index: 1000; /* probably a lower value is enough */
     text-align: right;
 }
 
