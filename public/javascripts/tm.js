@@ -349,6 +349,7 @@ function removeDialogs() {
                         viewModel = $.extend(viewModel, ko.mapping.fromJS(data));
                         ko.applyBindings(viewModel, form);
                     } else {
+                        //alert("test: " + viewModel.test);
                         ko.mapping.updateFromJS(viewModel, data);
                     }
                 });
@@ -464,24 +465,39 @@ ko.bindingHandlers.tags = {
         var modelValue = valueAccessor();
         var tokens = ko.utils.unwrapObservable(modelValue);
         viewModel.lock = false;
-        $(tokens).each(function() {
-            var token = ko.utils.unwrapObservable(this);
-            $(element).tokenInput('add', token.id(), token.name());
+        $.each(tokens, function(index, el) {
+            var token = ko.utils.unwrapObservable(el);
+            var id = typeof token.id === 'function' ? token.id() : token.id;
+            var name = typeof token.name === 'function' ? token.name() : token.name;
+            $(element).tokenInput('add', id, name);
         });
 
         $(element).change(function() {
+            alert("change, lock " + viewModel.lock);
             if (!viewModel.lock) {
                 viewModel.lock = true;
                 var tokens = $(element).tokenInput('get');
                 if (typeof tokens !== 'undefined') {
                     var tokenArray = [];
-                    $(tokens).each(function() {
-                        tokenArray.push({id: this.id, name: this.name});
+                    $.each(tokens, function(index, el) {
+                        tokenArray.push({id: el.id, name: el.name});
                     });
-                    var key = "value_" + $(element).attr('id');
+        /*
                     if (ko.isWriteableObservable(modelValue)) {
-                        viewModel[key](tokenArray);
+                        alert("writing update");
+                        var key = "value_" + $(element).attr('id');
+                        var update = {};
+                        update['test'] = "foo";
+                        update[key] = tokenArray;
+                        ko.mapping.updateFromJS(viewModel, update);
+
+                        var update = {};
+                        var all = ko.utils.unwrapObservable(allBindingsAccessor());
+                        update[key] = tokenArray;
+                        $.extend(all, update);
+                        ko.mapping.updateFromJS(viewModel, all);
                     }
+        */
                     viewModel.lock = false;
                 }
             }
@@ -491,6 +507,7 @@ ko.bindingHandlers.tags = {
     },
     update:
             function(element, valueAccessor, allBindingsAccessor, viewModel) {
+//                alert("foo");
                 // This will be called once when the binding is first applied to an element,
                 // and again whenever the associated observable changes value.
                 // Update the DOM element based on the supplied values here.
