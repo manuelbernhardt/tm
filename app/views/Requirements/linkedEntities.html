@@ -1,206 +1,201 @@
 <div id="actions">
-  #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
     <button id="linkScript">Script</button>
     <button id="unlinkScript">Remove</button>
-  #{/deadbolt.restrict}
+    #{/deadbolt.restrict}
 </div>
 
 #{box 'Test scripts'}
 <table class="display" id="scriptTable">
-  <thead>
-  <tr>
-    <th>Test Script name</th>
-  </tr>
-  </thead>
-  <tbody></tbody>
+    <thead>
+    <tr>
+        <th>Test Script name</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
 </table>
 #{/box}
 
 #{box 'Test execution'}
 <table class="display" id="instanceTable">
-  <thead>
-  <tr>
-    <th>Test Instance name</th>
-    <th>Tags</th>
-    <th>Status</th>
-  </tr>
-  </thead>
-  <tbody></tbody>
+    <thead>
+    <tr>
+        <th>Test Instance name</th>
+        <th>Tags</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
 </table>
 #{/box}
 
 #{box 'Defects'}
 <table class="display" id="defectTable">
-  <thead>
-  <tr>
-    <th>Defect ID</th>
-    <th>Defect title</th>
-    <th>Tags</th>
-    <th>Status</th>
-  </tr>
-  </thead>
-  <tbody></tbody>
+    <thead>
+    <tr>
+        <th>Defect ID</th>
+        <th>Defect title</th>
+        <th>Tags</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
 </table>
 #{/box}
 
 
-
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
 <div id="linkScriptDialog" title="Assign requirement to test script">
-  <div id="repositoryTree" class="tree"></div>
+    <div id="repositoryTree" class="tree"></div>
 </div>
 #{/deadbolt.restrict}
 
 <script type="text/javascript">
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-    #{tabularasa.init tableId:'scriptTable'}
-    var scriptTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
-        {"sName": "name", "sWidth": "100%"}
-      ],
-      "aoSorting": [
-        [0, "desc"]
-      ],
-      "sAjaxSource": "@{Requirements.linkedScripts()}",
-      "bProcessing": true,
-      "bServerSide": true,
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No linked scripts"
-      }
-    };
-    #{/tabularasa.init}
+        #{tabularasa.init tableId:'scriptTable'}
+        var scriptTableParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
+                {"sName": "name", "sWidth": "100%"}
+            ],
+            "aoSorting": [
+                [0, "desc"]
+            ],
+            "sAjaxSource": "@{Requirements.linkedScripts()}",
+            "bProcessing": true,
+            "bServerSide": true,
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bFilter": false,
+            "bAutoWidth": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No linked scripts"
+            }
+        };
+        #{/tabularasa.init}
 
-    function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "requirementId", "value": getSelectedNodeId('requirementTree')});
-    }
-
-    handleRowSelection('#scriptTable', function() {
-      $("#unlinkScript").button('enable');
-    });
-
-
-    #{tabularasa.init tableId:'instanceTable'}
-    var instanceTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
-        {"sName": "name"},
-        {"sName": "tagNames"},
-        {"sName": "executionStatus"}
-      ],
-      "aoSorting": [
-        [0, "desc"]
-      ],
-      "sAjaxSource": "@{Requirements.linkedInstances()}",
-      "bProcessing": true,
-      "bServerSide": true,
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No linked test instances"
-      }
-    };
-    #{/tabularasa.init}
-
-    #{tabularasa.init tableId:'defectTable'}
-    var defectTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
-        {"sName": "naturalId", "sWidth": "10%"},
-        {"sName": "name"},
-        {"sName": "tagNames"},
-        {"sName": "status.name"}
-      ],
-      "aoSorting": [
-        [0, "desc"]
-      ],
-      "sAjaxSource": "@{Requirements.linkedDefects()}",
-      "bProcessing": true,
-      "bServerSide": true,
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No linked defects"
-      }
-    };
-    #{/tabularasa.init}
-
-
-    $("#repositoryTree").tree({types: repositoryTreeTypes});
-
-    $("#linkScript").button({icons: {primary: "ui-icon-plus"}}).click(function() {
-      $("#linkScriptDialog").dialog("open");
-    });
-
-    $("#unlinkScript").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
-      $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
-              function(data) {
-                $('#scriptTable').dataTable().fnDraw();
-              }).error(
-              function() {
-                // TODO modal alert
-                alert("error")
-              });
-    });
-
-    $("#linkScriptDialog").dialog({
-      autoOpen: false,
-      height: 550,
-      width: 300,
-      modal: true,
-      buttons: {
-        "Link to test script": function() {
-
-          var valid = false;
-          var treeContainer = $("#repositoryTree");
-          var $tree = jQuery.jstree._reference(treeContainer);
-          var selectedNode = $tree.get_selected();
-          if ($tree._get_type(selectedNode) == 'script') {
-            valid = true;
-          } else {
-            // display validation error or message somehow
-            alert("You need to select a script");
-          }
-
-          if (valid) {
-            $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
-                    function(data) {
-                      $('#scriptTable').dataTable().fnDraw();
-                    }).error(
-                    function() {
-                      // TODO modal alert
-                      alert("error")
-                    });
-
-              refreshTableContents('#defectTable', false);
-              refreshTableContents('#instanceTable', false);
-
-            $(this).dialog("close");
-          }
-        },
-        Cancel: function() {
-          $(this).dialog("close");
+        function addRequestParameters(parameters, tableId) {
+            parameters.push({"name": "requirementId", "value": getSelectedNodeId('requirementTree')});
         }
-      }
+
+        handleRowSelection('#scriptTable', function() {
+            $("#unlinkScript").button('enable');
+        });
+
+
+        #{tabularasa.init tableId:'instanceTable'}
+        var instanceTableParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
+                {"sName": "name"},
+                {"sName": "tagNames"},
+                {"sName": "executionStatus"}
+            ],
+            "aoSorting": [
+                [0, "desc"]
+            ],
+            "sAjaxSource": "@{Requirements.linkedInstances()}",
+            "bProcessing": true,
+            "bServerSide": true,
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bFilter": false,
+            "bAutoWidth": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No linked test instances"
+            }
+        };
+        #{/tabularasa.init}
+
+        #{tabularasa.init tableId:'defectTable'}
+        var defectTableParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
+                {"sName": "naturalId", "sWidth": "10%"},
+                {"sName": "name"},
+                {"sName": "tagNames"},
+                {"sName": "status.name"}
+            ],
+            "aoSorting": [
+                [0, "desc"]
+            ],
+            "sAjaxSource": "@{Requirements.linkedDefects()}",
+            "bProcessing": true,
+            "bServerSide": true,
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bFilter": false,
+            "bAutoWidth": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No linked defects"
+            }
+        };
+        #{/tabularasa.init}
+
+
+        $("#repositoryTree").tree({types: repositoryTreeTypes});
+
+        $("#linkScript").button({icons: {primary: "ui-icon-plus"}}).click(function() {
+            $("#linkScriptDialog").dialog("open");
+        });
+
+        $("#unlinkScript").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
+            $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
+                    function(data) {
+                        $('#scriptTable').dataTable().fnDraw();
+                    }).error(function (jqhr, text) {
+                errorMessage("error")
+            });
+        });
+
+        $("#linkScriptDialog").dialog({
+            autoOpen: false,
+            height: 550,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Link to test script": function() {
+
+                    var valid = false;
+                    var treeContainer = $("#repositoryTree");
+                    var $tree = jQuery.jstree._reference(treeContainer);
+                    var selectedNode = $tree.get_selected();
+                    if ($tree._get_type(selectedNode) == 'script') {
+                        valid = true;
+                    } else {
+                        // display validation error or message somehow
+                        alert("You need to select a script");
+                    }
+
+                    if (valid) {
+                        $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
+                                function(data) {
+                                    $('#scriptTable').dataTable().fnDraw();
+                                }).error(function (jqhr, text) {
+                            errorMessage("error")
+                        });
+
+                        refreshTableContents('#defectTable', false);
+                        refreshTableContents('#instanceTable', false);
+
+                        $(this).dialog("close");
+                    }
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
     });
-  });
 </script>
 

@@ -197,11 +197,9 @@
                         $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
                                 function(data) {
                                     $('#requirementTable').dataTable().fnDraw();
-                                }).error(
-                                function() {
-                                    // TODO modal alert
-                                    alert("error")
-                                });
+                                }).error(function (jqhr, text) {
+                            errorMessage(text);
+                        });
 
                         refreshTableContents('#requirementTable', false);
                         $(this).dialog('close');
