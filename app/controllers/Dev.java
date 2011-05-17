@@ -13,6 +13,10 @@ import play.test.Fixtures;
  */
 public class Dev extends Controller {
 
+    public static void index() {
+      redirect("Dashboard.index");
+    }
+
     public static void reloadData() {
         if (Play.mode == Play.Mode.DEV) {
             Fixtures.deleteDatabase();
