@@ -105,6 +105,30 @@
 
         });
 
+        $('.widget').live('widgetOpen', function(event, obj) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@{Dashboard.toggleWidgetWindow()}',
+                data: {widgetId: obj.widget.id, state: true},
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType: 'json'
+            }).error(function (jqhr, text) {
+                errorMessage(text);
+            });
+            obj.widget.refreshContent();
+        });
+
+        $('.widget').live('widgetClose', function(event, obj) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '@{Dashboard.toggleWidgetWindow()}',
+                data: {widgetId: obj.widget.id, state: false},
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType: 'json'
+            }).error(function (jqhr, text) {
+                errorMessage(text);
+            });
+        });
 
         $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
         $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
@@ -112,6 +136,7 @@
 
         $('#dashboard').live('dashboardLayoutChanged', function() {
 
+            refreshWidgetsContent(dashboard);
             jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.changeLayout()}',
@@ -122,8 +147,6 @@
                 errorMessage(text);
 
             });
-
-            refreshWidgetsContent(dashboard);
         });
 
         $('#dashboard').live('widgetDropped', function(event, obj) {
@@ -138,7 +161,7 @@
                 errorMessage(text);
             });
             adoptGraphSize();
-
+            refreshWidgetsContent(dashboard);
         });
 
 
