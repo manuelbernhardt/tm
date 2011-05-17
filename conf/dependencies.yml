@@ -10,6 +10,8 @@ require:
 #    - play -> excel 1.1
     - mysql -> mysql-connector-java 5.1.13
     - provided -> gag 1.0.1
+    # for excel export, the module does not come with it
+    - commons-digester -> commons-digester 2.1
 
 repositories:
     - provided:

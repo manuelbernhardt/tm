@@ -1,8 +1,5 @@
 package controllers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import controllers.deadbolt.Restrict;
@@ -17,8 +14,6 @@ import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
 import play.mvc.Before;
-
-import static play.modules.excel.Excel.renderExcel;
 
 /**
  *
@@ -122,10 +117,7 @@ public class Requirements extends TMController {
 
     @Restrict(UnitRole.REQVIEW)
     public static void export() {
-        List<Requirement> requirements = Requirement.all().fetch();
-        DateFormat df = new SimpleDateFormat("yyyymmdd");
-        renderArgs.put("fileName", getActiveProject().name + "Requirements-" + df.format(new Date()));
-        renderExcel(requirements);
-    }
+        export(Requirement.class);
 
+    }
 }

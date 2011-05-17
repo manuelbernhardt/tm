@@ -157,4 +157,11 @@ public class Defects extends TMController {
     public static void allTags(String q) {
         Lookups.allTags(getActiveProject().getId(), Tag.TagType.DEFECT, q);
     }
+
+    @Restrict(UnitRole.DEFECTVIEW)
+    public static void export() {
+        export(Defect.class);
+
+    }
+
 }

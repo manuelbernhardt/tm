@@ -25,6 +25,7 @@ import models.account.AccountEntity;
 import models.account.User;
 import models.general.TemporalModel;
 import models.tm.Project;
+import models.tm.ProjectModel;
 import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.hibernate.Session;
@@ -36,6 +37,8 @@ import play.mvc.Util;
 import play.mvc.With;
 import play.templates.JavaExtensions;
 import util.Logger;
+
+import static play.modules.excel.Excel.renderExcel;
 
 /**
  * Parent controller for the TM application.
@@ -179,6 +182,14 @@ public class TMController extends Controller {
             forbidden("You are not a member of this project.");
         }
 
+    }
+
+    @Util
+    public static void export(Class<? extends ProjectModel> entityClass) {
+        List data = JPA.em().createQuery(String.format("from %s o", entityClass.getSimpleName())).getResultList();
+        DateFormat df = new SimpleDateFormat("yyyymmdd");
+        renderArgs.put("fileName", getActiveProject().name + "-" + entityClass.getSimpleName() + "s-" + df.format(new Date()));
+        renderExcel(data);
     }
 
     @Util
