@@ -67,8 +67,18 @@ public class Dashboard extends TMController {
         }
     }
 
+    public static void toggleWidgetWindow(Long widgetId, Boolean state) {
+        if (widgetId != null) {
+            Logger.info(Logger.LogType.USER, "Changing widget's (%s) status to %s", widgetId, state);
+            JPA.em().createQuery("update ProjectWidget pw set pw.open = :state where pw.id=:widgetId and pw.templateWidget=false")
+                    .setParameter("widgetId", widgetId).setParameter("state", state).executeUpdate();
+        } else {
+            Logger.error(Logger.LogType.USER, "widgetId in toggle widget window is null");
+        }
+    }
+
     public static void addWidget(Long widgetId) {
-        if (widgetId!=null) {
+        if (widgetId != null) {
             String column = "first";
             Logger.info(Logger.LogType.USER, "Changing widget (%s) to column %s", widgetId, column);
             ProjectWidget projectWidget = ProjectWidget.find("id=? and templateWidget=true", widgetId).<ProjectWidget>first();
@@ -99,16 +109,15 @@ public class Dashboard extends TMController {
         }
     }
 
-    public static void deleteWidget(Long widgetId){
-        if(widgetId!=null){
+    public static void deleteWidget(Long widgetId) {
+        if (widgetId != null) {
             ProjectWidget projectWidget = ProjectWidget.find("id=? and owner=?", widgetId, getConnectedUser()).<ProjectWidget>first();
-            if(projectWidget!=null){
+            if (projectWidget != null) {
                 projectWidget.parameters = null;
                 projectWidget.delete();
             }
 
-        }
-        else{
+        } else {
             Logger.error(Logger.LogType.USER, "widgetID is null");
             error("No layout provided");
         }
