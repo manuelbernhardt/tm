@@ -468,7 +468,7 @@ ko.bindingHandlers.tags = {
                         var existing = ko.utils.unwrapObservable(modelValue);
                         var existingNames = [];
                         $.each(existing, function(index, el) {
-                            existingNames.push(el.name());
+                            existingNames.push(typeof el.name == 'function' ? el.name() : el.name);
                         });
                         var updatedNames = [];
                         $.each(tokens, function(index, el) {
@@ -477,7 +477,8 @@ ko.bindingHandlers.tags = {
 
                         // remove elements
                         $.each(existing, function(index, el) {
-                            if($.inArray(el.name(), updatedNames) < 0) {
+                            var name = typeof el.name == 'function' ? el.name() : el.name;
+                            if($.inArray(name, updatedNames) < 0) {
                                 modelValue.remove(el);
                                 tokens.splice(index, 1);
                             }
