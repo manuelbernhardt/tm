@@ -533,10 +533,10 @@ function adoptGraphSize() {
 
 function errorMessage(text, title) {
     if (title == null) {
-        var title = 'An error has happened';
+        title = 'An error has happened';
     }
     if (text == null) {
-        var text = 'Message not set!';
+        text = 'Message not set!';
     }
     title = "<span class='ui-icon ui-icon-alert'> </span> " + title;
     var errorHtml = "<p><span class='ui-icon ui-icon-alert'></span> " + text + "</p>";
