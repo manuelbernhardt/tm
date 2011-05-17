@@ -56,7 +56,7 @@ public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEn
     public int level;
     public Long nodeId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     public ProjectTreeNode threadRoot;
 
     // let's assume nobody creates such mad hierarchies
