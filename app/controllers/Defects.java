@@ -24,11 +24,13 @@ public class Defects extends TMController {
 
     private static final String[] sortBy = {"id", "name", "tags", "assignedTo", "submittedBy", "status.name", "created"};
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void index() {
         List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
         render(users);
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void defects(String tableId,
                                Integer iDisplayStart,
                                Integer iDisplayLength,
@@ -151,6 +153,7 @@ public class Defects extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void allTags(String q) {
         Lookups.allTags(getActiveProject().getId(), Tag.TagType.DEFECT, q);
     }
