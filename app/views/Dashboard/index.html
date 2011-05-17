@@ -115,7 +115,7 @@
             }).error(function (jqhr, text) {
                 errorMessage(text);
             });
-
+            obj.widget.refreshContent();
         });
 
         $('.widget').live('widgetClose', function(event, obj) {
@@ -128,7 +128,6 @@
             }).error(function (jqhr, text) {
                 errorMessage(text);
             });
-
         });
 
         $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
@@ -162,7 +161,7 @@
                 errorMessage(text);
             });
             adoptGraphSize();
-
+            refreshWidgetsContent(dashboard);
         });
 
 
