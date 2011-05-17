@@ -6,8 +6,8 @@
     <div class="left_tree">
         <div id="actions">
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-            <button id="create_folder">Folder</button>
-            <button id="create_requirement">Requirement</button>
+            <button id="create_folder">Create new folder</button>
+            <button id="create_requirement">Create new requirement</button>
             #{/deadbolt.restrict}
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
             <button id="remove">Remove</button>
@@ -101,13 +101,13 @@
             }
         });
 
-        $('#create_folder').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}});
+        $('#create_folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
         });
-        $('#create_requirement').button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+        $('#create_requirement').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-flag'}, text: false}).click(function () {
+            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
         });
-        $('#remove').button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+        $('#remove').button({icons: {primary: 'ui-icon-minus'}, text: false}).click(function () {
             $("#requirementTree").jstree("remove", null);
         });
 
