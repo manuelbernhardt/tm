@@ -1,20 +1,22 @@
 <div id="top_menu">
 
   #{if _space == 'application'}
-  <span class="ui-widget">
-  #{form id:'switchProjectForm', style:'display:inline', action:play.mvc.Router.reverse(request.controller+'.switchActiveProject')}
-  <label for="switchProject">Project</label>
-  #{select name:'projectId', items:_caller.projects, valueProperty:'id', value:_caller.activeProject.id, labelProperty:'name', id:'switchProject' /}
-  #{/form}
-  </span>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('#switchProject').change(function() {
-        $('#switchProjectForm').submit();
-      });
-    });
-  </script>
-  #{topMenuButtons firstName:_caller.firstName, lastName:_caller.lastName /}
+    #{if _caller.activeProject}
+      <span class="ui-widget">
+      #{form id:'switchProjectForm', style:'display:inline', action:play.mvc.Router.reverse(request.controller+'.switchActiveProject')}
+      <label for="switchProject">Project</label>
+      #{select name:'projectId', items:_caller.projects, valueProperty:'id', value:_caller.activeProject.id, labelProperty:'name', id:'switchProject' /}
+      #{/form}
+      </span>
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $('#switchProject').change(function() {
+            $('#switchProjectForm').submit();
+          });
+        });
+      </script>
+    #{/if}
+    #{topMenuButtons firstName:_caller.firstName, lastName:_caller.lastName /}
   #{/if}
 
   #{elseif _space == 'admin'}
