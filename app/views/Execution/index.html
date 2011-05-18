@@ -39,9 +39,13 @@
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
         <div id="updateRunButton">Edit Test Run</div>
       #{/deadbolt.restrict}
+      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECDELETE]]}
+      <div id="deleteRunButton">Delete Test Run</div>
+      #{/deadbolt.restrict}
 
       <div id="createRunDialog" title="Run Test Instance"></div>
       <div id="updateRunDialog" title="Update Test Run"></div>
+      <div id="deleteRunDialog" title="Delete Test Run"></div>
 
       <table class="display" id="runTable">
         <thead>
@@ -260,6 +264,39 @@
           $(this).dialog("close");
         }
       }
+    });
+
+    $('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, disabled: true}).click(function() {
+      $('#deleteRunDialog').dialog('open');
+    });
+
+    $('#deleteRunDialog').dialog({
+        autoOpen: false,
+        height: 100,
+        width: 300,
+        modal: true,
+        buttons: {
+            "Confirm": function() {
+                $.ajax({
+                  type: 'POST',
+                  url: '@{Execution.deleteRun()}',
+                  data: {runId: getSelectedRowId('#runTable')},
+                  success: function() {
+                    refreshTableContents('#instanceTable', false);
+                    $('#deleteRunDialog').dialog("close")
+                  },
+                  error: function() {
+                    errorMessage("Could not delete test run.");
+                    refreshTableContents('#instanceTable', false);
+                    $('#deleteRunDialog').dialog("close")
+                  }
+                });
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+
+        }
     });
 
 

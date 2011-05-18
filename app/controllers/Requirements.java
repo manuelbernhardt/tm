@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.util.List;
 
 import controllers.deadbolt.Restrict;
@@ -118,6 +119,26 @@ public class Requirements extends TMController {
     @Restrict(UnitRole.REQVIEW)
     public static void export() {
         export(Requirement.class);
+    }
 
+    public static void importExcel(File excelFile) {
+        System.out.println(excelFile.getName());
+/*        InputStream inp = new FileInputStream(excelFile);
+    //InputStream inp = new FileInputStream("workbook.xlsx");
+
+    Workbook wb = WorkbookFactory.create(inp);
+    Sheet sheet = wb.getSheetAt(0);
+    Row row = sheet.getRow(2);
+    Cell cell = row.getCell(3);
+    if (cell == null)
+        cell = row.createCell(3);
+    cell.setCellType(Cell.CELL_TYPE_STRING);
+    cell.setCellValue("a test");
+
+    // Write the output to a file
+    FileOutputStream fileOut = new FileOutputStream("workbook.xls");
+    wb.write(fileOut);
+    fileOut.close();
+ */       ok();
     }
 }
