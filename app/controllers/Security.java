@@ -35,6 +35,9 @@ public class Security extends Secure.Security {
     }
 
     private static Account getAccountFromHost() {
+        if(Play.runningInTestMode()) {
+            return Account.find("from Account a where a.subdomain = 'oxiras'").first();
+        }
         String host = request.host.substring(0, request.host.indexOf(":"));
         String applicationHost = Play.configuration.getProperty("tm.hostname");
         if (host.endsWith(applicationHost)) {
