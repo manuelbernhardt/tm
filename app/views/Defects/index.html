@@ -53,8 +53,7 @@
     #{/box}
 </div>
 
-<div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
-
+<div id="deleteDefectDialog" style="display:none;" title="Confirm deletion of defect"></div>
 
 <br/>
 #{box 'Defects'}
@@ -277,11 +276,14 @@ $('#deleteDefectDialog').dialog({
     modal: true,
     buttons: {
         "Confirm": function() {
-            $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}, function() {
+            $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')},
+                    function() {
+                        refreshTableContents('#defectsTable', false);
+                    }).error(errorHandler, function() {
                 refreshTableContents('#defectsTable', false);
+                $('#deleteDefectDialog').dialog('close');
             });
-
-            $(this).dialog("close")
+            $(this).dialog("close");
         },
         "Cancel": function() {
             $(this).dialog("close");

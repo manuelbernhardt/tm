@@ -478,21 +478,21 @@ ko.bindingHandlers.tags = {
                         // remove elements
                         $.each(existing, function(index, el) {
                             var name = typeof el.name == 'function' ? el.name() : el.name;
-                            if($.inArray(name, updatedNames) < 0) {
+                            if ($.inArray(name, updatedNames) < 0) {
                                 modelValue.remove(el);
                                 tokens.splice(index, 1);
                             }
                         });
                         // add new
                         $.each(tokens, function(index, el) {
-                            if($.inArray(el.name, existingNames) < 0) {
+                            if ($.inArray(el.name, existingNames) < 0) {
                                 modelValue.push({id: el.id, name: el.name});
                             }
                         });
                     }
 
                 }
-             }
+            }
         });
 
 
@@ -535,9 +535,8 @@ function errorMessage(text, title) {
     if (title == null) {
         title = 'An error has happened';
     }
-    if (text == null) {
-        text = 'Message not set!';
-    }
+
+
     title = "<span class='ui-icon ui-icon-alert'> </span> " + title;
     var errorHtml = "<p><span class='ui-icon ui-icon-alert'></span> " + text + "</p>";
 
@@ -555,6 +554,25 @@ function errorMessage(text, title) {
             }
         }
     });
+}
+
+function errorHandler(xhr, textStatus, errorThrown) {
+    var text;
+    if (xhr.status == 0) {
+        text = "Connection with the Test Management server failed";
+    }
+    else if (xhr.status == 404 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
+
+        text = "Unexpected error.";
+    }
+    else if (xhr.status == 500 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
+        text = errorThrown;
+    }
+    else {
+        text = xhr.responseText;
+    }
+
+    errorMessage(text);
 }
 
 function refreshWidgetsContent(dashboard) {
