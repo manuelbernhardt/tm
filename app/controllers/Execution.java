@@ -273,6 +273,7 @@ public class Execution extends TMController {
         } else {
             try {
                 run.delete();
+                run.instance.updateStatus();
             } catch (Throwable t) {
                 Logger.error(Logger.LogType.TECHNICAL, t, "Could not delete run %s", runId);
                 error("Error deleting run");

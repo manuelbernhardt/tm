@@ -195,6 +195,7 @@
 
     handleRowSelection('#runTable', function(selectedRowId) {
       $('#updateRunButton').button('enable');
+      $('#deleteRunButton').button('enable');
       refreshTableContents('#runStepTable', true);
     });
 
