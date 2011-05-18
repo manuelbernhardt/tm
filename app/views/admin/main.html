@@ -4,9 +4,15 @@
 
 #{tabLayout}
   #{tabs id:'tabs'}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
     #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
+  #{/}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTEDIT]]}
     #{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
+  #{/}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
     #{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
+  #{/}
   #{/tabs}
   #{tabContent}
     #{doLayout /}
