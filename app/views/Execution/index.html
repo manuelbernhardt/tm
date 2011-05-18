@@ -5,80 +5,84 @@
 <br/>
 <br/>
 <div id="filter_container">
-#{box 'Filters'}
-#{include 'Execution/filter.html'/}
-#{/box}
-<br/>
+    #{box 'Filters'}
+    #{include 'Execution/filter.html'/}
+    #{/box}
+    <br/>
 </div>
 
 <div class="container ui-widget-content">
 
-  <div class="left_table">
+    <div class="left_table">
 
-    <table class="display" id="instanceTable">
-      <thead>
-      <tr>
-        <th>Tags</th>
-        <th>Test instance</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-  </div>
-
-  <div class="right_table">
-    <div id="content">
-
-      #{box 'Runs for test instance'}
-
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
-        <div id="createRunButton">Run Test Instance</div>
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
-        <div id="updateRunButton">Edit Test Run</div>
-      #{/deadbolt.restrict}
-
-      <div id="createRunDialog" title="Run Test Instance"></div>
-      <div id="updateRunDialog" title="Update Test Run"></div>
-
-      <table class="display" id="runTable">
-        <thead>
-        <tr>
-          <th>Execution date</th>
-          <th>Tester</th>
-          <th>Status</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <div id="runContent">
-        <table class="display" id="runStepTable">
-          <thead>
-          <tr>
-            <th>Nr</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Expected results</th>
-            <th>Actual results</th>
-            <th>Status</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
+        <table class="display" id="instanceTable">
+            <thead>
+            <tr>
+                <th>Tags</th>
+                <th>Test instance</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-      </div>
-      #{/box}
 
     </div>
-  </div>
+
+    <div class="right_table">
+        <div id="content">
+
+            #{box 'Runs for test instance'}
+
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
+            <div id="createRunButton">Run Test Instance</div>
+            #{/deadbolt.restrict}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
+            <div id="updateRunButton">Edit Test Run</div>
+            #{/deadbolt.restrict}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECDELETE]]}
+            <div id="deleteRunButton">Delete Test Run</div>
+            #{/deadbolt.restrict}
+
+            <div id="createRunDialog" title="Run Test Instance"></div>
+            <div id="updateRunDialog" title="Update Test Run"></div>
+            <div id="deleteRunDialog" title="Delete Test Run"></div>
+
+            <table class="display" id="runTable">
+                <thead>
+                <tr>
+                    <th>Execution date</th>
+                    <th>Tester</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div id="runContent">
+                <table class="display" id="runStepTable">
+                    <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Expected results</th>
+                        <th>Actual results</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            #{/box}
+
+        </div>
+    </div>
 
 </div>
 
 
 <script type="text/javascript">
-  $(document).ready(function() {
+$(document).ready(function() {
 
     // temporary - hopefully
     var fullDrawInstanceTable = true;
@@ -86,169 +90,198 @@
 
     #{tabularasa.init tableId:'instanceTable'}
     var instanceTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "tagNames"},
-        {"sName": "name"},
-        {"sName": "executionStatus"}
-      ],
-      "sAjaxSource": "@{Execution.instances()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No test instances found"
-      },
-      "fnDrawCallback": function() {
-        refreshTableContents('#runStepTable', fullDrawInstanceTable);
-        fullDrawInstanceTable = true;
-      }
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "tagNames"},
+            {"sName": "name"},
+            {"sName": "executionStatus"}
+        ],
+        "sAjaxSource": "@{Execution.instances()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bInfo": false,
+        "oLanguage": {
+            "sZeroRecords": "No test instances found"
+        },
+        "fnDrawCallback": function() {
+            refreshTableContents('#runStepTable', fullDrawInstanceTable);
+            fullDrawInstanceTable = true;
+        }
     };
     #{/tabularasa.init}
 
     #{tabularasa.init tableId:'runTable'}
     var runTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "executionDate", "fnRender": function ( oObj ) { return $.format.date(oObj.aData[1], "${play.Play.configuration.getProperty('datetime.format')}"); }},
-        {"sName": "tester.fullName"},
-        {"sName": "executionStatus"}
-      ],
-      "aoSorting": [
-        [0, "desc"]
-      ],
-      "sAjaxSource": "@{Execution.runs()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No runs performed yet"
-      },
-      "fnDrawCallback": function() {
-        refreshTableContents('#runStepTable', fullDrawRunTable);
-        fullDrawRunTable = true;
-      }
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "executionDate", "fnRender": function (oObj) {
+                return $.format.date(oObj.aData[1], "${play.Play.configuration.getProperty('datetime.format')}");
+            }},
+            {"sName": "tester.fullName"},
+            {"sName": "executionStatus"}
+        ],
+        "aoSorting": [
+            [0, "desc"]
+        ],
+        "sAjaxSource": "@{Execution.runs()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bInfo": false,
+        "oLanguage": {
+            "sZeroRecords": "No runs performed yet"
+        },
+        "fnDrawCallback": function() {
+            refreshTableContents('#runStepTable', fullDrawRunTable);
+            fullDrawRunTable = true;
+        }
     };
     #{/tabularasa.init}
 
     #{tabularasa.init tableId:'runStepTable'}
     var runStepTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "position"},
-        {"sName": "name"},
-        {"sName": "descriptionHTML"},
-        {"sName": "expectedResultHTML"},
-        {"sName": "actualResult"},
-        {"sName": "executionStatus"}
-      ],
-      "sAjaxSource": "@{Execution.runSteps()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No run steps defined"
-      }
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "position"},
+            {"sName": "name"},
+            {"sName": "descriptionHTML"},
+            {"sName": "expectedResultHTML"},
+            {"sName": "actualResult"},
+            {"sName": "executionStatus"}
+        ],
+        "sAjaxSource": "@{Execution.runSteps()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bInfo": false,
+        "oLanguage": {
+            "sZeroRecords": "No run steps defined"
+        }
     };
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      if (tableId == 'instanceTable') {
-        parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
-        parameters.push({"name": "status", "value": $('#status option:selected').val() });
-        parameters.push({"name": "tags", "value": $('#tags').val() });
-        parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
-        parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
-        parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
-      }
-      if (tableId == 'runTable') {
-        parameters.push({"name": "instanceId", "value": getSelectedRowId('#instanceTable')});
-      }
-      if (tableId == 'runStepTable') {
-        parameters.push({"name": "runId", "value": getSelectedRowId('#runTable')});
-      }
+        if (tableId == 'instanceTable') {
+            parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
+            parameters.push({"name": "status", "value": $('#status option:selected').val() });
+            parameters.push({"name": "tags", "value": $('#tags').val() });
+            parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
+            parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
+            parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+        }
+        if (tableId == 'runTable') {
+            parameters.push({"name": "instanceId", "value": getSelectedRowId('#instanceTable')});
+        }
+        if (tableId == 'runStepTable') {
+            parameters.push({"name": "runId", "value": getSelectedRowId('#runTable')});
+        }
     }
 
     handleRowSelection('#instanceTable', function(selectedRowId) {
-      $('#createRunButton').button('enable');
-      fullDrawRunTable = true;
-      refreshTableContents('#runTable', true);
+        $('#createRunButton').button('enable');
+        fullDrawRunTable = true;
+        refreshTableContents('#runTable', true);
+        $('#deleteRunButton').button('disable');
     });
 
     handleRowSelection('#runTable', function(selectedRowId) {
-      $('#updateRunButton').button('enable');
-      refreshTableContents('#runStepTable', true);
+        $('#updateRunButton').button('enable');
+        $('#deleteRunButton').button('enable');
+        refreshTableContents('#runStepTable', true);
     });
 
     $('#createRunButton').button({disabled: true}).click(function() {
-      $('#createRunDialog').dialog('open')
+        $('#createRunDialog').dialog('open')
     });
 
     $('#createRunDialog').dialog({
-      autoOpen: false,
-      width: 800,
-      height: 'auto',
-      draggable: true,
-      resizable: false,
-      modal: true,
-      open: function() {
-        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') });
-      },
-      buttons: {
-        "Save": function() {
-          $('#runForm').ajaxSubmit();
-          fullDrawInstanceTable = false;
-          refreshTableContents('#instanceTable', false);
-          refreshTableContents('#runTable', false);
-          $(this).dialog("close");
+        autoOpen: false,
+        width: 800,
+        height: 'auto',
+        draggable: true,
+        resizable: false,
+        modal: true,
+        open: function() {
+            $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') });
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        buttons: {
+            "Save": function() {
+                $('#runForm').ajaxSubmit();
+                fullDrawInstanceTable = false;
+                refreshTableContents('#instanceTable', false);
+                refreshTableContents('#runTable', false);
+                $(this).dialog("close");
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
         }
-      }
     });
 
     $('#updateRunButton').button({icons: {primary: 'ui-icon-pencil'}, disabled: true}).click(function() {
-      $('#updateRunDialog').dialog('open')
+        $('#updateRunDialog').dialog('open')
     });
 
     $('#updateRunDialog').dialog({
-      autoOpen: false,
-      width: 800,
-      height: 'auto',
-      draggable: true,
-      resizable: false,
-      modal: true,
-      open: function() {
-        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') });
-      },
-      buttons: {
-        "Save": function() {
-          $('#runForm').ajaxSubmit();
-          fullDrawInstanceTable = false;
-          refreshTableContents('#instanceTable', false);
-          $(this).dialog("close");
+        autoOpen: false,
+        width: 800,
+        height: 'auto',
+        draggable: true,
+        resizable: false,
+        modal: true,
+        open: function() {
+            $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') });
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        buttons: {
+            "Save": function() {
+                $('#runForm').ajaxSubmit();
+                fullDrawInstanceTable = false;
+                refreshTableContents('#instanceTable', false);
+                $(this).dialog("close");
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
         }
-      }
     });
 
 
-  });
-  toggleFilter('#filter_button', '#filter_container');
+});
+
+$('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, disabled: true}).click(function() {
+    $('#deleteRunDialog').dialog('open');
+});
+
+$('#deleteRunDialog').dialog({
+    autoOpen: false,
+    height: 100,
+    width: 300,
+    modal: true,
+    buttons: {
+        "Confirm": function() {
+            $.post('@{Execution.deleteRun()}', {runId: getSelectedRowId('#runTable')}, function() {
+                refreshTableContents('#runTable', false);
+            });
+
+            $(this).dialog("close")
+        },
+        "Cancel": function() {
+            $(this).dialog("close");
+        }
+
+    }
+});
+
+toggleFilter('#filter_button', '#filter_container');
 
 </script>
