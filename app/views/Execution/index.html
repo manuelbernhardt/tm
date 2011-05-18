@@ -104,7 +104,7 @@
         "sZeroRecords": "No test instances found"
       },
       "fnDrawCallback": function() {
-        refreshTableContents('#runStepTable', fullDrawInstanceTable);
+        refreshTableContents('#runTable', fullDrawInstanceTable);
         fullDrawInstanceTable = true;
       }
     };
@@ -210,11 +210,17 @@
       },
       buttons: {
         "Save": function() {
-          $('#runForm').ajaxSubmit();
-          fullDrawInstanceTable = false;
-          refreshTableContents('#instanceTable', false);
-          refreshTableContents('#runTable', false);
-          $(this).dialog("close");
+          $('#runForm').ajaxSubmit({
+             success: function() {
+               fullDrawInstanceTable = false;
+               refreshTableContents('#instanceTable', false);
+               $('#createRunDialog').dialog("close");
+              },
+             error: function() {
+               errorMessage("Sorry, but there was an error while saving the run. Please try again.");
+               $('#createRunDialog').dialog("close");
+             }
+           });
         },
         "Cancel": function() {
           $(this).dialog("close");
@@ -238,10 +244,17 @@
       },
       buttons: {
         "Save": function() {
-          $('#runForm').ajaxSubmit();
-          fullDrawInstanceTable = false;
-          refreshTableContents('#instanceTable', false);
-          $(this).dialog("close");
+          $('#runForm').ajaxSubmit({
+            success: function() {
+              fullDrawInstanceTable = false;
+              refreshTableContents('#instanceTable', false);
+              $('#updateRunDialog').dialog("close");
+            },
+            error: function() {
+              errorMessage("Could not update the run, please try again.");
+              $('#updateRunDialog').dialog("close");
+            }
+          });
         },
         "Cancel": function() {
           $(this).dialog("close");
