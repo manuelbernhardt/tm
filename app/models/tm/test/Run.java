@@ -79,7 +79,7 @@ public class Run extends ProjectModel implements ParameterHolder {
     }
 
     @Override
-    public <T extends JPABase> T delete() {
+    public JPABase delete() {
         // delete all the attached elements
         Query deleteSteps = JPA.em().createQuery("delete from RunStep s where s.run = :run");
         deleteSteps.setParameter("run", this);
