@@ -5,7 +5,8 @@ package models.tm;
  */
 public enum WidgetType {
 
-    GRAPH("graph", "graph", "editGraph");
+    GRAPH("graph", "graph", "editGraph"),
+    REPORT("report", "report", "editReport");
 
     String key;
     String viewAction;

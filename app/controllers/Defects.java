@@ -149,6 +149,9 @@ public class Defects extends TMController {
     @Restrict(UnitRole.DEFECTDELETE)
     public static void deleteDefect(Long defectId) {
         Defect defect = Defect.findById(defectId);
+        if(defect==null){
+            error("Defect is not found!");
+        }
         defect.delete();
         ok();
     }
