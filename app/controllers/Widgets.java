@@ -134,6 +134,29 @@ public class Widgets extends TMController {
         }
     }
 
+    public static void report(String entity,
+                               String yAxis,
+                               String xAxis,
+                               String temporalField,
+                               String title,
+                               String label) {
+
+        List<Object[]> objects;
+        List<Object> countList = new ArrayList<Object>();
+        List<Object> dateList = new ArrayList<Object>();
+
+        objects = Defect.find("select count(d), day(d.created) from Defect d group by day(d.created)").fetch();
+
+        for (Object[] o : objects) {
+            Object count = o[0];
+            countList.add(count);
+            Object d = o[1];
+            dateList.add(d);
+        }
+
+        render(countList, dateList, title, label);
+    }
+
     private static F.Tuple<String, ExpressionType> transformExpression(String axis, String tmp) {
 
         String queryFragment;

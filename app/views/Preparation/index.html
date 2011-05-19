@@ -138,9 +138,7 @@
                 success: function() {
                     $('#saveParamsButton').button('disable');
                 },
-                error: function() {
-                    alert("Something went wrong, please try again");
-                }
+                error: errorHandler
             });
             return false;
         }};
@@ -219,7 +217,8 @@
             beforeSubmit: function(arr, $form, options) {
                 arr.push({name:'instanceId', value: getSelectedNodeId('scriptCycleTree')});
                 return true;
-            }
+            },
+            error: errorHandler
         });
 
         $('#scheduleForm').oxForm({

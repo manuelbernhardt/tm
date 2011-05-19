@@ -221,8 +221,8 @@
                refreshTableContents('#instanceTable', false);
                $('#createRunDialog').dialog("close");
               },
-             error: function() {
-               errorMessage("Sorry, but there was an error while saving the run. Please try again.");
+             error: function(xhr, textStatus, errorThrown) {
+               errorHandler(xhr, textStatus, errorThrown);
                $('#createRunDialog').dialog("close");
              }
            });
@@ -255,8 +255,8 @@
               refreshTableContents('#instanceTable', false);
               $('#updateRunDialog').dialog("close");
             },
-            error: function() {
-              errorMessage("Could not update the run, please try again.");
+            error: function(xhr, textStatus, errorThrown) {
+               errorHandler(xhr, textStatus, errorThrown);
               $('#updateRunDialog').dialog("close");
             }
           });
@@ -286,10 +286,10 @@
                     refreshTableContents('#instanceTable', false);
                     $('#deleteRunDialog').dialog("close")
                   },
-                  error: function() {
-                    errorMessage("Could not delete test run.");
+                  error: function(xhr, textStatus, errorThrown) {
+                    errorHandler(xhr, textStatus, errorThrown);
                     refreshTableContents('#instanceTable', false);
-                    $('#deleteRunDialog').dialog("close")
+                    $('#deleteRunDialog').dialog("close");
                   }
                 });
             },

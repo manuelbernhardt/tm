@@ -204,8 +204,8 @@
                         refreshTableContents('#requirementTable', false);
                         $(this).dialog('close');
                     } else {
-                        // display validation error or message somehow
-                        alert("You need to select a requirement");
+                        errorMessage('You need to select a requirement');
+                        $(this).dialog('close');
                     }
 
                 },

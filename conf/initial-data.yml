@@ -1342,6 +1342,30 @@ tm.ProjectWidget(templateWidgetDefectCountByDay):
     column: first
     open: true
 
+tm.ProjectWidget(templateWidgetDefectReport):
+    account: oxiras
+    project: testManagementApplication
+    title: Defects report
+    description: Displays the report
+    creator: Oxiras
+    category: Defects
+    wType: report
+    publicWidget: true
+    templateWidget: true
+    parameters:
+      ? entity
+      : Defect
+      ? label
+      : Defects report
+      ? temporalField
+      : created
+      ? xAxis
+      : name
+      ? yAxis
+      : status.name
+    column: first
+    open: true
+
 tm.ProjectWidget(manuWidgetDefectCountByDay):
     account: oxiras
     project: testManagementApplication

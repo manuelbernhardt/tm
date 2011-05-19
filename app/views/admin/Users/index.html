@@ -103,7 +103,7 @@
           $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
             refreshTableContents('#tab', false);
             $("#removeUserButton").button('disable');
-          });
+          }).error(errorHandler);
           $(this).dialog("close");
         },
         Cancel: function() {

@@ -153,9 +153,7 @@
             $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
                     function(data) {
                         $('#scriptTable').dataTable().fnDraw();
-                    }).error(function (jqhr, text) {
-                errorMessage("error")
-            });
+                    }).error(errorHandler)
         });
 
         $("#linkScriptDialog").dialog({
@@ -173,17 +171,14 @@
                     if ($tree._get_type(selectedNode) == 'script') {
                         valid = true;
                     } else {
-                        // display validation error or message somehow
-                        alert("You need to select a script");
+                        errorMessage("You need to select a script");
                     }
 
                     if (valid) {
                         $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
                                 function(data) {
                                     $('#scriptTable').dataTable().fnDraw();
-                                }).error(function (jqhr, text) {
-                            errorMessage("error")
-                        });
+                                }).error(errorHandler)
 
                         refreshTableContents('#defectTable', false);
                         refreshTableContents('#instanceTable', false);

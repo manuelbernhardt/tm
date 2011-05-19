@@ -1,0 +1,47 @@
+%{def tableUUID = play.libs.Codec.UUID();}%
+
+<table class="display" id="table_${tableUUID}">
+    <thead>
+    <tr>
+        <td></td>
+        #{list items:dateList, as:'date'}
+        <th scope="col">
+            ${date.getClass().equals(Date.class) ? date.format(play.Play.configuration.getProperty('date.format')) : date}
+        </th>
+        #{/list}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">${label}</th>
+
+        #{list items:countList, as:'count'}
+
+        <td>${count}</td>
+
+        #{/list}
+    </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+	    $('#table_${tableUUID}').dataTable({
+            "bServerSide": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bFilter": false,
+            "iDisplayLength": 10,
+            "bInfo": false,
+            "aSort": false,
+            "oLanguage": {
+                "sZeroRecords": "No defects reported"
+            }});
+
+        $('#table_${tableUUID}').attr("height", "10px");
+    } );
+
+
+
+
+</script>

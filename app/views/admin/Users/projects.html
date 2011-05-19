@@ -75,7 +75,7 @@ $(document).ready(function () {
           jQuery.jstree._reference(treeContainer).deselect_all();
           $(this).dialog("close");
         } else {
-          alert("Not valid");
+          errorHandler("Not valid");
         }
       },
       Cancel: function() {
