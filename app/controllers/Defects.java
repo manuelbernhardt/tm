@@ -167,4 +167,8 @@ public class Defects extends TMController {
 
     }
 
+    public static void saveFilter(String name, String entity, String filterParams){
+        Filters.saveFilter(name,entity,filterParams);
+    }
+
 }

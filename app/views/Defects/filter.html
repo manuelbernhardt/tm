@@ -51,7 +51,7 @@
       </div>
       <button id="filter">Apply filter</button>
     </div>
-  </form>
+  </form> <button id="saveFilter">Save filter</button>
 </div>
 
 <script type="text/javascript">
@@ -69,12 +69,13 @@
           preventDuplicates: true,
           tokenValue: 'name',
           allowCreation: false
-    });
+      });
 
-        $('#filter').button().click(function(event) {
+      $('#filter').button().click(function(event) {
           event.preventDefault();
           refreshTableContents("defectsTable", false);
-        });
+      });
+
 
     
   });

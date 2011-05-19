@@ -294,4 +294,18 @@ $('#deleteDefectDialog').dialog({
     }
 });
 
+// filter functions
+
+      $('#saveFilter').button().click(function(){
+          var filterParams = {
+              "constraint['title']['value']" : $('#title').val(),
+              "constraint['status']['value']" : $('#status').val(),
+              "constraint['tags']['value']" : $('#tags').val(),
+              "constraint['assignedToId']['value']" : $('#assignedToId').val(),
+              "constraint['submittedById']['value']" : $('#submittedById').val()
+          }
+
+          $.post('@{Defects.saveFilter()}', {name: 'default', entity: 'tm.models.Defects',filterParams: filterParams}).error(errorHandler);
+      });
+
 </script>
