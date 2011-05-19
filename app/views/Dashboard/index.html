@@ -83,9 +83,8 @@
                                 "url":widget.url,
                                 "metadata":widget.metadata
                             }, dashboard.element.find('.column:first'));
-                        }).error(function (jqhr, text) {
-                    errorMessage(text);
-                });
+                }).error(errorHandler);
+
                 adoptGraphSize();
             });
 
@@ -99,9 +98,7 @@
                 data: {widgetId: obj.widget.id},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(function (jqhr, text) {
-                errorMessage(text);
-            });
+            }).error(errorHandler);
 
         });
 
@@ -112,9 +109,7 @@
                 data: {widgetId: obj.widget.id, state: true},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(function (jqhr, text) {
-                errorMessage(text);
-            });
+            }).error(errorHandler)
             obj.widget.refreshContent();
         });
 
@@ -125,9 +120,7 @@
                 data: {widgetId: obj.widget.id, state: false},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(function (jqhr, text) {
-                errorMessage(text);
-            });
+            }).error(errorHandler);
         });
 
         $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
@@ -143,10 +136,7 @@
                 data: {layout: dashboard.layout.id},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(function (jqhr, text) {
-                errorMessage(text);
-
-            });
+            }).error(errorHandler);
         });
 
         $('#dashboard').live('widgetDropped', function(event, obj) {
@@ -157,9 +147,8 @@
                 data: {widgetId: obj.widget.id,column: obj.widget.column},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(function (jqhr, text) {
-                errorMessage(text);
-            });
+            }).error(errorHandler);
+
             adoptGraphSize();
             refreshWidgetsContent(dashboard);
         });

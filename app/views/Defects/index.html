@@ -280,9 +280,10 @@ $('#deleteDefectDialog').dialog({
                     function() {
                         refreshTableContents('#defectsTable', false);
                     }).error(errorHandler, function() {
-                refreshTableContents('#defectsTable', false);
-                $('#deleteDefectDialog').dialog('close');
-            });
+                        refreshTableContents('#defectsTable', false);
+                        $('#deleteDefectDialog').dialog('close');
+                    });
+
             $(this).dialog("close");
         },
         "Cancel": function() {
