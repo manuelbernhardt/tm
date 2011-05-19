@@ -55,6 +55,4 @@ public class Requirement extends ProjectModel implements Node {
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");
     }
-
-
 }

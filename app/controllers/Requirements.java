@@ -147,7 +147,7 @@ public class Requirements extends TMController {
 
         Importer importer = new ExcelImporter();
         try {
-            importer.importFile(file);
+            importer.importFile(Requirement.class, getActiveProject(), file);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
