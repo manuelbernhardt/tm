@@ -78,7 +78,7 @@ public class Instance extends ProjectModel {
     }
 
     @Override
-    public <T extends JPABase> T delete() {
+    public JPABase delete() {
         // remove associated entities
         for(InstanceParam p : getParams()) {
             p.delete();

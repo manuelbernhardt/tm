@@ -91,7 +91,7 @@ public class ProjectWidget extends ProjectModel implements Widget {
     }
 
     @Override
-    public <T extends JPABase> T save() {
+    public JPABase save() {
         if (this.wType == null) {
             this.wType = this.widgetType.getKey();
         }
