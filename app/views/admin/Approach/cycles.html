@@ -35,11 +35,11 @@ Alternatively simple tags can be used to organize the Test Execution.
       if (isSelectedNodeType(data, ['default', 'testCycle'])) {
         $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
-        });
+        }).error(errorHandler);
       } else if (isSelectedNodeType(data, ['release'])) {
         $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
-        });
+        }).error(errorHandler);
       }
     });
 

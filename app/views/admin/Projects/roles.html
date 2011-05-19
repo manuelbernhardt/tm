@@ -75,7 +75,7 @@ No project selected
         // reloads the role definition
         $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
           $('#roleDefinition').html(data);
-        });
+        }).error(errorHandler);
       }
     });
 
