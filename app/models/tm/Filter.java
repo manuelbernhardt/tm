@@ -1,9 +1,6 @@
 package models.tm;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -12,6 +9,7 @@ import java.util.List;
  * Time: 5:34 PM
  */
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 public class Filter extends ProjectModel{
 
     public String name;
@@ -23,6 +21,11 @@ public class Filter extends ProjectModel{
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public TMUser owner;
     public String entity;
+
+    public Filter(String name, String entity){
+        this.name = name;
+        this.entity = entity;
+    }
 
     public Filter(Project project) {
         super(project);

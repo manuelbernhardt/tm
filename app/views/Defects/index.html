@@ -297,7 +297,9 @@ $('#deleteDefectDialog').dialog({
 // filter functions
 
       $('#saveFilter').button().click(function(){
-          var filterParams = {
+          var data = {
+              "name": 'default',
+              "entity": 'tm.models.Defect',
               "constraint['title']['value']" : $('#title').val(),
               "constraint['status']['value']" : $('#status').val(),
               "constraint['tags']['value']" : $('#tags').val(),
@@ -305,7 +307,7 @@ $('#deleteDefectDialog').dialog({
               "constraint['submittedById']['value']" : $('#submittedById').val()
           }
 
-          $.post('@{Defects.saveFilter()}', {name: 'default', entity: 'tm.models.Defects',filterParams: filterParams}).error(errorHandler);
+          $.post('@{Defects.saveFilter()}', data).error(errorHandler);
       });
 
 </script>
