@@ -40,19 +40,19 @@ class ExcelImporter extends Importer {
             val c: Cell = row.getCell(colIndex)
             if (c != null) {
               if (rule.hasValidType(c.getCellType)) {
-                val value: AnyRef = rule.getValue(c, contextData)
-                val field: Field = baseModelType.getField(rule.propertyName)
-                try {
-                  field.set(instance, value)
-                } catch {
-                  case _ => {
-                    val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
-                    try {
-                      setter.invoke(instance, value)
-                    } catch {
-                      case _ => throw new ImportError("Could not set field %s of entity %s".format(rule.propertyName, baseModelType.getName))
+                rule.computeConvertedValue(c, contextData) map { v =>
+                  val field: Field = baseModelType.getField(rule.propertyName)
+                  try {
+                    field.set(instance, v)
+                  } catch {
+                    case _ => {
+                      val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
+                      try {
+                        setter.invoke(instance, v.asInstanceOf[AnyRef])
+                      } catch {
+                        case _ => throw new ImportError("Could not set field %s of entity %s".format(rule.propertyName, baseModelType.getName))
+                      }
                     }
-
                   }
                 }
               }
@@ -100,20 +100,20 @@ trait ColumnImportRule {
     cellType == this.cellType
   }
 
-  def getValue(cell: Cell, contextData: Map[String, AnyRef]): AnyRef = {
+  def computeConvertedValue(cell: Cell, contextData: Map[String, AnyRef]): Option[Any] = {
     valueManifest match {
-      case m if m <:< classManifest[String] => cell.getStringCellValue
-      case m if m <:< classManifest[Number] =>java.lang.Double.valueOf(cell.getNumericCellValue)
-      case m if m <:< classManifest[Boolean] => java.lang.Boolean.valueOf(cell.getBooleanCellValue)
+      case m if m <:< classManifest[String] => Option(cell.getStringCellValue)
+      case m if m <:< classManifest[Number] => Option(java.lang.Double.valueOf(cell.getNumericCellValue))
+      case m if m <:< classManifest[Boolean] => Option(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
       case m if m <:< classManifest[TemporalModel] => {
         val converter: ModelConverter[_] = modelConverters.get(classType.getName).get // TODO orElse add error
-        val value = converter.convert(cell.getStringCellValue, contextData)
+        val value: Option[Any] = converter.convert(cell.getStringCellValue, contextData)
 
         if (converter.afterConvert != null) {
           converter.afterConvert(contextData)
         }
 
-        value.asInstanceOf[AnyRef]
+        value
       }
     }
 
