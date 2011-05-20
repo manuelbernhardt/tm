@@ -143,5 +143,4 @@ public class TMUser extends TemporalModel implements AccountEntity {
         query.setParameter("unitRoles", role.getUnitRoles());
         return query.getResultList();
     }
-
 }
