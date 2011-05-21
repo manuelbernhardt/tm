@@ -1,6 +1,7 @@
 package models.tm;
 
 import javax.persistence.Entity;
+import javax.persistence.PostLoad;
 import java.io.Console;
 
 /**
@@ -43,4 +44,5 @@ public enum ConstraintType {
     public String getAction() {
         return action;
     }
+
 }

@@ -1,6 +1,7 @@
 package models.tm;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class Filter extends ProjectModel{
     public Filter(String name, String entity){
         this.name = name;
         this.entity = entity;
+        this.filterConstraints = new ArrayList<FilterConstraint>();
     }
 
     public Filter(Project project) {

@@ -301,10 +301,13 @@ $('#deleteDefectDialog').dialog({
               "name": 'default',
               "entity": 'tm.models.Defect',
               "constraint['title']['value']" : $('#title').val(),
+              "constraint['titleCase']['case']" : $('#titleCase').val(),
               "constraint['status']['value']" : $('#status').val(),
               "constraint['tags']['value']" : $('#tags').val(),
               "constraint['assignedToId']['value']" : $('#assignedToId').val(),
-              "constraint['submittedById']['value']" : $('#submittedById').val()
+              "constraint['submittedById']['value']" : $('#submittedById').val(),
+              "constraint['dateFrom']['case']" : $('#dateFrom').val(),
+              "constraint['dateTo']['case']" : $('#dateTo').val()
           }
 
           $.post('@{Defects.saveFilter()}', data).error(errorHandler);

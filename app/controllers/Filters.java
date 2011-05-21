@@ -4,6 +4,7 @@ import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
 import models.tm.Filter;
 import models.tm.FilterConstraint;
+import models.tm.Project;
 import play.mvc.Util;
 
 import java.util.ArrayList;
@@ -20,8 +21,15 @@ public class Filters extends TMController{
     @Util
     public static void saveFilter(){
 
-        Filter filter = new Filter(params.get("name"), params.get("entity"));
+        Project project = getActiveProject();
 
+        Filter filter = new Filter(project);
+        filter.name = params.get("name");
+        filter.entity = params.get("entity");
+        filter.owner = getConnectedUser();
+        filter.filterConstraints = new ArrayList<FilterConstraint>();
+        
+        filter.create();
 
         List<String> par = new ArrayList<String>();
         for (String p : params.all().keySet()) {
@@ -33,6 +41,7 @@ public class Filters extends TMController{
 
         for(String fp : par){
             Matcher m = tagParameterPattern("constraint").matcher(fp);
+            FilterConstraint filterConstraint = new FilterConstraint(project);
 
             if (m.matches()) {
                 String key1 = m.group(1).replace("'","");
@@ -42,14 +51,19 @@ public class Filters extends TMController{
                 System.out.println("key1: " +key1);
                 System.out.println("value: " +value);
 
-                FilterConstraint filterConstraint = new FilterConstraint(key1, key2, value);
-                filter.filterConstraints.add(filterConstraint);
+                
+                filterConstraint.property = key1;
+                filterConstraint.type = key2;
+                filterConstraint.value = value;
 
-                if(key2.equals("condition")){
-                    
-                }
+
+
+                filter.filterConstraints.add(filterConstraint);
+                filter.save();
+
 
             }
+            filterConstraint.create();
         }
     }
 }
