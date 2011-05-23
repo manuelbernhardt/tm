@@ -985,6 +985,7 @@ tm.test.Tag(technicalReqTag):
     name: Technical
     type: REQUIREMENT
 
+
 tm.RequirementFolder(functionalReqFolder):
     project: testManagementApplication
     account: oxiras
@@ -993,8 +994,8 @@ tm.RequirementFolder(functionalReqFolder):
 tm.Requirement(functionalReq0):
     project: testManagementApplication
     account: oxiras
+    createdBy: gwen
     name: Create requirement
-#    type: functional
     tags:
          - functionalReqTag
     linkedScripts:
@@ -1003,24 +1004,24 @@ tm.Requirement(functionalReq0):
 tm.Requirement(functionalReq1):
     project: testManagementApplication
     account: oxiras
+    createdBy: gwen
     name: List requirements (tree)
-#    type: functional
     tags:
          - functionalReqTag
 
 tm.Requirement(functionalReq2):
     project: testManagementApplication
     account: oxiras
+    createdBy: gwen
     name: Display requirement details
-#    type: functional
     tags:
          - functionalReqTag
 
 tm.Requirement(functionalReq3):
     project: testManagementApplication
     account: oxiras
+    createdBy: gwen
     name: Display entities linked to requirement
-#    type: functional
     tags:
          - functionalReqTag
 
@@ -1033,8 +1034,8 @@ tm.RequirementFolder(crossConcernsFolder):
 tm.Requirement(technicalReq1):
     project: testManagementApplication
     account: oxiras
+    createdBy: gwen
     name: Datatables need to be sortable
-#    type: technical
     tags:
          - technicalReqTag
 

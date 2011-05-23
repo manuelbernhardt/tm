@@ -10,11 +10,11 @@ import play.db.jpa.JPA
 import play.test.UnitTestCase
 
 /**
- * 
+ * Does not work - bug in Play
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 
-class ExcelImporterTest extends UnitTestCase with AssertionsForJUnit {
+class ZDefunctExcelImporterTest extends UnitTestCase with AssertionsForJUnit {
 
   @Before
   def setUp: Unit = {
@@ -30,7 +30,7 @@ class ExcelImporterTest extends UnitTestCase with AssertionsForJUnit {
 
     val i:ExcelImporter = new ExcelImporter
     val f:File = new File("test/ExcelImport.xls")
-    i.importFile(classOf[Requirement], p, f)
+    i.importFile(classOf[Requirement], null, p, f)
   }
 
 }
