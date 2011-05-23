@@ -3,14 +3,15 @@ package importer
 import java.io.{FileInputStream, File}
 import collection.JavaConversions._
 import org.apache.poi.ss.usermodel.{Row, WorkbookFactory, Workbook, Cell}
-import java.lang.Class
 import collection.immutable.List
 import java.lang.reflect.{Method, Field}
-import collection.mutable.HashMap
 import collection.mutable.Map
 import models.tm.{Project, TMUser, Requirement, Defect}
 import reflect.ClassManifest
 import models.general.{TemporalModel, CompositeModel}
+import java.lang.{String, Class}
+import play.db.jpa.Model
+import util.Logger
 
 /**
  *
@@ -21,36 +22,43 @@ class ExcelImporter extends Importer {
 
 
   @throws(classOf[Throwable])
-  def importFile(baseModelType: Class[_ <: CompositeModel], project: Project, file: File): java.util.List[ImportError] = {
+  def importFile(baseModelType: Class[_ <: CompositeModel], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
 
     val wb: Workbook = WorkbookFactory.create(new FileInputStream(file));
     val sheet = wb.getSheetAt(0);
 
-    val contextData: Map[String, AnyRef] = new HashMap[String, AnyRef]
-
     sheet.view.zipWithIndex foreach {
-      case (row: Row, rowIndex: Int) => {
+      // skip the header line
+      case (row: Row, rowIndex: Int) if rowIndex > 0 => {
 
-        val instance = baseModelType.getConstructor(classOf[Project]).newInstance(project)
+        val instance:CompositeModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
+        var anyDataAtAll = false
 
+        // go over the column conversion rules for each column
         cellConverters.get(baseModelType).get.view.zipWithIndex foreach {
           case (rule: ColumnImportRule, colIndex: Int) => {
-            println(rowIndex + ":" + colIndex + " " + rule)
+            Logger.debug(rowIndex + ":" + colIndex + " " + rule)
 
             val c: Cell = row.getCell(colIndex)
             if (c != null) {
               if (rule.hasValidType(c.getCellType)) {
-                rule.computeConvertedValue(c, contextData) map { v =>
-                  val field: Field = baseModelType.getField(rule.propertyName)
-                  try {
-                    field.set(instance, v)
-                  } catch {
-                    case _ => {
-                      val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
-                      try {
-                        setter.invoke(instance, v.asInstanceOf[AnyRef])
-                      } catch {
-                        case _ => throw new ImportError("Could not set field %s of entity %s".format(rule.propertyName, baseModelType.getName))
+                rule.computeConvertedValue(c, contextData) map {
+                  v => {
+                    val field: Field = baseModelType.getField(rule.propertyName)
+                    try {
+                      Logger.debug("Setting value '%s' to field %s of entity %s via field assignment", (v, rule.propertyName, baseModelType.getName))
+                      field.set(instance, v)
+                      anyDataAtAll = true
+                    } catch {
+                      case _ => {
+                        val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
+                        try {
+                          Logger.debug("Setting value '%s' to field %s of entity %s via setter invocation", (v, rule.propertyName, baseModelType.getName))
+                          setter.invoke(instance, v.asInstanceOf[AnyRef])
+                          anyDataAtAll = true
+                        } catch {
+                          case _ => throw new ImportError("Could not set field %s of entity %s".format(rule.propertyName, baseModelType.getName))
+                        }
                       }
                     }
                   }
@@ -59,7 +67,20 @@ class ExcelImporter extends Importer {
             }
           }
         }
+
+        // because Play defines a scala Model, we can't really use create() directly here.
+
+        if(anyDataAtAll) {
+          val create:Method = baseModelType.getMethod("create")
+          val created: Boolean = create.invoke(instance).asInstanceOf[Boolean]
+
+          if(!created) {
+            // TODO add import error
+          }
+        }
+
       }
+      case _ => // skip this row
     }
 
     return List[ImportError]()
@@ -100,7 +121,7 @@ trait ColumnImportRule {
     cellType == this.cellType
   }
 
-  def computeConvertedValue(cell: Cell, contextData: Map[String, AnyRef]): Option[Any] = {
+  def computeConvertedValue(cell: Cell, contextData: java.util.Map[String, AnyRef]): Option[Any] = {
     valueManifest match {
       case m if m <:< classManifest[String] => Option(cell.getStringCellValue)
       case m if m <:< classManifest[Number] => Option(java.lang.Double.valueOf(cell.getNumericCellValue))
@@ -112,7 +133,6 @@ trait ColumnImportRule {
         if (converter.afterConvert != null) {
           converter.afterConvert(contextData)
         }
-
         value
       }
     }
