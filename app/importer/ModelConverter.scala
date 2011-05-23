@@ -10,8 +10,6 @@ import java.lang.String
  */
 
 trait ModelConverter[T <: TemporalModel] {
-
-  def convert(data: AnyRef, contextData: Map[String, AnyRef]): Option[T]
-
+  def convert(data: AnyRef, contextData: Map[String, AnyRef]): Any
   val afterConvert: Map[String, AnyRef] => Unit
 }

@@ -31,7 +31,7 @@ class ExcelImporter extends Importer {
       // skip the header line
       case (row: Row, rowIndex: Int) if rowIndex > 0 => {
 
-        val instance:CompositeModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
+        val instance: CompositeModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
         var anyDataAtAll = false
 
         // go over the column conversion rules for each column
@@ -42,39 +42,20 @@ class ExcelImporter extends Importer {
             val c: Cell = row.getCell(colIndex)
             if (c != null) {
               if (rule.hasValidType(c.getCellType)) {
-                rule.computeConvertedValue(c, contextData) map {
-                  v => {
-                    val field: Field = baseModelType.getField(rule.propertyName)
-                    try {
-                      Logger.debug("Setting value '%s' to field %s of entity %s via field assignment", (v, rule.propertyName, baseModelType.getName))
-                      field.set(instance, v)
-                      anyDataAtAll = true
-                    } catch {
-                      case _ => {
-                        val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
-                        try {
-                          Logger.debug("Setting value '%s' to field %s of entity %s via setter invocation", (v, rule.propertyName, baseModelType.getName))
-                          setter.invoke(instance, v.asInstanceOf[AnyRef])
-                          anyDataAtAll = true
-                        } catch {
-                          case _ => throw new ImportError("Could not set field %s of entity %s".format(rule.propertyName, baseModelType.getName))
-                        }
-                      }
-                    }
-                  }
-                }
+                val value: Any = rule.computeConvertedValue(c, contextData).get
+                anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
               }
             }
           }
         }
 
-        // because Play defines a scala Model, we can't really use create() directly here.
+        // because Play defines a scala Model, we can't really use create() directly here so we use invocation. doh.
 
-        if(anyDataAtAll) {
-          val create:Method = baseModelType.getMethod("create")
+        if (anyDataAtAll) {
+          val create: Method = baseModelType.getMethod("create")
           val created: Boolean = create.invoke(instance).asInstanceOf[Boolean]
 
-          if(!created) {
+          if (!created) {
             // TODO add import error
           }
         }
@@ -84,6 +65,27 @@ class ExcelImporter extends Importer {
     }
 
     return List[ImportError]()
+  }
+
+  def setFieldValue(baseModelType: Class[_ <: CompositeModel], rule: ColumnImportRule, instance: CompositeModel, v: Any): Boolean = {
+    val field: Field = baseModelType.getField(rule.propertyName)
+    try {
+      Logger.debug("Setting value '%s' to field %s of entity %s via field assignment" format (v, rule.propertyName, baseModelType.getName))
+      field.set(instance, v)
+      true
+    } catch {
+      case _ => {
+        try {
+          val setter: Method = baseModelType.getMethod("set" + rule.propertyName.capitalize)
+          Logger.debug("Setting value '%s' to field %s of entity %s via setter invocation" format (v, rule.propertyName, baseModelType.getName))
+          setter.invoke(instance, v.asInstanceOf[AnyRef])
+          true
+        } catch {
+          case _ => throw new ImportError("Could not set field %s of entity %s to value '%s'".format(rule.propertyName, baseModelType.getName, v))
+        }
+      }
+    }
+
   }
 
 
@@ -123,17 +125,17 @@ trait ColumnImportRule {
 
   def computeConvertedValue(cell: Cell, contextData: java.util.Map[String, AnyRef]): Option[Any] = {
     valueManifest match {
-      case m if m <:< classManifest[String] => Option(cell.getStringCellValue)
-      case m if m <:< classManifest[Number] => Option(java.lang.Double.valueOf(cell.getNumericCellValue))
-      case m if m <:< classManifest[Boolean] => Option(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
+      case m if m <:< classManifest[String] => Some(cell.getStringCellValue)
+      case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
+      case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
       case m if m <:< classManifest[TemporalModel] => {
         val converter: ModelConverter[_] = modelConverters.get(classType.getName).get // TODO orElse add error
-        val value: Option[Any] = converter.convert(cell.getStringCellValue, contextData)
+        val value: Any = converter.convert(cell.getStringCellValue, contextData)
 
         if (converter.afterConvert != null) {
           converter.afterConvert(contextData)
         }
-        value
+        Some(value)
       }
     }
 
