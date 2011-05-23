@@ -15,7 +15,7 @@ import models.general.UnitRole;
 import models.tm.AccountRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
-import models.tm.Role;
+import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
@@ -205,9 +205,9 @@ public class Users extends TMController {
                 notFound();
             }
             checkInAccount(p);
-            List<Role> roles = Role.find("from Role r where r.project.id = ?", projectId).<Role>fetch();
+            List<ProjectRole> roles = ProjectRole.find("from ProjectRole r where r.project.id = ?", projectId).<ProjectRole>fetch();
             Map<Long, String> m = new HashMap<Long, String>();
-            for (Role r : roles) {
+            for (ProjectRole r : roles) {
                 m.put(r.getId(), r.name);
             }
             renderJSON(m);

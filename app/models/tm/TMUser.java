@@ -53,7 +53,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     @BatchSize(size = 10)
-    public List<Role> projectRoles;
+    public List<ProjectRole> projectRoles;
 
     public String dashboardLayout;
 
@@ -82,7 +82,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
         return getFullName();
     }
 
-    // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
+    // TODO cache this, as it is called at each permission check! but evict the cache on ProjectRole definition change
     public List<? extends models.deadbolt.Role> getRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
 
@@ -90,7 +90,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
             res.add(UnitRole.role(accountRole));
         }
 
-        for (Role r : projectRoles) {
+        for (ProjectRole r : projectRoles) {
             for (UnitRole ur : r.getAuthenticationUnitRoles()) {
                 if (!res.contains(ur)) {
                     res.add(ur);
@@ -134,7 +134,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     }
 
     public static List<TMUser> listUsersInProjectRole(Long roleId) {
-        return TMUser.find("select u from TMUser u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<TMUser>fetch();
+        return TMUser.find("select u from TMUser u, ProjectRole r where r in elements(u.projectRoles) and r.id = ?", roleId).<TMUser>fetch();
     }
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {

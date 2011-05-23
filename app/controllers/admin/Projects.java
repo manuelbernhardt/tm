@@ -8,7 +8,7 @@ import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
 import models.tm.Project;
-import models.tm.Role;
+import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.mvc.With;
 
@@ -46,7 +46,7 @@ public class Projects extends TMController {
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void users(Long projectId) {
         Project project = Lookups.getProject(projectId);
-        List<Role> projectRoles = Role.findByProject(projectId);
+        List<ProjectRole> projectRoles = ProjectRole.findByProject(projectId);
         List<TMUser> accountUsers = TMUser.listByAccount(getConnectedUserAccount().getId());
         render(project, projectRoles, accountUsers);
     }

@@ -229,7 +229,7 @@ tm.Project(world):
     account: oxiras
     projectCategory: ProjCat2012
 
-tm.Role(demRoleViewOnly):
+tm.ProjectRole(demRoleViewOnly):
     name: View only
     account: oxiras
     project: demenagement
@@ -240,7 +240,7 @@ tm.Role(demRoleViewOnly):
          - testExecView
          - defectView
 
-tm.Role(tmRoleTestLead):
+tm.ProjectRole(tmRoleTestLead):
     name: Test Lead
     account: oxiras
     project: testManagementApplication
@@ -267,14 +267,14 @@ tm.Role(tmRoleTestLead):
          - defectEdit
          - defectDelete
 
-tm.Role(tmRoleRequirementsView):
+tm.ProjectRole(tmRoleRequirementsView):
     name: (unit) Requirement view
     account: oxiras
     project: testManagementApplication
     unitRoles:
          - reqView
 
-tm.Role(tmRoleRequirementsEdit):
+tm.ProjectRole(tmRoleRequirementsEdit):
     name: (unit) Requirement edit
     account: oxiras
     project: testManagementApplication
@@ -282,7 +282,7 @@ tm.Role(tmRoleRequirementsEdit):
          - reqView
          - reqEdit
 
-tm.Role(tmRoleRequirementsCreate):
+tm.ProjectRole(tmRoleRequirementsCreate):
     name: (unit) Requirement create
     account: oxiras
     project: testManagementApplication
@@ -290,7 +290,7 @@ tm.Role(tmRoleRequirementsCreate):
          - reqView
          - reqCreate
 
-tm.Role(tmRoleRequirementsDelete):
+tm.ProjectRole(tmRoleRequirementsDelete):
     name: (unit) Requirement delete
     account: oxiras
     project: testManagementApplication
@@ -298,7 +298,7 @@ tm.Role(tmRoleRequirementsDelete):
          - reqView
          - reqDelete
 
-tm.Role(tmRoleRequirementsAll):
+tm.ProjectRole(tmRoleRequirementsAll):
     name: Requirement all
     account: oxiras
     project: testManagementApplication
@@ -308,14 +308,14 @@ tm.Role(tmRoleRequirementsAll):
          - reqEdit
          - reqDelete
 
-tm.Role(tmRoleTestRepoView):
+tm.ProjectRole(tmRoleTestRepoView):
     name: (unit) Test Repository view
     account: oxiras
     project: testManagementApplication
     unitRoles:
          - testRepoView
 
-tm.Role(tmRoleTestRepoEdit):
+tm.ProjectRole(tmRoleTestRepoEdit):
     name: (unit) Test Repository edit
     account: oxiras
     project: testManagementApplication
@@ -323,7 +323,7 @@ tm.Role(tmRoleTestRepoEdit):
          - testRepoView
          - testRepoEdit
 
-tm.Role(tmRoleTestRepoCreate):
+tm.ProjectRole(tmRoleTestRepoCreate):
     name: (unit) Test Repository create
     account: oxiras
     project: testManagementApplication
@@ -331,7 +331,7 @@ tm.Role(tmRoleTestRepoCreate):
          - testRepoView
          - testRepoCreate
 
-tm.Role(tmRoleTestRepoDelete):
+tm.ProjectRole(tmRoleTestRepoDelete):
     name: (unit) Test Repository delete
     account: oxiras
     project: testManagementApplication
@@ -339,7 +339,7 @@ tm.Role(tmRoleTestRepoDelete):
          - testRepoView
          - testRepoDelete
 
-tm.Role(tmRoleTestRepoAll):
+tm.ProjectRole(tmRoleTestRepoAll):
     name: Test Designer
     account: oxiras
     project: testManagementApplication
@@ -349,14 +349,14 @@ tm.Role(tmRoleTestRepoAll):
          - testRepoEdit
          - testRepoDelete
 
-tm.Role(tmRoleTestPreparationView):
+tm.ProjectRole(tmRoleTestPreparationView):
     name: (unit) Test Preparation view
     account: oxiras
     project: testManagementApplication
     unitRoles:
          - testPrepView
 
-tm.Role(tmRoleTestPreparationEdit):
+tm.ProjectRole(tmRoleTestPreparationEdit):
     name: (unit) Test Preparation edit
     account: oxiras
     project: testManagementApplication
@@ -364,7 +364,7 @@ tm.Role(tmRoleTestPreparationEdit):
          - testPrepView
          - testPrepEdit
 
-tm.Role(tmRoleTestPreparationCreate):
+tm.ProjectRole(tmRoleTestPreparationCreate):
     name: (unit) Test Preparation create
     account: oxiras
     project: testManagementApplication
@@ -372,7 +372,7 @@ tm.Role(tmRoleTestPreparationCreate):
          - testPrepView
          - testPrepCreate
 
-tm.Role(tmRoleTestPreparationDelete):
+tm.ProjectRole(tmRoleTestPreparationDelete):
     name: (unit) Test Preparation delete
     account: oxiras
     project: testManagementApplication
@@ -380,7 +380,7 @@ tm.Role(tmRoleTestPreparationDelete):
          - testPrepView
          - testPrepDelete
 
-tm.Role(tmRoleTestPreparationAll):
+tm.ProjectRole(tmRoleTestPreparationAll):
     name: Test Preparation
     account: oxiras
     project: testManagementApplication
@@ -390,14 +390,14 @@ tm.Role(tmRoleTestPreparationAll):
          - testPrepEdit
          - testPrepDelete
 
-tm.Role(tmRoleTestExecutionView):
+tm.ProjectRole(tmRoleTestExecutionView):
     name: (unit) Test Execution view
     account: oxiras
     project: testManagementApplication
     unitRoles:
          - testExecView
 
-tm.Role(tmRoleTestExecutionEdit):
+tm.ProjectRole(tmRoleTestExecutionEdit):
     name: (unit) Test Execution edit
     account: oxiras
     project: testManagementApplication
@@ -405,7 +405,7 @@ tm.Role(tmRoleTestExecutionEdit):
          - testExecView
          - testExecEdit
 
-tm.Role(tmRoleTestExecutionCreate):
+tm.ProjectRole(tmRoleTestExecutionCreate):
     name: (unit) Test Execution create
     account: oxiras
     project: testManagementApplication
@@ -413,7 +413,7 @@ tm.Role(tmRoleTestExecutionCreate):
          - testExecView
          - testExecCreate
 
-tm.Role(tmRoleTestExecutionDelete):
+tm.ProjectRole(tmRoleTestExecutionDelete):
     name: (unit) Test Execution delete
     account: oxiras
     project: testManagementApplication
@@ -421,7 +421,7 @@ tm.Role(tmRoleTestExecutionDelete):
          - testExecView
          - testExecDelete
 
-tm.Role(tmRoleTestExecution):
+tm.ProjectRole(tmRoleTestExecution):
     name: Test Execution
     account: oxiras
     project: testManagementApplication
@@ -433,14 +433,14 @@ tm.Role(tmRoleTestExecution):
          - defectCreate
          - defectEdit
 
-tm.Role(tmRoleDefectsView):
+tm.ProjectRole(tmRoleDefectsView):
     name: (unit) Defect view
     account: oxiras
     project: testManagementApplication
     unitRoles:
          - defectView
 
-tm.Role(tmRoleDefectsEdit):
+tm.ProjectRole(tmRoleDefectsEdit):
     name: (unit) Defect edit
     account: oxiras
     project: testManagementApplication
@@ -448,7 +448,7 @@ tm.Role(tmRoleDefectsEdit):
          - defectView
          - defectEdit
 
-tm.Role(tmRoleDefectsCreate):
+tm.ProjectRole(tmRoleDefectsCreate):
     name: (unit) Defect create
     account: oxiras
     project: testManagementApplication
@@ -456,7 +456,7 @@ tm.Role(tmRoleDefectsCreate):
          - defectView
          - defectCreate
 
-tm.Role(tmRoleDefectsDelete):
+tm.ProjectRole(tmRoleDefectsDelete):
     name: (unit) Defect delete
     account: oxiras
     project: testManagementApplication
@@ -464,7 +464,7 @@ tm.Role(tmRoleDefectsDelete):
          - defectView
          - defectDelete
 
-tm.Role(tmRoleDefectsResolution):
+tm.ProjectRole(tmRoleDefectsResolution):
     name: Defect resolution
     account: oxiras
     project: testManagementApplication
@@ -473,7 +473,7 @@ tm.Role(tmRoleDefectsResolution):
          - defectCreate
          - defectEdit
 
-tm.Role(tmRoleViewOnly):
+tm.ProjectRole(tmRoleViewOnly):
     name: View only
     account: oxiras
     project: testManagementApplication

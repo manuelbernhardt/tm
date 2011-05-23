@@ -134,7 +134,7 @@ public class Requirements extends TMController {
         object.addProperty("url", "http://foo");
         object.addProperty("size", files.getTotalSpace());
 
-        if(!contentType.equals("application/excel")) {
+        if (!contentType.equals("application/excel")) {
             object.addProperty("error", "The provided file is not an Excel file");
         }
 
@@ -153,7 +153,5 @@ public class Requirements extends TMController {
         }
 
         ok();
-
-
     }
 }

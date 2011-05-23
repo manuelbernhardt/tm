@@ -105,7 +105,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         return false;
     }
 
-    private static class CategoryChildProducer implements ChildProducer {
+    public static class CategoryChildProducer implements ChildProducer {
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> ps = new ArrayList<JSTreeNode>();
             List<Project> projects = Project.find("from Project p where p.projectCategory.id = ?", id).fetch();
@@ -118,7 +118,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     }
 
 
-    private static class ProjectsRootChildProducer implements ChildProducer {
+    public static class ProjectsRootChildProducer implements ChildProducer {
         private final ChildProducer producer;
 
         public ProjectsRootChildProducer(ChildProducer producer) {

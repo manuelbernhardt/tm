@@ -172,7 +172,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         return true;
     }
 
-    private static class ReleaseChildProducer implements ChildProducer {
+    public static class ReleaseChildProducer implements ChildProducer {
         private final Map<Release, List<TestCycle>> releases;
         private final CycleChildProducer cycleChildProducer;
 
