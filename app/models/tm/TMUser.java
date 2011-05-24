@@ -144,7 +144,4 @@ public class TMUser extends TemporalModel implements AccountEntity {
         return query.getResultList();
     }
 
-    public static TMUser findById(Long id) {
-        return TMUser.find("from TMUser u where u.id = ?", id).<TMUser>first();
-    }
 }
