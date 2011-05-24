@@ -1,8 +1,8 @@
 package importer
 
 import scala.collection.mutable.Map
-import models.general.TemporalModel
 import java.lang.String
+import models.general.{CompositeModel, TemporalModel}
 
 /**
  *
@@ -10,6 +10,6 @@ import java.lang.String
  */
 
 trait ModelConverter[T <: TemporalModel] {
-  def convert(data: AnyRef, contextData: Map[String, AnyRef]): Any
+  def convert(data: AnyRef, baseModelType: Class[_ <: CompositeModel], contextData: Map[String, AnyRef]): Any
   val afterConvert: Map[String, AnyRef] => Unit
 }

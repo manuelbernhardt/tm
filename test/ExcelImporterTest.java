@@ -8,6 +8,7 @@ import importer.Importer;
 import models.tm.Project;
 import models.tm.Requirement;
 import models.tm.TMUser;
+import models.tm.test.Tag;
 import org.junit.Before;
 import org.junit.Test;
 import play.test.UnitTest;
@@ -63,6 +64,25 @@ public class ExcelImporterTest extends UnitTest {
         assertEquals(gwen, requirements.get(1).createdBy);
         assertEquals(manu, requirements.get(2).createdBy);
         assertEquals(manu, requirements.get(3).createdBy);
+
+        Tag functional = Tag.find("from Tag t where t.name = 'Functional' and t.type = ?", Tag.TagType.REQUIREMENT).<Tag>first();
+        Tag technical = Tag.find("from Tag t where t.name = 'Technical' and t.type = ?", Tag.TagType.REQUIREMENT).<Tag>first();
+        Tag newTag = Tag.find("from Tag t where t.name = 'Newtag' and t.type = ?", Tag.TagType.REQUIREMENT).<Tag>first();
+
+        assertEquals(requirements.get(0).tags.size(), 1);
+        assertTrue(requirements.get(0).tags.contains(functional));
+
+        assertEquals(requirements.get(1).tags.size(), 2);
+        assertTrue(requirements.get(1).tags.contains(functional));
+        assertTrue(requirements.get(1).tags.contains(technical));
+
+        assertEquals(requirements.get(2).tags.size(), 2);
+        assertTrue(requirements.get(2).tags.contains(functional));
+        assertTrue(requirements.get(2).tags.contains(technical));
+
+        assertEquals(requirements.get(3).tags.size(), 2);
+        assertTrue(requirements.get(3).tags.contains(newTag));
+        assertTrue(requirements.get(3).tags.contains(functional));
 
     }
 

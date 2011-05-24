@@ -10,8 +10,8 @@ import models.tm.{Project, TMUser, Requirement, Defect}
 import reflect.ClassManifest
 import models.general.{TemporalModel, CompositeModel}
 import java.lang.{String, Class}
-import play.db.jpa.Model
 import util.Logger
+import models.tm.test.Tag
 
 /**
  *
@@ -34,6 +34,9 @@ class ExcelImporter extends Importer {
         val instance: CompositeModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
         var anyDataAtAll = false
 
+        // TODO think of a better way of passing the project... the instance creation should be decoupled from the main importer
+        contextData.put(TMImport.PROJECT, project)
+
         // go over the column conversion rules for each column
         cellConverters.get(baseModelType).get.view.zipWithIndex foreach {
           case (rule: ColumnImportRule, colIndex: Int) => {
@@ -42,7 +45,7 @@ class ExcelImporter extends Importer {
             val c: Cell = row.getCell(colIndex)
             if (c != null) {
               if (rule.hasValidType(c.getCellType)) {
-                val value: Any = rule.computeConvertedValue(c, contextData).get
+                val value: Any = rule.computeConvertedValue(c, baseModelType, contextData).get
                 anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
               }
             }
@@ -93,8 +96,8 @@ class ExcelImporter extends Importer {
     classOf[Requirement] -> List(
       StringColumnImportRule(0, "name"),
       StringColumnImportRule(1, "description"),
-      UserColumnImportRule(2, "createdBy")
-      // later ,StringColumnImportRule(3, "tags")
+      UserColumnImportRule(2, "createdBy"),
+      TagsColumnImportRule(3, "tags")
     ),
     classOf[Defect] -> List(
       StringColumnImportRule(0, "name"),
@@ -109,7 +112,8 @@ trait ColumnImportRule {
 
   val modelConverters = Map[String, ModelConverter[_]](
     classOf[Requirement].getName -> RequirementConverter,
-    classOf[TMUser].getName -> TMUserConverter
+    classOf[TMUser].getName -> TMUserConverter,
+    classOf[Tag].getName -> TagsConverter
   )
 
   val colIndex: Int
@@ -123,14 +127,14 @@ trait ColumnImportRule {
     cellType == this.cellType
   }
 
-  def computeConvertedValue(cell: Cell, contextData: java.util.Map[String, AnyRef]): Option[Any] = {
+  def computeConvertedValue(cell: Cell, baseModelType: Class[_ <: CompositeModel], contextData: java.util.Map[String, AnyRef]): Option[Any] = {
     valueManifest match {
       case m if m <:< classManifest[String] => Some(cell.getStringCellValue)
       case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
       case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
       case m if m <:< classManifest[TemporalModel] => {
         val converter: ModelConverter[_] = modelConverters.get(classType.getName).get // TODO orElse add error
-        val value: Any = converter.convert(cell.getStringCellValue, contextData)
+        val value: Any = converter.convert(cell.getStringCellValue, baseModelType, contextData)
 
         if (converter.afterConvert != null) {
           converter.afterConvert(contextData)
@@ -143,5 +147,5 @@ trait ColumnImportRule {
 }
 
 case class StringColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[java.lang.String], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()
-
 case class UserColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[TMUser], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()
+case class TagsColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[Tag], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()

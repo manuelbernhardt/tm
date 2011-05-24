@@ -10,8 +10,10 @@ import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
+import models.tm.Requirement;
 import play.data.validation.Required;
 import play.db.jpa.JPA;
 
@@ -26,7 +28,29 @@ public class Tag extends ProjectModel {
     @Required
     public String name;
 
-    public enum TagType {REQUIREMENT, TESTSCRIPT, TESTINSTANCE, DEFECT}
+    public enum TagType {
+        REQUIREMENT(Requirement.class), TESTSCRIPT(Script.class), TESTINSTANCE(Instance.class), DEFECT(Defect.class);
+
+        private Class<?> clazz;
+
+        TagType(Class<?> clazz) {
+            this.clazz = clazz;
+        }
+
+        public Class<?> getClazz() {
+            return this.clazz;
+        }
+
+        public static TagType getFromClass(Class<?> clazz) {
+            for(TagType t : values()) {
+                if(t.getClazz().equals(clazz)) {
+                    return t;
+                }
+            }
+            throw new RuntimeException("Could not determine TagType for class " + clazz);
+        }
+
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
