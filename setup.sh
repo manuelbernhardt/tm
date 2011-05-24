@@ -24,16 +24,23 @@ echo =============================
 echo
 echo
 git clone https://github.com/manuelbernhardt/tree modules/tree
-git clone https://github.com/manuelbernhardt/play-excel modules/play-excel
-cd modules/play-excel && git checkout with-lib && cd ../..
+
+# git clone https://github.com/manuelbernhardt/play-excel modules/play-excel
+# cd modules/play-excel && git checkout with-lib && cd ../..
 
 echo
 echo
 echo =========================================================================
 echo Done! Visit http://oxiras.localhost.com:9000
 echo
-echo Note that you must have added the following line to your /etc/hosts file:
-echo 127.0.0.1 oxiras.localhost
+echo Note:
+echo - you must have added the following line to your /etc/hosts file:
+echo   127.0.0.1 oxiras.localhost
+echo - we are currently developing against the 1.2.x branch of play so if you
+echo   are using a development version you need to switch to that branch via
+echo   "git checkout 1.2.x"
+echo   and re-compile the framework via
+echo   "cd play/framework && ant"
 echo =========================================================================
 echo
 echo
