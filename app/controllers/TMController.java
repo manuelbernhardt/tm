@@ -140,6 +140,7 @@ public class TMController extends Controller {
      */
     @Util
     private static boolean controllerHasActiveProject() {
+        // TODO FIXME -- this won't work for the tree controller! so we need to figure out something here...
         return !request.controller.startsWith("admin");
     }
 

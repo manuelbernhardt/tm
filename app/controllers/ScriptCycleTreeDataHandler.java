@@ -13,6 +13,7 @@ import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Script;
 import models.tm.test.ScriptParam;
+import play.libs.F;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -88,7 +89,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         return ts;
     }
 
-    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
+    public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
 
         if (type.equals(ScriptCycleTreeDataHandler.TEST_CYCLE)) {
             String cycleNodeId = args.get("cycleNodeId");
@@ -124,7 +125,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                 instanceParam.create();
             }
 
-            return ti.getId();
+            return new F.Tuple<Long, String>(ti.getId(), INSTANCE);
         }
 
         return null;

@@ -71,7 +71,7 @@ var requirementTreeTypes = {
                 "image" : "/public/images/jstree/folder.png"
             },
             "start_drag" : false,
-            "move_node" : false,
+            "move_node" : true,
             "delete_node" : true,
             "remove" : true
         }

@@ -13,6 +13,7 @@ import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.Role;
 import models.tm.TMUser;
+import play.libs.F;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -68,7 +69,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
         return null;
     }
 
-    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
+    public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         return editAssignment(Long.parseLong(args.get("roleId")), Long.parseLong(args.get("userId")), true);
     }
 
@@ -85,7 +86,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        Long r = editAssignment(id, Long.parseLong(args.get("userId")), false);
+        F.Tuple<Long, String> r = editAssignment(id, Long.parseLong(args.get("userId")), false);
         return r != null;
     }
 
@@ -131,7 +132,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
 
     }
 
-    public static Long editAssignment(Long roleId, Long userId, boolean assign) {
+    public static F.Tuple<Long, String> editAssignment(Long roleId, Long userId, boolean assign) {
 
         if (roleId == null || userId == null || roleId == -1 || userId == -1) {
             return null;
@@ -154,7 +155,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
                 user.projectRoles.remove(role);
                 user.save();
             }
-            return userId;
+            return new F.Tuple<Long, String>(userId, ROLE);
         }
     }
 

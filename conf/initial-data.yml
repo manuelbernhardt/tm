@@ -738,7 +738,7 @@ tm.ProjectTreeNode(approachTreeNode7):
     name: Proto
     nodeId: 1
     opened: true
-    path: 7
+    path: '/Proto'
     treeId: approachTree
     type: release
     project: testManagementApplication
@@ -749,7 +749,7 @@ tm.ProjectTreeNode(approachTreeNode8):
     name: Unit Test
     nodeId: 1
     opened: false
-    path: '7___8'
+    path: '/Proto/Unit Test'
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
@@ -761,7 +761,7 @@ tm.ProjectTreeNode(approachTreeNode9):
     name: System Test
     nodeId: 2
     opened: false
-    path: '7___9'
+    path: '/Proto/System Test'
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
@@ -773,7 +773,7 @@ tm.ProjectTreeNode(approachTreeNode10):
     name: User Acceptance Test
     nodeId: 3
     opened: false
-    path: '7___10'
+    path: '/Proto/User Acceptance Test'
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
@@ -785,7 +785,7 @@ tm.ProjectTreeNode(approachTreeNode11):
     name: Beta
     nodeId: 2
     opened: true
-    path: 11
+    path: '/Beta'
     treeId: approachTree
     type: release
     project: testManagementApplication
@@ -796,7 +796,7 @@ tm.ProjectTreeNode(approachTreeNode12):
     name: V1
     nodeId: 3
     opened: true
-    path: 12
+    path: '/V1'
     treeId: approachTree
     type: release
     project: testManagementApplication
@@ -885,7 +885,7 @@ tm.ProjectTreeNode(repositoryTreeNode13):
     name: Administration
     nodeId: 1
     opened: true
-    path: 13
+    path: '/Administration'
     treeId: repositoryTree
     type: scriptFolder
     project: testManagementApplication
@@ -896,7 +896,7 @@ tm.ProjectTreeNode(repositoryTreeNode14):
     name: Users
     nodeId: 2
     opened: true
-    path: '13___14'
+    path: '/Administration/Users'
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
@@ -908,7 +908,7 @@ tm.ProjectTreeNode(repositoryTreeNode15):
     name: Projects
     nodeId: 3
     opened: true
-    path: '13___15'
+    path: '/Administration/Projects'
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
@@ -920,7 +920,7 @@ tm.ProjectTreeNode(repositoryTreeNode16):
     name: Create new project
     nodeId: 1
     opened: true
-    path: '13___15___16'
+    path: '/Administration/Projects/Create new project'
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
@@ -932,7 +932,7 @@ tm.ProjectTreeNode(repositoryTreeNode17):
     name: Edit project details
     nodeId: 2
     opened: true
-    path: '13___15___17'
+    path: '/Administration/Projects/Edit project details'
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
@@ -944,7 +944,7 @@ tm.ProjectTreeNode(repositoryTreeNode18):
     name: Requirement Management
     nodeId: 4
     opened: true
-    path: 18
+    path: '/Requirement Management'
     treeId: repositoryTree
     type: scriptFolder
     project: testManagementApplication
@@ -955,7 +955,7 @@ tm.ProjectTreeNode(repositoryTreeNode19):
     name: Register new requirement
     nodeId: 3
     opened: true
-    path: '18___19'
+    path: '/Requirement Management/Register new requirement'
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode18
@@ -1045,7 +1045,7 @@ tm.ProjectTreeNode(requirementTreeNode1):
     name: Requirement management
     nodeId: 1
     opened: true
-    path: 1
+    path: '/Requirement management'
     treeId: requirementTree
     type: requirementFolder
     project: testManagementApplication
@@ -1056,7 +1056,7 @@ tm.ProjectTreeNode(requirementTreeNode2):
     name: Create requirement
     nodeId: 1
     opened: false
-    path: '1___2'
+    path: '/Requirement management/Create requirement'
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
@@ -1068,7 +1068,7 @@ tm.ProjectTreeNode(requirementTreeNode3):
     name: List requirements (tree)
     nodeId: 2
     opened: false
-    path: '1___3'
+    path: '/Requirement management/List requirements (tree)'
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
@@ -1080,7 +1080,7 @@ tm.ProjectTreeNode(requirementTreeNode4):
     name: Display requirement details
     nodeId: 3
     opened: false
-    path: '1___4'
+    path: '/Requirement management/Display requirement details'
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
@@ -1092,7 +1092,7 @@ tm.ProjectTreeNode(requirementTreeNode5):
     name: Display entities linked to requirement
     nodeId: 4
     opened: false
-    path: '1___5'
+    path: '/Requirement management/Display entities linked to requirement'
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
@@ -1104,7 +1104,7 @@ tm.ProjectTreeNode(requirementTreeNode6):
     name: Cross concerns
     nodeId: 2
     opened: false
-    path: 6
+    path: '/Cross concerns'
     treeId: requirementTree
     type: requirementFolder
     project: testManagementApplication
@@ -1115,7 +1115,7 @@ tm.ProjectTreeNode(requirementTreeNode7):
     name: Datatables need to be sortable
     nodeId: 5
     opened: false
-    path: '6___7'
+    path: '/Cross concerns/Datatables need to be sortable'
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode5

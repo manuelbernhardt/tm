@@ -9,6 +9,7 @@ import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.AccountRole;
 import models.tm.TMUser;
+import play.libs.F;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -74,7 +75,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         }
     }
 
-    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
+    public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         return null;
     }
 

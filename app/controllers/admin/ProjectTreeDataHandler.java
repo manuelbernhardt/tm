@@ -10,6 +10,7 @@ import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
+import play.libs.F;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
@@ -44,19 +45,19 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         return l;
     }
 
-    public Long create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
+    public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
             Project project = new Project(name, userAccount, category);
             project.create(userAccount);
-            return project.id;
+            return new F.Tuple<Long, String>(project.id, PROJECT);
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = new ProjectCategory(userAccount, name);
             category.name = name;
             category.account = userAccount;
             category.create(userAccount);
-            return category.id;
+            return new F.Tuple<Long, String>(category.id, CATEGORY);
         }
         return null;
     }
