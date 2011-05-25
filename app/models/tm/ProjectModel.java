@@ -22,9 +22,6 @@ public class ProjectModel extends CompositeModel implements AccountEntity {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public Project project;
 
-    public ProjectModel() {
-    }
-
     public boolean isInAccount(Account account) {
         // TODO add logging here
         return this.account.getId().equals(account.getId());
