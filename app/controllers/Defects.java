@@ -5,15 +5,17 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializer;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.Defect;
-import models.tm.DefectStatus;
-import models.tm.TMUser;
+import models.tm.*;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.mvc.Before;
+import play.mvc.Router;
 import util.FilterQuery;
 
 
@@ -165,6 +167,35 @@ public class Defects extends TMController {
     public static void export() {
         export(Defect.class);
 
+    }
+
+    public static void saveFilter(){
+        Filters.saveFilter();
+    }
+
+    public static void loadFilters(){
+
+        JsonObject result = new JsonObject();
+        JsonArray jsonFilters = new JsonArray();
+        List<Filter> filterList = Filters.getFilters();
+        for (Filter f : filterList) {
+            JsonObject c = new JsonObject();
+            c.addProperty("filterId", f.getId());
+            c.addProperty("name", f.getName());
+            jsonFilters.add(c);
+        }
+        result.add("availableFilters", jsonFilters);
+        renderJSON(result.toString());
+
+    }
+
+    public static void loadFilterById(Long id){
+        Filter filter = Filter.find("from Filter f where f.id = ? and f.owner = ?", id, getConnectedUser()).<Filter>first();
+        JsonObject c = new JsonObject();
+        for(FilterConstraint fc: filter.filterConstraints){
+            c.addProperty(fc.property, fc.value);
+        }
+        renderJSON(c.toString());
     }
 
 }
