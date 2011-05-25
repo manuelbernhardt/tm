@@ -2,7 +2,15 @@
 #{set title:'Defects' /}
 
 
-<button id="filter_button">Filter</button>
+<!--<button id="filter_button">Filter</button>-->
+
+<div>
+    <select id='filterSelect' data-bind="options:availableFilters,
+                                         optionsValue: 'filterId',
+                                         optionsText: 'name',
+                                         optionsCaption: 'Filter' ">
+    </select>
+</div>
 <br/>
 <br/>
 <div id="filter_container">
@@ -54,6 +62,16 @@
 </div>
 
 <div id="deleteDefectDialog" style="display:none;" title="Confirm deletion of defect"></div>
+
+<div id="filterSaveDialog" style="display:none;" title="Enter a name of the filter">
+    <input id="filterName" />
+</div>
+
+<div id="filterLoadDialog" style="display:none;" title="Load filter">
+    #{list items:filterList, as:'filter'}
+        ${filter.name}
+    #{/list}
+</div>
 
 <br/>
 #{box 'Defects'}
@@ -296,21 +314,167 @@ $('#deleteDefectDialog').dialog({
 
 // filter functions
 
-      $('#saveFilter').button().click(function(){
-          var data = {
-              "name": 'default',
-              "entity": 'tm.models.Defect',
-              "constraint['title']['value']" : $('#title').val(),
-              "constraint['titleCase']['case']" : $('#titleCase').val(),
-              "constraint['status']['value']" : $('#status').val(),
-              "constraint['tags']['value']" : $('#tags').val(),
-              "constraint['assignedToId']['value']" : $('#assignedToId').val(),
-              "constraint['submittedById']['value']" : $('#submittedById').val(),
-              "constraint['dateFrom']['case']" : $('#dateFrom').val(),
-              "constraint['dateTo']['case']" : $('#dateTo').val()
-          }
+        $('#filterSaveDialog').dialog({
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function() {
+                    var data = {
+                      "name": $('#filterName').val(),
+                      "entity": 'tm.models.Defect',
+                      "constraint['title']['value']" : $('#title').val(),
+                      "constraint['titleCase']['case']" : $('#titleCase').val(),
+                      "constraint['status']['value']" : $('#status').val(),
+                      "constraint['tags']['value']" : $('#tags').val(),
+                      "constraint['assignedToId']['value']" : $('#assignedToId').val(),
+                      "constraint['submittedById']['value']" : $('#submittedById').val(),
+                      "constraint['dateFrom']['case']" : $('#dateFrom').val(),
+                      "constraint['dateTo']['case']" : $('#dateTo').val()
+                  }
 
-          $.post('@{Defects.saveFilter()}', data).error(errorHandler);
+                  $.post('@{Defects.saveFilter()}', data).error(errorHandler);
+//                    $(this).html("Filter saved successfully").delay(80000);
+                    //TODO make a fb dialog
+                    $(this).dialog("close");
+
+                },
+                "Cancel": function() {
+                    $(this).dialog("close");
+                }
+
+            }
+        });
+
+      $('#saveFilter').button().click(function(){
+          $('#filterSaveDialog').dialog('open');
       });
+
+        $('#filterLoadDialog').dialog({
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Cancel": function() {
+                    $(this).dialog("close");
+                }
+
+            }
+        });
+
+      $('#loadFilter').click(function(){
+          alert();
+          
+          $.getJSON("@{Defects.loadFilters()}", function(json) {
+
+
+
+              var htm='';
+              var i;
+              var action='';
+              var id='';
+              for(i=0;i<json.data.length;i++){
+                  id = json.data[i].filterId;
+                  var addition = "<a href='javascript:callAddr()'>"+json.data[i].name+"</a><br/>"
+                  htm=htm+addition;
+              }
+              $('#filterLoadDialog').html(htm);
+          }).error(errorHandler);
+
+          $('#filterLoadDialog').dialog('open');
+      });
+        var d;
+        function callAddr(){
+//            var data = {"id": id}
+
+            $.getJSON('@{Defects.loadFilterById(16)}',function(jsonFilter){
+
+                d = jsonFilter;
+                var viewModel = ko.mapping.fromJS(d);
+                var form =  document.getElementById('defectsFilterForm');
+                if(ko.mapping.isMapped(viewModel)){
+                    ko.applyBindings(viewModel, form);
+                }
+                else{
+                    ko.mapping.updateFromJS(viewModel,d);
+                }
+                $('#filterLoadDialog').dialog('close');
+
+            }).error(errorHandler);
+
+        }
+
+        var viewModel = {};
+         var viewModelLoadFilters = {};
+
+        $('document').ready(function(){
+        $.getJSON("@{Defects.loadFilters()}", function(json) {
+                var filterData = json;
+
+                var form =  document.getElementById('filterSelect');
+                if(!ko.mapping.isMapped(viewModelLoadFilters)){
+                    viewModelLoadFilters = ko.mapping.fromJS(filterData);
+                    ko.applyBindings(viewModelLoadFilters, form);
+                    $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                }
+                else{
+                    ko.mapping.updateFromJS(viewModelLoadFilters,filterData);
+                    $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                }
+        }).error(errorHandler);
+
+        });
+        $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data){
+//           alert(data);
+            $('#filter_container').slideDown('slow');
+            var param = {
+                id: $(this).val()
+            }
+//            $.post('@{Defects.loadFilterById()}')
+            if($(this).val()!=null && $(this).val()!='' && $(this).val()!='customFilter'){
+                $.getJSON('@{Defects.loadFilterById()}', param, function(jsonFilter){
+
+                    d = jsonFilter;
+                    var viewModel = ko.mapping.fromJS(d);
+                    var form =  document.getElementById('defectsFilterForm');
+                    if(ko.mapping.isMapped(viewModel)){
+                        ko.applyBindings(viewModel, form);
+                    }
+                    else{
+                        ko.mapping.updateFromJS(viewModel,d);
+                    }
+                    $('#filterLoadDialog').dialog('close');
+
+                }).error(errorHandler);
+            }
+            
+            if($(this).val()==''){
+                $('#filter_container').slideUp('slow');
+            }
+
+
+        });
+
+
+//        var viewModel={
+//            titleCase : ko.observable(d.titleCase.value),
+//            title_value : ko.observable(d.title.value),
+//            status_value : ko.observable(d.status.value),
+//            tags_value : ko.observable(d.tags.value),
+//            assignedToId_value : ko.observable(d.assignedToId.value),
+//            submittedById_value : ko.observable(d.submittedById.value),
+//            dateFrom_value : ko.observable(d.dateFrom.value),
+//            dateTo_value : ko.observable(d.dateTo.value)
+//        };
+//        ko.applyBindings(viewModel);
+
+//        var viewModel={
+//            title : ko.observable(d.title.value)
+//        }
+//        ko.applyBindings(viewModel);
+//        var viewModel = ko.mapping.fromJS(d);
+//        ko.mapping.updateFromJS(viewModel, d);
 
 </script>

@@ -5,6 +5,7 @@ import models.general.UnitRole;
 import models.tm.Filter;
 import models.tm.FilterConstraint;
 import models.tm.Project;
+import play.db.jpa.GenericModel;
 import play.mvc.Util;
 
 import java.util.ArrayList;
@@ -65,5 +66,9 @@ public class Filters extends TMController{
             }
             filterConstraint.create();
         }
+    }
+
+    public static List<Filter> getFilters(){
+        return Filter.findAll();
     }
 }

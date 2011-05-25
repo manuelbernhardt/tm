@@ -9,11 +9,11 @@
                 <option value="2">Starts with</option>
                 <option value="3">Doesn't contain</option>
             </select>
-            <input id="title" name="title"/>
+            <input id="title" name="title" data-bind="value: title"/>
         </div>
         <div class="field">
             <label for="status"/>Status</label>
-            <select id="status" name="status">
+            <select id="status" name="status" data-bind="value: status">
                 <option value="">Select status</option>
                 #{list items:models.tm.DefectStatus.defectStatuses(), as:'defectStatus'}
                     <option value="${defectStatus.name}">${defectStatus.name}</option>
@@ -22,13 +22,13 @@
         </div>
         <div class="field">
             <label for="tags">Tags</label>
-            <input id="tags" name="tags"/>
+            <input id="tags" name="tags" data-bind="value: tags"/>
         </div>
     </div>
     <div class="right_column">
         <div class="field">
             <label for="assignedToId"/>Assigned to</label>
-            <select id="assignedToId" name="assignedToId">
+            <select id="assignedToId" name="assignedToId" data-bind="value: assignedToId">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
                     <option value="${user.getId()}">${user.getFullName()}</option>
@@ -37,7 +37,7 @@
         </div>
         <div class="field">
             <label for="submittedById"/>Submitted by</label>
-            <select id="submittedById" name="submittedById">
+            <select id="submittedById" name="submittedById" data-bind="value: submittedById">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
                     <option value="${user.getId()}">${user.getFullName()}</option>
@@ -46,12 +46,12 @@
         </div>
         <div class="field">
             <label for="dateFrom">Reported between</label>
-            <input id="dateFrom" type="text" name="dateFrom">
-            <input id="dateTo" type="text" name="dateTo">
+            <input id="dateFrom" type="text" name="dateFrom" data-bind="value: dateFrom">
+            <input id="dateTo" type="text" name="dateTo" data-bind="value: dateTo">
       </div>
       <button id="filter">Apply filter</button>
     </div>
-  </form><button id="saveFilter">Save filter</button>
+  </form><button id="saveFilter">Save filter</button> 
 </div>
 
 <script type="text/javascript">
@@ -73,10 +73,8 @@
 
       $('#filter').button().click(function(event) {
           event.preventDefault();
-          refreshTableContents("defectsTable", false);
+          refreshTableContents("#defectsTable", false);
       });
 
-
-    
   });
 </script>
