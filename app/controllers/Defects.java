@@ -151,7 +151,7 @@ public class Defects extends TMController {
     @Restrict(UnitRole.DEFECTDELETE)
     public static void deleteDefect(Long defectId) {
         Defect defect = Defect.findById(defectId);
-        if(defect==null){
+        if (defect == null) {
             error("Defect is not found!");
         }
         defect.delete();
@@ -169,11 +169,11 @@ public class Defects extends TMController {
 
     }
 
-    public static void saveFilter(){
+    public static void saveFilter() {
         Filters.saveFilter();
     }
 
-    public static void loadFilters(){
+    public static void loadFilters() {
 
         JsonObject result = new JsonObject();
         JsonArray jsonFilters = new JsonArray();
@@ -189,10 +189,10 @@ public class Defects extends TMController {
 
     }
 
-    public static void loadFilterById(Long id){
+    public static void loadFilterById(Long id) {
         Filter filter = Filter.find("from Filter f where f.id = ? and f.owner = ?", id, getConnectedUser()).<Filter>first();
         JsonObject c = new JsonObject();
-        for(FilterConstraint fc: filter.filterConstraints){
+        for (FilterConstraint fc : filter.filterConstraints) {
             c.addProperty(fc.property, fc.value);
         }
         renderJSON(c.toString());
