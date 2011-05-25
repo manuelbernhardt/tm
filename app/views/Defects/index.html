@@ -1,9 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
-
-<!--<button id="filter_button">Filter</button>-->
-
 <div style="float:right;">
     <select id='filterSelect' data-bind="options:availableFilters,
                                          optionsValue: 'filterId',
@@ -66,12 +63,6 @@
 <div id="filterSaveDialog" style="display:none;" title="Enter a name of the filter">
     <input id="filterName" />
 </div>
-
-<!--<div id="filterLoadDialog" style="display:none;" title="Load filter">-->
-    <!--#{list items:filterList, as:'filter'}-->
-        <!--${filter.name}-->
-    <!--#{/list}-->
-<!--</div>-->
 
 <br/>
 #{box 'Defects'}
@@ -174,24 +165,6 @@ $('#createDefectCancel').click(function() {
     $('#createDefectDialog').slideUp('slow');
     $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
 });
-//    $('#createDefectDialog').dialog({
-//      autoOpen: false,
-//      width: 500,
-//      height: 400,
-//      draggable: true,
-//      resizable: false,
-//      modal: true,
-//      buttons: {
-//        "Create defect": function() {
-//          $('#createDefectForm').oxForm('submitCreateForm');
-//          $(this).dialog("close");
-//        },
-//        "Cancel": function() {
-//          $('#createDefectForm').resetForm();
-//          $(this).dialog("close");
-//        }
-//      }
-//    });
 
 //updating a defect
 
@@ -212,12 +185,7 @@ $('#updateDefectButton').button({icons: {primary: 'ui-icon-pencil'}});
 $('#updateDefectButton').button('disable');
 
 $('#updateDefectButton').click(function() {
-//        if($("#updateDefectButton span.ui-icon").hasClass("ui-icon-carat-1-s")){
-//            $("#updateDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
-//        }
-//        else{
-//            $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-s").removeClass("ui-icon-carat-1-e");
-//        }
+
 
     $('#updateDefectDialog').slideToggle('slow');
     $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
@@ -238,31 +206,7 @@ $('#updateDefectCancel').click(function() {
     $('#updateDefectDialog').slideUp('slow');
 });
 
-//    $('#updateDefectButton').click(function() {
-//      $('#updateDefectDialog').dialog('open');
-//    });
-//
-//    $('#updateDefectDialog').dialog({
-//      autoOpen: false,
-//      width: 500,
-//      height: 400,
-//      draggable: true,
-//      resizable: false,
-//      modal: true,
-//      open: function(){
-//          $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
-//      },
-//      buttons: {
-//        "Update defect": function() {
-//          $('#updateDefectForm').submit();
-//          $(this).dialog("close");
-//        },
-//        "Cancel": function() {
-//          $('#updateDefectForm').resetForm();
-//          $(this).dialog("close");
-//        }
-//      }
-//    });
+
 
 var tokens = $('#createDefectForm_defect_tags').tokenInput({
     url: '@{Defects.allTags()}',
@@ -350,61 +294,6 @@ $('#deleteDefectDialog').dialog({
           $('#filterSaveDialog').dialog('open');
       });
 
-//        $('#filterLoadDialog').dialog({
-//            autoOpen: false,
-//            height: 200,
-//            width: 300,
-//            modal: true,
-//            buttons: {
-//                "Cancel": function() {
-//                    $(this).dialog("close");
-//                }
-//
-//            }
-//        });
-
-//      $('#loadFilter').click(function(){
-//          alert();
-//
-//          $.getJSON("@{Defects.loadFilters()}", function(json) {
-//
-//
-//
-//              var htm='';
-//              var i;
-//              var action='';
-//              var id='';
-//              for(i=0;i<json.data.length;i++){
-//                  id = json.data[i].filterId;
-//                  var addition = "<a href='javascript:callAddr()'>"+json.data[i].name+"</a><br/>"
-//                  htm=htm+addition;
-//              }
-//              $('#filterLoadDialog').html(htm);
-//          }).error(errorHandler);
-//
-//          $('#filterLoadDialog').dialog('open');
-//      });
-//        var d;
-//        function callAddr(){
-////            var data = {"id": id}
-//
-//            $.getJSON('@{Defects.loadFilterById(16)}',function(jsonFilter){
-//
-//                d = jsonFilter;
-//                var viewModel = ko.mapping.fromJS(d);
-//                var form =  document.getElementById('defectsFilterForm');
-//                if(ko.mapping.isMapped(viewModel)){
-//                    ko.applyBindings(viewModel, form);
-//                }
-//                else{
-//                    ko.mapping.updateFromJS(viewModel,d);
-//                }
-//                $('#filterLoadDialog').dialog('close');
-//
-//            }).error(errorHandler);
-//
-//        }
-
         var viewModel = {};
          var viewModelLoadFilters = {};
 
@@ -464,25 +353,5 @@ $('#deleteDefectDialog').dialog({
 
 
         });
-
-
-//        var viewModel={
-//            titleCase : ko.observable(d.titleCase.value),
-//            title_value : ko.observable(d.title.value),
-//            status_value : ko.observable(d.status.value),
-//            tags_value : ko.observable(d.tags.value),
-//            assignedToId_value : ko.observable(d.assignedToId.value),
-//            submittedById_value : ko.observable(d.submittedById.value),
-//            dateFrom_value : ko.observable(d.dateFrom.value),
-//            dateTo_value : ko.observable(d.dateTo.value)
-//        };
-//        ko.applyBindings(viewModel);
-
-//        var viewModel={
-//            title : ko.observable(d.title.value)
-//        }
-//        ko.applyBindings(viewModel);
-//        var viewModel = ko.mapping.fromJS(d);
-//        ko.mapping.updateFromJS(viewModel, d);
 
 </script>
