@@ -54,6 +54,7 @@ public class TMController extends Controller {
      * Set Hibernate filters for multi-tenancy and so on.
      */
     @Before(priority = 0)
+    @Util
     public static void setFilters() {
         if (Security.isConnected()) {
             // account filter
@@ -80,6 +81,7 @@ public class TMController extends Controller {
      * Load user details for rendering, and update the session expiration timestamp.
      */
     @Before(priority = 1)
+    @Util
     public static void loadConnectedUser() {
         if (Security.isConnected()) {
             User user = getConnectedUser().user;
