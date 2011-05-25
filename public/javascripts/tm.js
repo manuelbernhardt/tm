@@ -580,3 +580,4 @@ function refreshWidgetsContent(dashboard) {
         dashboard.getWidget($(this).attr('id')).refreshContent();
     });
 }
+

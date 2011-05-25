@@ -338,7 +338,6 @@ $('#deleteDefectDialog').dialog({
 //                    $(this).html("Filter saved successfully").delay(80000);
                     //TODO make a fb dialog
                     $(this).dialog("close");
-
                 },
                 "Cancel": function() {
                     $(this).dialog("close");
@@ -410,7 +409,7 @@ $('#deleteDefectDialog').dialog({
          var viewModelLoadFilters = {};
 
         $('document').ready(function(){
-        $.getJSON("@{Defects.loadFilters()}", function(json) {
+            $.getJSON("@{Defects.loadFilters()}", function(json) {
                 var filterData = json;
 
                 var form =  document.getElementById('filterSelect');
@@ -435,9 +434,10 @@ $('#deleteDefectDialog').dialog({
                 $.getJSON('@{Defects.loadFilterById()}', param, function(jsonFilter){
 
                     d = jsonFilter;
-                    var viewModel = ko.mapping.fromJS(d);
+
                     var form =  document.getElementById('defectsFilterForm');
-                    if(ko.mapping.isMapped(viewModel)){
+                    if(!ko.mapping.isMapped(viewModel)){
+                        viewModel = ko.mapping.fromJS(d);
                         ko.applyBindings(viewModel, form);
                     }
                     else{
@@ -451,8 +451,15 @@ $('#deleteDefectDialog').dialog({
             if($(this).val()==''){
                 $('#filter_container').slideUp('slow');
             }
+
+            //clear the form in case a filter was previously applied
+
             if($(this).val()=='customFilter'){
-                $('#filter_container').slideUp('slow');
+                $(':input','#defectsFilterForm')
+                 .not(':button, :submit, :reset, :hidden')
+                 .val('')
+                 .removeAttr('checked')
+                 .removeAttr('selected');
             }
 
 
