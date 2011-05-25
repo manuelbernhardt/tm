@@ -67,11 +67,11 @@
     <input id="filterName" />
 </div>
 
-<div id="filterLoadDialog" style="display:none;" title="Load filter">
-    #{list items:filterList, as:'filter'}
-        ${filter.name}
-    #{/list}
-</div>
+<!--<div id="filterLoadDialog" style="display:none;" title="Load filter">-->
+    <!--#{list items:filterList, as:'filter'}-->
+        <!--${filter.name}-->
+    <!--#{/list}-->
+<!--</div>-->
 
 <br/>
 #{box 'Defects'}
@@ -351,60 +351,60 @@ $('#deleteDefectDialog').dialog({
           $('#filterSaveDialog').dialog('open');
       });
 
-        $('#filterLoadDialog').dialog({
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            modal: true,
-            buttons: {
-                "Cancel": function() {
-                    $(this).dialog("close");
-                }
+//        $('#filterLoadDialog').dialog({
+//            autoOpen: false,
+//            height: 200,
+//            width: 300,
+//            modal: true,
+//            buttons: {
+//                "Cancel": function() {
+//                    $(this).dialog("close");
+//                }
+//
+//            }
+//        });
 
-            }
-        });
-
-      $('#loadFilter').click(function(){
-          alert();
-          
-          $.getJSON("@{Defects.loadFilters()}", function(json) {
-
-
-
-              var htm='';
-              var i;
-              var action='';
-              var id='';
-              for(i=0;i<json.data.length;i++){
-                  id = json.data[i].filterId;
-                  var addition = "<a href='javascript:callAddr()'>"+json.data[i].name+"</a><br/>"
-                  htm=htm+addition;
-              }
-              $('#filterLoadDialog').html(htm);
-          }).error(errorHandler);
-
-          $('#filterLoadDialog').dialog('open');
-      });
-        var d;
-        function callAddr(){
-//            var data = {"id": id}
-
-            $.getJSON('@{Defects.loadFilterById(16)}',function(jsonFilter){
-
-                d = jsonFilter;
-                var viewModel = ko.mapping.fromJS(d);
-                var form =  document.getElementById('defectsFilterForm');
-                if(ko.mapping.isMapped(viewModel)){
-                    ko.applyBindings(viewModel, form);
-                }
-                else{
-                    ko.mapping.updateFromJS(viewModel,d);
-                }
-                $('#filterLoadDialog').dialog('close');
-
-            }).error(errorHandler);
-
-        }
+//      $('#loadFilter').click(function(){
+//          alert();
+//
+//          $.getJSON("@{Defects.loadFilters()}", function(json) {
+//
+//
+//
+//              var htm='';
+//              var i;
+//              var action='';
+//              var id='';
+//              for(i=0;i<json.data.length;i++){
+//                  id = json.data[i].filterId;
+//                  var addition = "<a href='javascript:callAddr()'>"+json.data[i].name+"</a><br/>"
+//                  htm=htm+addition;
+//              }
+//              $('#filterLoadDialog').html(htm);
+//          }).error(errorHandler);
+//
+//          $('#filterLoadDialog').dialog('open');
+//      });
+//        var d;
+//        function callAddr(){
+////            var data = {"id": id}
+//
+//            $.getJSON('@{Defects.loadFilterById(16)}',function(jsonFilter){
+//
+//                d = jsonFilter;
+//                var viewModel = ko.mapping.fromJS(d);
+//                var form =  document.getElementById('defectsFilterForm');
+//                if(ko.mapping.isMapped(viewModel)){
+//                    ko.applyBindings(viewModel, form);
+//                }
+//                else{
+//                    ko.mapping.updateFromJS(viewModel,d);
+//                }
+//                $('#filterLoadDialog').dialog('close');
+//
+//            }).error(errorHandler);
+//
+//        }
 
         var viewModel = {};
          var viewModelLoadFilters = {};
@@ -427,12 +427,10 @@ $('#deleteDefectDialog').dialog({
 
         });
         $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data){
-//           alert(data);
             $('#filter_container').slideDown('slow');
             var param = {
                 id: $(this).val()
             }
-//            $.post('@{Defects.loadFilterById()}')
             if($(this).val()!=null && $(this).val()!='' && $(this).val()!='customFilter'){
                 $.getJSON('@{Defects.loadFilterById()}', param, function(jsonFilter){
 
@@ -451,6 +449,9 @@ $('#deleteDefectDialog').dialog({
             }
             
             if($(this).val()==''){
+                $('#filter_container').slideUp('slow');
+            }
+            if($(this).val()=='customFilter'){
                 $('#filter_container').slideUp('slow');
             }
 
