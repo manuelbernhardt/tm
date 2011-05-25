@@ -40,12 +40,4 @@ public class Filter extends ProjectModel{
     public List<FilterConstraint> getFilterConstraints() {
         return filterConstraints;
     }
-
-    public TMUser getOwner() {
-        return owner;
-    }
-
-    public String getEntity() {
-        return entity;
-    }
 }

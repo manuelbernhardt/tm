@@ -69,6 +69,6 @@ public class Filters extends TMController{
     }
 
     public static List<Filter> getFilters(){
-        return Filter.findAll();
+        return Filter.find("owner=?", getConnectedUser()).fetch();
     }
 }
