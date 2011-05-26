@@ -19,6 +19,7 @@
             <button id="remove">Remove</button>
             #{/deadbolt.restrict}
         </div>
+        <div id="searchBox" style="float:right;"><input id="searchInput" type="text"></div>
         #{box 'Test Script Repository'}
         <div id="repositoryTree" class="tree" style="border-style:none;"></div>
         #{/box}
@@ -220,7 +221,14 @@
             $('#linkRequirementDialog').dialog('open');
         });
 
+        $('#searchInput').keyup(function() {
+          $("#repositoryTree").jstree("search", $(this).val());
+        });
+
     });
+
+
+
 
 </script>
 #{/set}

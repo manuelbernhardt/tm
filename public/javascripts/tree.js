@@ -5,7 +5,7 @@
         var settings = {};
 
         var defaults = {
-            "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller" ],
+            "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller", "search" ],
             "json_data" : {
                 "ajax" : {
                     "url" : treeChildrenRouteAction(),
