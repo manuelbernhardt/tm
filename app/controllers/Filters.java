@@ -32,7 +32,6 @@ public class Filters extends TMController {
         List<String> par = new ArrayList<String>();
         for (String p : params.all().keySet()) {
             if (p.startsWith("constraint")) {
-                System.out.println(p);
                 par.add(p);
             }
         }
@@ -45,10 +44,6 @@ public class Filters extends TMController {
                 String key1 = m.group(1).replace("'", "");
                 String key2 = m.group(2).replace("['", "").replace("']", "");
                 String value = params.get(fp);
-                System.out.println("key2: " + key2);
-                System.out.println("key1: " + key1);
-                System.out.println("value: " + value);
-
 
                 filterConstraint.property = key1;
                 filterConstraint.type = key2;
