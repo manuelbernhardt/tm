@@ -127,10 +127,10 @@
 
         $(function () {
             $("#create_folder").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-                $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}});
+                $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}, data:"New folder"});
             });
             $("#create_script").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-                $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+                $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
             });
             $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
                 $("#repositoryTree").jstree("remove", null);
