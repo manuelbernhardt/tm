@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import models.tm.Filter;
 import models.tm.FilterConstraint;
 import models.tm.Project;
@@ -61,5 +63,30 @@ public class Filters extends TMController {
 
     public static List<Filter> getFilters() {
         return Filter.find("owner=?", getConnectedUser()).fetch();
+    }
+
+    @Util
+    public static void loadFilters(){
+        JsonObject result = new JsonObject();
+        JsonArray jsonFilters = new JsonArray();
+        List<Filter> filterList = getFilters();
+        for (Filter f : filterList) {
+            JsonObject c = new JsonObject();
+            c.addProperty("filterId", f.getId());
+            c.addProperty("name", f.getName());
+            jsonFilters.add(c);
+        }
+        result.add("availableFilters", jsonFilters);
+        renderJSON(result.toString());
+    }
+
+    @Util
+    public static void loadFilterById(Long id){
+        Filter filter = Filter.find("from Filter f where f.id = ? and f.owner = ?", id, getConnectedUser()).<Filter>first();
+        JsonObject c = new JsonObject();
+        for (FilterConstraint fc : filter.filterConstraints) {
+            c.addProperty(fc.property, fc.value);
+        }
+        renderJSON(c.toString());
     }
 }

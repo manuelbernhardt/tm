@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
+import javax.tools.FileObject;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -179,28 +180,11 @@ public class Defects extends TMController {
     }
 
     public static void loadFilters() {
-
-        JsonObject result = new JsonObject();
-        JsonArray jsonFilters = new JsonArray();
-        List<Filter> filterList = Filters.getFilters();
-        for (Filter f : filterList) {
-            JsonObject c = new JsonObject();
-            c.addProperty("filterId", f.getId());
-            c.addProperty("name", f.getName());
-            jsonFilters.add(c);
-        }
-        result.add("availableFilters", jsonFilters);
-        renderJSON(result.toString());
-
+        Filters.loadFilters();
     }
 
     public static void loadFilterById(Long id) {
-        Filter filter = Filter.find("from Filter f where f.id = ? and f.owner = ?", id, getConnectedUser()).<Filter>first();
-        JsonObject c = new JsonObject();
-        for (FilterConstraint fc : filter.filterConstraints) {
-            c.addProperty(fc.property, fc.value);
-        }
-        renderJSON(c.toString());
+        Filters.loadFilterById(id);
     }
 
 }
