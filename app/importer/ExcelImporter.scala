@@ -12,6 +12,7 @@ import models.general.{TemporalModel, CompositeModel}
 import java.lang.{String, Class}
 import util.Logger
 import models.tm.test.Tag
+import play.db.jpa.GenericModel
 
 /**
  *
@@ -20,9 +21,8 @@ import models.tm.test.Tag
 
 class ExcelImporter extends Importer {
 
-
   @throws(classOf[Throwable])
-  def importFile(baseModelType: Class[_ <: CompositeModel], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
+  def importFile(baseModelType: Class[_ <: GenericModel], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
 
     val wb: Workbook = WorkbookFactory.create(new FileInputStream(file));
     val sheet = wb.getSheetAt(0);
@@ -31,21 +31,21 @@ class ExcelImporter extends Importer {
       // skip the header line
       case (row: Row, rowIndex: Int) if rowIndex > 0 => {
 
-        val instance: CompositeModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
+        val instance: GenericModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
         var anyDataAtAll = false
 
         // TODO think of a better way of passing the project... the instance creation should be decoupled from the main importer
         contextData.put(TMImport.PROJECT, project)
 
         // go over the column conversion rules for each column
-        cellConverters.get(baseModelType).get.view.zipWithIndex foreach {
+        TMImport.cellConverters.get(baseModelType.getName).get.view.zipWithIndex foreach {
           case (rule: ColumnImportRule, colIndex: Int) => {
             Logger.debug(rowIndex + ":" + colIndex + " " + rule)
 
             val c: Cell = row.getCell(colIndex)
             if (c != null) {
               if (rule.hasValidType(c.getCellType)) {
-                val value: Any = rule.computeConvertedValue(c, baseModelType, contextData).get
+                val value: Any = rule.computeConvertedValue(c, baseModelType, instance, contextData).get
                 anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
               }
             }
@@ -70,7 +70,7 @@ class ExcelImporter extends Importer {
     return List[ImportError]()
   }
 
-  def setFieldValue(baseModelType: Class[_ <: CompositeModel], rule: ColumnImportRule, instance: CompositeModel, v: Any): Boolean = {
+  def setFieldValue(baseModelType: Class[_ <: GenericModel], rule: ColumnImportRule, instance: GenericModel, v: Any): Boolean = {
     val field: Field = baseModelType.getField(rule.propertyName)
     try {
       Logger.debug("Setting value '%s' to field %s of entity %s via field assignment" format (v, rule.propertyName, baseModelType.getName))
@@ -90,31 +90,9 @@ class ExcelImporter extends Importer {
     }
 
   }
-
-
-  val cellConverters = Map[Class[_ <: CompositeModel], List[ColumnImportRule]](
-    classOf[Requirement] -> List(
-      StringColumnImportRule(0, "name"),
-      StringColumnImportRule(1, "description"),
-      UserColumnImportRule(2, "createdBy"),
-      TagsColumnImportRule(3, "tags")
-    ),
-    classOf[Defect] -> List(
-      StringColumnImportRule(0, "name"),
-      StringColumnImportRule(1, "description"),
-      StringColumnImportRule(2, "submittedBy")
-    )
-  )
-
 }
 
 trait ColumnImportRule {
-
-  val modelConverters = Map[String, ModelConverter[_]](
-    classOf[Requirement].getName -> RequirementConverter,
-    classOf[TMUser].getName -> TMUserConverter,
-    classOf[Tag].getName -> TagsConverter
-  )
 
   val colIndex: Int
   val propertyName: String
@@ -127,14 +105,14 @@ trait ColumnImportRule {
     cellType == this.cellType
   }
 
-  def computeConvertedValue(cell: Cell, baseModelType: Class[_ <: CompositeModel], contextData: java.util.Map[String, AnyRef]): Option[Any] = {
+  def computeConvertedValue(cell: Cell, baseModelType: Class[_ <: GenericModel], instance:GenericModel, contextData: java.util.Map[String, AnyRef]): Option[Any] = {
     valueManifest match {
       case m if m <:< classManifest[String] => Some(cell.getStringCellValue)
       case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
       case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
       case m if m <:< classManifest[TemporalModel] => {
-        val converter: ModelConverter[_] = modelConverters.get(classType.getName).get // TODO orElse add error
-        val value: Any = converter.convert(cell.getStringCellValue, baseModelType, contextData)
+        val converter: ModelConverter[_] = TMImport.modelConverters.get(classType.getName).get // TODO orElse add error
+        val value: Any = converter.convert(cell.getStringCellValue, baseModelType, instance, contextData)
 
         if (converter.afterConvert != null) {
           converter.afterConvert(contextData)
