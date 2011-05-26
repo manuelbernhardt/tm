@@ -1,9 +1,5 @@
 package models.tm;
 
-import javax.persistence.Entity;
-import javax.persistence.PostLoad;
-import java.io.Console;
-
 /**
  * nikola
  * Date: 5/19/11
@@ -11,6 +7,7 @@ import java.io.Console;
  */
 public enum ConstraintType {
 
+    VALUE("value", "text"), // constraint on the value itself - should maybe be called "equals"
     MATCHES("matches", "text"),
     STARTSWITH("startsWith", "text"),
     ENDSWITH("endsWith", "text"),

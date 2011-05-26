@@ -147,6 +147,12 @@ public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEn
     }
 
     @Override
+    public boolean create() {
+        this.type = nodeType.getName();
+        return super.create();
+    }
+
+    @Override
     public JPABase save() {
         if(nodeType != null) {
             this.type = nodeType.getName();
