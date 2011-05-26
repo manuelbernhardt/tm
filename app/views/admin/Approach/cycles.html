@@ -46,10 +46,10 @@ Alternatively simple tags can be used to organize the Test Execution.
 
     /** button initialisation **/
     $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, metadata: {args: {projectId: '${project.id}'}}});
+      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: '${project.id}'}}});
     });
     $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, metadata: {args: {projectId: '${project.id}'}}});
+      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
     });
     $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
       $("#approachTree").jstree("remove", null);
