@@ -7,9 +7,9 @@ import play.test.Fixtures;
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
-public class SeleniumTestDataLoader {
+public class TestDataLoader {
 
-    public SeleniumTestDataLoader() {
+    public TestDataLoader() {
         Fixtures.deleteDatabase();
         Fixtures.loadModels("initial-data.yml");
 

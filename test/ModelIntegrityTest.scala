@@ -10,7 +10,7 @@ class ModelIntegrityTest extends UnitTestCase with AssertionsForJUnit {
 
   @Before
   def setUp: Unit = {
-    new SeleniumTestDataLoader
+    new TestDataLoader
   }
 
   @Test

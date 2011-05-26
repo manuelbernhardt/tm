@@ -1,0 +1,7 @@
+## Default data to be loaded for a new project
+## THIS FILE SHOULD ONLY CONTAIN ENTITIES THAT ARE SUBCLASSES OF ProjectModel !
+
+tm.DefectStatus(defectStatusNew):
+    name: New
+    defaultOnCreation: true
+    position: 0

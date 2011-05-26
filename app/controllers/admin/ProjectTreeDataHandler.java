@@ -10,11 +10,14 @@ import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
+import models.tm.ProjectModel;
+import play.db.jpa.Model;
 import play.libs.F;
 import tree.JSTreeNode;
 import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
+import util.YamlModelLoader;
 
 import static models.general.UnitRole.roles;
 
@@ -49,8 +52,18 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
-            Project project = new Project(name, userAccount, category);
+            final Project project = new Project(name, userAccount, category);
             project.create(userAccount);
+
+            // load defaults
+            YamlModelLoader.loadModels("project-data.yml", new F.Action<Model>() {
+                public void invoke(Model result) {
+                    ProjectModel pm = (ProjectModel) result;
+                    pm.project = project;
+                    pm.account = project.account;
+                }
+            });
+
             return new F.Tuple<Long, String>(project.id, PROJECT);
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = new ProjectCategory(userAccount, name);
