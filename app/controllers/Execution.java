@@ -227,8 +227,6 @@ public class Execution extends TMController {
                         Integer status = Integer.parseInt(paramValue);
                         if (status != null) {
                             step.executionStatus = ExecutionStatus.fromPosition(status);
-                            // �$%&/()= Play/Hibernate bug!! we shouldn't have to invoke that bloody PreUpdate handler ourselves!
-                            // TODO watch play.lighthouseapp.com/projects/57987-play-framework/tickets/731-jpa-preupdate-lifecycle-handler-does-not-work-in-play-controllers
                             step.save();
                         }
                     } catch (NumberFormatException nfe) {
