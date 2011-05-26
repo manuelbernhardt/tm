@@ -42,11 +42,11 @@
 
     /** Button initialisation **/
     $("#create_category").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}});
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
     });
 
     $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
     });
 
     $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
