@@ -219,10 +219,14 @@
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({
-             success: function() {
+             success: function(data) {
                fullDrawInstanceTable = false;
                refreshTableContents('#instanceTable', false);
                $('#createRunDialog').dialog("close");
+               if(data!=null){
+                   createdRunId = data;
+                  $('#createDefectDialog').dialog("open");
+               }
               },
              error: function(xhr, textStatus, errorThrown) {
                errorHandler(xhr, textStatus, errorThrown);
@@ -257,7 +261,8 @@
               fullDrawInstanceTable = false;
               refreshTableContents('#instanceTable', false);
               $('#updateRunDialog').dialog("close");
-              if(data){
+              if(data!=null){
+                  createdRunId = data;
                   $('#createDefectDialog').dialog("open");
               }
             },
@@ -290,7 +295,7 @@
                   data: {runId: getSelectedRowId('#runTable')},
                   success: function() {
                     refreshTableContents('#instanceTable', false);
-                    $('#deleteRunDialog').dialog("close")
+                    $('#deleteRunDialog').dialog("close");
                   },
                   error: function(xhr, textStatus, errorThrown) {
                     errorHandler(xhr, textStatus, errorThrown);
@@ -321,7 +326,7 @@
             $.ajax({
                 type: 'POST',
                 url: '@{Execution.createDefect()}',
-                data: {id: getSelectedRowId('#runTable')},
+                data: {id: createdRunId},
                 success: function(data){
                     $(this).dialog("close");
                     window.location="/defects/"+data+"/edit";
@@ -334,6 +339,9 @@
           }
       }
   });
+
+  //hack for creating defect
+  var createdRunId = null;
 
   toggleFilter('#filter_button', '#filter_container');
 
