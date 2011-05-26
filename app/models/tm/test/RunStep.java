@@ -4,16 +4,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import util.ParameterHandler;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
+import play.db.jpa.JPABase;
+import util.ParameterHandler;
 
 /**
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -70,12 +69,10 @@ public class RunStep extends ProjectModel {
         }
     }
 
-    @PrePersist
-    @PreUpdate
-    public void doSave() {
-        if (executionStatus != null) {
-            this.status = executionStatus.getPosition();
-        }
+    @Override
+    public JPABase save() {
+        this.status = executionStatus.getPosition();
+        return super.save();
     }
 
 
