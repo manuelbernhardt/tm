@@ -22,14 +22,14 @@ import play.data.binding.types.DateBinder;
 import play.db.jpa.Model;
 import play.exceptions.YAMLException;
 import play.libs.F;
+import play.mvc.Util;
 import play.templates.TemplateLoader;
 import play.vfs.VirtualFile;
 
 /**
  * Utility class to load models from a Yaml class.
- *
+ * <p/>
  * Based on the {@link play.test.Fixtures} class of the Play! framework
- *
  */
 public class YamlModelLoader {
 
@@ -40,8 +40,11 @@ public class YamlModelLoader {
     /**
      * Load Model instancs from a YAML file and persist them using the underlying persistance mechanism.
      * The format of the YAML file is constained, see the YamlModelLoader manual page
+     *
      * @param name Name of a yaml file somewhere in the classpath (or conf/)
      */
+
+    @Util
     public static void loadModels(String name, F.Action<Model> onCreate) {
         VirtualFile yamlFile = null;
         try {
@@ -54,10 +57,10 @@ public class YamlModelLoader {
             if (yamlFile == null) {
                 throw new RuntimeException("Cannot load fixture " + name + ", the file was not found");
             }
-            
+
             // Render yaml file with 
             String renderedYaml = TemplateLoader.load(yamlFile).render();
-            
+
             Yaml yaml = new Yaml();
             Object o = yaml.load(renderedYaml);
             if (o instanceof LinkedHashMap<?, ?>) {
@@ -79,11 +82,11 @@ public class YamlModelLoader {
                         }
                         serialize(objects.get(key), "object", params);
                         @SuppressWarnings("unchecked")
-                        Class<Model> cType = (Class<Model>)Play.classloader.loadClass(type);
+                        Class<Model> cType = (Class<Model>) Play.classloader.loadClass(type);
                         resolveDependencies(cType, params);
-                        Model model = (Model)Binder.bind("object", cType, cType, null, params);
-                        for(Field f : model.getClass().getFields()) {
-                            if (f.getType().isAssignableFrom(Map.class)) {	 	
+                        Model model = (Model) Binder.bind("object", cType, cType, null, params);
+                        for (Field f : model.getClass().getFields()) {
+                            if (f.getType().isAssignableFrom(Map.class)) {
                                 f.set(model, objects.get(key).get(f.getName()));
                             }
                             if (f.getType().equals(byte[].class)) {
@@ -130,14 +133,14 @@ public class YamlModelLoader {
                 throw new RuntimeException("Cannot load fixture " + name + ", the file was not found");
             }
             Object o = yaml.load(is);
-            return (T)o;
+            return (T) o;
         } catch (ScannerException e) {
             throw new YAMLException(e, yamlFile);
         } catch (Throwable e) {
             throw new RuntimeException("Cannot load fixture " + name + ": " + e.getMessage(), e);
         }
     }
-    
+
 
     // Private
 
@@ -195,7 +198,7 @@ public class YamlModelLoader {
                     }
                 }
                 serialized.remove("object." + field.name);
-                serialized.put("object." + field.name + "." + Model.Manager.factoryFor((Class<? extends Model>)field.relationType).keyName(), ids);
+                serialized.put("object." + field.name + "." + Model.Manager.factoryFor((Class<? extends Model>) field.relationType).keyName(), ids);
             }
         }
     }
