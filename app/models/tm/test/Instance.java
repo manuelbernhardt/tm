@@ -96,7 +96,9 @@ public class Instance extends ProjectModel {
 
     @Override
     public JPABase save() {
-        this.status = executionStatus.getPosition();
+        if(executionStatus != null) {
+            this.status = executionStatus.getPosition();
+        }
         return super.save();
     }
 

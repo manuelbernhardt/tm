@@ -4,17 +4,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 
 import models.account.Account;
 import models.account.AccountEntity;
+import org.apache.poi.hssf.record.formula.functions.T;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Filters;
 import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 import play.db.jpa.Model;
 import tree.JSTreeNode;
 import tree.persistent.AbstractTree;
@@ -147,12 +146,12 @@ public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEn
         return type;
     }
 
-    @PreUpdate
-    @PrePersist
-    public void doSave() {
-        if (nodeType != null) {
+    @Override
+    public JPABase save() {
+        if(nodeType != null) {
             this.type = nodeType.getName();
         }
+        return super.save();
     }
 
     @PostLoad
