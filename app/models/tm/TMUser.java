@@ -73,8 +73,8 @@ public class TMUser extends TemporalModel implements AccountEntity {
         return user.firstName + " " + user.lastName;
     }
 
-    public List<ProjectWidget> getProjectWidgets() {
-        return ProjectWidget.listByUser(this);
+    public List<UserWidget> getUserWidgets() {
+        return UserWidget.find("from UserWidget w where w.user = ?", this).<UserWidget>fetch();
     }
 
     @Override

@@ -1339,8 +1339,6 @@ tm.ProjectWidget(templateWidgetDefectCountByDay):
       : DAY
       ? yAxis
       : COUNT
-    column: first
-    open: true
 
 tm.ProjectWidget(templateWidgetDefectReport):
     account: oxiras
@@ -1363,32 +1361,19 @@ tm.ProjectWidget(templateWidgetDefectReport):
       : name
       ? yAxis
       : status.name
+
+tm.UserWidget(manuWidgetDefectCountByDay):
+    account: oxiras
+    project: testManagementApplication
+    user: manu
+    widget: templateWidgetDefectCountByDay
     column: first
     open: true
 
-tm.ProjectWidget(manuWidgetDefectCountByDay):
+  tm.UserWidget(gwenWidgetDefectCountByDay):
     account: oxiras
     project: testManagementApplication
-    title: Number of defects by day
-    description: Displays the total number of defects created each day
-    creator: Oxiras
-    category: Defects
-    wType: graph
-    publicWidget: true
-    templateWidget: false
-    parameters:
-      ? entity
-      : Defect
-      ? graphType
-      : temporal
-      ? graphLabel
-      : Defects over time
-      ? temporalField
-      : created
-      ? xAxis
-      : DAY
-      ? yAxis
-      : COUNT
-    owner: manu
+    user: gwen
+    widget: templateWidgetDefectCountByDay
     column: first
     open: true

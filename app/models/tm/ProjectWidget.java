@@ -3,7 +3,6 @@ package models.tm;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,24 +15,27 @@ import javax.persistence.UniqueConstraint;
 import play.db.jpa.JPABase;
 
 /**
+ * A widget definition
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
-public class ProjectWidget extends ProjectModel implements Widget {
+public class ProjectWidget extends ProjectModel {
 
     public String title;
     public String category;
     public String description;
     public String creator;
     public boolean templateWidget;
+
     // this damn thing is called wType instead of type because hibernate has apparently a problem with fields named type....
     public String wType;
-    @Transient public WidgetType widgetType;
-    public boolean publicWidget;
 
-    @Column(name = "widgetColumn") public String column;
-    public boolean open;
+    @Transient
+    public WidgetType widgetType;
+
+    public boolean publicWidget;
 
     @ElementCollection(targetClass = String.class)
     @MapKeyClass(String.class)
@@ -44,42 +46,6 @@ public class ProjectWidget extends ProjectModel implements Widget {
 
     public ProjectWidget(Project project) {
         super(project);
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public String getColumn() {
-        return column;
-    }
-
-    public boolean isOpen() {
-        return open;
-    }
-
-    public boolean isTemplate() {
-        return templateWidget;
-    }
-
-    public WidgetType getType() {
-        return widgetType;
-    }
-
-    public Map<String, Object> getParameters() {
-        return parameters;
     }
 
     @Override

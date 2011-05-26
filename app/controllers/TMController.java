@@ -118,6 +118,12 @@ public class TMController extends Controller {
     }
 
     @Util
+    public static Long getConnectedUserId() {
+        // we'll be able to cache this easily
+        return getConnectedUser().getId();
+    }
+
+    @Util
     public static Account getConnectedUserAccount() {
         return getConnectedUser().user.account;
     }

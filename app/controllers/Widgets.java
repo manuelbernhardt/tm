@@ -1,10 +1,5 @@
 package controllers;
 
-import models.tm.Defect;
-import play.db.jpa.JPA;
-import play.libs.F;
-import utils.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import models.tm.Defect;
 import models.tm.ProjectWidget;
+import org.apache.commons.lang.StringUtils;
 import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Router;
@@ -23,6 +19,9 @@ import play.mvc.Router;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Widgets extends TMController {
+
+    public static final String GRAPH_TEMPORAL = "temporal";
+    public static final String GRAPH_RELATIONAL = "relational";
 
     public static enum ExpressionType {
 
@@ -40,25 +39,18 @@ public class Widgets extends TMController {
     }
 
 
-    public static void graph(String entity,
-                             String graphType,
-                             String yAxis,
-                             String xAxis,
-                             String temporalField,
-                             String graphTitle,
-                             String graphLabel,
-                             String graphAppearance) {
+    public static void graph(String entity, String graphType, String yAxis, String xAxis, String temporalField,
+                             String graphTitle, String graphLabel, String graphAppearance) {
 
         List<Object[]> objects = null;
         List<Object> countList = new ArrayList<Object>();
         List<Object> dateList = new ArrayList<Object>();
 
-        if (graphAppearance == null || StringUtils.isEmpty(graphAppearance)) {
+        if (StringUtils.isEmpty(graphAppearance)) {
             graphAppearance = "bar";
         }
 
-
-        if (graphType != null && graphType.equals("temporal")) {
+        if (graphType != null && graphType.equals(GRAPH_TEMPORAL)) {
 
             StringBuffer sb = new StringBuffer();
             sb.append("select ");
@@ -93,7 +85,7 @@ public class Widgets extends TMController {
 
             render(countList, dateList, graphTitle, graphLabel, graphAppearance);
 
-        } else if (graphType != null && graphType.equals("relational")) {
+        } else if (graphType != null && graphType.equals(GRAPH_RELATIONAL)) {
             StringBuffer sb = new StringBuffer();
             sb.append("select ");
             sb.append(String.format("count(%s)", xAxis));
@@ -135,11 +127,11 @@ public class Widgets extends TMController {
     }
 
     public static void report(String entity,
-                               String yAxis,
-                               String xAxis,
-                               String temporalField,
-                               String title,
-                               String label) {
+                              String yAxis,
+                              String xAxis,
+                              String temporalField,
+                              String title,
+                              String label) {
 
         List<Object[]> objects;
         List<Object> countList = new ArrayList<Object>();
@@ -166,6 +158,9 @@ public class Widgets extends TMController {
         return new F.Tuple<String, ExpressionType>(queryFragment, type);
     }
 
+    /**
+     * widget categories for all widgets *
+     */
     public static void categories() {
         JsonObject result = new JsonObject();
         JsonArray jsonCategories = new JsonArray();
@@ -184,6 +179,9 @@ public class Widgets extends TMController {
         renderJSON(result.toString());
     }
 
+    /**
+     * all widgets for one category *
+     */
     public static void widgets(String category) {
         if (category == null) {
             error("No category provided");
@@ -195,11 +193,11 @@ public class Widgets extends TMController {
         for (ProjectWidget w : widgets) {
             JsonObject c = new JsonObject();
             c.addProperty("id", w.getId());
-            c.addProperty("title", w.getTitle());
-            c.addProperty("description", w.getDescription());
-            c.addProperty("creator", w.getCreator());
-            c.addProperty("url", Router.reverse("Widgets." + w.getType().getViewAction(), w.getParameters()).toString());
-            c.addProperty("image", String.format("/public/images/widgets/%s.png", w.getType().getKey()));
+            c.addProperty("title", w.title);
+            c.addProperty("description", w.description);
+            c.addProperty("creator", w.creator);
+            c.addProperty("url", Router.reverse("Widgets." + w.widgetType.getViewAction(), w.parameters).toString());
+            c.addProperty("image", String.format("/public/images/widgets/%s.png", w.widgetType.getKey()));
             jsonWidgets.add(c);
         }
         result.add("data", jsonWidgets);

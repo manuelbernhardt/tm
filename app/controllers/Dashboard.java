@@ -1,17 +1,15 @@
 package controllers;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import models.general.Product;
 import models.tm.ProjectWidget;
 import models.tm.TMUser;
+import models.tm.UserWidget;
 import models.tm.Widget;
-import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import util.Logger;
 
@@ -30,10 +28,10 @@ public class Dashboard extends TMController {
     }
 
     public static void widgets() {
-        List<ProjectWidget> projectWidgets = getConnectedUser().getProjectWidgets();
+        List<UserWidget> userWidgets = getConnectedUser().getUserWidgets();
         JsonObject o = new JsonObject();
         JsonArray data = new JsonArray();
-        for (ProjectWidget w : projectWidgets) {
+        for (UserWidget w : userWidgets) {
             data.add(gson.toJsonTree(w));
         }
         o.add("data", data);
@@ -56,9 +54,9 @@ public class Dashboard extends TMController {
 
     public static void changeColumn(Long widgetId, String column) {
         if (column != null) {
-            Logger.info(Logger.LogType.USER, "Changing widget (%s) to column %s", widgetId, column);
-            JPA.em().createQuery("update ProjectWidget pw set pw.column = :column where pw.id = :widgetId and pw.templateWidget = false and pw.owner = :owner")
-                    .setParameter("column", column).setParameter("widgetId", widgetId).setParameter("owner", getConnectedUser())
+            Logger.info(Logger.LogType.USER, "Changing column of widget %s to %s", widgetId, column);
+            JPA.em().createQuery("update UserWidget w set w.column = :column where w.id = :widgetId and w.user.id = :userId")
+                    .setParameter("column", column).setParameter("widgetId", widgetId).setParameter("userId", getConnectedUserId())
                     .executeUpdate();
             ok();
         } else {
@@ -69,57 +67,54 @@ public class Dashboard extends TMController {
 
     public static void toggleWidgetWindow(Long widgetId, Boolean state) {
         if (widgetId != null) {
-            Logger.info(Logger.LogType.USER, "Changing widget's (%s) status to %s", widgetId, state);
-            JPA.em().createQuery("update ProjectWidget pw set pw.open = :state where pw.id=:widgetId and pw.templateWidget=false")
-                    .setParameter("widgetId", widgetId).setParameter("state", state).executeUpdate();
+            Logger.info(Logger.LogType.USER, "Changing state of widget %s to %s", widgetId, state);
+            JPA.em().createQuery("update UserWidget w set w.open = :state where w.id=:widgetId and w.user.id = :userId")
+                    .setParameter("widgetId", widgetId).setParameter("state", state).setParameter("userId", getConnectedUserId())
+                    .executeUpdate();
         } else {
-            Logger.error(Logger.LogType.USER, "widgetId in toggle widget window is null");
+            Logger.error(Logger.LogType.TECHNICAL, "widgetId in toggle widget window is null");
         }
     }
 
     public static void addWidget(Long widgetId) {
         if (widgetId != null) {
-            String column = "first";
-            Logger.info(Logger.LogType.USER, "Changing widget (%s) to column %s", widgetId, column);
-            ProjectWidget projectWidget = ProjectWidget.find("id=? and templateWidget=true", widgetId).<ProjectWidget>first();
+            ProjectWidget projectWidget = ProjectWidget.find("id = ? and templateWidget = true", widgetId).<ProjectWidget>first();
 
-            //copy of template widget
+            Logger.info(Logger.LogType.USER, "Adding widget '%s'", projectWidget.title);
 
-            ProjectWidget usersWidget = new ProjectWidget(projectWidget.project);
-            usersWidget.title = projectWidget.title;
-            usersWidget.category = projectWidget.category;
-            usersWidget.description = projectWidget.description;
-            usersWidget.widgetType = projectWidget.widgetType;
-            usersWidget.parameters = new HashMap<String, Object>();
-            usersWidget.parameters.putAll(projectWidget.parameters);
+            // create a new UserWidget
+            UserWidget uw = new UserWidget(projectWidget.project);
+            uw.column = "first";
+            uw.open = true;
+            uw.widget = projectWidget;
+            uw.user = getConnectedUser();
 
-            //adding custom setting for a user
-            usersWidget.column = column;
-            usersWidget.owner = getConnectedUser();
-            usersWidget.open = true;
-            usersWidget.templateWidget = false;
+            boolean created = uw.create();
+            if (!created) {
+                Logger.error(Logger.LogType.DB, "Could not create new UserWidget");
+                error("Widget could not be added");
+            } else {
+                JsonObject response = new JsonObject();
+                response.addProperty("id", uw.getId());
+                renderJSON(response.toString());
+            }
 
-            usersWidget.create();
-            JsonObject response = new JsonObject();
-            response.addProperty("id", usersWidget.getId());
-            renderJSON(response.toString());
         } else {
-            Logger.error(Logger.LogType.USER, "widgetID is null");
+            Logger.error(Logger.LogType.USER, "Attempting to add widget with empty widgetID");
             error("No layout provided");
         }
     }
 
     public static void deleteWidget(Long widgetId) {
         if (widgetId != null) {
-            ProjectWidget projectWidget = ProjectWidget.find("id=? and owner=?", widgetId, getConnectedUser()).<ProjectWidget>first();
-            if (projectWidget != null) {
-                projectWidget.parameters = null;
-                projectWidget.delete();
+            UserWidget widget = UserWidget.find("id = ? and user.id = ?", widgetId, getConnectedUserId()).<UserWidget>first();
+            if (widget != null) {
+                widget.delete();
+                ok();
+            } else {
+                Logger.error(Logger.LogType.DB, "Could not delete widget with ID %s", widgetId);
+                error("Widget to delete could not be found");
             }
-
-        } else {
-            Logger.error(Logger.LogType.USER, "widgetID is null");
-            error("No layout provided");
         }
     }
 }
