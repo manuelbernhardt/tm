@@ -62,11 +62,12 @@ public class RunStep extends ProjectModel {
     @Transient
     public ExecutionStatus executionStatus;
 
-    @PostLoad
-    public void doLoad() {
-        if (status != null) {
-            this.executionStatus = ExecutionStatus.fromPosition(status);
+    @Override
+    public boolean create() {
+        if(executionStatus != null) {
+            this.status = executionStatus.getPosition();
         }
+        return super.create();
     }
 
     @Override
@@ -77,5 +78,11 @@ public class RunStep extends ProjectModel {
         return super.save();
     }
 
+    @PostLoad
+    public void doLoad() {
+        if (status != null) {
+            this.executionStatus = ExecutionStatus.fromPosition(status);
+        }
+    }
 
 }

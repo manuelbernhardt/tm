@@ -14,8 +14,8 @@ import play.db.jpa.JPABase;
  * Time: 5:37 PM
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
-public class FilterConstraint extends ProjectModel{
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
+public class FilterConstraint extends ProjectModel {
 
     public String property;
     public String type;
@@ -28,15 +28,25 @@ public class FilterConstraint extends ProjectModel{
     }
 
     @Override
-    public JPABase save() {
-        if(!this.type.equals("value"))
+    public boolean create() {
+        if (constraintType != null) {
             this.type = constraintType.getKey();
+        }
+        return super.create();
+    }
+
+    @Override
+    public JPABase save() {
+        if (constraintType != null) {
+            this.type = constraintType.getKey();
+        }
         return super.save();
     }
 
     @PostLoad
     public void doLoad() {
-        if(!this.type.equals("value") && !this.type.equals("case"))
+        // TODO handle the "case" case
+        if (!this.type.equals("case"))
             this.constraintType = ConstraintType.valueOf(this.type);
     }
 }

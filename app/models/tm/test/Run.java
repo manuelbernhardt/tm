@@ -94,6 +94,14 @@ public class Run extends ProjectModel implements ParameterHolder {
     }
 
     @Override
+    public boolean create() {
+        if(executionStatus != null) {
+            this.status = executionStatus.getPosition();
+        }
+        return super.create();
+    }
+
+    @Override
     public JPABase save() {
         if(executionStatus != null) {
             this.status = executionStatus.getPosition();
