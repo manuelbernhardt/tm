@@ -119,4 +119,10 @@ public class Preparation extends TMController {
         }
         ok();
     }
+
+    @Restrict(UnitRole.TESTPREPVIEW)
+    public static void export() {
+        export(Instance.class);
+    }
+
 }

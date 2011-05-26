@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import controllers.RepositoryTree;
+import controllers.TMTree;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.TMUser;
@@ -63,6 +65,11 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
     public ScriptParam getParam(String name) {
         return ScriptParam.find("from ScriptParam p where p.script = ? and p.name = ?", this, name).<ScriptParam>first();
     }
+
+    public String getPath() {
+        return TMTree.getPath(getId(), getClass(), RepositoryTree.class);
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import controllers.RequirementTree;
+import controllers.TMTree;
 import models.tm.test.Script;
 import models.tm.test.Tag;
 import play.data.validation.MaxSize;
@@ -56,5 +58,7 @@ public class Requirement extends ProjectModel implements Node {
         return JavaExtensions.join(tags, ", ");
     }
 
-
+    public String getPath() {
+        return TMTree.getPath(getId(), getClass(), RequirementTree.class);
+    }
 }

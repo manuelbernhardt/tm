@@ -189,10 +189,12 @@ public class TMController extends Controller {
 
     @Util
     public static void export(Class<? extends ProjectModel> entityClass) {
-        List data = JPA.em().createQuery(String.format("from %s o", entityClass.getSimpleName())).getResultList();
-        DateFormat df = new SimpleDateFormat("yyyymmdd");
-        renderArgs.put("fileName", getActiveProject().name + "-" + entityClass.getSimpleName() + "s-" + df.format(new Date()));
-        renderExcel(data);
+        if(entityClass != null) {
+            List data = JPA.em().createQuery(String.format("from %s o", entityClass.getSimpleName())).getResultList();
+            DateFormat df = new SimpleDateFormat("yyyymmdd");
+            renderArgs.put("fileName", getActiveProject().name + "-" + entityClass.getSimpleName() + "s-" + df.format(new Date()));
+            renderExcel(data);
+        }
     }
 
     @Util

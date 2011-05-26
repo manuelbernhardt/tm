@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -16,8 +14,8 @@ import javax.persistence.UniqueConstraint;
 import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
-import models.tm.approach.TestCycle;
 import models.tm.TMUser;
+import models.tm.approach.TestCycle;
 import play.db.jpa.JPABase;
 import play.templates.JavaExtensions;
 
@@ -28,6 +26,10 @@ import play.templates.JavaExtensions;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
 public class Instance extends ProjectModel {
 
+    public Instance(Project project) {
+        super(project);
+    }
+
     public String name;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
@@ -37,6 +39,9 @@ public class Instance extends ProjectModel {
     public TestCycle testCycle;
 
     public Integer status;
+
+    @Transient
+    public ExecutionStatus executionStatus;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = true)
     public TMUser responsible;
@@ -49,12 +54,14 @@ public class Instance extends ProjectModel {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public List<Defect> defects;
 
-    public Instance(Project project) {
-        super(project);
-    }
 
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");
+    }
+
+    /** for export, clumsy but works **/
+    public String getExecutionDate() {
+        return getNiceDate(plannedExecution);
     }
 
     public List<InstanceParam> getParams() {
@@ -70,9 +77,6 @@ public class Instance extends ProjectModel {
         Run run = Run.find("from Run r where r.instance = ? order by r.executionDate desc", this).<Run>first();
         if (run != null) {
             executionStatus = run.executionStatus;
-
-            // TODO this is a Play bug - we should not need to invoke the PreUpdate callback manually
-            doSave();
             save();
         }
     }
@@ -90,21 +94,16 @@ public class Instance extends ProjectModel {
         return super.delete();
     }
 
-    @Transient
-    public ExecutionStatus executionStatus;
+    @Override
+    public JPABase save() {
+        this.status = executionStatus.getPosition();
+        return super.save();
+    }
 
     @PostLoad
     public void doLoad() {
         if (status != null) {
             this.executionStatus = ExecutionStatus.fromPosition(status);
-        }
-    }
-
-    @PreUpdate
-    @PrePersist
-    public void doSave() {
-        if (executionStatus != null) {
-            this.status = executionStatus.getPosition();
         }
     }
 

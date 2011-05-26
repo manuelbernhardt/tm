@@ -6,7 +6,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import play.Play;
 import play.db.jpa.Model;
+import play.templates.JavaExtensions;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -21,4 +23,8 @@ public class TemporalModel extends Model {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created", nullable = false, insertable = true, updatable = false, columnDefinition = "TIMESTAMP DEFAULT '0000-00-00 00:00:00'")
     public Date created = new Date();
+
+    protected String getNiceDate(Date d) {
+        return JavaExtensions.format(d, Play.configuration.getProperty("date.format"));
+    }
 }
