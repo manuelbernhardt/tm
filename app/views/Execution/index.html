@@ -46,6 +46,9 @@
       <div id="createRunDialog" title="Run Test Instance"></div>
       <div id="updateRunDialog" title="Update Test Run"></div>
       <div id="deleteRunDialog" title="Delete Test Run"></div>
+      <div id="createDefectDialog" title="Defect creation">
+          This run instance failed, do you want to create a defect?
+      </div>
 
       <table class="display" id="runTable">
         <thead>
@@ -250,10 +253,13 @@
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({
-            success: function() {
+            success: function(data) {
               fullDrawInstanceTable = false;
               refreshTableContents('#instanceTable', false);
               $('#updateRunDialog').dialog("close");
+              if(data){
+                  $('#createDefectDialog').dialog("open");
+              }
             },
             error: function(xhr, textStatus, errorThrown) {
                errorHandler(xhr, textStatus, errorThrown);
@@ -302,6 +308,33 @@
 
 
   });
+
+  $('#createDefectDialog').dialog({
+      autoOpen: false,
+      width: 300,
+      height: 200,
+      draggable: true,
+      resizable: false,
+      modal: true,
+      buttons: {
+          "Yes": function(){
+            $.ajax({
+                type: 'POST',
+                url: '@{Execution.createDefect()}',
+                data: {id: getSelectedRowId('#runTable')},
+                success: function(data){
+                    $(this).dialog("close");
+                    window.location="/defects/"+data+"/edit";
+                },
+                error: errorHandler
+            })
+          },
+          "No": function(){
+              $(this).dialog("close");
+          }
+      }
+  });
+
   toggleFilter('#filter_button', '#filter_container');
 
 </script>

@@ -1,6 +1,8 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
+
+        
 <div style="float:right;">
     <select id='filterSelect' data-bind="options:availableFilters,
                                          optionsValue: 'filterId',
@@ -84,6 +86,8 @@
 #{/box}
 
 
+
+
 <script type="text/javascript">
 
 //table definition
@@ -108,11 +112,23 @@ var defectsTableParameters = {
     "bSort": true,
     "bFilter": false,
     "bAutoWidth": false,
-    "iDisplayLength": 10,
+    "iDisplayLength": false,
     "bInfo": false,
     "sAjaxSource": "@{Defects.defects()}",
     "oLanguage": {
         "sZeroRecords": "No defects reported"
+    },
+    "fnDrawCallback": function() {
+        var da;
+        if ('${id}' > 0) {
+          $(defectsTableDataTable.fnSettings().aoData).each(function () {
+            var nTr = $(this.nTr)[0];
+            if ($($(nTr).children('td')[0]).text() == '${id}') {
+              $(this.nTr).addClass('row_selected');
+              da = $(this.nTr);
+            }
+          });
+        }
     }
 };
 #{/tabularasa.init}
@@ -355,3 +371,12 @@ $('#deleteDefectDialog').dialog({
         });
 
 </script>
+
+#{if edit}
+    <script type="text/javascript">
+        var id='${id}';
+        $('#updateDefectDialog').slideToggle('slow');
+        $('#updateDefectForm').oxForm('load', id);
+        $('#updateDefectButton').button('enable');
+    </script>
+#{/if}

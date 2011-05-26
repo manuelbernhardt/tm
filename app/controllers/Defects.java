@@ -32,6 +32,11 @@ public class Defects extends TMController {
         render(users);
     }
 
+    public static void edit(Long id) {
+        boolean edit = true;
+        render("Defects/index.html", id, edit);
+    }
+
     @Restrict(UnitRole.DEFECTVIEW)
     public static void defects(String tableId,
                                Integer iDisplayStart,

@@ -11,16 +11,11 @@ import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
+import models.tm.Defect;
+import models.tm.DefectStatus;
 import models.tm.TMUser;
 import models.tm.approach.Release;
-import models.tm.test.ExecutionStatus;
-import models.tm.test.Instance;
-import models.tm.test.InstanceParam;
-import models.tm.test.Run;
-import models.tm.test.RunParam;
-import models.tm.test.RunStep;
-import models.tm.test.ScriptStep;
-import models.tm.test.Tag;
+import models.tm.test.*;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
@@ -232,6 +227,8 @@ public class Execution extends TMController {
                         Integer status = Integer.parseInt(paramValue);
                         if (status != null) {
                             step.executionStatus = ExecutionStatus.fromPosition(status);
+                            // �$%&/()= Play/Hibernate bug!! we shouldn't have to invoke that bloody PreUpdate handler ourselves!
+                            // TODO watch play.lighthouseapp.com/projects/57987-play-framework/tickets/731-jpa-preupdate-lifecycle-handler-does-not-work-in-play-controllers
                             step.save();
                         }
                     } catch (NumberFormatException nfe) {
@@ -255,6 +252,10 @@ public class Execution extends TMController {
         // re-compute Run and Instance status
         run.updateStatus();
         run.instance.updateStatus();
+
+        if(run.status==3){
+           renderJSON(true);
+        }
 
         ok();
     }
@@ -321,5 +322,17 @@ public class Execution extends TMController {
             return step;
         }
         return null;
+    }
+
+    public static void createDefect(Long id){
+        Run run = Lookups.getRun(id);
+        Defect defect = new Defect(getActiveProject());
+        defect.name = run.instance.name;
+        defect.submittedBy = getConnectedUser();
+        defect.status = DefectStatus.getDefaultDefectStatus();
+        defect.save();
+        run.instance.defects.add(defect);
+
+        renderJSON(defect.getId());
     }
 }
