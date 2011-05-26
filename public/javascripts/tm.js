@@ -533,11 +533,9 @@ function adoptGraphSize() {
 
 function errorMessage(text, title) {
     if (title == null) {
-        title = 'An error has happened';
+        title = 'An error has occured';
     }
 
-
-    title = "<span class='ui-icon ui-icon-alert'> </span> " + title;
     var errorHtml = "<p><span class='ui-icon ui-icon-alert'></span> " + text + "</p>";
 
     $('#errorDialog').html(errorHtml);
