@@ -30,6 +30,7 @@ GET     /execution/{instanceId}/content                 Execution.content
 
 GET     /defects/?                                      Defects.index
 GET     /defects/data                                   Defects.data
+GET     /defects/{id}/edit                              Defects.edit
 
 GET     /profile/?                                      profile.Profile.index
 POST    /profile/edit                                   profile.Profile.edit

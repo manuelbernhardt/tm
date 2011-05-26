@@ -32,6 +32,11 @@ public class Defects extends TMController {
         render(users);
     }
 
+    public static void edit(Long id) {
+        boolean edit = true;
+        render("Defects/index.html", id, edit);
+    }
+
     @Restrict(UnitRole.DEFECTVIEW)
     public static void defects(String tableId,
                                Integer iDisplayStart,
@@ -95,8 +100,12 @@ public class Defects extends TMController {
             fq.addWhere("o.created <= :dateTo", "dateTo", dateTo);
         }
 
-        if (iSortCol_0 != null)
+        if (iSortCol_0 != null){
             fq.addAfterWhere("order by " + sortBy[iSortCol_0] + " " + sSortDir_0);
+        }
+        else{
+            fq.addAfterWhere("order by created desc");
+        }
 
 
         Query query = fq.build();
