@@ -179,7 +179,10 @@ div#top_menu {
 }
 
 .searchBox{
-    margin-bottom:25px;
+    margin-bottom:30px;
+    margin-top:5px;
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .searchInput{
