@@ -6,3 +6,4 @@ application.log.*
 tm.iml
 test-result/
 lib/
+conf/application.conf

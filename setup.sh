@@ -7,6 +7,11 @@ rm -rf modules
 mkdir modules
 play clean
 
+echo ========================
+echo Copying application.conf
+echo ========================
+cp conf/application.conf.template conf/application.conf
+
 echo
 echo
 echo ======================
