@@ -57,31 +57,11 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void tags(Long projectId){
-//        List<Tag> tags = Tag.find("select t from Tag t where t.project.id = ?", projectId).fetch();
-//        List<Tag> tagsRequirement = new ArrayList<Tag>();
-//        List<Tag> tagsTestScript = new ArrayList<Tag>();
-//        List<Tag> tagsTestInstance = new ArrayList<Tag>();
-//        List<Tag> tagsDefect = new ArrayList<Tag>();
-//
-//        for(Tag t:tags){
-//            if(t.type==Tag.TagType.REQUIREMENT){
-//                tagsRequirement.add(t);
-//            }
-//            else if(t.type==Tag.TagType.TESTSCRIPT){
-//                tagsTestScript.add(t);
-//            }
-//            else if(t.type==Tag.TagType.TESTINSTANCE){
-//                tagsTestInstance.add(t);
-//            }
-//            else if(t.type==Tag.TagType.DEFECT){
-//                tagsDefect.add(t);
-//            }
-//        }
 
-//        render(tagsRequirement, tagsTestScript, tagsTestInstance,tagsDefect, projectId);
         render(projectId);
     }
 
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void tagsData(String tableId,
                                 Integer tagType,
                             Integer iDisplayStart,
