@@ -34,7 +34,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
     }
 
     public RoleHolder getRoleHolder() {
-        return getUserRoles(null);
+        return getUserRoles(TMController.getActiveProject());
     }
 
     /**
@@ -54,10 +54,12 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
         User a = User.find("byEmail", userName).first();
         crh.addRoles(a.getRoles());
 
-        // TODO FIXME this needs to be by project (active project)
         TMUser u = TMUser.find("byUser", a).first();
-        crh.addRoles(u.getRoles());
-
+        crh.addRoles(u.getAccountRoles());
+        if (project != null) {
+            crh.addRoles(u.getProjectRoles(project));
+        }
+        crh.addRoles(u.getAccountRoles());
         return crh;
     }
 

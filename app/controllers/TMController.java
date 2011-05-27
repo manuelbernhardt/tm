@@ -136,10 +136,13 @@ public class TMController extends Controller {
     @Util
     public static Project getActiveProject() {
         if (!controllerHasActiveProject()) {
-            throw new RuntimeException("Active project can't be fetched in the admin area");
+            return null;
         }
         return getConnectedUser().activeProject;
     }
+
+    // TODO replace by something automatic
+    private final static String[] adminTrees = {"accountRolesAssignmentTree", "projectRolesAssignmentTree", "projectRolesTree", "projectTree", "userTree"};
 
     /**
      * Does this controller have the concept of active project
@@ -147,8 +150,10 @@ public class TMController extends Controller {
      * @return <code>true</code> if this is not an admin controller
      */
     @Util
-    private static boolean controllerHasActiveProject() {
-        // TODO FIXME -- this won't work for the tree controller! so we need to figure out something here...
+    public static boolean controllerHasActiveProject() {
+        if(request.controllerClass.equals(TMTreeController.class)) {
+            return Arrays.binarySearch(adminTrees, request.params.get("treeId")) == -1;
+        }
         return !request.controller.startsWith("admin");
     }
 

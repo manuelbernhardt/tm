@@ -83,21 +83,26 @@ public class TMUser extends TemporalModel implements AccountEntity {
     }
 
     // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
-    public List<? extends models.deadbolt.Role> getRoles() {
+    public List<? extends models.deadbolt.Role> getAccountRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
-
         for (String accountRole : accountRoles) {
             res.add(UnitRole.role(accountRole));
         }
+        return res;
+    }
 
+    public List<? extends models.deadbolt.Role> getProjectRoles(Project project) {
+        List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
         for (Role r : projectRoles) {
-            for (UnitRole ur : r.getAuthenticationUnitRoles()) {
-                if (!res.contains(ur)) {
-                    res.add(ur);
+            // the project should be filtered via the hibernate filters already but let's be sure
+            if(r.project.equals(project)) {
+                for (UnitRole ur : r.getAuthenticationUnitRoles()) {
+                    if (!res.contains(ur)) {
+                        res.add(ur);
+                    }
                 }
             }
         }
-
         return res;
     }
 

@@ -34,7 +34,7 @@ public class TMTreeController extends TMController {
      */
     @Before
     public static void setProjectFilter() {
-        if (Security.isConnected()) {
+        if (Security.isConnected() && controllerHasActiveProject()) {
             @SuppressWarnings("unchecked")
             Long projectId = params.get("args[projectId]", Long.class);
             if (projectId != null) {
@@ -45,6 +45,7 @@ public class TMTreeController extends TMController {
             }
             ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", projectThreadLocal.get().getId());
         }
+
     }
 
     @After
