@@ -251,7 +251,7 @@ public class Execution extends TMController {
         run.updateStatus();
         run.instance.updateStatus();
 
-        if(run.status==3){
+        if(run.executionStatus == ExecutionStatus.FAILED) {
            renderJSON(run.id);
         }
 
