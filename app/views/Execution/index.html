@@ -46,8 +46,8 @@
       <div id="createRunDialog" title="Run Test Instance"></div>
       <div id="updateRunDialog" title="Update Test Run"></div>
       <div id="deleteRunDialog" title="Delete Test Run"></div>
-      <div id="createDefectDialog" title="Defect creation">
-          This run instance failed, do you want to create a defect?
+      <div id="createDefectDialog" title="Create a defect ?">
+          This test run failed, do you want to create a defect ?
       </div>
 
       <table class="display" id="runTable">
@@ -223,9 +223,9 @@
                fullDrawInstanceTable = false;
                refreshTableContents('#instanceTable', false);
                $('#createRunDialog').dialog("close");
-               if(data!=null){
-                   createdRunId = data;
-                  $('#createDefectDialog').dialog("open");
+               if(data.length > 0){
+                 createdRunId = data;
+                 $('#createDefectDialog').dialog("open");
                }
               },
              error: function(xhr, textStatus, errorThrown) {
@@ -261,9 +261,9 @@
               fullDrawInstanceTable = false;
               refreshTableContents('#instanceTable', false);
               $('#updateRunDialog').dialog("close");
-              if(data!=null){
-                  createdRunId = data;
-                  $('#createDefectDialog').dialog("open");
+              if(data.length > 0) {
+                createdRunId = data;
+                $('#createDefectDialog').dialog("open");
               }
             },
             error: function(xhr, textStatus, errorThrown) {
