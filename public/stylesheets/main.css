@@ -177,3 +177,11 @@ div#top_menu {
 .ui-button .ui-button-text {
     font-size: 12px;
 }
+
+.searchBox{
+    margin-bottom:25px;
+}
+
+.searchInput{
+    float:right;
+}
