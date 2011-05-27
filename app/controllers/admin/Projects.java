@@ -1,15 +1,19 @@
 package controllers.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.Role;
 import models.tm.TMUser;
+import models.tm.test.Tag;
+import play.db.jpa.GenericModel;
 import play.mvc.With;
 
 /**
@@ -49,6 +53,51 @@ public class Projects extends TMController {
         List<Role> projectRoles = Role.findByProject(projectId);
         List<TMUser> accountUsers = TMUser.listByAccount(getConnectedUserAccount().getId());
         render(project, projectRoles, accountUsers);
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void tags(Long projectId){
+
+        render(projectId);
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void tagsData(String tableId,
+                                Integer tagType,
+                            Integer iDisplayStart,
+                            Integer iDisplayLength,
+                            String sColumns,
+                            String sEcho,
+                            Long projectId) {
+        if (projectId == null) {
+            error();
+        } else {
+            GenericModel.JPAQuery query;
+            List<Tag> tags = new ArrayList<Tag>();
+            switch (tagType){
+                case 0:
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.REQUIREMENT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    tags = query.fetch();
+                    break;
+                case 1:
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.TESTSCRIPT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    tags = query.fetch();
+                    break;
+                case 2:
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.TESTINSTANCE).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    tags = query.fetch();
+                    break;
+                case 3:
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.DEFECT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    tags = query.fetch();
+                    break;
+            }
+
+
+            long totalRecords = Tag.count();
+            TableController.renderJSON(tags, Tag.class, totalRecords, sColumns, sEcho);
+            ok();
+        }
     }
 
 }
