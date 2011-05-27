@@ -140,7 +140,6 @@
                     },
                     success : function (r) {
                         if (!r.status) {
-                            alert("yada")
                             $.jstree.rollback(data.rlbk);
                         }
                         else {
