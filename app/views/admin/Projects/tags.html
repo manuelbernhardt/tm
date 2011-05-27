@@ -1,0 +1,160 @@
+#{if projectId == null}
+No project selected
+#{/if}
+
+
+<!--#{else}-->
+
+
+<div class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
+
+        <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top ui-state-focus" role="tab" aria-expanded="true" aria-selected="true" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#">Requirement</a></h3>
+        <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"  role="tabpanel">
+            <table id="requirement" class="display">
+              <thead>
+              <tr>
+                <th>Tag</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+        </div>
+        <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Test script</a></h3>
+        <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style=" display: none; " role="tabpanel">
+            <table id="testScript" class="display">
+              <thead>
+              <tr>
+                <th>Tag</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+        </div>
+        <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Test instance</a></h3>
+        <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="display: none; " role="tabpanel">
+            <table id="testInstance" class="display">
+              <thead>
+              <tr>
+                <th>Tag</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+        </div>
+        <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Defect</a></h3>
+        <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="display: none; " role="tabpanel">
+            <table id="defect" class="display">
+              <thead>
+              <tr>
+                <th>Tag</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+        </div>
+
+</div>
+
+        <script type="text/javascript">
+            $(".accordion").accordion({
+                header: "h3",
+                autoHeight: false,
+                change: function(){
+                    $('.display').attr("style", "width:100%"); // hack because of css/js conflicts between accordion and data tables
+                }
+            });
+
+            handleRowSelection("#defect", function(){
+                alert("a row is selected!");
+            })
+
+            $(document).ready(function() {
+
+                
+
+                #{tabularasa.init tableId:'requirement'}
+                var requirementParameters = {
+                  "aoColumns": [
+                    {"sName": "id", "sClass": "sNone" },
+                    {"sName": "name"}
+                  ],
+		          "oSearch": true,
+                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", 0)}',
+                  "bProcessing": true,
+                  "bServerSide": true,
+                  "bLengthChange": false,
+                  "bSort": false,
+                  "iDisplayLength": false,
+                  "bInfo": false,
+                  "bFilter":false,
+                  "oLanguage": {
+                    "sZeroRecords": "No tags created yet"
+                  }
+                };
+                #{/tabularasa.init}
+
+                #{tabularasa.init tableId:'testScript'}
+                var testScriptParameters = {
+                  "aoColumns": [
+                    {"sName": "id", "sClass": "sNone" },
+                    {"sName": "name"}
+                  ],
+                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", 1)}',
+                  "bProcessing": true,
+                  "bServerSide": true,
+                  "bLengthChange": false,
+                  "bSort": false,
+                  "iDisplayLength": false,
+                  "bInfo": false,
+                  "bFilter":true,
+                  "oLanguage": {
+                    "sZeroRecords": "No tags created yet"
+                  }
+                };
+                #{/tabularasa.init}
+
+                #{tabularasa.init tableId:'testInstance'}
+                var testInstanceParameters = {
+                  "aoColumns": [
+                    {"sName": "id", "sClass": "sNone" },
+                    {"sName": "name"}
+                  ],
+                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", 2)}',
+                  "bProcessing": true,
+                  "bServerSide": true,
+                  "bLengthChange": false,
+                  "bSort": false,
+                  "iDisplayLength": false,
+                  "bInfo": false,
+                  "bFilter":true,
+                  "oLanguage": {
+                    "sZeroRecords": "No tags created yet"
+                  }
+                };
+                #{/tabularasa.init}
+
+
+                #{tabularasa.init tableId:'defect'}
+                var defectParameters = {
+                  "aoColumns": [
+                    {"sName": "id", "sClass": "sNone" },
+                    {"sName": "name"}
+                  ],
+                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", 3)}',
+                  "bProcessing": true,
+                  "bServerSide": true,
+                  "bLengthChange": false,
+                  "bSort": false,
+                  "iDisplayLength": false,
+                  "bInfo": false,
+                  "bFilter":true,
+                  "oLanguage": {
+                    "sZeroRecords": "No tags created yet"
+                  }
+                };
+                #{/tabularasa.init}
+            });
+        </script>
+
+
+<!--#{/else}-->
