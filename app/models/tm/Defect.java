@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import models.tm.test.Tag;
+import models.tm.test.TagHolder;
 import play.data.validation.MaxSize;
 import play.templates.JavaExtensions;
 
@@ -17,7 +18,7 @@ import play.templates.JavaExtensions;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
-public class Defect extends ProjectModel {
+public class Defect extends ProjectModel implements TagHolder{
 
     public String name;
 
@@ -42,5 +43,9 @@ public class Defect extends ProjectModel {
 
     public String getTagNames() {
         return JavaExtensions.join(tags, ", ");
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 }

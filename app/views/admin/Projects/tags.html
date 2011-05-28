@@ -21,6 +21,10 @@ No project selected
     <input id="defectRenameInput"/>
 </div>
 
+<div id="mergeTagDialog" title="Merge tags">
+    Tag with this name already exists, do you want to merge those?
+</div>
+
 <div class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top ui-state-focus" role="tab" aria-expanded="true" aria-selected="true" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#">Requirement</a></h3>
@@ -79,6 +83,10 @@ No project selected
 </div>
 
         <script type="text/javascript">
+
+            // hack for fetching second tag ID
+            var secondTagId = null;
+            
             $(".accordion").accordion({
                 header: "h3",
                 autoHeight: false,
@@ -107,6 +115,10 @@ No project selected
                     $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#requirement'), tagNewName: $('#requirementRenameInput').val(), projectId:'${projectId}'})
                             .success(
                                 function(data) {
+                                    if(data!=null && data!=''){
+                                        secondTagId = data;
+                                        $('#mergeTagDialog').dialog("open");
+                                    }
                                     refreshTableContents('#requirement', false);
                                     $(this).dialog("close");
                                 })
@@ -240,6 +252,32 @@ No project selected
                     $("#defectRenameTag").button("enable");
             });
 
+            $('#mergeTagDialog').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#requirement'), secondTagId: secondTagId, projectId:'${projectId}'})
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#requirement', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+
+
+
             $(document).ready(function() {
 
                 
@@ -326,6 +364,8 @@ No project selected
                 };
                 #{/tabularasa.init}
             });
+
+
         </script>
 
 

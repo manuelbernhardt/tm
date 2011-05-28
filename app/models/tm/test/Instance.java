@@ -24,7 +24,7 @@ import play.templates.JavaExtensions;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Instance extends ProjectModel {
+public class Instance extends ProjectModel implements TagHolder{
 
     public Instance(Project project) {
         super(project);
@@ -122,4 +122,7 @@ public class Instance extends ProjectModel {
     }
 
 
+    public List<Tag> getTags() {
+        return tags;
+    }
 }

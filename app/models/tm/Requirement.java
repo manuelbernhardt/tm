@@ -12,6 +12,7 @@ import controllers.RequirementTree;
 import controllers.TMTree;
 import models.tm.test.Script;
 import models.tm.test.Tag;
+import models.tm.test.TagHolder;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.templates.JavaExtensions;
@@ -23,7 +24,7 @@ import tree.persistent.NodeName;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
-public class Requirement extends ProjectModel implements Node {
+public class Requirement extends ProjectModel implements Node, TagHolder{
 
     @NodeName
     @Required
@@ -60,5 +61,9 @@ public class Requirement extends ProjectModel implements Node {
 
     public String getPath() {
         return TMTree.getPath(getId(), getClass(), RequirementTree.class);
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 }
