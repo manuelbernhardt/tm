@@ -5,13 +5,16 @@ No project selected
 
 <!--#{else}-->
 
+<div id="requirementRenameDialog" title="Rename the tag">
+    <input id="requirementRenameInput"/>
+</div>
 
 <div class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top ui-state-focus" role="tab" aria-expanded="true" aria-selected="true" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#">Requirement</a></h3>
         <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"  role="tabpanel">
 
-            <button id="requirementRenameTag" value="Rename"/>
+            <button id="requirementRenameTag">Rename</button>
             <table id="requirement" class="display">
               <thead>
               <tr>
@@ -66,13 +69,31 @@ No project selected
                 }
             });
 
-            $('#requirementRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}});
+            $('#requirementRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}, disabled:true});
             $("#requirementRenameTag").click(function(){
-                
+                $('#requirementRenameDialog').dialog("open");
             });
 
-            handleRowSelection("#requirement", function(){
-                alert("a row is selected!");
+            $('#requirementRenameDialog').dialog({
+
+            autoOpen: false,
+            height: 300,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+
+            handleRowSelection("#requirement", function(data){
+
+                $("#requirementRenameTag").button("enable");
             });
             handleRowSelection("#testScript", function(){
                 alert("a row is selected!");
