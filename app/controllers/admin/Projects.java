@@ -57,7 +57,6 @@ public class Projects extends TMController {
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void tags(Long projectId){
-
         render(projectId);
     }
 
@@ -97,6 +96,17 @@ public class Projects extends TMController {
             long totalRecords = Tag.count();
             TableController.renderJSON(tags, Tag.class, totalRecords, sColumns, sEcho);
             ok();
+        }
+    }
+
+    public static void renameTag(Long tagId, String tagNewName, Long projectId){
+        List<Tag> tags = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).fetch();
+        if(tags.size()>1){
+            
+        }
+        else if(tags.size()==1){
+            tags.get(0).name = tagNewName;
+            tags.get(0).save();
         }
     }
 
