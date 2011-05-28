@@ -85,7 +85,9 @@ public class YamlModelLoader {
                         Model model = (Model) Binder.bind("object", cType, cType, null, params);
                         for (Field f : model.getClass().getFields()) {
                             if (f.getType().isAssignableFrom(Map.class)) {
-                                f.set(model, objects.get(key).get(f.getName()));
+                                Map m = (Map) f.get(model);
+                                m.clear();
+                                m.putAll((Map)objects.get(key).get(f.getName()));
                             }
                             if (f.getType().equals(byte[].class)) {
                                 f.set(model, objects.get(key).get(f.getName()));
@@ -108,8 +110,6 @@ public class YamlModelLoader {
                     }
                 }
             }
-            // Most persistence engine will need to clear their state
-            Play.pluginCollection.afterFixtureLoad();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Class " + e.getMessage() + " was not found", e);
         } catch (ScannerException e) {

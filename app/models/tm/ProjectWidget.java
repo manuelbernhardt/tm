@@ -50,7 +50,7 @@ public class ProjectWidget extends ProjectModel {
 
     @Override
     public boolean create() {
-        if (this.wType == null) {
+        if (this.widgetType != null) {
             this.wType = this.widgetType.getKey();
         }
         return super.create();
@@ -58,7 +58,7 @@ public class ProjectWidget extends ProjectModel {
 
     @Override
     public JPABase save() {
-        if (this.wType == null) {
+        if (this.widgetType != null) {
             this.wType = this.widgetType.getKey();
         }
         return super.save();
