@@ -5,3 +5,45 @@ tm.DefectStatus(defectStatusNew):
     name: New
     defaultOnCreation: true
     position: 0
+
+tm.ProjectWidget(templateWidgetDefectByDay):
+    title: Number of defects by day
+    description: Displays the total number of defects created each day
+    creator: Oxiras
+    category: Defects
+    wType: graph
+    parameters:
+      ? entity
+      : Defect
+      ? graphType
+      : temporal
+      ? graphLabel
+      : Defects over time
+      ? temporalField
+      : created
+      ? xAxis
+      : DAY
+      ? yAxis
+      : COUNT
+    publicWidget: true
+    templateWidget: true
+
+tm.ProjectWidget(templateWidgetDefectReport):
+    title: Defects report
+    description: Displays the report
+    creator: Oxiras
+    category: Defects
+    wType: report
+    parameters:
+      ? entity
+      : Defect
+      ? label
+      : Defects report
+      ? temporalField
+      : created
+      ? xAxis
+      : name
+      ? yAxis
+      : status.name
+    publicWidget: true
+    templateWidget: true

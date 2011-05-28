@@ -60,7 +60,7 @@ public class TestDataLoader {
                         public Model invoke(Model result) {
                             // put template DefectStatus entities in the cache so we can use them later on
                             if (result instanceof DefectStatus) {
-                                addCacheEntry(DefectStatus.class.getName(), ((DefectStatus) result).project, result, templateDataCache);
+                                addCacheEntry(result.getClass().getName(), ((ProjectModel) result).project, result, templateDataCache);
                             }
                             return result;
                         }
@@ -72,7 +72,7 @@ public class TestDataLoader {
             }
 
         });
-        
+
         Play.pluginCollection.afterFixtureLoad();
 
         // fix the treeNodes
@@ -81,7 +81,6 @@ public class TestDataLoader {
             n.threadRoot = n;
             n.save();
         }
-
     }
 
     private void addCacheEntry(String key, Project project, Model data, Map<String, Map<Project, Model>> templateDataCache) {
