@@ -85,7 +85,7 @@
                             }, dashboard.element.find('.column:first'));
                 }).error(errorHandler);
 
-                adoptGraphSize();
+                adaptGraphSize();
             });
 
             dashboard.init();
@@ -149,7 +149,7 @@
                 dataType: 'json'
             }).error(errorHandler);
 
-            adoptGraphSize();
+            adaptGraphSize();
             refreshWidgetsContent(dashboard);
         });
 

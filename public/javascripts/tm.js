@@ -524,7 +524,7 @@ function toggleFilter(buttonId, divId) {
     });
 }
 
-function adoptGraphSize() {
+function adaptGraphSize() {
 
     $('.visualize').remove();
     var width = $('.graphTable').parent().width() - 100;
