@@ -30,7 +30,7 @@ tm.ProjectWidget(templateWidgetDefectByDay):
 
 tm.ProjectWidget(templateWidgetDefectReport):
     title: Defects report
-    description: Displays the report
+    description: Displays all defects
     creator: Oxiras
     category: Defects
     wType: report
@@ -39,5 +39,19 @@ tm.ProjectWidget(templateWidgetDefectReport):
       : Defect
       ? title
       : All defects
+    publicWidget: true
+    templateWidget: true
+
+tm.ProjectWidget(templateWidgetRequirementReport):
+    title: Defects report
+    description: Displays all requirements
+    creator: Oxiras
+    category: Requirements
+    wType: report
+    parameters:
+      ? entity
+      : Requirement
+      ? title
+      : All requirements
     publicWidget: true
     templateWidget: true

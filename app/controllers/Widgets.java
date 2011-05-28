@@ -6,16 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import models.tm.Defect;
 import models.tm.ProjectWidget;
+import models.tm.Requirement;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Router;
 import play.mvc.Util;
+import util.Logger;
 
 /**
  * FIXME TODO access rights management for report and graphs
@@ -124,21 +127,29 @@ public class Widgets extends TMController {
         render(countList, dateList, graphTitle, graphLabel, graphAppearance);
     }
 
-    private final static String[] defaultDefectColumnNames = {"Name", "Description", "Submitted By", "Assigned To", "Status", "Tags"};
-    private final static String[] defaultDefectColumnExpressions = {"name", "description", "submittedBy", "assignedTo", "status", "tagNames"};
+    private final static ImmutableMap<String, String[]> defaultColumnNames = ImmutableMap.of(
+            Defect.class.getSimpleName(), new String[]{"Name", "Description", "Submitted By", "Assigned To", "Status", "Tags"},
+            Requirement.class.getSimpleName(), new String[]{"Name", "Description", "Created By", "Tags"}
+    );
+
+    private final static ImmutableMap<String, String[]> defaultColumnExpressions = ImmutableMap.of(
+            Defect.class.getSimpleName(), new String[]{"name", "description", "submittedBy", "assignedTo", "status", "tagNames"},
+            Requirement.class.getSimpleName(), new String[]{"name", "description", "createdBy", "tagNames"}
+    );
+
 
     public static void report(String entity, String title) {
 
-        String[] columnNames = null;
-        List<Object> rowObjects = null;
-        String[] columnExpressions = null;
-        List<String[]> rowList = new ArrayList<String[]>();
-
-        if (entity.equals(Defect.class.getSimpleName())) {
-            columnNames = defaultDefectColumnNames;
-            columnExpressions = defaultDefectColumnExpressions;
-            rowObjects = Defect.find("from Defect d").fetch();
+        // sanity check - since we send the entity over as HTTP param someone might want to hack around here
+        if(!defaultColumnNames.containsKey(entity)) {
+            Logger.error(Logger.LogType.SECURITY, "Trying to render report for entity %s", entity);
+            error("Rendering report for unknown entity");
         }
+
+        final String[] columnNames = defaultColumnNames.get(entity);
+        final String[] columnExpressions = defaultColumnExpressions.get(entity);
+        final List<Object> rowObjects = Defect.find(String.format("from %s d", entity)).fetch();
+        List<String[]> rowList = new ArrayList<String[]>();
 
         for (Object bean : rowObjects) {
             String[] values = new String[columnExpressions.length];
