@@ -1,12 +1,9 @@
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.List;
 
 import models.SchemaCreation;
 import models.account.Account;
-import models.tm.ProjectTreeNode;
 import models.tm.TMUser;
-import models.tree.jpa.TreeNode;
 import org.hibernate.Session;
 import play.Play;
 import play.db.DB;
@@ -14,8 +11,8 @@ import play.db.jpa.JPA;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.libs.F;
-import play.test.Fixtures;
 import util.Logger;
+import util.TestDataLoader;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -52,14 +49,7 @@ public class Bootstrap extends Job<F.None> {
             c.close();
 
             if (Account.count() == 0) {
-                Fixtures.deleteDatabase();
-                Fixtures.loadModels("initial-data.yml");
-                // fix the treeNodes
-                List<ProjectTreeNode> rootNodes = TreeNode.find("from ProjectTreeNode n where n.threadRoot is null").fetch();
-                for (ProjectTreeNode n : rootNodes) {
-                    n.threadRoot = n;
-                    n.save();
-                }
+                new TestDataLoader();
             }
         }
 

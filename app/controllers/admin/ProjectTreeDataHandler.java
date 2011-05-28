@@ -53,23 +53,25 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             ProjectCategory category = ProjectCategory.findById(parentId);
             final Project project = new Project(name, userAccount, category);
-            project.create(userAccount);
+            project.account = userAccount;
+            project.create();
 
             // load defaults
-            YamlModelLoader.loadModels("project-data.yml", new F.Action<Model>() {
-                public void invoke(Model result) {
+            YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
+                public Model invoke(Model result) {
                     ProjectModel pm = (ProjectModel) result;
                     pm.project = project;
                     pm.account = project.account;
+                    return pm;
                 }
-            });
+            }, null);
 
             return new F.Tuple<Long, String>(project.id, PROJECT);
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = new ProjectCategory(userAccount, name);
             category.name = name;
             category.account = userAccount;
-            category.create(userAccount);
+            category.create();
             return new F.Tuple<Long, String>(category.id, CATEGORY);
         }
         return null;

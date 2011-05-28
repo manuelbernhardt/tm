@@ -1,6 +1,5 @@
 package util;
 
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -21,7 +20,6 @@ import play.data.binding.Binder;
 import play.data.binding.types.DateBinder;
 import play.db.jpa.Model;
 import play.exceptions.YAMLException;
-import play.libs.F;
 import play.mvc.Util;
 import play.templates.TemplateLoader;
 import play.vfs.VirtualFile;
@@ -34,7 +32,6 @@ import play.vfs.VirtualFile;
 public class YamlModelLoader {
 
     static Pattern keyPattern = Pattern.compile("([^(]+)\\(([^)]+)\\)");
-    static Map<String, Object> idCache = new HashMap<String, Object>();
 
 
     /**
@@ -45,7 +42,8 @@ public class YamlModelLoader {
      */
 
     @Util
-    public static void loadModels(String name, F.Action<Model> onCreate) {
+    public static void loadModels(String name, Callback<Model> onCreate, Callback<Model> afterCreate) {
+        Map<String, Object> idCache = new HashMap<String, Object>();
         VirtualFile yamlFile = null;
         try {
             for (VirtualFile vf : Play.javaPath) {
@@ -83,7 +81,7 @@ public class YamlModelLoader {
                         serialize(objects.get(key), "object", params);
                         @SuppressWarnings("unchecked")
                         Class<Model> cType = (Class<Model>) Play.classloader.loadClass(type);
-                        resolveDependencies(cType, params);
+                        resolveDependencies(cType, params, idCache);
                         Model model = (Model) Binder.bind("object", cType, cType, null, params);
                         for (Field f : model.getClass().getFields()) {
                             if (f.getType().isAssignableFrom(Map.class)) {
@@ -93,10 +91,15 @@ public class YamlModelLoader {
                                 f.set(model, objects.get(key).get(f.getName()));
                             }
                         }
-                        // call basic create of a JPAModel
-                        onCreate.invoke(model);
+                        if (onCreate != null) {
+                            model = onCreate.invoke(model);
+                        }
 
                         model.create();
+                        if (afterCreate != null) {
+                            model = afterCreate.invoke(model);
+                        }
+
                         Class<?> tType = cType;
                         while (!tType.equals(Object.class)) {
                             idCache.put(tType.getName() + "-" + id, Model.Manager.factoryFor(cType).keyValue(model));
@@ -113,34 +116,8 @@ public class YamlModelLoader {
             throw new YAMLException(e, yamlFile);
         } catch (Throwable e) {
             throw new RuntimeException("Cannot load fixture " + name + ": " + e.getMessage(), e);
-        } finally {
-            idCache.clear();
         }
     }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T loadYaml(String name, Yaml yaml) {
-        VirtualFile yamlFile = null;
-        try {
-            for (VirtualFile vf : Play.javaPath) {
-                yamlFile = vf.child(name);
-                if (yamlFile != null && yamlFile.exists()) {
-                    break;
-                }
-            }
-            InputStream is = Play.classloader.getResourceAsStream(name);
-            if (is == null) {
-                throw new RuntimeException("Cannot load fixture " + name + ", the file was not found");
-            }
-            Object o = yaml.load(is);
-            return (T) o;
-        } catch (ScannerException e) {
-            throw new YAMLException(e, yamlFile);
-        } catch (Throwable e) {
-            throw new RuntimeException("Cannot load fixture " + name + ": " + e.getMessage(), e);
-        }
-    }
-
 
     // Private
 
@@ -177,7 +154,7 @@ public class YamlModelLoader {
     }
 
     @SuppressWarnings("unchecked")
-    static void resolveDependencies(Class<Model> type, Map<String, String[]> serialized) {
+    static void resolveDependencies(Class<Model> type, Map<String, String[]> serialized, Map<String, Object> idCache) {
         Set<Field> fields = new HashSet<Field>();
         Class<?> clazz = type;
         while (!clazz.equals(Object.class)) {
@@ -202,4 +179,10 @@ public class YamlModelLoader {
             }
         }
     }
+
+    public static interface Callback<T> {
+
+        T invoke(T result);
+    }
+
 }

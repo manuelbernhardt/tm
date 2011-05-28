@@ -206,28 +206,28 @@ account.User(tmDefectsDeleteUser):
     password: testAuth
     account: oxiras
 
-tm.ProjectCategory(ProjCat2011):
+tm.ProjectCategory(projCat2011):
     name: 2011
     account: oxiras
 
-tm.ProjectCategory(ProjCat2012):
+tm.ProjectCategory(projCat2012):
     name: 2012
     account: oxiras
 
 tm.Project(demenagement):
     name: Demenagement
     account: oxiras
-    projectCategory: ProjCat2011
+    projectCategory: projCat2011
 
 tm.Project(testManagementApplication):
     name: Test Management Application
     account: oxiras
-    projectCategory: ProjCat2011
+    projectCategory: projCat2011
 
 tm.Project(world):
     name: Conquer the world
     account: oxiras
-    projectCategory: ProjCat2012
+    projectCategory: projCat2012
 
 tm.Role(demRoleViewOnly):
     name: View only
@@ -1243,61 +1243,39 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     actualResult:
     status: 2
 
-
-## We should provide sensible defaults for this in project-data.yml
-tm.DefectStatus(defectStatusTMNew):
-    account: oxiras
-    project: testManagementApplication
-    name: New
-    defaultOnCreation: true
-    position: 0
-
-tm.DefectStatus(defectStatusDemenagementNew):
-    account: oxiras
-    project: demenagement
-    name: New
-    defaultOnCreation: true
-    position: 0
-
 tm.Defect(defect1):
-    created: 2011-05-02
     account: oxiras
     project: testManagementApplication
+    created: 2011-05-02
     name: The application does not start
     submittedBy: gwen
     assignedTo: manu
-    status: defectStatusTMNew
 
 tm.Defect(defect2):
     account: oxiras
-    project: demenagement
+    project: testManagementApplication
     name: Test for naturalID
     submittedBy: nathalie
-    status: defectStatusDemenagementNew
 
 tm.Defect(defect3):
-    created: 2011-05-03
     account: oxiras
     project: testManagementApplication
+    created: 2011-05-03
     name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
-    status: defectStatusTMNew
 
 tm.Defect(defect4):
     account: oxiras
     project: demenagement
     name: Box is not at the right place
     submittedBy: vroni
-    status: defectStatusDemenagementNew
 
 tm.Defect(defect5):
     account: oxiras
     project: demenagement
     name: Old couch is still not removed
     submittedBy: nathalie
-    status: defectStatusDemenagementNew
-
 
 tm.ProjectWidget(templateWidgetDefectCountByDay):
     account: oxiras
@@ -1353,7 +1331,7 @@ tm.UserWidget(manuWidgetDefectCountByDay):
     column: first
     open: true
 
-  tm.UserWidget(gwenWidgetDefectCountByDay):
+tm.UserWidget(gwenWidgetDefectCountByDay):
     account: oxiras
     project: testManagementApplication
     user: gwen
