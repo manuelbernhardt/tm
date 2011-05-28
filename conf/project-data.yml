@@ -37,13 +37,7 @@ tm.ProjectWidget(templateWidgetDefectReport):
     parameters:
       ? entity
       : Defect
-      ? label
-      : Defects report
-      ? temporalField
-      : created
-      ? xAxis
-      : name
-      ? yAxis
-      : status.name
+      ? title
+      : All defects
     publicWidget: true
     templateWidget: true

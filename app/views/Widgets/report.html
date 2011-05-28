@@ -1,47 +1,40 @@
 %{def tableUUID = play.libs.Codec.UUID();}%
 
 <table class="display" id="table_${tableUUID}">
-    <thead>
+  <thead>
+  <tr>
+    #{list items:columnNames, as:'columnName'}
+    <th scope="col">${columnName}</th>
+    #{/list}
+  </tr>
+  </thead>
+  <tbody>
+    #{list items:rowList, as:'row'}
     <tr>
-        <td></td>
-        #{list items:dateList, as:'date'}
-        <th scope="col">
-            ${date.getClass().equals(Date.class) ? date.format(play.Play.configuration.getProperty('date.format')) : date}
-        </th>
-        #{/list}
+    #{list items:row, as:'value'}
+      <td>${value}</td>
+    #{/list}
     </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">${label}</th>
-
-        #{list items:countList, as:'count'}
-
-        <td>${count}</td>
-
-        #{/list}
-    </tr>
-    </tbody>
+    #{/list}
+  </tbody>
 </table>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-	    $('#table_${tableUUID}').dataTable({
-            "bServerSide": false,
-            "bLengthChange": false,
-            "bSort": false,
-            "bFilter": false,
-            "iDisplayLength": 10,
-            "bInfo": false,
-            "aSort": false,
-            "oLanguage": {
-                "sZeroRecords": "No entities available"
-            }});
+  $(document).ready(function() {
+    $('#table_${tableUUID}').dataTable({
+      "bServerSide": false,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "iDisplayLength": 10,
+      "bInfo": false,
+      "aSort": false,
+      "oLanguage": {
+        "sZeroRecords": "No records available"
+      }});
 
-        $('#table_${tableUUID}').attr("height", "10px");
-    } );
-
-
+    $('#table_${tableUUID}').attr("height", "10px");
+  });
 
 
 </script>

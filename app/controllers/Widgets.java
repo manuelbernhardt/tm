@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import models.tm.Defect;
 import models.tm.ProjectWidget;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.JPA;
 import play.libs.F;
@@ -17,6 +18,8 @@ import play.mvc.Router;
 import play.mvc.Util;
 
 /**
+ * FIXME TODO access rights management for report and graphs
+ *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Widgets extends TMController {
@@ -27,9 +30,11 @@ public class Widgets extends TMController {
     public static enum ExpressionType {
         DAY(Integer.class), HOUR(Integer.class), COUNT(Long.class), DATE(Date.class), WEEK(Integer.class), MONTH(Integer.class), YEAR(Integer.class);
         Class<?> type;
+
         ExpressionType(Class<?> type) {
             this.type = type;
         }
+
         public Class<?> getType() {
             return type;
         }
@@ -119,27 +124,35 @@ public class Widgets extends TMController {
         render(countList, dateList, graphTitle, graphLabel, graphAppearance);
     }
 
-    public static void report(String entity,
-                              String yAxis,
-                              String xAxis,
-                              String temporalField,
-                              String title,
-                              String label) {
+    private final static String[] defaultDefectColumnNames = {"Name", "Description", "Submitted By", "Assigned To", "Status", "Tags"};
+    private final static String[] defaultDefectColumnExpressions = {"name", "description", "submittedBy", "assignedTo", "status", "tagNames"};
 
-        List<Object[]> objects;
-        List<Object> countList = new ArrayList<Object>();
-        List<Object> dateList = new ArrayList<Object>();
+    public static void report(String entity, String title) {
 
-        objects = Defect.find("select count(d), day(d.created) from Defect d group by day(d.created)").fetch();
+        String[] columnNames = null;
+        List<Object> rowObjects = null;
+        String[] columnExpressions = null;
+        List<String[]> rowList = new ArrayList<String[]>();
 
-        for (Object[] o : objects) {
-            Object count = o[0];
-            countList.add(count);
-            Object d = o[1];
-            dateList.add(d);
+        if (entity.equals(Defect.class.getSimpleName())) {
+            columnNames = defaultDefectColumnNames;
+            columnExpressions = defaultDefectColumnExpressions;
+            rowObjects = Defect.find("from Defect d").fetch();
         }
 
-        render(countList, dateList, title, label);
+        for (Object bean : rowObjects) {
+            String[] values = new String[columnExpressions.length];
+            for (int i = 0; i < columnExpressions.length; i++) {
+                try {
+                    values[i] = BeanUtils.getSimpleProperty(bean, columnExpressions[i]);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+            rowList.add(values);
+        }
+
+        render(columnNames, rowList, rowList, title);
     }
 
     private static F.Tuple<String, ExpressionType> transformExpression(String axis, String tmp) {
@@ -180,6 +193,7 @@ public class Widgets extends TMController {
             error("No category provided");
             return;
         }
+
         JsonObject result = new JsonObject();
         JsonArray jsonWidgets = new JsonArray();
         List<ProjectWidget> widgets = ProjectWidget.find("templateWidget = true and category = ?", category).<ProjectWidget>fetch();
