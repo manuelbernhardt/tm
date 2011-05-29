@@ -43,7 +43,7 @@ tm.ProjectWidget(templateWidgetDefectReport):
     templateWidget: true
 
 tm.ProjectWidget(templateWidgetRequirementReport):
-    title: Defects report
+    title: Requirements report
     description: Displays all requirements
     creator: Oxiras
     category: Requirements
@@ -53,5 +53,19 @@ tm.ProjectWidget(templateWidgetRequirementReport):
       : Requirement
       ? title
       : All requirements
+    publicWidget: true
+    templateWidget: true
+
+tm.ProjectWidget(templateWidgetInstanceReport):
+    title: Test instances
+    description: Displays all test instances
+    creator: Oxiras
+    category: Instances
+    wType: report
+    parameters:
+      ? entity
+      : Instance
+      ? title
+      : All instances
     publicWidget: true
     templateWidget: true
