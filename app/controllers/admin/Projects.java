@@ -9,10 +9,12 @@ import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.Project;
-import models.tm.Role;
-import models.tm.TMUser;
+import models.tm.*;
+import models.tm.test.Instance;
+import models.tm.test.Script;
 import models.tm.test.Tag;
+import models.tm.test.TagHolder;
+import org.apache.commons.collections.iterators.ArrayListIterator;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
 
@@ -100,14 +102,50 @@ public class Projects extends TMController {
     }
 
     public static void renameTag(Long tagId, String tagNewName, Long projectId){
-        List<Tag> tags = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).fetch();
-        if(tags.size()>1){
-            
+        Tag tag = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).first();
+
+        // are there duplicate tags
+        List<Tag> tags = Tag.find("select t from Tag t where t.name=? and t.type=? and t.project.id=?", tagNewName, tag.type, projectId).fetch();
+
+        if(tags.size()==0){
+            tag.name = tagNewName;
+            tag.save();
         }
-        else if(tags.size()==1){
-            tags.get(0).name = tagNewName;
-            tags.get(0).save();
+        else if(tags.size()>0){
+            renderJSON(tags.get(0).getId());
         }
+        
+
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void mergeTags(Long firstTagId, Long secondTagId, Long projectId){
+
+        Tag firstTag = Tag.findById(firstTagId);
+        Tag secondTag = Tag.findById(secondTagId);
+        List<TagHolder> tagHolder = new ArrayList<TagHolder>();
+
+        if(firstTag.type== Tag.TagType.REQUIREMENT){
+            tagHolder = Requirement.find("from Requirement r where r.project.id=?",projectId).fetch();
+        }
+        else if(firstTag.type== Tag.TagType.TESTSCRIPT){
+            tagHolder = Script.find("from Script s where s.project.id=?", projectId).fetch();
+        }
+        else if(firstTag.type==Tag.TagType.TESTINSTANCE){
+            tagHolder =  Instance.find("from Instance i where i.project.id=?", projectId).fetch();
+        }
+        else if(firstTag.type==Tag.TagType.DEFECT){
+            tagHolder = Defect.find("from Defect d where d.project.id=?", projectId).fetch();
+        }
+
+         for(TagHolder th:tagHolder){
+             if(th.getTags().contains(firstTag)) {
+                th.getTags().remove(firstTag);
+                th.getTags().add(secondTag);
+             }
+             ((ProjectModel)th).save();
+         }
+        firstTag.delete();
     }
 
 }

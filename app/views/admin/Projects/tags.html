@@ -21,6 +21,22 @@ No project selected
     <input id="defectRenameInput"/>
 </div>
 
+<div id="mergeTagDialogRequirement" title="Merge tags">
+    Tag with this name already exists, do you want to merge those?
+</div>
+
+<div id="mergeTagDialogTestInstance" title="Merge tags">
+    Tag with this name already exists, do you want to merge those?
+</div>
+
+<div id="mergeTagDialogTestScript" title="Merge tags">
+    Tag with this name already exists, do you want to merge those?
+</div>
+
+<div id="mergeTagDialogDefect" title="Merge tags">
+    Tag with this name already exists, do you want to merge those?
+</div>
+
 <div class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top ui-state-focus" role="tab" aria-expanded="true" aria-selected="true" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#">Requirement</a></h3>
@@ -79,6 +95,13 @@ No project selected
 </div>
 
         <script type="text/javascript">
+
+            // hack for fetching second tag ID
+            var secondTagIdRequirement = null;
+            var secondTagIdTestScript = null;
+            var secondTagIdTestInstance = null;
+            var secondTagIdDefect = null;
+
             $(".accordion").accordion({
                 header: "h3",
                 autoHeight: false,
@@ -107,6 +130,10 @@ No project selected
                     $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#requirement'), tagNewName: $('#requirementRenameInput').val(), projectId:'${projectId}'})
                             .success(
                                 function(data) {
+                                    if(data!=null && data!=''){
+                                        secondTagIdRequirement = data;
+                                        $('#mergeTagDialogRequirement').dialog("open");
+                                    }
                                     refreshTableContents('#requirement', false);
                                     $(this).dialog("close");
                                 })
@@ -146,6 +173,10 @@ No project selected
                     $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#testScript'), tagNewName: $('#testScriptRenameInput').val(), projectId:'${projectId}'})
                             .success(
                                 function(data) {
+                                    if(data!=null && data!=''){
+                                        secondTagIdTestScript = data;
+                                        $('#mergeTagDialogTestScript').dialog("open");
+                                    }
                                     refreshTableContents('#testScript', false);
                                     $(this).dialog("close");
                                 })
@@ -184,6 +215,10 @@ No project selected
                     $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#testInstance'), tagNewName: $('#testInstanceRenameInput').val(), projectId:'${projectId}'})
                             .success(
                                 function(data) {
+                                    if(data!=null && data!=''){
+                                        secondTagIdTestInstance = data;
+                                        $('#mergeTagDialogTestInstance').dialog("open");
+                                    }
                                     refreshTableContents('#testInstance', false);
                                     $(this).dialog("close");
                                 })
@@ -222,6 +257,10 @@ No project selected
                     $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#defect'), tagNewName: $('#defectRenameInput').val(), projectId:'${projectId}'})
                             .success(
                                 function(data) {
+                                    if(data!=null && data!=''){
+                                        secondTagIdDefect = data;
+                                        $('#mergeTagDialogDefect').dialog("open");
+                                    }
                                     refreshTableContents('#defect', false);
                                     $(this).dialog("close");
                                 })
@@ -238,6 +277,102 @@ No project selected
             handleRowSelection("#defect", function(){
                 if(getSelectedRowId("#defect")!=null && getSelectedRowId("#defect")!='')
                     $("#defectRenameTag").button("enable");
+            });
+
+            $('#mergeTagDialogRequirement').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#requirement'), secondTagId: secondTagIdRequirement, projectId:'${projectId}'})
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#requirement', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+
+            $('#mergeTagDialogTestScript').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#testScript'), secondTagId: secondTagIdTestScript, projectId:'${projectId}'})
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#testScript', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+
+            $('#mergeTagDialogTestInstance').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#testInstance'), secondTagId: secondTagIdTestInstance , projectId:'${projectId}'})
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#testInstance', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+
+            $('#mergeTagDialogDefect').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#defect'), secondTagId: secondTagIdDefect, projectId:'${projectId}'})
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#defect', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
             });
 
             $(document).ready(function() {
@@ -326,6 +461,8 @@ No project selected
                 };
                 #{/tabularasa.init}
             });
+
+
         </script>
 
 

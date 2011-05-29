@@ -24,7 +24,7 @@ import tree.persistent.NodeName;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Script extends ProjectModel implements Node, ParameterHolder {
+public class Script extends ProjectModel implements Node, ParameterHolder, TagHolder {
 
     @NodeName
     @Required
@@ -95,5 +95,9 @@ public class Script extends ProjectModel implements Node, ParameterHolder {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 }
