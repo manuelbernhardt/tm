@@ -6,7 +6,6 @@ import collection.mutable.Map
 import java.lang.String
 import models.tm.test.Tag
 import models.tm.test.Tag.TagType
-import java.lang.reflect.Method
 import tree.persistent.AbstractTree
 import controllers.RequirementTree
 import models.tm._
@@ -48,11 +47,6 @@ trait TMConverter {
     contextData.get(TMImport.PROJECT).get.asInstanceOf[Project]
   }
 
-  def create( baseModelType: Class[_ <: GenericModel], instance: AnyRef):Boolean = {
-    // investigate this...
-    val create: Method = baseModelType.getMethod("create")
-    create.invoke(instance).asInstanceOf[Boolean]
-  }
 }
 
 object TMUserConverter extends ModelConverter[TMUser] {
@@ -90,7 +84,7 @@ object TagsConverter extends ModelConverter[Tag] with TMConverter {
           tag.`type` = tagType
 
           // TODO error handling
-          create(baseModelType, tag)
+          tag.create
 
           tag
         }
@@ -144,7 +138,7 @@ object TreePathConverter extends ModelConverter[ProjectTreeNode] with TMConverte
         n.opened = true
 
         // TODO deal with non-creation
-        create(baseModelType, n)
+        n.create
 
         contextData.put(TREENODE_PREFIX + path, n)
 

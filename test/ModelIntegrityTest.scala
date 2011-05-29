@@ -12,6 +12,7 @@ class ModelIntegrityTest extends UnitTestCase with AssertionsForJUnit {
   def setUp: Unit = {
     new SeleniumTestDataLoader
   }
+}
 
 /*
   @Test
@@ -29,3 +30,4 @@ class ModelIntegrityTest extends UnitTestCase with AssertionsForJUnit {
     */
   }
 }
+*/

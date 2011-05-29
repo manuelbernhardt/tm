@@ -1,0 +1,25 @@
+From 46edca0921236bd0f5553125975f00b3bf65f418 Mon Sep 17 00:00:00 2001
+From: Manuel Bernhardt <bernhardt.manuel@gmail.com>
+Date: Sun, 29 May 2011 20:28:55 +0200
+Subject: [PATCH] Fix for java model inheritance
+
+---
+ src/play/db/jpa/package.scala |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/play/db/jpa/package.scala b/src/play/db/jpa/package.scala
+index e78ddfa..74e831a 100644
+--- a/src/play/db/jpa/package.scala
++++ b/src/play/db/jpa/package.scala
+@@ -7,7 +7,7 @@ package play {
+ 
+         package object jpa{
+ 
+-            type Model = play.db.jpa.ScalaModel
++//            type Model = play.db.jpa.ScalaModel
+         
+         }
+       
+-- 
+1.7.4.3
+

@@ -5,10 +5,9 @@ import collection.JavaConversions._
 import org.apache.poi.ss.usermodel.{Row, WorkbookFactory, Workbook, Cell}
 import collection.immutable.List
 import java.lang.reflect.{Method, Field}
-import collection.mutable.Map
-import models.tm.{Project, TMUser, Requirement, Defect}
+import models.tm.{Project, TMUser}
 import reflect.ClassManifest
-import models.general.{TemporalModel, CompositeModel}
+import models.general.TemporalModel
 import java.lang.{String, Class}
 import util.Logger
 import models.tm.test.Tag
