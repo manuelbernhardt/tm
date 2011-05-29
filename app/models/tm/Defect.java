@@ -48,4 +48,8 @@ public class Defect extends ProjectModel implements TagHolder{
     public List<Tag> getTags() {
         return tags;
     }
+
+    public String toString(){
+        return this.name;
+    }
 }

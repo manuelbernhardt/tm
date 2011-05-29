@@ -100,4 +100,8 @@ public class Script extends ProjectModel implements Node, ParameterHolder, TagHo
     public List<Tag> getTags() {
         return tags;
     }
+
+    public String toString(){
+        return this.name;
+    }
 }

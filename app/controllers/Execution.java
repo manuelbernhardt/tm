@@ -331,6 +331,8 @@ public class Execution extends TMController {
         defect.save();
         run.instance.defects.add(defect);
 
+        run.save();
+
         renderJSON(defect.getId());
     }
 
