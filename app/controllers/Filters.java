@@ -59,6 +59,7 @@ public class Filters extends TMController {
             }
             filterConstraint.create();
         }
+        renderJSON(true);
     }
 
     public static List<Filter> getFilters() {
@@ -66,10 +67,10 @@ public class Filters extends TMController {
     }
 
     @Util
-    public static void loadFilters(){
+    public static void loadFilters(String entity){
         JsonObject result = new JsonObject();
         JsonArray jsonFilters = new JsonArray();
-        List<Filter> filterList = getFilters();
+        List<Filter> filterList = Filter.find("from Filter f where f.entity=?", entity).fetch();
         for (Filter f : filterList) {
             JsonObject c = new JsonObject();
             c.addProperty("filterId", f.getId());

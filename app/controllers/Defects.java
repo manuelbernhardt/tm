@@ -175,14 +175,17 @@ public class Defects extends TMController {
 
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void saveFilter() {
         Filters.saveFilter();
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void loadFilters() {
-        Filters.loadFilters();
+        Filters.loadFilters("tm.models.Defect");
     }
 
+    @Restrict(UnitRole.DEFECTVIEW)
     public static void loadFilterById(Long id) {
         Filters.loadFilterById(id);
     }

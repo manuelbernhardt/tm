@@ -12,7 +12,7 @@
 </div>
 <br/>
 <br/>
-<div id="filter_container">
+<div id="filter_container" style="display:none;">
 
     #{box 'Filters'}
     #{include 'Defects/filter.html'/}
@@ -240,7 +240,6 @@ $('#updateDefectForm_defect_tags').tokenInput({
     creationText: "Create new tag"
 });
 
-toggleFilter('#filter_button', '#filter_container');
 
 // delete defect
 $('#deleteDefectButton').button({icons: {primary: 'ui-icon-trash'}, disabled:true});
@@ -285,18 +284,34 @@ $('#deleteDefectDialog').dialog({
                       "name": $('#filterName').val(),
                       "entity": 'tm.models.Defect',
                       "constraint['title']['value']" : $('#title').val(),
-                      "constraint['titleCase']['case']" : $('#titleCase').val(),
+                      "constraint['titleCase']['matches']" : $('#titleCase').val(),
                       "constraint['status']['value']" : $('#status').val(),
                       "constraint['tags']['value']" : $('#tags').val(),
                       "constraint['assignedToId']['value']" : $('#assignedToId').val(),
                       "constraint['submittedById']['value']" : $('#submittedById').val(),
-                      "constraint['dateFrom']['case']" : $('#dateFrom').val(),
-                      "constraint['dateTo']['case']" : $('#dateTo').val()
+                      "constraint['dateFrom']['dateFrom']" : $('#dateFrom').val(),
+                      "constraint['dateTo']['dateTo']" : $('#dateTo').val()
                   }
 
                   $.post('@{Defects.saveFilter()}', data).error(errorHandler);
 //                    $(this).html("Filter saved successfully").delay(80000);
                     //TODO make a fb dialog
+
+                    $.getJSON("@{Defects.loadFilters()}", function(json) {
+
+                        var filterData = json;
+
+                        var form =  document.getElementById('filterSelect');
+                        if(!ko.mapping.isMapped(viewModelLoadFilters)){
+                            viewModelLoadFilters = ko.mapping.fromJS(filterData);
+                            ko.applyBindings(viewModelLoadFilters, form);
+                            $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                        }
+                        else{
+                            ko.mapping.updateFromJS(viewModelLoadFilters,filterData);
+                            $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                        }
+                    }).error(errorHandler);
                     $(this).dialog("close");
                 },
                 "Cancel": function() {
@@ -348,8 +363,6 @@ $('#deleteDefectDialog').dialog({
                     else{
                         ko.mapping.updateFromJS(viewModel,d);
                     }
-                    $('#filterLoadDialog').dialog('close');
-
                 }).error(errorHandler);
             }
             
@@ -366,9 +379,8 @@ $('#deleteDefectDialog').dialog({
                  .removeAttr('checked')
                  .removeAttr('selected');
             }
-
-
         });
+
 
 </script>
 

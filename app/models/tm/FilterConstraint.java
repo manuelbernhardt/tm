@@ -45,8 +45,6 @@ public class FilterConstraint extends ProjectModel {
 
     @PostLoad
     public void doLoad() {
-        // TODO handle the "case" case
-        if (!this.type.equals("case"))
-            this.constraintType = ConstraintType.valueOf(this.type);
+        this.constraintType = ConstraintType.fromKey(this.type);
     }
 }

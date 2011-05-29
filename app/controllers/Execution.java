@@ -333,4 +333,16 @@ public class Execution extends TMController {
 
         renderJSON(defect.getId());
     }
+
+    public static void  saveFilter(){
+        Filters.saveFilter();
+    }
+
+    public static void loadFilters() {
+        Filters.loadFilters("tm.models.Instance");
+    }
+
+    public static void loadFilterById(Long id) {
+        Filters.loadFilterById(id);
+    }
 }

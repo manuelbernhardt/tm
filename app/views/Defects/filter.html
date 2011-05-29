@@ -3,7 +3,7 @@
     <div class="left_column">
         <div class="field">
             <label for="title">Summary</label>
-            <select id="titleCase" name="titleCase">
+            <select id="titleCase" name="titleCase" data-bind="value: titleCase">
                 <option value="0">Matches</option>
                 <option value="1">Contains</option>
                 <option value="2">Starts with</option>
@@ -76,5 +76,16 @@
           refreshTableContents("#defectsTable", false);
       });
 
+      // auto-filter
+        $.each($('#defectsFilterForm').find('input, select'), function(index, el) {
+          $(el).change(function() {
+            refreshTableContents('#defectsTable', false);
+          });
+        });
+        $('#defectFilterForm ul.token-input-list').focus(function() {
+          refreshTableContents('#defectsTable', false);
+        }).blur(function() {
+          refreshTableContents('#defectsTable', false);
+        });
   });
 </script>
