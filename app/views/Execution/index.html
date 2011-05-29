@@ -231,7 +231,7 @@
                fullDrawInstanceTable = false;
                refreshTableContents('#instanceTable', false);
                $('#createRunDialog').dialog("close");
-               if(data.length > 0){
+               if(data!=null && data!=''){
                  createdRunId = data;
                  $('#createDefectDialog').dialog("open");
                }
@@ -269,7 +269,7 @@
               fullDrawInstanceTable = false;
               refreshTableContents('#instanceTable', false);
               $('#updateRunDialog').dialog("close");
-              if(data.length > 0) {
+              if(data != null && data!= '') {
                 createdRunId = data;
                 $('#createDefectDialog').dialog("open");
               }
