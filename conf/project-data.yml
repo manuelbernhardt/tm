@@ -69,3 +69,17 @@ tm.ProjectWidget(templateWidgetInstanceReport):
       : All instances
     publicWidget: true
     templateWidget: true
+
+tm.ProjectWidget(templateWidgetScriptReport):
+    title: Test scripts
+    description: Displays all test scripts
+    creator: Oxiras
+    category: Scripts
+    wType: report
+    parameters:
+      ? entity
+      : Script
+      ? title
+      : All scripts
+    publicWidget: true
+    templateWidget: true

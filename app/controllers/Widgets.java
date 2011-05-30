@@ -13,6 +13,7 @@ import models.tm.Defect;
 import models.tm.ProjectWidget;
 import models.tm.Requirement;
 import models.tm.test.Instance;
+import models.tm.test.Script;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import play.db.jpa.JPA;
@@ -131,13 +132,15 @@ public class Widgets extends TMController {
     private final static ImmutableMap<String, String[]> defaultColumnNames = ImmutableMap.of(
             Defect.class.getSimpleName(), new String[]{"Name", "Description", "Submitted By", "Assigned To", "Status", "Tags"},
             Requirement.class.getSimpleName(), new String[]{"Name", "Description", "Created By", "Tags"},
-            Instance.class.getSimpleName(), new String[] {"Name", "Script", "Assigned to", "Planned Execution", "Tags", "Defects"}
+            Instance.class.getSimpleName(), new String[] {"Name", "Script", "Assigned to", "Planned Execution", "Tags", "Defects"},
+            Script.class.getSimpleName(), new String[] {"Name", "Created by", "Description", "Tags"}
     );
 
     private final static ImmutableMap<String, String[]> defaultColumnExpressions = ImmutableMap.of(
             Defect.class.getSimpleName(), new String[]{"name", "description", "submittedBy", "assignedTo", "status", "tagNames"},
             Requirement.class.getSimpleName(), new String[]{"name", "description", "createdBy", "tagNames"},
-            Instance.class.getSimpleName(), new String[] {"name", "script", "responsible", "plannedExecution", "tags", "defects"}
+            Instance.class.getSimpleName(), new String[] {"name", "script", "responsible", "plannedExecution", "tags", "defects"},
+            Script.class.getSimpleName(), new String[] {"name", "createdBy", "description", "tags"}
     );
 
 
