@@ -133,6 +133,7 @@ public class Defects extends TMController {
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
+        defect.tags = getTags(params.get("defect.tags"),Tag.TagType.DEFECT);
         defect.create();
         ok();
     }
@@ -144,6 +145,7 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
+        defect.tags = getTags(params.get("defect.tags"),Tag.TagType.DEFECT);
         d.save();
         ok();
     }
