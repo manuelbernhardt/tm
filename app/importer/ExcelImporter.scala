@@ -5,13 +5,13 @@ import collection.JavaConversions._
 import org.apache.poi.ss.usermodel.{Row, WorkbookFactory, Workbook, Cell}
 import collection.immutable.List
 import java.lang.reflect.{Method, Field}
-import models.tm.{Project, TMUser}
 import reflect.ClassManifest
-import models.general.TemporalModel
 import java.lang.{String, Class}
 import util.Logger
 import models.tm.test.Tag
-import play.db.jpa.GenericModel
+import play.db.jpa.Model
+import models.tm.{ProjectTreeNode, Project, TMUser}
+import java.util.Map
 
 /**
  *
@@ -20,8 +20,10 @@ import play.db.jpa.GenericModel
 
 class ExcelImporter extends Importer {
 
+  val afterCallbacks = for (converter <- TMImport.modelConverters.values) yield (converter.afterConvert _)
+
   @throws(classOf[Throwable])
-  def importFile(baseModelType: Class[_ <: GenericModel], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
+  def importFile(baseModelType: Class[_ <: Model], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
 
     val wb: Workbook = WorkbookFactory.create(new FileInputStream(file));
     val sheet = wb.getSheetAt(0);
@@ -30,7 +32,7 @@ class ExcelImporter extends Importer {
       // skip the header line
       case (row: Row, rowIndex: Int) if rowIndex > 0 => {
 
-        val instance: GenericModel = baseModelType.getConstructor(classOf[Project]).newInstance(project)
+        val instance: Model = baseModelType.getConstructor(classOf[Project]).newInstance(project)
         var anyDataAtAll = false
 
         // TODO think of a better way of passing the project... the instance creation should be decoupled from the main importer
@@ -42,23 +44,24 @@ class ExcelImporter extends Importer {
             Logger.debug(rowIndex + ":" + colIndex + " " + rule)
 
             val c: Cell = row.getCell(colIndex)
-            if (c != null) {
+            if (c != null && c.getCellType() != Cell.CELL_TYPE_BLANK) {
               if (rule.hasValidType(c.getCellType)) {
-                val value: Any = rule.computeConvertedValue(c, baseModelType, instance, contextData).get
-                anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
+                rule.computeConvertedValue(c, baseModelType, instance, contextData, this) match {
+                  case Some(value) => anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
+                  case None => // do nothing
+                }
               }
             }
           }
         }
 
-        // because Play defines a scala Model, we can't really use create() directly here so we use invocation. doh.
-
         if (anyDataAtAll) {
-          val create: Method = baseModelType.getMethod("create")
-          val created: Boolean = create.invoke(instance).asInstanceOf[Boolean]
+          val created: Boolean = instance.create()
 
           if (!created) {
             // TODO add import error
+          } else {
+            afterCallbacks foreach(f => f(instance, contextData))
           }
         }
 
@@ -66,10 +69,10 @@ class ExcelImporter extends Importer {
       case _ => // skip this row
     }
 
-    return List[ImportError]()
+    List[ImportError]()
   }
 
-  def setFieldValue(baseModelType: Class[_ <: GenericModel], rule: ColumnImportRule, instance: GenericModel, v: Any): Boolean = {
+  def setFieldValue(baseModelType: Class[_ <: Model], rule: ColumnImportRule, instance: Model, v: Any): Boolean = {
     val field: Field = baseModelType.getField(rule.propertyName)
     try {
       Logger.debug("Setting value '%s' to field %s of entity %s via field assignment" format (v, rule.propertyName, baseModelType.getName))
@@ -104,25 +107,33 @@ trait ColumnImportRule {
     cellType == this.cellType
   }
 
-  def computeConvertedValue(cell: Cell, baseModelType: Class[_ <: GenericModel], instance:GenericModel, contextData: java.util.Map[String, AnyRef]): Option[Any] = {
-    valueManifest match {
-      case m if m <:< classManifest[String] => Some(cell.getStringCellValue)
-      case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
-      case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
-      case m if m <:< classManifest[TemporalModel] => {
-        val converter: ModelConverter[_] = TMImport.modelConverters.get(classType.getName).get // TODO orElse add error
-        val value: Any = converter.convert(cell.getStringCellValue, baseModelType, instance, contextData)
-
-        if (converter.afterConvert != null) {
-          converter.afterConvert(contextData)
+  def computeConvertedValue(cell: Cell, baseModelType: Class[_ <: Model], instance: Model, contextData: java.util.Map[String, AnyRef], importer: ExcelImporter): Option[Any] = {
+    if(cell.getStringCellValue != null && cell.getStringCellValue.trim().length() > 0) {
+      valueManifest match {
+        case m if m <:< classManifest[String] => Some(cell.getStringCellValue)
+        case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
+        case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
+        case m if m <:< classManifest[Model] => {
+          val converter: ModelConverter[_] = TMImport.modelConverters.get(classType.getName).get // TODO orElse add error
+          val value: Any = converter.convert(cell.getStringCellValue, baseModelType, instance, contextData)
+          if(value != null) {
+            Some(value)
+          } else {
+            None
+          }
         }
-        Some(value)
       }
+    } else {
+      None
     }
 
   }
 }
 
-case class StringColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[java.lang.String], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()
-case class UserColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[TMUser], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()
-case class TagsColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[Tag], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule()
+case class StringColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[java.lang.String], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule
+
+case class UserColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[TMUser], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule
+
+case class TagsColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[Tag], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule
+
+case class ProjectTreeNodeColumnImportRule(colIndex: Int, propertyName: String, override val classType: Class[_] = classOf[ProjectTreeNode], override val cellType: Int = Cell.CELL_TYPE_STRING) extends ColumnImportRule
