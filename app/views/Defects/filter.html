@@ -21,8 +21,8 @@
             </select>
         </div>
         <div class="field">
-            <label for="tags">Tags</label>
-            <input id="tags" name="tags" data-bind="value: tags"/>
+            <label for="tags" class="tag-inlining-label">Tags</label>
+            <input id="tags" class="tag-inlining-input" name="tags" data-bind="value: tags"/>
         </div>
     </div>
     <div class="right_column">
@@ -51,7 +51,12 @@
       </div>
       <button id="filter">Apply filter</button>
     </div>  
-  </form><button id="saveFilter">Save filter</button> 
+  </form>
+  <div class="left_column">&nbsp;<br/>&nbsp;</div>
+  <div class="right_column">
+      <br/>
+    <button style="float:right;" id="saveFilter">Save filter</button>
+  </div>
 </div>
 
 <script type="text/javascript">

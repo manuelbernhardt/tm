@@ -103,7 +103,8 @@ td.sNone {
 
 .field {
     clear: both;
-    margin-bottom: 2px;
+    margin-bottom: 0.2em;
+
 }
 
 label.name {
@@ -187,4 +188,13 @@ div#top_menu {
 
 .searchInput{
     float:right;
+}
+
+.tag-inlining-input{
+    float:left;
+}
+
+.tag-inlining-label{
+    float:left;
+    margin-right:1em;
 }
