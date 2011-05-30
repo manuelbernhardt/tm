@@ -66,7 +66,11 @@ public class Logger {
     }
 
     private static String addUser(String message) {
-        return new StringBuilder().append("[").append(TMController.getConnectedUser().user.getDebugString()).append("] ").append(message).toString();
+        String user = TMController.getUserNameForLog();
+        if(user == null) {
+            user = "not connected";
+        }
+        return new StringBuilder().append("[").append(user).append("] ").append(message).toString();
     }
 
 

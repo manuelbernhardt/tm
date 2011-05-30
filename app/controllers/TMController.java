@@ -115,6 +115,18 @@ public class TMController extends Controller {
         return null;
     }
 
+    /**
+     * For logging purposes
+     * @return returns the full name of the connected user, null otherwise
+     */
+    @Util
+    public static String getUserNameForLog() {
+        if(session != null) {
+            return getConnectedUser().user.getDebugString();
+        }
+        return null;
+    }
+
     @Util
     public static Account getConnectedUserAccount() {
         return getConnectedUser().user.account;
