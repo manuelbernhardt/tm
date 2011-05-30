@@ -19,7 +19,7 @@ import play.data.validation.Required;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 @BatchSize(size = 10)
-public class Role extends ProjectModel {
+public class ProjectRole extends ProjectModel {
 
     @Column(nullable = false)
     @Required
@@ -29,7 +29,7 @@ public class Role extends ProjectModel {
     @OrderColumn
     public List<String> unitRoles = new ArrayList<String>();
 
-    public Role(Project project) {
+    public ProjectRole(Project project) {
         super(project);
     }
 
@@ -41,8 +41,8 @@ public class Role extends ProjectModel {
         return res;
     }
 
-    public static List<Role> findByProject(Long id) {
-        return Role.find("from Role r where r.project.id = ?", id).fetch();
+    public static List<ProjectRole> findByProject(Long id) {
+        return ProjectRole.find("from ProjectRole r where r.project.id = ?", id).fetch();
     }
 
     

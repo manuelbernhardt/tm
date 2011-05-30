@@ -3,8 +3,12 @@ package controllers;
 import java.io.File;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import importer.ExcelImporter;
+import importer.Importer;
 import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.Requirement;
@@ -14,10 +18,10 @@ import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
+import play.libs.MimeTypes;
 import play.mvc.Before;
 
 /**
- *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 public class Requirements extends TMController {
@@ -121,24 +125,33 @@ public class Requirements extends TMController {
         export(Requirement.class);
     }
 
-    public static void importExcel(File excelFile) {
-        System.out.println(excelFile.getName());
-/*        InputStream inp = new FileInputStream(excelFile);
-    //InputStream inp = new FileInputStream("workbook.xlsx");
+    public static void uploadHandler(File files) {
+        String contentType = MimeTypes.getContentType(files.getName());
+        JsonArray array = new JsonArray();
+        JsonObject object = new JsonObject();
+        object.addProperty("name", files.getName());
+        object.addProperty("type", contentType);
+        object.addProperty("url", "http://foo");
+        object.addProperty("size", files.getTotalSpace());
 
-    Workbook wb = WorkbookFactory.create(inp);
-    Sheet sheet = wb.getSheetAt(0);
-    Row row = sheet.getRow(2);
-    Cell cell = row.getCell(3);
-    if (cell == null)
-        cell = row.createCell(3);
-    cell.setCellType(Cell.CELL_TYPE_STRING);
-    cell.setCellValue("a test");
+        if (!contentType.equals("application/excel")) {
+            object.addProperty("error", "The provided file is not an Excel file");
+        }
 
-    // Write the output to a file
-    FileOutputStream fileOut = new FileOutputStream("workbook.xls");
-    wb.write(fileOut);
-    fileOut.close();
- */       ok();
+        array.add(object);
+        renderJSON(array.toString());
+    }
+
+    public static void importExcel(File file) {
+        System.out.println(file.getName());
+
+        Importer importer = new ExcelImporter();
+        try {
+            importer.importFile(Requirement.class, null, getActiveProject(), file);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
+        ok();
     }
 }

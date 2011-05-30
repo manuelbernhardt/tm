@@ -10,10 +10,7 @@
             <button id="create_requirement">Create new requirement</button>
             <button id="import_requirements">Import requirements</button>
             <div id="importRequirementsDialog">
-              <form action="@{Requirements.importExcel()}" method="POST" enctype="multipart/form-data" id="importExcelForm">
-                <label for="excelFile">Excel file</label>
-                <input type="file" id="excelFile" name="excelFile" />
-              </form>
+              Here will come an upload dialog
             </div>
             #{/deadbolt.restrict}
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
@@ -70,6 +67,7 @@
 
 
 #{set 'moreScripts'}
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -130,24 +128,13 @@
 
         $('#importRequirementsDialog').dialog({
           autoOpen: false,
-          height: 200,
-          width: 300,
+          height: 300,
+          width: 400,
           modal: true,
           title: 'Import Requirements from Excel file',
           buttons: {
             "Upload": function() {
-              alert("");
-
-              $('#importExcelForm').ajaxSubmit({
-                success: function() {
-                  $(this).dialog('close');
-                },
-                error: function() {
-                  // TODO actually explain the error message, maybe here we need something more detailed with a link
-                  // TODO to a page giving a template or so
-                  errorMessage('Could not upload Excel sheet, please try again!');
-                }
-              });
+              $(this).dialog('close');
             },
             Cancel: function() {
               $(this).dialog('close');

@@ -12,7 +12,9 @@ class ModelIntegrityTest extends UnitTestCase with AssertionsForJUnit {
   def setUp: Unit = {
     new util.TestDataLoader
   }
+}
 
+/*
   @Test
   def verifyAccountFilters = {
     /*    val it: java.util.Iterator[_] = TestJPAConfigurationExtension.configuration.getHibernateConfiguration().getClassMappings();
@@ -28,3 +30,4 @@ class ModelIntegrityTest extends UnitTestCase with AssertionsForJUnit {
     */
   }
 }
+*/

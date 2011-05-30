@@ -57,11 +57,11 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         return null;
     }
 
-    private static class AccountRoleChildProducer implements ChildProducer {
+    public static class AccountRoleChildProducer implements ChildProducer {
 
         private final AccountRole accountRole;
 
-        private AccountRoleChildProducer(AccountRole accountRole) {
+        public AccountRoleChildProducer(AccountRole accountRole) {
             this.accountRole = accountRole;
         }
 

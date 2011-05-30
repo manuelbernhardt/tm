@@ -9,7 +9,7 @@ import controllers.TMController;
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
-import models.tm.Role;
+import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.libs.F;
 import tree.JSTreeNode;
@@ -51,27 +51,27 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         return null;
     }
 
-    private static class ProjectRoleChildProducer implements ChildProducer {
+    public static class ProjectRoleChildProducer implements ChildProducer {
 
         private final Long projectId;
         private final RoleChildProducer roleChildProducer;
 
-        private ProjectRoleChildProducer(Long projectId, RoleChildProducer roleChildProducer) {
+        public ProjectRoleChildProducer(Long projectId, RoleChildProducer roleChildProducer) {
             this.projectId = projectId;
             this.roleChildProducer = roleChildProducer;
         }
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> result = new ArrayList<JSTreeNode>();
-            List<Role> roles = Role.findByProject(projectId);
-            for (Role r : roles) {
+            List<ProjectRole> roles = ProjectRole.findByProject(projectId);
+            for (ProjectRole r : roles) {
                 result.add(new SimpleNode(r.getId(), r.name, PROJECT_ROLE, true, true, roleChildProducer));
             }
             return result;
         }
     }
 
-    private static class RoleChildProducer implements ChildProducer {
+    public static class RoleChildProducer implements ChildProducer {
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
@@ -97,7 +97,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         if(target == null || target == -1) {
             return false;
         }
-        Role role = Lookups.getRole(target);
+        ProjectRole role = Lookups.getRole(target);
 
         TMUser u = Lookups.getUser(id);
         if(TMUser.listUsersInProjectRole(role.getId()).contains(u)) {
@@ -119,7 +119,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
             Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove project role '%s'", id, parentId);
             return false;
         }
-        Role role = Lookups.getRole(parentId);
+        ProjectRole role = Lookups.getRole(parentId);
         if(role == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find role with id '%s' in order to remove it from user '%s'", parentId, id);
             return false;
