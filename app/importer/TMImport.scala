@@ -187,8 +187,6 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
         } else {
           val n = populateNodeSimple(pathElements.head, "/" + pathElements.head, treeId, None, 0, project)
           n.`type` = nodeType
-          // TODO handle non-creation
-          n.create()
           n
         }
       }
@@ -253,6 +251,7 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
       // TODO deal with non-creation
       node.create()
     }
+    contextData.remove(PREVIOUS_TREENODE)
     ()
   }
 
