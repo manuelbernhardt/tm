@@ -278,6 +278,7 @@ $('#deleteDefectDialog').dialog({
 
   var filterSaveAction = #{jsAction @Defects.saveFilter() /};
   var filterLoadAction = #{jsAction @Defects.loadFilters() /};
+  var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
         $('#filterSaveDialog').dialog({
             autoOpen: false,
@@ -344,7 +345,7 @@ $('#deleteDefectDialog').dialog({
 
         $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data){
             if($(this).val()!=null && $(this).val()!='' && $(this).val()!='customFilter') {
-                $.getJSON('@{Defects.loadFilterById()}', {id: $(this).val()}, function(jsonFilter) {
+                $.getJSON(filterLoadByIdAction(), {id: $(this).val()}, function(jsonFilter) {
                     var form =  document.getElementById('defectsFilterForm');
                     if(!ko.mapping.isMapped(viewModel)){
                         viewModel = ko.mapping.fromJS(jsonFilter);
