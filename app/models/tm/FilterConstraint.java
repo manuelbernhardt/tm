@@ -1,5 +1,6 @@
 package models.tm;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -17,10 +18,15 @@ import play.db.jpa.JPABase;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
 public class FilterConstraint extends ProjectModel {
 
+    @Column(nullable = false)
     public String property;
+
+    @Column(nullable = false)
     public String type;
     @Transient
+
     public ConstraintType constraintType;
+
     public String value;
 
     public FilterConstraint(Project project) {

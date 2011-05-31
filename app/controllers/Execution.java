@@ -322,6 +322,7 @@ public class Execution extends TMController {
         return null;
     }
 
+    @Restrict(UnitRole.TESTEXECCREATE)
     public static void createDefect(Long id){
         Run run = Lookups.getRun(id);
         Defect defect = new Defect(getActiveProject());
@@ -336,14 +337,17 @@ public class Execution extends TMController {
         renderJSON(defect.getId());
     }
 
-    public static void  saveFilter(){
+    @Restrict(UnitRole.TESTEXECVIEW)
+    public static void saveFilter(){
         Filters.saveFilter();
     }
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void loadFilters() {
         Filters.loadFilters("tm.models.Instance");
     }
 
+    @Restrict(UnitRole.TESTEXECVIEW)
     public static void loadFilterById(Long id) {
         Filters.loadFilterById(id);
     }
