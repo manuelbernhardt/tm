@@ -2,11 +2,14 @@ package models.tm;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import play.data.validation.Required;
 
 /**
  *  nikola
@@ -17,6 +20,8 @@ import javax.persistence.UniqueConstraint;
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 public class Filter extends ProjectModel{
 
+    @Required
+    @Column(nullable = false)
     public String name;
     
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -25,17 +30,11 @@ public class Filter extends ProjectModel{
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public TMUser owner;
+
+    @Column(nullable = false)
     public String entity;
 
     public Filter(Project project) {
         super(project);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<FilterConstraint> getFilterConstraints() {
-        return filterConstraints;
     }
 }
