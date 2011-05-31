@@ -15,6 +15,9 @@ public class TMJPATreeStorage extends JPATreeStorage {
 
     @Override
     public GenericTreeNode getNewTreeNode() {
+        // this is probably quite a hack
+        // it also means that whenever we have a tree that isn't specific to a project (e.g. in the admin area)
+        // we need to make sure the projectThreadLocal is set beforehand by that specific tree
         return new ProjectTreeNode(TMTreeController.projectThreadLocal.get());
     }
 
@@ -27,6 +30,6 @@ public class TMJPATreeStorage extends JPATreeStorage {
 
     @Override
     public boolean exists(GenericTreeNode node) {
-        return findJSTreeNodes("from ProjectTreeNode n where n.path = ? and n.type = ? and n.treeId = ? and n.projectId = ?", node.getPath(), node.getType(), node.getTreeId(), ((ProjectTreeNode)node).project.getId()).size() > 0;
+        return findJSTreeNodes("from ProjectTreeNode n where n.path = ? and n.type = ? and n.treeId = ? and n.project.id = ?", node.getPath(), node.getType(), node.getTreeId(), ((ProjectTreeNode)node).project.getId()).size() > 0;
     }
 }

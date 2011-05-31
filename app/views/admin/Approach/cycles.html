@@ -28,7 +28,7 @@ Alternatively simple tags can be used to organize the Test Execution.
 
   $(document).ready(function () {
 
-    $('#approachTree').tree({"args" : {"projectId": "${project == null ? controllers.TMController.getActiveProject().getId() : project.id}"}, types: approachTreeTypes});
+    $('#approachTree').tree({"args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"}, types: approachTreeTypes});
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
