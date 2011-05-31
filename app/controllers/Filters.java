@@ -67,7 +67,7 @@ public class Filters extends TMController {
     }
 
     @Util
-    public static void loadFilters(String entity){
+    public static void loadFilters(String entity) {
         JsonObject result = new JsonObject();
         JsonArray jsonFilters = new JsonArray();
         List<Filter> filterList = Filter.find("from Filter f where f.entity=?", entity).fetch();
@@ -82,7 +82,7 @@ public class Filters extends TMController {
     }
 
     @Util
-    public static void loadFilterById(Long id){
+    public static void loadFilterById(Long id) {
         Filter filter = Filter.find("from Filter f where f.id = ? and f.owner = ?", id, getConnectedUser()).<Filter>first();
         JsonObject c = new JsonObject();
         for (FilterConstraint fc : filter.filterConstraints) {
