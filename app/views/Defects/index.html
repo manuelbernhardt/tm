@@ -279,14 +279,15 @@ $('#deleteDefectDialog').dialog({
   };
 
   $('#filterContainer').oxFilter({
-            filterFormId: 'defectsFilterForm',
-            filterSaveAction: filterSaveAction,
-            filterLoadAction: filterLoadAction,
-            filterLoadByIdAction: filterLoadByIdAction,
-            onSelect: function() {
-              refreshTableContents('#defectsTable', true);
-            }
-          });
+      filterFormId: 'defectsFilterForm',
+      filterParameters: data,
+      filterSaveAction: filterSaveAction,
+      filterLoadAction: filterLoadAction,
+      filterLoadByIdAction: filterLoadByIdAction,
+      onSelect: function() {
+        refreshTableContents('#defectsTable', true);
+      }
+  });
 
 });
 

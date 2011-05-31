@@ -613,6 +613,12 @@ function refreshWidgetsContent(dashboard) {
                 $.tmpl(settings.filterTemplate).insertBefore($this);
                 $this.hide();
 
+                // filter loading
+                var filterViewModel = {};
+                var filterSelectionViewModel = {};
+                loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
+
+
                 // initialize filter saving dialog
                 $('#filterSaveDialog').dialog({
                             autoOpen: false,
@@ -621,18 +627,8 @@ function refreshWidgetsContent(dashboard) {
                             draggable: false,
                             buttons: {
                                 "Confirm": function() {
-                                    $.post(settings.filterSaveAction(), data).error(errorHandler);
-                                    $.getJSON(settings.filterLoadAction(),
-                                            function(json) {
-                                                var form = document.getElementById('filterSelect');
-                                                if (!ko.mapping.isMapped(filterSelectionViewModel)) {
-                                                    filterSelectionViewModel = ko.mapping.fromJS(json);
-                                                    ko.applyBindings(filterSelectionViewModel, form);
-                                                } else {
-                                                    ko.mapping.updateFromJS(filterSelectionViewModel, json);
-                                                }
-                                                $('#filterSelect').append("<option value='customFilter'>New filter</option>");
-                                            }).error(errorHandler);
+                                    $.post(settings.filterSaveAction(), settings.filterParameters).error(errorHandler);
+                                    loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
                                     $(this).dialog("close");
                                 },
                                 "Cancel": function() {
@@ -651,25 +647,8 @@ function refreshWidgetsContent(dashboard) {
                     $this.slideDown('slow');
                 });
 
-                // filter loading
-                var filterViewModel = {};
-                var filterSelectionViewModel = {};
-
-                $.getJSON(settings.filterLoadAction(),
-                        function(json) {
-                            var form = document.getElementById('filterSelect');
-                            if (!ko.mapping.isMapped(filterSelectionViewModel)) {
-                                filterSelectionViewModel = ko.mapping.fromJS(json);
-                                ko.applyBindings(filterSelectionViewModel, form);
-                            }
-                            else {
-                                ko.mapping.updateFromJS(filterSelectionViewModel, json);
-                            }
-                            $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
-                        }).error(errorHandler);
-
                 // filter selection handling
-                $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data) {
+                $('#filterSelect').button().change(function(data) {
                     if ($(this).val() != null && $(this).val() != '' && $(this).val() != 'customFilter') {
                         $.getJSON(settings.filterLoadByIdAction(), {id: $(this).val()},
                                 function(jsonFilter) {
@@ -720,3 +699,19 @@ function refreshWidgetsContent(dashboard) {
     };
 
 })(jQuery);
+
+function loadFilters(url, filterSelectionViewModel) {
+    $.getJSON(url,
+            function(json) {
+                var form = document.getElementById('filterSelect');
+                if (!ko.mapping.isMapped(filterSelectionViewModel)) {
+                    filterSelectionViewModel = ko.mapping.fromJS(json);
+                    ko.applyBindings(filterSelectionViewModel, form);
+                }
+                else {
+                    ko.mapping.updateFromJS(filterSelectionViewModel, json);
+                }
+                $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+            }).error(errorHandler);
+
+}
