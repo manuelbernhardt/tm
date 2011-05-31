@@ -16,7 +16,7 @@ echo Patching scala module...
 echo ========================
 echo
 echo
-cd ../play-scala
+cd play-scala
 git apply ../tm/fix_scala_model.patch
 
 echo =======================
