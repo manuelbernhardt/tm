@@ -276,6 +276,9 @@ $('#deleteDefectDialog').dialog({
 
 // filter functions
 
+  var filterSaveAction = #{jsAction @Defects.saveFilter() /};
+  var filterLoadAction = #{jsAction @Defects.loadFilters() /};
+
         $('#filterSaveDialog').dialog({
             autoOpen: false,
             modal: true,
@@ -296,8 +299,8 @@ $('#deleteDefectDialog').dialog({
                       "constraint['dateTo']['dateTo']" : $('#dateTo').val()
                   };
 
-                  $.post('@{Defects.saveFilter()}', data).error(errorHandler);
-                    $.getJSON("@{Defects.loadFilters()}", function(json) {
+                  $.post(filterSaveAction(), data).error(errorHandler);
+                    $.getJSON(filterLoadAction(), function(json) {
                         var form =  document.getElementById('filterSelect');
                         if(!ko.mapping.isMapped(viewModelLoadFilters)){
                             viewModelLoadFilters = ko.mapping.fromJS(json);
