@@ -4,19 +4,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
-import javax.tools.FileObject;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializer;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.*;
+import models.tm.Defect;
+import models.tm.DefectStatus;
+import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.mvc.Before;
-import play.mvc.Router;
 import util.FilterQuery;
 
 
@@ -174,7 +171,6 @@ public class Defects extends TMController {
     @Restrict(UnitRole.DEFECTVIEW)
     public static void export() {
         export(Defect.class);
-
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
