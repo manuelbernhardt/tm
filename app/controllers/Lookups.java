@@ -8,8 +8,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import models.tm.Project;
+import models.tm.ProjectRole;
 import models.tm.Requirement;
-import models.tm.Role;
 import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
@@ -134,10 +134,10 @@ public class Lookups extends TMController {
     }
 
     @Util
-    public static Role getRole(Long roleId) {
-        Role role = null;
+    public static ProjectRole getRole(Long roleId) {
+        ProjectRole role = null;
         if (roleId != null) {
-            role = Role.<Role>findById(roleId);
+            role = ProjectRole.<ProjectRole>findById(roleId);
         }
         if (role == null) {
             return null;

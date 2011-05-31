@@ -13,6 +13,10 @@ require:
     - provided -> gag 1.0.1
     # for excel export, the module does not come with it
     - commons-digester -> commons-digester 2.1
+#    - org.apache.poi -> poi 3.7
+#    - org.apache.poi -> ooxml-schemas 1.1
+#    - net.sf.jxls -> jxls 1.0-RC-2
+
 
 repositories:
     - provided:

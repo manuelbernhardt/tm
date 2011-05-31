@@ -9,12 +9,16 @@ import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.*;
+import models.tm.Defect;
+import models.tm.Project;
+import models.tm.ProjectModel;
+import models.tm.ProjectRole;
+import models.tm.Requirement;
+import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.Script;
 import models.tm.test.Tag;
 import models.tm.test.TagHolder;
-import org.apache.commons.collections.iterators.ArrayListIterator;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
 
@@ -52,7 +56,7 @@ public class Projects extends TMController {
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void users(Long projectId) {
         Project project = Lookups.getProject(projectId);
-        List<Role> projectRoles = Role.findByProject(projectId);
+        List<ProjectRole> projectRoles = ProjectRole.findByProject(projectId);
         List<TMUser> accountUsers = TMUser.listByAccount(getConnectedUserAccount().getId());
         render(project, projectRoles, accountUsers);
     }

@@ -11,7 +11,7 @@ import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
-import models.tm.Role;
+import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.libs.F;
 import tree.JSTreeNode;
@@ -90,12 +90,13 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
         return r != null;
     }
 
-    private static class CategoryChildProducer implements ChildProducer {
+    public static class CategoryChildProducer implements ChildProducer {
 
         final private TMUser user;
 
         final private ChildProducer projectChildProducer;
-        private CategoryChildProducer(ChildProducer projectChildProducer, TMUser user) {
+
+        public CategoryChildProducer(ChildProducer projectChildProducer, TMUser user) {
             this.projectChildProducer = projectChildProducer;
             this.user = user;
         }
@@ -112,17 +113,17 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
         }
 
     }
-    private static class ProjectChildProducer implements ChildProducer {
+    public static class ProjectChildProducer implements ChildProducer {
 
         private final TMUser user;
 
-        private ProjectChildProducer(TMUser user) {
+        public ProjectChildProducer(TMUser user) {
             this.user = user;
         }
 
         public List<JSTreeNode> produce(Long id) {
             List<JSTreeNode> rs = new ArrayList<JSTreeNode>();
-            for (Role r : user.projectRoles) {
+            for (ProjectRole r : user.projectRoles) {
                 if (r.project.getId().equals(id)) {
                     rs.add(new SimpleNode(r.id, r.name, ROLE, false, false, null));
                 }
@@ -137,7 +138,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
         if (roleId == null || userId == null || roleId == -1 || userId == -1) {
             return null;
         }
-        Role role = Role.findById(roleId);
+        ProjectRole role = ProjectRole.findById(roleId);
         TMUser user = TMUser.findById(userId);
         if (role == null || user == null) {
             return null;

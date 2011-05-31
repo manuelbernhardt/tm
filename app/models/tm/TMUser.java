@@ -53,7 +53,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     @BatchSize(size = 10)
-    public List<Role> projectRoles;
+    public List<ProjectRole> projectRoles;
 
     public String dashboardLayout;
 
@@ -93,7 +93,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
 
     public List<? extends models.deadbolt.Role> getProjectRoles(Project project) {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
-        for (Role r : projectRoles) {
+        for (ProjectRole r : projectRoles) {
             // the project should be filtered via the hibernate filters already but let's be sure
             if(r.project.equals(project)) {
                 for (UnitRole ur : r.getAuthenticationUnitRoles()) {
@@ -139,7 +139,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     }
 
     public static List<TMUser> listUsersInProjectRole(Long roleId) {
-        return TMUser.find("select u from TMUser u, Role r where r in elements(u.projectRoles) and r.id = ?", roleId).<TMUser>fetch();
+        return TMUser.find("select u from TMUser u, ProjectRole r where r in elements(u.projectRoles) and r.id = ?", roleId).<TMUser>fetch();
     }
 
     public static List<TMUser> listUsersInAccountRole(AccountRole role) {
@@ -148,5 +148,4 @@ public class TMUser extends TemporalModel implements AccountEntity {
         query.setParameter("unitRoles", role.getUnitRoles());
         return query.getResultList();
     }
-
 }

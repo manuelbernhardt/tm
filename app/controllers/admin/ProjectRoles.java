@@ -5,7 +5,7 @@ import java.util.List;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
 import models.tm.Project;
-import models.tm.Role;
+import models.tm.ProjectRole;
 import play.db.jpa.GenericModel;
 
 /**
@@ -13,7 +13,7 @@ import play.db.jpa.GenericModel;
  */
 public class ProjectRoles extends TMController {
 
-    public static void create(Role role, Long projectId) {
+    public static void create(ProjectRole role, Long projectId) {
         role.project = Project.findById(projectId);
         role.create();
         // TODO validation
@@ -31,11 +31,11 @@ public class ProjectRoles extends TMController {
             error();
         } else {
             GenericModel.JPAQuery query;
-            query = Role.find("from Role r where r.project.id = ?", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = ProjectRole.find("from ProjectRole r where r.project.id = ?", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
-            List<Role> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
-            long totalRecords = Role.count();
-            TableController.renderJSON(roles, Role.class, totalRecords, sColumns, sEcho);
+            List<ProjectRole> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
+            long totalRecords = ProjectRole.count();
+            TableController.renderJSON(roles, ProjectRole.class, totalRecords, sColumns, sEcho);
             ok();
         }
     }
@@ -44,7 +44,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            Role role = Role.findById(roleId);
+            ProjectRole role = ProjectRole.findById(roleId);
             checkInAccount(role);
             List<String> unitRoles = role.unitRoles;
             render(role, unitRoles);
@@ -55,7 +55,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            Role role = Role.findById(roleId);
+            ProjectRole role = ProjectRole.findById(roleId);
 
             checkInAccount(role);
 
