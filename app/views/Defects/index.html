@@ -1,20 +1,9 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
-
-
-<div style="float:right;">
-    <select id="filterSelect" data-bind="options:availableFilters,
-                                         optionsValue: 'filterId',
-                                         optionsText: 'name',
-                                         optionsCaption: 'Filter...' ">
-    </select>
-    <button id="filterExpand">Expand filter</button>
-</div>
 <br/>
 <br/>
-<div id="filter_container" style="display:none;">
-
+<div id="filterContainer">
     #{box 'Filters'}
     #{include 'Defects/filter.html'/}
     #{/box}
@@ -62,10 +51,6 @@
 </div>
 
 <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
-
-<div id="filterSaveDialog" title="Name of the filter">
-    <input id="filterName" />
-</div>
 
 <br/>
 #{box 'Defects'}
@@ -280,99 +265,28 @@ $('#deleteDefectDialog').dialog({
   var filterLoadAction = #{jsAction @Defects.loadFilters() /};
   var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
-        $('#filterSaveDialog').dialog({
-            autoOpen: false,
-            modal: true,
-            resizable: false,
-            draggable: false,
-            buttons: {
-                "Confirm": function() {
-                    var data = {
-                      "name": $('#filterName').val(),
-                      "entity": 'tm.models.Defect',
-                      "constraint['title']['value']" : $('#title').val(),
-                      "constraint['titleCase']['matches']" : $('#titleCase').val(),
-                      "constraint['status']['value']" : $('#status').val(),
-                      "constraint['tags']['value']" : $('#tags').val(),
-                      "constraint['assignedToId']['value']" : $('#assignedToId').val(),
-                      "constraint['submittedById']['value']" : $('#submittedById').val(),
-                      "constraint['dateFrom']['dateFrom']" : $('#dateFrom').val(),
-                      "constraint['dateTo']['dateTo']" : $('#dateTo').val()
-                  };
+  var data = {
+    "name": $('#filterName').val(),
+    "entity": 'tm.models.Defect',
+    "constraint['title']['value']" : $('#title').val(),
+    "constraint['titleCase']['matches']" : $('#titleCase').val(),
+    "constraint['status']['value']" : $('#status').val(),
+    "constraint['tags']['value']" : $('#tags').val(),
+    "constraint['assignedToId']['value']" : $('#assignedToId').val(),
+    "constraint['submittedById']['value']" : $('#submittedById').val(),
+    "constraint['dateFrom']['dateFrom']" : $('#dateFrom').val(),
+    "constraint['dateTo']['dateTo']" : $('#dateTo').val()
+  };
 
-                  $.post(filterSaveAction(), data).error(errorHandler);
-                    $.getJSON(filterLoadAction(), function(json) {
-                        var form =  document.getElementById('filterSelect');
-                        if(!ko.mapping.isMapped(viewModelLoadFilters)){
-                            viewModelLoadFilters = ko.mapping.fromJS(json);
-                            ko.applyBindings(viewModelLoadFilters, form);
-                        } else{
-                            ko.mapping.updateFromJS(viewModelLoadFilters, json);
-                        }
-                      $('#filterSelect').append("<option value='customFilter'>New filter</option>");
-                    }).error(errorHandler);
-                    $(this).dialog("close");
-                },
-                "Cancel": function() {
-                    $(this).dialog("close");
-                }
-
+  $('#filterContainer').oxFilter({
+            filterFormId: 'defectsFilterForm',
+            filterSaveAction: filterSaveAction,
+            filterLoadAction: filterLoadAction,
+            filterLoadByIdAction: filterLoadByIdAction,
+            onSelect: function() {
+              refreshTableContents('#defectsTable', true);
             }
-        });
-
-        $('#saveFilter').button().click(function(){
-            $('#filterSaveDialog').dialog('open');
-        });
-        $('#filterExpand').button({icons: {primary: 'ui-icon-triangle-1-s'}, text: false}).click(function() {
-          $('#filter_container').slideDown('slow');
-        });
-
-
-        var viewModel = {};
-        var viewModelLoadFilters = {};
-
-        $.getJSON("@{Defects.loadFilters()}", function(json) {
-          var form =  document.getElementById('filterSelect');
-          if(!ko.mapping.isMapped(viewModelLoadFilters)){
-              viewModelLoadFilters = ko.mapping.fromJS(json);
-              ko.applyBindings(viewModelLoadFilters, form);
-          }
-          else{
-              ko.mapping.updateFromJS(viewModelLoadFilters, json);
-          }
-          $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
-        }).error(errorHandler);
-
-        $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data){
-            if($(this).val()!=null && $(this).val()!='' && $(this).val()!='customFilter') {
-                $.getJSON(filterLoadByIdAction(), {id: $(this).val()}, function(jsonFilter) {
-                    var form =  document.getElementById('defectsFilterForm');
-                    if(!ko.mapping.isMapped(viewModel)){
-                        viewModel = ko.mapping.fromJS(jsonFilter);
-                        ko.applyBindings(viewModel, form);
-                    } else{
-                        ko.mapping.updateFromJS(viewModel, jsonFilter);
-                    }
-                    refreshTableContents("#defectsTable", false);
-                }).error(errorHandler);
-            }
-
-            if($(this).val()==''){
-                $('#filter_container').slideUp('slow');
-            }
-
-            //clear the form in case a filter was previously applied
-
-            if($(this).val()=='customFilter') {
-                $(':input','#defectsFilterForm')
-                 .not(':button, :submit, :reset, :hidden')
-                 .val('')
-                 .removeAttr('checked')
-                 .removeAttr('selected');
-                $('#filter_container').slideDown('slow');
-            }
-        });
-
+          });
 
 });
 

@@ -33,12 +33,12 @@ function refreshTableContents(tableSelector, completeRefresh) {
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
         // this is the internal API, let's hope it won't change
         dataTable.fnSettings().aoDrawCallback.push({
-            "fn": function () {
-                // re-select the selected row
-                fnSelectRow(dataTable, selected);
-            },
-            "sName": "user"
-        });
+                    "fn": function () {
+                        // re-select the selected row
+                        fnSelectRow(dataTable, selected);
+                    },
+                    "sName": "user"
+                });
     }
     if (completeRefresh) {
         $(dataTable.fnSettings().aoData).each(function () {
@@ -296,35 +296,35 @@ function removeDialogs() {
                 if (!data) {
                     if (options.loadAction) {
                         $this.data('oxForm', {
-                            'loadAction': options.loadAction,
-                            'submissionCallback': options.submissionCallback,
-                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
-                            'fields': getFields($this),
-                            'viewModel': {
-                                'authenticityToken': (typeof authToken !== 'undefined' ? authToken.val() : ''),
-                                'submitForm': function(formElement) {
-                                    if ($(formElement).validate({meta: 'validate'}).form()) {
-                                        var oxFormData = $(formElement).data('oxForm');
-                                        var additionalData = null;
-                                        if (typeof oxFormData.submissionParameters !== 'undefined') {
-                                            additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
-                                        }
-                                        $.postKnockoutJSJson($(formElement).attr('action'), $(formElement).attr('id'), this, additionalData, function(submitData) {
-                                            var sCallback = oxFormData.submissionCallback;
-                                            if (typeof sCallback == 'function') {
-                                                sCallback.call();
+                                    'loadAction': options.loadAction,
+                                    'submissionCallback': options.submissionCallback,
+                                    'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
+                                    'fields': getFields($this),
+                                    'viewModel': {
+                                        'authenticityToken': (typeof authToken !== 'undefined' ? authToken.val() : ''),
+                                        'submitForm': function(formElement) {
+                                            if ($(formElement).validate({meta: 'validate'}).form()) {
+                                                var oxFormData = $(formElement).data('oxForm');
+                                                var additionalData = null;
+                                                if (typeof oxFormData.submissionParameters !== 'undefined') {
+                                                    additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
+                                                }
+                                                $.postKnockoutJSJson($(formElement).attr('action'), $(formElement).attr('id'), this, additionalData, function(submitData) {
+                                                    var sCallback = oxFormData.submissionCallback;
+                                                    if (typeof sCallback == 'function') {
+                                                        sCallback.call();
+                                                    }
+                                                    $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                                                });
                                             }
-                                            $('#' + $(formElement).attr('id') + '_submit').button('disable');
-                                        });
+                                        }
                                     }
-                                }
-                            }
-                        });
+                                });
                     } else {
                         $this.data('oxForm', {
-                            'submissionCallback': options.submissionCallback,
-                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
-                        });
+                                    'submissionCallback': options.submissionCallback,
+                                    'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
+                                });
                     }
                 }
                 return $this;
@@ -361,15 +361,15 @@ function removeDialogs() {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
                 $this.ajaxSubmit({
-                    success: function() {
-                        if (typeof oxFormData.submissionCallback == 'function') {
-                            oxFormData.submissionCallback.call();
-                        }
-                        $('#' + $this.attr('id') + '_submit').button('disable');
-                        $this.resetForm();
-                    },
-                    data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters
-                });
+                            success: function() {
+                                if (typeof oxFormData.submissionCallback == 'function') {
+                                    oxFormData.submissionCallback.call();
+                                }
+                                $('#' + $this.attr('id') + '_submit').button('disable');
+                                $this.resetForm();
+                            },
+                            data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters
+                        });
             }
         },
         getFieldId: function(fieldName) {
@@ -445,14 +445,14 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
         }
     });
     return jQuery.ajax({
-        type: 'POST',
-        url: url,
-        data: formData,
-        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-        dataType: 'json'
-    }).success(callback).error(function (jqhr, text) {
-        alert(text);
-    });
+                type: 'POST',
+                url: url,
+                data: formData,
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                dataType: 'json'
+            }).success(callback).error(function (jqhr, text) {
+                alert(text);
+            });
 };
 
 ko.bindingHandlers.tags = {
@@ -525,10 +525,9 @@ function toggleFilter(buttonId, divId) {
 }
 
 function adaptGraphSize() {
-
     $('.visualize').remove();
     var width = $('.graphTable').parent().width() - 100;
-    $('.graphTable').visualize({type: 'bar',title:'Defects', width: width, appendTitle:false});
+    $('.graphTable').visualize({type: 'bar', width: width, appendTitle:false});
 }
 
 function errorMessage(text, title) {
@@ -540,18 +539,18 @@ function errorMessage(text, title) {
 
     $('#errorDialog').html(errorHtml);
     $('#errorDialog').dialog({
-        autoOpen: true,
-        height: 200,
-        width: 300,
-        modal: true,
-        title: title,
-        resizable: false,
-        buttons:{
-            "Close": function() {
-                $(this).dialog('close');
-            }
-        }
-    });
+                autoOpen: true,
+                height: 200,
+                width: 300,
+                modal: true,
+                title: title,
+                resizable: false,
+                buttons:{
+                    "Close": function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
 }
 
 function errorHandler(xhr, textStatus, errorThrown) {
@@ -579,3 +578,145 @@ function refreshWidgetsContent(dashboard) {
     });
 }
 
+
+/**
+ * jQuery plugin for filters
+ */
+(function($) {
+
+    var methods = {
+        init : function(options) {
+            return this.each(function() {
+
+                var $this = $(this);
+                var data = $this.data('oxFilter');
+
+                var settings = {
+                    filterTemplate:
+                            '<div style="float:right;">' +
+                                    '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
+                                    '<button id="filterExpand">Expand filter</button>' +
+                            '</div>' +
+                            '<div id="filterSaveDialog" title="Save filter">' +
+                                '<label for="filterName" class="name">Name</label>' +
+                                '<input id="filterName" />' +
+                            '</div>'
+                };
+
+                $.extend(settings, options);
+
+                if (!data) {
+                    $this.data('oxFilter', settings);
+                }
+
+                // initialize filter template
+                $.tmpl(settings.filterTemplate).insertBefore($this);
+                $this.hide();
+
+                // initialize filter saving dialog
+                $('#filterSaveDialog').dialog({
+                            autoOpen: false,
+                            modal: true,
+                            resizable: false,
+                            draggable: false,
+                            buttons: {
+                                "Confirm": function() {
+                                    $.post(settings.filterSaveAction(), data).error(errorHandler);
+                                    $.getJSON(settings.filterLoadAction(),
+                                            function(json) {
+                                                var form = document.getElementById('filterSelect');
+                                                if (!ko.mapping.isMapped(filterSelectionViewModel)) {
+                                                    filterSelectionViewModel = ko.mapping.fromJS(json);
+                                                    ko.applyBindings(filterSelectionViewModel, form);
+                                                } else {
+                                                    ko.mapping.updateFromJS(filterSelectionViewModel, json);
+                                                }
+                                                $('#filterSelect').append("<option value='customFilter'>New filter</option>");
+                                            }).error(errorHandler);
+                                    $(this).dialog("close");
+                                },
+                                "Cancel": function() {
+                                    $(this).dialog("close");
+                                }
+
+                            }
+                        });
+
+                // initialize buttons
+                $('#saveFilter').button().click(function() {
+                    $('#filterSaveDialog').dialog('open');
+                });
+                $('#filterExpand').button({icons: {primary: 'ui-icon-triangle-1-s'}, text: false}).click(function() {
+                    // TODO toggle
+                    $this.slideDown('slow');
+                });
+
+                // filter loading
+                var filterViewModel = {};
+                var filterSelectionViewModel = {};
+
+                $.getJSON(settings.filterLoadAction(),
+                        function(json) {
+                            var form = document.getElementById('filterSelect');
+                            if (!ko.mapping.isMapped(filterSelectionViewModel)) {
+                                filterSelectionViewModel = ko.mapping.fromJS(json);
+                                ko.applyBindings(filterSelectionViewModel, form);
+                            }
+                            else {
+                                ko.mapping.updateFromJS(filterSelectionViewModel, json);
+                            }
+                            $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                        }).error(errorHandler);
+
+                // filter selection handling
+                $('#filterSelect').button({icons: {primary: 'ui-icon-triangle-1-s'}}).change(function(data) {
+                    if ($(this).val() != null && $(this).val() != '' && $(this).val() != 'customFilter') {
+                        $.getJSON(settings.filterLoadByIdAction(), {id: $(this).val()},
+                                function(jsonFilter) {
+                                    var form = document.getElementById(settings.filterFormId);
+                                    if (!ko.mapping.isMapped(filterViewModel)) {
+                                        filterViewModel = ko.mapping.fromJS(jsonFilter);
+                                        ko.applyBindings(filterViewModel, form);
+                                    } else {
+                                        ko.mapping.updateFromJS(filterViewModel, jsonFilter);
+                                    }
+                                    if (typeof settings.onSelect == 'function') {
+                                        settings.onSelect.call();
+                                    }
+                                }).error(errorHandler);
+                    }
+
+                    if ($(this).val() == '') {
+                        $this.slideUp('slow');
+                    }
+
+                    //clear the form in case a filter was previously applied
+                    if ($(this).val() == 'customFilter') {
+                        $(':input', '#' + settings.filterFormId)
+                                .not(':button, :submit, :reset, :hidden')
+                                .val('')
+                                .removeAttr('checked')
+                                .removeAttr('selected');
+                        $this.slideDown('slow');
+                    }
+                });
+
+                return $this;
+            });
+        }
+    };
+
+    $.fn.oxFilter = function(method) {
+
+        // Method calling logic
+        if (methods[method]) {
+            return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.oxFilter');
+        }
+
+    };
+
+})(jQuery);
