@@ -43,7 +43,9 @@ public class TMTreeController extends TMController {
             } else {
                 projectThreadLocal.set(getActiveProject());
             }
-            ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", projectThreadLocal.get().getId());
+            if(TMController.controllerHasActiveProject()) {
+                ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", projectThreadLocal.get().getId());
+            }
         }
 
     }
