@@ -7,7 +7,7 @@ echo
 echo
 
 cd ..
-git clone git://github.com/playframework/play-scala.git
+git clone git://github.com/playframework/play-scala.git --depth 1
 
 echo
 echo
