@@ -343,18 +343,18 @@
   var filterLoadAction = #{jsAction @Execution.loadFilters() /};
   var filterLoadByIdAction = #{jsAction @Execution.loadFilterById() /};
 
-  var data = {
-    "constraint[cycle][value]" : $('#cycle').val(),
-    "constraint[status][value]" : $('#status').val(),
-    "constraint[tags][value]" : $('#tags').val(),
-    "constraint[responsible][value]" : $('#responsible').val(),
-    "constraint[created][dateFrom]" : $('#dateFrom').val(),
-    "constraint[created][dateTo]" : $('#dateTo').val()
-  };
-
   $('#filterContainer').oxFilter({
             filterFormId: 'instanceFilterForm',
-            filterParameters: data,
+            filterParameters: function() {
+              return {
+                "constraint[cycle][value]" : $('#cycle').val(),
+                "constraint[status][value]" : $('#status').val(),
+                "constraint[tags][value]" : $('#tags').val(),
+                "constraint[responsible][value]" : $('#responsible').val(),
+                "constraint[created][dateFrom]" : $('#dateFrom').val(),
+                "constraint[created][dateTo]" : $('#dateTo').val()
+              }
+            },
             filterSaveAction: filterSaveAction,
             filterLoadAction: filterLoadAction,
             filterLoadByIdAction: filterLoadByIdAction,

@@ -450,9 +450,9 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
                 data: formData,
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).success(callback).error(function (jqhr, text) {
-                alert(text);
-            });
+            })
+            .success(callback)
+            .error(errorHandler);
 };
 
 ko.bindingHandlers.tags = {
@@ -623,10 +623,16 @@ function refreshWidgetsContent(dashboard) {
                             draggable: false,
                             buttons: {
                                 "Confirm": function() {
+                                    var dialog = $(this);
                                     var filterParams = settings.filterParameters.call();
-                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, filterParams)).error(errorHandler);
-                                    loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
-                                    $(this).dialog("close");
+                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, filterParams))
+                                            .success(function() {
+                                                loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
+                                                dialog.dialog("close");
+                                            })
+                                            .error(errorHandler, function() {
+                                                dialog.dialog("close");
+                                            });
                                 },
                                 "Cancel": function() {
                                     $(this).dialog("close");

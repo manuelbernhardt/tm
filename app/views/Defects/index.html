@@ -265,8 +265,6 @@ $('#deleteDefectDialog').dialog({
   var filterLoadAction = #{jsAction @Defects.loadFilters() /};
   var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
-  alert($('#title').val());
-
   $('#filterContainer').oxFilter({
       filterFormId: 'defectsFilterForm',
       filterParameters: function() {

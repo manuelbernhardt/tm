@@ -3,7 +3,7 @@
     <div class="left_column">
       <div class="field">
         <label for="cycle">Test cycle</label>
-        <select id="cycle" name="cycle" data-bind="value: cycle">
+        <select id="cycle" name="cycle" data-bind="value: cycle.value">
           <option value="">Select a cycle</option>
           #{list items:releases, as:'release'}
           <optgroup label="${release.name}">
@@ -16,7 +16,7 @@
       </div>
       <div class="field">
         <label for="status">Status</label>
-        <select id="status" name="status" data-bind="value: status">
+        <select id="status" name="status" data-bind="value: status.value">
           <option value="">Select a status</option>
           #{list items:models.tm.test.ExecutionStatus.values(), as:'s'}
           <option value="${s.getPosition()}">${s}</option>
@@ -25,13 +25,13 @@
       </div>
       <div class="field">
         <label for="tags" class="tag-inlining-label">Tags</label>
-        <input id="tags" class="tag-inlining-input" name="tags" type="text" data-bind="value: tags">
+        <input id="tags" class="tag-inlining-input" name="tags" type="text" data-bind="tags: tags.value">
       </div>
     </div>
     <div class="right_column">
       <div class="field">
         <label for="responsible">Assigned to</label>
-        <select id="responsible" name="responsible" data-bind="value: responsible">
+        <select id="responsible" name="responsible" data-bind="value: responsible.value">
           <option value="">Select a person</option>
           #{list items:users, as:'user'}
           <option value="${user.getId()}">${user.getFullName()}</option>
@@ -40,8 +40,8 @@
       </div>
       <div class="field">
         <label for="dateFrom">Planned execution between</label>
-        <input id="dateFrom" type="text" name="dateFrom" data-bind="value: dateFrom">
-        <input id="dateTo" type="text" name="dateTo" data-bind="value: dateTo">
+        <input id="dateFrom" type="text" name="dateFrom" data-bind="value: created.dateFrom">
+        <input id="dateTo" type="text" name="dateTo" data-bind="value: created.dateTo">
       </div>
       <button id="filter">Apply filter</button>
     </div>
