@@ -53,6 +53,7 @@
 <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
 
 <br/>
+
 #{box 'Defects'}
 <table class="display" id="defectsTable">
 
@@ -175,6 +176,15 @@ $('#createDefectCancel').click(function() {
 handleRowSelection('#defectsTable', function() {
     $('#updateDefectButton').button('enable');
     $('#deleteDefectButton').button('enable');
+    $('.defect-details').remove();
+    var desc='';
+    //TODO some code improvements if this is a way we will display defects
+    $.getJSON('@{Defects.defectDescription()}', {defectId: getSelectedRowId("#defectsTable")},
+            function(data){
+                desc = data.members.desc.value;
+                $('.row_selected').after("<tr class='defect-details'><td colspan='7'>"+desc+"</td></tr>");
+            }).error(errorHandler);
+
 });
 
 
@@ -288,6 +298,8 @@ $('#deleteDefectDialog').dialog({
   });
 
 });
+
+
 
 </script>
 
