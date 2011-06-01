@@ -113,9 +113,4 @@ public class Requirements extends TMController {
         requirement.save();
         ok();
     }
-
-    @Restrict(UnitRole.REQVIEW)
-    public static void export() {
-        export(Requirement.class);
-    }
 }

@@ -52,6 +52,13 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String DEFECTDELETE = "defectDelete";
 
 
+    private final static ImmutableMap<String, String> viewRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQVIEW,
+            Repository.class.getName(), UnitRole.TESTREPOVIEW,
+            Preparation.class.getName(), UnitRole.TESTPREPVIEW,
+            Execution.class.getName(), UnitRole.TESTEXECVIEW,
+            Defects.class.getName(), UnitRole.DEFECTVIEW
+    );
     private final static ImmutableMap<String, String> createRolesPerController = ImmutableMap.of(
             Requirements.class.getName(), UnitRole.REQCREATE,
             Repository.class.getName(), UnitRole.TESTREPOCREATE,
@@ -82,8 +89,11 @@ public class UnitRole implements models.deadbolt.Role {
         return roles;
     }
 
-    public static UnitRole getCreateRole(Class controllerClass) {
+    public static UnitRole getViewRole(Class controllerClass) {
         return role(createRolesPerController.get(controllerClass.getName()));
+    }
+    public static UnitRole getCreateRole(Class controllerClass) {
+        return role(viewRolesPerController.get(controllerClass.getName()));
     }
 
     @Override

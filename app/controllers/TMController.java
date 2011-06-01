@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -28,9 +29,14 @@ import models.account.AccountEntity;
 import models.account.User;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
+import models.tm.Requirement;
 import models.tm.TMUser;
+import models.tm.test.Instance;
+import models.tm.test.Run;
+import models.tm.test.Script;
 import models.tm.test.Tag;
 import org.hibernate.Session;
 import play.cache.Cache;
@@ -106,6 +112,7 @@ public class TMController extends Controller {
 
     /**
      * Gets the connected user object
+     *
      * @return the connected TMUser
      * @deprecated use {@link TMController#getConnectedUserId()} instead
      */
@@ -129,11 +136,12 @@ public class TMController extends Controller {
 
     /**
      * For logging purposes
+     *
      * @return returns the full name of the connected user, null otherwise
      */
     @Util
     public static String getUserNameForLog() {
-        if(session != null) {
+        if (session != null) {
             return getConnectedUser().user.getDebugString();
         }
         return null;
@@ -141,6 +149,7 @@ public class TMController extends Controller {
 
     /**
      * Gets the ID of the connected user
+     *
      * @return the ID of the connected {@link TMUser}
      */
     @Util
@@ -178,7 +187,7 @@ public class TMController extends Controller {
 
     @Util
     public static Long getActiveProjectId() {
-      return getActiveProject().getId();
+        return getActiveProject().getId();
     }
 
     // TODO replace by something automatic
@@ -191,7 +200,7 @@ public class TMController extends Controller {
      */
     @Util
     public static boolean controllerHasActiveProject() {
-        if(request.controllerClass.equals(TMTreeController.class)) {
+        if (request.controllerClass.equals(TMTreeController.class)) {
             return Arrays.binarySearch(adminTrees, request.params.get("treeId")) == -1;
         }
         return !request.controller.startsWith("admin");
@@ -238,23 +247,48 @@ public class TMController extends Controller {
 
     }
 
-    @Util
-    public static void export(Class<? extends ProjectModel> entityClass) {
-        if(entityClass != null) {
-            List data = JPA.em().createQuery(String.format("from %s o", entityClass.getSimpleName())).getResultList();
+    public static void saveFilter() {
+        if (canView()) {
+            Filters.saveFilter();
+        }
+    }
+
+    public static void loadFilters() {
+        if (canView()) {
+            Filters.loadFilters(controllerToEntityMapping.get(request.controllerClass.getName()).getName());
+        }
+    }
+
+    public static void loadFilterById(Long id) {
+        if (canView()) {
+            Filters.loadFilterById(id);
+        }
+    }
+
+    /**
+     * Handler for excel import, on a Controller -> Main entity basis
+     */
+    public static void export() {
+        if (canView()) {
+            List data = JPA.em().createQuery(String.format("from %s o", controllerToEntityMapping.get(request.controllerClass.getName()).getSimpleName())).getResultList();
             DateFormat df = new SimpleDateFormat("yyyymmdd");
-            renderArgs.put("fileName", getActiveProject().name + "-" + entityClass.getSimpleName() + "s-" + df.format(new Date()));
+            renderArgs.put("fileName", getActiveProject().name + "-" + controllerToEntityMapping.get(request.controllerClass.getName()) + "s-" + df.format(new Date()));
             renderExcel(data);
+        } else {
+            Logger.error(Logger.LogType.SECURITY, "Unauthorized export attempt, controller " + request.controller);
+            forbidden();
+
         }
     }
 
     /**
      * Upload handler for Excel files
+     *
      * @param files the file array (sent via the jQuery.fileupload plugin)
      */
     public static void uploadExcel(File files) {
 
-        if(canCreate()) {
+        if (canCreate()) {
             String contentType = MimeTypes.getContentType(files.getName());
             JsonArray array = new JsonArray();
             JsonObject object = new JsonObject();
@@ -271,7 +305,7 @@ public class TMController extends Controller {
             array.add(object);
             renderJSON(array.toString());
         } else {
-            Logger.error(Logger.LogType.SECURITY, "Unauthorized upload attempt");
+            Logger.error(Logger.LogType.SECURITY, "Unauthorized upload attempt, controller " + request.controller);
             forbidden();
         }
 
@@ -386,7 +420,7 @@ public class TMController extends Controller {
 
         String formId = fields[0];
         String[] fieldNames = new String[fields.length - 1];
-        for(int i = 1; i < fields.length; i++) {
+        for (int i = 1; i < fields.length; i++) {
             fieldNames[i - 1] = fields[i];
         }
 
@@ -430,7 +464,7 @@ public class TMController extends Controller {
         }
         Map<String, Object> result = new HashMap<String, Object>();
         for (String r : sortedFields) {
-             r = r.replaceAll("_", "\\.");
+            r = r.replaceAll("_", "\\.");
             Object val = values.get(r);
             // Gson doesn't help here, for some reason it ignores the data format setting in lists...
             if (val instanceof Date) {
@@ -465,11 +499,24 @@ public class TMController extends Controller {
     // Access rights stuff //
     ////////////////////////
 
-    /**
-     * Can the user create entities in the current controller
-     */
+    @Util
+    protected static boolean canView() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getViewRole(request.controllerClass));
+    }
+
+    @Util
     protected static boolean canCreate() {
         return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getCreateRole(request.controllerClass));
     }
+
+
+    private final static ImmutableMap<String, Class<? extends ProjectModel>> controllerToEntityMapping = ImmutableMap.of(
+            Requirements.class.getName(), Requirement.class,
+            Repository.class.getName(), Script.class,
+            Preparation.class.getName(), Instance.class,
+            Execution.class.getName(), Run.class,
+            Defects.class.getName(), Defect.class
+    );
+
 
 }

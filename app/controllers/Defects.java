@@ -167,25 +167,4 @@ public class Defects extends TMController {
     public static void allTags(String q) {
         Lookups.allTags(getActiveProject().getId(), Tag.TagType.DEFECT, q);
     }
-
-    @Restrict(UnitRole.DEFECTVIEW)
-    public static void export() {
-        export(Defect.class);
-    }
-
-    @Restrict(UnitRole.DEFECTVIEW)
-    public static void saveFilter() {
-        Filters.saveFilter();
-    }
-
-    @Restrict(UnitRole.DEFECTVIEW)
-    public static void loadFilters() {
-        Filters.loadFilters("tm.models.Defect");
-    }
-
-    @Restrict(UnitRole.DEFECTVIEW)
-    public static void loadFilterById(Long id) {
-        Filters.loadFilterById(id);
-    }
-
 }
