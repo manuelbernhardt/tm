@@ -40,6 +40,7 @@ import models.tm.test.Script;
 import models.tm.test.Tag;
 import org.hibernate.Session;
 import play.cache.Cache;
+import play.data.validation.Required;
 import play.db.jpa.JPA;
 import play.libs.MimeTypes;
 import play.mvc.Before;
@@ -247,9 +248,9 @@ public class TMController extends Controller {
 
     }
 
-    public static void saveFilter() {
+    public static void saveFilter(@Required String name) {
         if (canView()) {
-            Filters.saveFilter();
+            Filters.saveFilter(name, controllerToEntityMapping.get(request.controllerClass.getName()).getName());
         }
     }
 

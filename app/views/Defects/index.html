@@ -266,17 +266,15 @@ $('#deleteDefectDialog').dialog({
   var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
   var data = {
-    "name": $('#filterName').val(),
-    "entity": 'tm.models.Defect',
-    "constraint['title']['value']" : $('#title').val(),
-    "constraint['titleCase']['matches']" : $('#titleCase').val(),
-    "constraint['status']['value']" : $('#status').val(),
-    "constraint['tags']['value']" : $('#tags').val(),
-    "constraint['assignedToId']['value']" : $('#assignedToId').val(),
-    "constraint['submittedById']['value']" : $('#submittedById').val(),
-    "constraint['dateFrom']['dateFrom']" : $('#dateFrom').val(),
-    "constraint['dateTo']['dateTo']" : $('#dateTo').val()
+    "constraint[title][value]" : $('#title').val(),
+    "constraint[status][value]" : $('#status').val(),
+    "constraint[tags][value]" : $('#tags').val(),
+    "constraint[assignedTo][value]" : $('#assignedToId').val(),
+    "constraint[submittedBy][value]" : $('#submittedById').val(),
+    "constraint[created][dateFrom]" : $('#dateFrom').val(),
+    "constraint[created][dateTo]" : $('#dateTo').val()
   };
+  data["constraint[title][" + $('#titleCase').val() + "]"] = "";
 
   $('#filterContainer').oxFilter({
       filterFormId: 'defectsFilterForm',

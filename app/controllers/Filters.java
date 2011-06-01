@@ -6,10 +6,12 @@ import java.util.regex.Matcher;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import models.tm.ConstraintType;
 import models.tm.Filter;
 import models.tm.FilterConstraint;
 import models.tm.Project;
 import play.mvc.Util;
+import util.Logger;
 
 /**
  * nikola
@@ -19,17 +21,20 @@ import play.mvc.Util;
 public class Filters extends TMController {
 
     @Util
-    public static void saveFilter() {
+    public static void saveFilter(String name, String entity) {
 
         Project project = getActiveProject();
 
         Filter filter = new Filter(project);
-        filter.name = params.get("name");
-        filter.entity = params.get("entity");
+        filter.name = name;
+        filter.entity = entity;
         filter.owner = getConnectedUser();
         filter.filterConstraints = new ArrayList<FilterConstraint>();
 
-        filter.create();
+        if(!filter.create()) {
+            Logger.error(Logger.LogType.DB, "Could not create filter %s for entity %s", name, entity);
+            error("Error saving filter, please try again");
+        }
 
         List<String> par = new ArrayList<String>();
         for (String p : params.all().keySet()) {
@@ -40,24 +45,21 @@ public class Filters extends TMController {
 
         for (String fp : par) {
             Matcher m = tagParameterPattern("constraint").matcher(fp);
-            FilterConstraint filterConstraint = new FilterConstraint(project);
-
             if (m.matches()) {
-                String key1 = m.group(1).replace("'", "");
-                String key2 = m.group(2).replace("['", "").replace("']", "");
+                FilterConstraint filterConstraint = new FilterConstraint(project);
+                String property = m.group(1);
+                String type = m.group(2).replace("[", "").replace("]", "");
                 String value = params.get(fp);
-
-                filterConstraint.property = key1;
-                filterConstraint.type = key2;
+                filterConstraint.property = property;
+                filterConstraint.constraintType = ConstraintType.fromKey(type);
                 filterConstraint.value = value;
-
-
+                if(!filterConstraint.create()) {
+                    Logger.error(Logger.LogType.DB, "Could not create FilterConstraint");
+                    error("Error saving filter, please try again");
+                }
                 filter.filterConstraints.add(filterConstraint);
                 filter.save();
-
-
             }
-            filterConstraint.create();
         }
         renderJSON(true);
     }

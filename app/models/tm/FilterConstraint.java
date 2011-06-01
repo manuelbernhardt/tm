@@ -23,8 +23,8 @@ public class FilterConstraint extends ProjectModel {
 
     @Column(nullable = false)
     public String type;
-    @Transient
 
+    @Transient
     public ConstraintType constraintType;
 
     public String value;

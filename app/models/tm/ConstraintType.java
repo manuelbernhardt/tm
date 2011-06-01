@@ -11,7 +11,7 @@ public enum ConstraintType {
     MATCHES("matches", "text"),
     STARTSWITH("startsWith", "text"),
     ENDSWITH("endsWith", "text"),
-    NOTCONTAIN("notContain", "text"),
+    NOTCONTAIN("notContains", "text"),
     CONTAINS("contains","text"),
     DATEFROM("dateFrom", "date"),
     DATETO("dateTo", "date");

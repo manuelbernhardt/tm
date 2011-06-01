@@ -344,14 +344,12 @@
   var filterLoadByIdAction = #{jsAction @Execution.loadFilterById() /};
 
   var data = {
-    "name": $('#filterName').val(),
-    "entity": 'tm.models.Instance',
-    "constraint['cycle']['value']" : $('#cycle').val(),
-    "constraint['status']['value']" : $('#status').val(),
-    "constraint['tags']['value']" : $('#tags').val(),
-    "constraint['responsible']['value']" : $('#responsible').val(),
-    "constraint['dateFrom']['dateFrom']" : $('#dateFrom').val(),
-    "constraint['dateTo']['dateTo']" : $('#dateTo').val()
+    "constraint[cycle][value]" : $('#cycle').val(),
+    "constraint[status][value]" : $('#status').val(),
+    "constraint[tags][value]" : $('#tags').val(),
+    "constraint[responsible][value]" : $('#responsible').val(),
+    "constraint[created][dateFrom]" : $('#dateFrom').val(),
+    "constraint[created][dateTo]" : $('#dateTo').val()
   };
 
   $('#filterContainer').oxFilter({
