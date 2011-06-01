@@ -336,19 +336,4 @@ public class Execution extends TMController {
 
         renderJSON(defect.getId());
     }
-
-    @Restrict(UnitRole.TESTEXECVIEW)
-    public static void saveFilter(){
-        Filters.saveFilter();
-    }
-
-    @Restrict(UnitRole.TESTEXECVIEW)
-    public static void loadFilters() {
-        Filters.loadFilters("tm.models.Instance");
-    }
-
-    @Restrict(UnitRole.TESTEXECVIEW)
-    public static void loadFilterById(Long id) {
-        Filters.loadFilterById(id);
-    }
 }

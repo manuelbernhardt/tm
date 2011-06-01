@@ -3,6 +3,13 @@ package models.general;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableMap;
+import controllers.Defects;
+import controllers.Execution;
+import controllers.Preparation;
+import controllers.Repository;
+import controllers.Requirements;
+
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -44,6 +51,22 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String DEFECTEDIT = "defectEdit";
     public static final String DEFECTDELETE = "defectDelete";
 
+
+    private final static ImmutableMap<String, String> viewRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQVIEW,
+            Repository.class.getName(), UnitRole.TESTREPOVIEW,
+            Preparation.class.getName(), UnitRole.TESTPREPVIEW,
+            Execution.class.getName(), UnitRole.TESTEXECVIEW,
+            Defects.class.getName(), UnitRole.DEFECTVIEW
+    );
+    private final static ImmutableMap<String, String> createRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQCREATE,
+            Repository.class.getName(), UnitRole.TESTREPOCREATE,
+            Preparation.class.getName(), UnitRole.TESTPREPCREATE,
+            Execution.class.getName(), UnitRole.TESTEXECCREATE,
+            Defects.class.getName(), UnitRole.DEFECTCREATE
+    );
+
     private String name;
 
     public String getRoleName() {
@@ -64,6 +87,13 @@ public class UnitRole implements models.deadbolt.Role {
             roles.add(role(r));
         }
         return roles;
+    }
+
+    public static UnitRole getViewRole(Class controllerClass) {
+        return role(createRolesPerController.get(controllerClass.getName()));
+    }
+    public static UnitRole getCreateRole(Class controllerClass) {
+        return role(viewRolesPerController.get(controllerClass.getName()));
     }
 
     @Override

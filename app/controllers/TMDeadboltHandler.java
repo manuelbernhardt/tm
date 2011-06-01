@@ -41,6 +41,7 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
      * Gets the {@link models.general.UnitRole}-s of the connected user, given a project.
      * If no parameter is passed, only account-level roles are retrieved.
      *
+     * @param project the Project for which to get the roles, or null if only account roles are required
      * @return a {@link RoleHolder} containing all unit roles (account and project) of the authenticated user
      */
     @Util
@@ -98,4 +99,6 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
             return roles;
         }
     }
+
+
 }
