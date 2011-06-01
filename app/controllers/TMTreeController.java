@@ -40,7 +40,7 @@ public class TMTreeController extends TMController {
             if (projectId != null) {
                 Project project = Lookups.getProject(projectId);
                 projectThreadLocal.set(project);
-            } else {
+            } else if(getActiveProject() != null) {
                 projectThreadLocal.set(getActiveProject());
             }
             if(TMController.controllerHasActiveProject()) {
