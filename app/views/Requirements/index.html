@@ -145,7 +145,7 @@
               $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
             })
             .next()
-            .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }})
+            .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }}).attr("style", "margin-left:-0.3em")
             .oxMenu()
             .parent()
             .buttonset();
