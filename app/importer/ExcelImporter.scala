@@ -6,12 +6,13 @@ import org.apache.poi.ss.usermodel.{Row, WorkbookFactory, Workbook, Cell}
 import collection.immutable.List
 import java.lang.reflect.{Method, Field}
 import reflect.ClassManifest
-import java.lang.{String, Class}
 import util.Logger
 import models.tm.test.Tag
 import play.db.jpa.Model
 import models.tm.{ProjectTreeNode, Project, TMUser}
 import java.util.Map
+import collection.mutable.{ListBuffer, ArrayBuffer}
+import java.lang.{RuntimeException, String, Class}
 
 /**
  *
@@ -24,6 +25,8 @@ class ExcelImporter extends Importer {
 
   @throws(classOf[Throwable])
   def importFile(baseModelType: Class[_ <: Model], contextData: java.util.Map[String, AnyRef], project: Project, file: File): java.util.List[ImportError] = {
+
+    val errors = new ListBuffer[ImportError]()
 
     val wb: Workbook = WorkbookFactory.create(new FileInputStream(file));
     val sheet = wb.getSheetAt(0);
@@ -47,6 +50,7 @@ class ExcelImporter extends Importer {
             if (c != null && c.getCellType() != Cell.CELL_TYPE_BLANK) {
               if (rule.hasValidType(c.getCellType)) {
                 rule.computeConvertedValue(c, baseModelType, instance, contextData, this) match {
+                  case Some(error) if error.isInstanceOf[ImportError] => errors.add(error.asInstanceOf[ImportError])
                   case Some(value) => anyDataAtAll = setFieldValue(baseModelType, rule, instance, value)
                   case None => // do nothing
                 }
@@ -59,7 +63,7 @@ class ExcelImporter extends Importer {
           val created: Boolean = instance.create()
 
           if (!created) {
-            // TODO add import error
+            errors.add(new ImportError("Could not save instance "))
           } else {
             afterCallbacks foreach(f => f(instance, contextData))
           }
@@ -69,7 +73,7 @@ class ExcelImporter extends Importer {
       case _ => // skip this row
     }
 
-    List[ImportError]()
+    errors
   }
 
   def setFieldValue(baseModelType: Class[_ <: Model], rule: ColumnImportRule, instance: Model, v: Any): Boolean = {
@@ -114,12 +118,11 @@ trait ColumnImportRule {
         case m if m <:< classManifest[Number] => Some(java.lang.Double.valueOf(cell.getNumericCellValue))
         case m if m <:< classManifest[Boolean] => Some(java.lang.Boolean.valueOf(cell.getBooleanCellValue))
         case m if m <:< classManifest[Model] => {
-          val converter: ModelConverter[_] = TMImport.modelConverters.get(classType.getName).get // TODO orElse add error
+          val converter: ModelConverter[_] = TMImport.modelConverters.get(classType.getName).getOrElse(throw new RuntimeException("No converter found for type %s".format(classType.getName)))
           val value: Any = converter.convert(cell.getStringCellValue, baseModelType, instance, contextData)
-          if(value != null) {
-            Some(value)
-          } else {
-            None
+          value match {
+            case value if value != null => Some(value)
+            case _ => None
           }
         }
       }
