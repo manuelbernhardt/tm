@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
@@ -16,7 +17,9 @@ import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import controllers.deadbolt.Deadbolt;
@@ -24,6 +27,7 @@ import models.account.Account;
 import models.account.AccountEntity;
 import models.account.User;
 import models.general.TemporalModel;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.TMUser;
@@ -31,6 +35,7 @@ import models.tm.test.Tag;
 import org.hibernate.Session;
 import play.cache.Cache;
 import play.db.jpa.JPA;
+import play.libs.MimeTypes;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -99,6 +104,11 @@ public class TMController extends Controller {
         }
     }
 
+    /**
+     * Gets the connected user object
+     * @return the connected TMUser
+     * @deprecated use {@link TMController#getConnectedUserId()} instead
+     */
     @Util
     public static TMUser getConnectedUser() {
         if (Security.isConnected()) {
@@ -129,21 +139,34 @@ public class TMController extends Controller {
         return null;
     }
 
+    /**
+     * Gets the ID of the connected user
+     * @return the ID of the connected {@link TMUser}
+     */
     @Util
     public static Long getConnectedUserId() {
         // we'll be able to cache this easily
         return getConnectedUser().getId();
     }
 
+    /**
+     * @deprecated use getConnectedAccountId()
+     */
     @Util
     public static Account getConnectedUserAccount() {
         return getConnectedUser().user.account;
+    }
+
+    @Util
+    public static Long getConnectedUserAccountId() {
+        return getConnectedUser().user.account.getId();
     }
 
     /**
      * Gets the active project for the connected user, <code>null</code> if none is set
      *
      * @return the active {@see Project}
+     * @deprecated use getActiveProjectId()
      */
     @Util
     public static Project getActiveProject() {
@@ -151,6 +174,11 @@ public class TMController extends Controller {
             return null;
         }
         return getConnectedUser().activeProject;
+    }
+
+    @Util
+    public static Long getActiveProjectId() {
+      return getActiveProject().getId();
     }
 
     // TODO replace by something automatic
@@ -219,6 +247,36 @@ public class TMController extends Controller {
             renderExcel(data);
         }
     }
+
+    /**
+     * Upload handler for Excel files
+     * @param files the file array (sent via the jQuery.fileupload plugin)
+     */
+    public static void uploadExcel(File files) {
+
+        if(canCreate()) {
+            String contentType = MimeTypes.getContentType(files.getName());
+            JsonArray array = new JsonArray();
+            JsonObject object = new JsonObject();
+            object.addProperty("name", files.getName());
+            object.addProperty("type", contentType);
+            object.addProperty("size", files.length());
+
+            if (!contentType.equals("application/excel")) {
+                object.addProperty("error", "acceptFileTypes");
+            } else {
+                // TODO actually import the file
+            }
+
+            array.add(object);
+            renderJSON(array.toString());
+        } else {
+            Logger.error(Logger.LogType.SECURITY, "Unauthorized upload attempt");
+            forbidden();
+        }
+
+    }
+
 
     @Util
     public static void checkInAccount(AccountEntity accountEntity) {
@@ -401,4 +459,17 @@ public class TMController extends Controller {
         }
         return null;
     }
+
+
+    /////////////////////////
+    // Access rights stuff //
+    ////////////////////////
+
+    /**
+     * Can the user create entities in the current controller
+     */
+    protected static boolean canCreate() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getCreateRole(request.controllerClass));
+    }
+
 }

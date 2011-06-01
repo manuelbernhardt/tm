@@ -1,10 +1,7 @@
 package controllers;
 
-import java.io.File;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
@@ -16,7 +13,6 @@ import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
-import play.libs.MimeTypes;
 import play.mvc.Before;
 
 /**
@@ -121,23 +117,5 @@ public class Requirements extends TMController {
     @Restrict(UnitRole.REQVIEW)
     public static void export() {
         export(Requirement.class);
-    }
-
-    public static void uploadExcel(File files) {
-        String contentType = MimeTypes.getContentType(files.getName());
-        JsonArray array = new JsonArray();
-        JsonObject object = new JsonObject();
-        object.addProperty("name", files.getName());
-        object.addProperty("type", contentType);
-        object.addProperty("size", files.length());
-
-        if (!contentType.equals("application/excel")) {
-            object.addProperty("error", "acceptFileTypes");
-        } else {
-            // TODO actually import the file
-        }
-
-        array.add(object);
-        renderJSON(array.toString());
     }
 }
