@@ -3,15 +3,15 @@ package importer
 import collection.JavaConversions._
 import javax.persistence.TypedQuery
 import collection.mutable.Map
-import models.tm.test.Tag
 import models.tm.test.Tag.TagType
 import models.tm._
-import java.lang.{Long, String}
+import java.lang.String
 import play.db.jpa.{Model, JPA}
-import tree.persistent.AbstractTree
+import test.{ScriptFolder, Script, Tag}
 import java.lang.reflect.{Method, Constructor}
-import controllers.{Dashboard, RequirementTree}
 import util.Logger
+import controllers.{RepositoryTree, RequirementTree}
+import tree.persistent.{Node, AbstractTree}
 
 /**
  * TM import definitions and converters
@@ -58,12 +58,12 @@ object TMUserConverter extends ModelConverter[TMUser] {
     // Name Surname => TMUser
     val query: TypedQuery[TMUser] = JPA.em().createQuery("from TMUser u where concat(concat(u.user.firstName, ' '), u.user.lastName) = :fullName and u.account.id = :accountId", classOf[TMUser])
     query.setParameter("fullName", data.asInstanceOf[String])
-    query.setParameter("accountId", contextData.get(TMImport.ACCOUNT_ID).getOrElse(throw new ImportError("You need to provide the 'accountId' argument as context data")))
+    query.setParameter("accountId", contextData.get(TMImport.ACCOUNT_ID).getOrElse(throw new RuntimeException("You need to provide the 'accountId' argument as context data")))
     val user: java.util.List[_] = query.getResultList
     user.length match {
-      case 0 => throw new ImportError("No user with name '%s' found".format(data)) // no user found, we could create one...
+      case 0 => new ImportError("No user with name '%s' found".format(data)) // no user found, we could create one...
       case 1 => user.get(0).asInstanceOf[TMUser]
-      case _ => throw new ImportError("Too many users with name %s".format(data)) // TODO add import error instead of throwing it here
+      case _ => new ImportError("Too many users with name %s".format(data))
     }
   }
 
@@ -71,7 +71,7 @@ object TMUserConverter extends ModelConverter[TMUser] {
 }
 
 object TagsConverter extends ModelConverter[Tag] with TMConverter {
-  def convert(data: AnyRef, baseModelType: Class[_ <: Model], currentModelInstance: Model, contextData: Map[String, AnyRef]) = {
+  def convert(data: AnyRef, baseModelType: Class[_ <: Model], currentModelInstance: Model, contextData: Map[String, AnyRef]):AnyRef = {
 
     val tagType: TagType = TagType.getFromClass(baseModelType)
 
@@ -82,17 +82,19 @@ object TagsConverter extends ModelConverter[Tag] with TMConverter {
       val tags: java.util.List[Tag] = q.getResultList
       val tagInstance: Tag = tags.length match {
         case 0 => {
-          val tag: Tag = new Tag(getProject(contextData)) // TODO getOrElse programmer error
+          val tag: Tag = new Tag(getProject(contextData))
           tag.name = t.trim
           tag.`type` = tagType
 
-          // TODO error handling
-          tag.create
+          if(!tag.create) {
+            return new ImportError("Tag %s could not be created".format(tag.name))
+          } else {
+            tag
+          }
 
-          tag
         }
         case 1 => tags.get(0)
-        case _ => throw new ImportError("Too many tags with name %s and type %s".format(data, tagType.name)) // TODO add import error instead of throwing it here
+        case _ => return new ImportError("Too many tags with name %s and type %s".format(data, tagType.name))
       }
       tagInstance
     }
@@ -110,19 +112,21 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
   val PREVIOUS_TREENODE = "previousTreeNode"
 
   val modelTreeMapping: Map[String, Class[_ <: AbstractTree]] = Map(
-    classOf[Requirement].getName -> classOf[RequirementTree]
+    classOf[Requirement].getName -> classOf[RequirementTree],
+    classOf[Script].getName -> classOf[RepositoryTree]
   )
 
   val modelFolderMapping: Map[String, Class[_ <: ProjectModel]] = Map(
-    classOf[Requirement].getName -> classOf[RequirementFolder]
+    classOf[Requirement].getName -> classOf[RequirementFolder],
+    classOf[Script].getName -> classOf[ScriptFolder]
   )
 
   def getTreeId(c: Class[_ <: Model]) = {
     val name: String = modelTreeMapping.get(c.getName).get.getSimpleName
-    name.substring(0, 1).toLowerCase() + name.substring(1)
+    name.substring(0, 1).toLowerCase + name.substring(1)
   }
 
-  def convert(data: AnyRef, baseModelType: Class[_ <: Model], currentModelInstance: Model, contextData: Map[String, AnyRef]) = {
+  def convert(data: AnyRef, baseModelType: Class[_ <: Model], currentModelInstance: Model, contextData: Map[String, AnyRef]):AnyRef = {
 
     val path: String = data.asInstanceOf[String]
     val project: Project = getProject(contextData)
@@ -167,8 +171,9 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
             n.`type` = AbstractTree.getNodeType(folder.getClass).getName
             n.nodeId = folder.getId
 
-            // TODO handle creation problem
-            n.create()
+            if(!n.create) {
+              return new ImportError("Could not import path %s".format(path))
+            }
             contextData.put(TREENODE_PREFIX + n.getPath, n)
 
             parentNode = n
@@ -207,13 +212,14 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
   }
 
   def createParentNode(name: String, parent: ProjectTreeNode, treeId: String, project: Project, baseModelType: Class[_ <: Model]): ProjectTreeNode = {
-    val n = populateNodeSimple(name, parent.getPath + "/" + name, treeId, Some(parent.threadRoot), parent.getLevel().asInstanceOf[Int] + 1, project)
+    val n = populateNodeSimple(name, parent.getPath + "/" + name, treeId, Some(parent.threadRoot), parent.getLevel.asInstanceOf[Int] + 1, project)
     val folder: Model = createFolder(name, project, baseModelType)
 
     n.`type` = AbstractTree.getNodeType(folder.getClass).getName
     n.nodeId = folder.getId
 
-    n.create()
+      // TODO deal with non-creation
+    n.create
     n
   }
 
@@ -237,7 +243,7 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
     val setter: Method = clazz.getMethod("setName", classOf[String])
     setter.invoke(folder, name)
 
-    // TODO handle creation problem
+      // TODO deal with non-creation
     folder.create()
     folder
   }
@@ -248,8 +254,9 @@ object ProjectTreeNodeConverter extends ModelConverter[ProjectTreeNode] with TMC
     if (node.nodeId == -1) {
       Logger.debug("Associating node %s with tree node %s".format(instance.getId, node.getPath))
       node.nodeId = instance.getId
+
       // TODO deal with non-creation
-      node.create()
+      node.create
     }
     contextData.remove(PREVIOUS_TREENODE)
     ()
