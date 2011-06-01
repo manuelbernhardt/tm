@@ -7,8 +7,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
-import importer.ExcelImporter;
-import importer.Importer;
 import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.Requirement;
@@ -125,33 +123,21 @@ public class Requirements extends TMController {
         export(Requirement.class);
     }
 
-    public static void uploadHandler(File files) {
+    public static void uploadExcel(File files) {
         String contentType = MimeTypes.getContentType(files.getName());
         JsonArray array = new JsonArray();
         JsonObject object = new JsonObject();
         object.addProperty("name", files.getName());
         object.addProperty("type", contentType);
-        object.addProperty("url", "http://foo");
-        object.addProperty("size", files.getTotalSpace());
+        object.addProperty("size", files.length());
 
         if (!contentType.equals("application/excel")) {
-            object.addProperty("error", "The provided file is not an Excel file");
+            object.addProperty("error", "acceptFileTypes");
+        } else {
+            // TODO actually import the file
         }
 
         array.add(object);
         renderJSON(array.toString());
-    }
-
-    public static void importExcel(File file) {
-        System.out.println(file.getName());
-
-        Importer importer = new ExcelImporter();
-        try {
-            importer.importFile(Requirement.class, null, getActiveProject(), file);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-
-        ok();
     }
 }

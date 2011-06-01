@@ -1,6 +1,6 @@
 @charset 'UTF-8';
 /*
- * jQuery File Upload UI Plugin CSS 5.0.1
+ * jQuery File Upload UI Plugin CSS 5.0.5
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -33,13 +33,23 @@
 *html .fileinput-button {
   padding: 2px 0;
 }
+
 /* Fix for IE 7: */
 *+html .fileinput-button {
   padding: 2px 0;
 }
 
+.fileupload-buttonbar {
+  padding: 0.2em 0.4em;
+}
+
 .fileupload-buttonbar .ui-button {
   vertical-align: middle;
+}
+
+.fileupload-content {
+  padding: 0.2em 0.4em;
+  border-top-width: 0;
 }
 
 .ui-progressbar {
@@ -78,26 +88,6 @@
   padding: 0 10px 0 0;
   text-align: right;
   white-space: nowrap;
-}
-
-.gallery-dialog {
-  text-align: center;
-}
-
-.loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 32px;
-  height: 32px;
-  margin: -16px 0 0 -16px;
-  background: url(loading.gif);
-  z-index: 9999;
-}
-
-/* IE 6: */
-*html .loading {
-  position: absolute;
 }
 
 .ui-state-disabled .ui-state-disabled {

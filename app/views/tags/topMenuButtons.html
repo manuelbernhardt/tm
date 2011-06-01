@@ -1,11 +1,11 @@
-<button id="userButton">${_firstName} ${_lastName}</button>
+<button class="menuButton" id="userButton">${_firstName} ${_lastName}</button>
 <ul>
     <li><a href="@{profile.Profile.index}">Profile</a></li>
     <li><a href="/logout">Logout</a></li>
 </ul>
 
 #{deadbolt.restrict roles:[[models.general.UnitRole.USERCREATE, models.general.UnitRole.USEREDIT, models.general.UnitRole.USERDELETE],[models.general.UnitRole.PROJECTCREATE, models.general.UnitRole.PROJECTEDIT, models.general.UnitRole.PROJECTDELETE],[models.general.UnitRole.ACCOUNTADMIN]]}
-<button id="adminButton">Admin</button>
+<button class="menuButton" id="adminButton">Admin</button>
 <ul>
     #{deadbolt.restrict roles:[[models.general.UnitRole.USERCREATE, models.general.UnitRole.USEREDIT,
     models.general.UnitRole.USERDELETE]]}
@@ -37,38 +37,6 @@
             }
         });
 
-        var buttons = [$('#adminButton'), $('#userButton')];
-        $.each(buttons,
-                function() {
-                    var menu = $(this).next().menu({
-                        select: function(event, ui) {
-                            $(this).hide();
-                            document.location = ui.item.children()[0].href;
-                        }
-                    });
-                    menu.hide();
-                    $(this).click(function(event) {
-                        var menu = $(this).next();
-
-                        if (menu.is(":visible")) {
-                            menu.hide();
-                            return false;
-                        }
-
-                        if ($('.ui-menu').size() > 1) {
-                            $('.ui-menu').hide();
-                        }
-
-                        menu.menu("blur").show().position({
-                            my: "left top",
-                            at: "left bottom",
-                            of: this
-                        });
-                        $(document).one("click", function() {
-                            menu.hide();
-                        });
-                        return false;
-                    });
-                });
+        $('.menuButton').oxMenu();
     });
 </script>

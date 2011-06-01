@@ -6,12 +6,30 @@
     <div id="actions" class="actions">
         <div class="actions buttons" style="width:30%">
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-            <button id="create_folder" style="margin-right:-0.1em">Create new folder</button>
-            <button id="create_requirement" style="margin-right:-0.1em">Create new requirement</button>
-            <button id="import_requirements" style="margin-right:-0.1em">Import requirements</button>
-            <div id="importRequirementsDialog">
-              Here will come an upload dialog
-            </div>
+                <button id="create_folder">Create new folder</button>
+                    <span>
+                    <button id="create_requirement">Requirement</button>
+                    <button id="create_actions">Select an action</button>
+                      <ul>
+                        <li><span id="import_requirements">Import requirements</span></li>
+                      </ul>
+                    </span>
+                    <div id="importRequirementsDialog">
+                    <div id="fileupload">
+                      <form action="@{Requirements.uploadExcel()}" method="POST" enctype="multipart/form-data">
+                        <div class="fileupload-buttonbar">
+                          <label class="fileinput-button">
+                            <span>Add files...</span>
+                            <input type="file" name="files" multiple>
+                          </label>
+                        </div>
+                      </form>
+                      <div class="fileupload-content">
+                        <table class="files"></table>
+                        <div class="fileupload-progressbar"></div>
+                      </div>
+                    </div>
+                    </div>
             #{/deadbolt.restrict}
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
             <button id="remove">Remove</button>
@@ -67,8 +85,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+      </div>
 </div>
 
 
@@ -76,83 +93,156 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+  $(document).ready(function () {
 
-        $("#innerTabs").tabs();
+    $("#innerTabs").tabs();
 
-        $('.oxdisplayfield').removeClass('field');
+    $('.oxdisplayfield').removeClass('field');
 
-        $("#requirementTree").tree({types: requirementTreeTypes, onRename: function(name) {
-            var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
-            $(fieldName).val(name);
-        }
-        });
-
-        $('#requirementForm').oxForm({
-            loadAction: '@{Requirements.requirementsDetailsData()}',
-            submissionCallback: function() {
-                refreshTree('requirementTree');
-            }
-        });
-
-        #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
-        // tags
-        var tokens = $('#requirementForm_requirement_tags').tokenInput({
-            url: '@{Requirements.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-        });
-        #{/deadbolt.restrict}
-
-        $("#requirementTree").bind("select_node.jstree", function (e, data) {
-            if (isSelectedNodeType(data, ["requirement", "default"])) {
-                $('.shownOnLoad').hide();
-                $('.hiddenOnLoad').show();
-
-                var requirementId = getSelectedNodeId('requirementTree');
-                $('#requirementForm').oxForm('load', requirementId);
-
-                reloadTables();
-            }
-        });
-
-        $('#create_folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
-            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
-        });
-        $('#create_requirement').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-flag'}, text: false}).click(function () {
-            $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
-        });
-        $('#remove').button({icons: {primary: 'ui-icon-minus'}, text: false}).click(function () {
-            $("#requirementTree").jstree("remove", null);
-        });
-
-        $('#import_requirements').button().click(function() {
-          $('#importRequirementsDialog').dialog('open');
-        });
-
-        $('#importRequirementsDialog').dialog({
-          autoOpen: false,
-          height: 300,
-          width: 400,
-          modal: true,
-          title: 'Import Requirements from Excel file',
-          buttons: {
-            "Upload": function() {
-              $(this).dialog('close');
-            },
-            Cancel: function() {
-              $(this).dialog('close');
-            }
-          }
-        });
-
-      $('#searchInput').keyup(function() {
-        $("#requirementTree").jstree("search", $(this).val());
-      });
-
+    $("#requirementTree").tree({
+              types: requirementTreeTypes, onRename: function(name) {
+                var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
+                $(fieldName).val(name);
+              }
     });
 
+    $('#requirementForm').oxForm({
+              loadAction: '@{Requirements.requirementsDetailsData()}',
+              submissionCallback: function() {
+                refreshTree('requirementTree');
+              }
+            });
+
+    #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
+
+    var tokens = $('#requirementForm_requirement_tags').tokenInput({
+              url: '@{Requirements.allTags()}',
+              preventDuplicates: true,
+              tokenValue: 'name',
+              allowCreation: true,
+              creationText: "Create new tag"
+            });
+    #{/deadbolt.restrict}
+
+    $("#requirementTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["requirement", "default"])) {
+        $('.shownOnLoad').hide();
+        $('.hiddenOnLoad').show();
+
+        var requirementId = getSelectedNodeId('requirementTree');
+        $('#requirementForm').oxForm('load', requirementId);
+
+        reloadTables();
+      }
+    });
+
+    $('#create_folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
+    });
+    $('#create_requirement')
+            .button({icons: {primary: 'ui-icon-plus'}})
+            .click(function () {
+              $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
+            })
+            .next()
+            .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }})
+            .oxMenu()
+            .parent()
+            .buttonset();
+    $('#import_requirements').click(function() {
+      $('#importRequirementsDialog').dialog('open');
+    });
+    $('#remove').button({icons: {primary: 'ui-icon-trash'}, text: false, enable: false}).click(function () {
+      $("#requirementTree").jstree("remove", null);
+    });
+
+    $('#importRequirementsDialog').dialog({
+              autoOpen: false,
+              height: 400,
+              width: 500,
+              modal: true,
+              title: 'Import Requirements from Excel file',
+              buttons: {
+                "Close": function() {
+                  $(this).dialog('close');
+                }
+              }
+            });
+
+    $('#searchInput').keyup(function() {
+      $("#requirementTree").jstree("search", $(this).val());
+    });
+
+    $('#fileupload').fileupload({autoUpload: true});
+
+  });
+
+</script>
+<script id="template-upload" type="text/x-jquery-tmpl">
+  <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+    <td class="preview"></td>
+    <td class="name">${name}</td>
+    <td class="size">${sizef}</td>
+    {{if error}}
+    <td class="error" colspan="2">Error:
+      {{if error === 'maxFileSize'}}File is too big
+      {{else error === 'minFileSize'}}File is too small
+      {{else error === 'acceptFileTypes'}}Filetype not allowed
+      {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+      {{else}}${error}
+      {{/if}}
+    </td>
+    {{else}}
+    <td class="progress">
+      <div></div>
+    </td>
+    <td class="start">
+      <button>Start</button>
+    </td>
+    {{/if}}
+    <td class="cancel">
+      <button>Cancel</button>
+    </td>
+  </tr>
+</script>
+<script id="template-download" type="text/x-jquery-tmpl">${name}
+  <tr class="template-download{{if error}} ui-state-error{{/if}}">
+    {{if error}}
+    <td></td>
+    <td class="name">${name}</td>
+    <td class="size">${sizef}</td>
+    <td class="error" colspan="2">Error:
+      {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
+      {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
+      {{else error === 3}}File was only partially uploaded
+      {{else error === 4}}No File was uploaded
+      {{else error === 5}}Missing a temporary folder
+      {{else error === 6}}Failed to write file to disk
+      {{else error === 7}}File upload stopped by extension
+      {{else error === 'maxFileSize'}}File is too big
+      {{else error === 'minFileSize'}}File is too small
+      {{else error === 'acceptFileTypes'}}Filetype not allowed, excepting an Excel file
+      {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+      {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
+      {{else error === 'emptyResult'}}Empty file upload result
+      {{else}}${error}
+      {{/if}}
+    </td>
+    {{else}}
+    <td class="preview">
+      {{if thumbnail_url}}
+      <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+      {{/if}}
+    </td>
+    <td class="name">
+      ${name}
+    </td>
+    <td class="size">${sizef}</td>
+    <td colspan="2"></td>
+    {{/if}}
+    <td class="delete">
+      <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
+    </td>
+  </tr>
 </script>
 #{/set}

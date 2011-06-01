@@ -596,11 +596,11 @@ function refreshWidgetsContent(dashboard) {
                             '<div style="float:right;">' +
                                     '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
                                     '<button id="filterExpand">Expand filter</button>' +
-                            '</div>' +
-                            '<div id="filterSaveDialog" title="Save filter">' +
-                                '<label for="filterName" class="name">Name</label>' +
-                                '<input id="filterName" />' +
-                            '</div>'
+                                    '</div>' +
+                                    '<div id="filterSaveDialog" title="Save filter">' +
+                                    '<label for="filterName" class="name">Name</label>' +
+                                    '<input id="filterName" />' +
+                                    '</div>'
                 };
 
                 $.extend(settings, options);
@@ -715,3 +715,56 @@ function loadFilters(url, filterSelectionViewModel) {
             }).error(errorHandler);
 
 }
+
+(function($) {
+
+    var methods = {
+        init : function(options) {
+            return this.each(function() {
+                var menu = $(this).next().menu({
+                            select: function(event, ui) {
+                                $(this).hide();
+                                document.location = ui.item.children()[0].href;
+                            }
+                        });
+                menu.hide();
+                $(this).click(function(event) {
+                    var menu = $(this).next();
+
+                    if (menu.is(":visible")) {
+                        menu.hide();
+                        return false;
+                    }
+
+                    if ($('.ui-menu').size() > 1) {
+                        $('.ui-menu').hide();
+                    }
+
+                    menu.menu("blur").show().position({
+                                my: "left top",
+                                at: "left bottom",
+                                of: this
+                            });
+                    $(document).one("click", function() {
+                        menu.hide();
+                    });
+                    return false;
+                });
+            });
+        }
+    };
+
+    $.fn.oxMenu = function(method) {
+
+        // Method calling logic
+        if (methods[method]) {
+            return methods[ method ].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.oxMenu');
+        }
+
+    };
+
+})(jQuery);
