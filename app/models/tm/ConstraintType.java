@@ -8,20 +8,16 @@ package models.tm;
 public enum ConstraintType {
 
     VALUE("value", "text"), // constraint on the value itself - should maybe be called "equals"
-    MATCHES("matches", "text"),
-    STARTSWITH("startsWith", "text"),
-    ENDSWITH("endsWith", "text"),
-    NOTCONTAIN("notContains", "text"),
-    CONTAINS("contains","text"),
-    DATEFROM("dateFrom", "date"),
-    DATETO("dateTo", "date");
+    STRINGMATCH("match", "text"), // constraint on the string content (startsWith, endsWith, ...), see StringMatcherType
+    DATEFROM("dateFrom", "date"), // date boundary
+    DATETO("dateTo", "date"); // date boundary
 
     String key;
-    String action;
+    String fieldType;
 
-    ConstraintType(String key, String action){
+    ConstraintType(String key, String fieldType) {
         this.key = key;
-        this.action = action;
+        this.fieldType = fieldType;
     }
 
     public static ConstraintType fromKey(String key) {
@@ -38,8 +34,8 @@ public enum ConstraintType {
         return this.key.toString();
     }
 
-    public String getAction() {
-        return action;
+    public String getFieldType() {
+        return fieldType;
     }
 
 }

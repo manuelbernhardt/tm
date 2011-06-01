@@ -85,6 +85,8 @@ public class FilterQuery {
             q += " " + afterWhere;
         }
 
+        System.out.println(q);
+
         Query query = JPA.em().createQuery(q);
         for (F.Tuple<String, String> t : filters.keySet()) {
             query.setParameter(validParamName(t._1), filters.get(t));
@@ -92,7 +94,6 @@ public class FilterQuery {
         for (F.Tuple<String, String> t : additionalWhere.keySet()) {
             query.setParameter(t._2, additionalWhere.get(t));
         }
-
         return query;
     }
 

@@ -265,20 +265,22 @@ $('#deleteDefectDialog').dialog({
   var filterLoadAction = #{jsAction @Defects.loadFilters() /};
   var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
-  var data = {
-    "constraint[title][value]" : $('#title').val(),
-    "constraint[status][value]" : $('#status').val(),
-    "constraint[tags][value]" : $('#tags').val(),
-    "constraint[assignedTo][value]" : $('#assignedToId').val(),
-    "constraint[submittedBy][value]" : $('#submittedById').val(),
-    "constraint[created][dateFrom]" : $('#dateFrom').val(),
-    "constraint[created][dateTo]" : $('#dateTo').val()
-  };
-  data["constraint[title][" + $('#titleCase').val() + "]"] = "";
+  alert($('#title').val());
 
   $('#filterContainer').oxFilter({
       filterFormId: 'defectsFilterForm',
-      filterParameters: data,
+      filterParameters: function() {
+        return {
+          "constraint[title][value]" : $('#title').val(),
+          "constraint[title][match]" : $('#titleCase').val(),
+          "constraint[status][value]" : $('#status').val(),
+          "constraint[tags][value]" : $('#tags').val(),
+          "constraint[assignedTo][value]" : $('#assignedToId').val(),
+          "constraint[submittedBy][value]" : $('#submittedById').val(),
+          "constraint[created][dateFrom]" : $('#dateFrom').val(),
+          "constraint[created][dateTo]" : $('#dateTo').val()
+        };
+      },
       filterSaveAction: filterSaveAction,
       filterLoadAction: filterLoadAction,
       filterLoadByIdAction: filterLoadByIdAction,

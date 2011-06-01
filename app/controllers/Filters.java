@@ -1,7 +1,9 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import com.google.gson.JsonArray;
@@ -10,6 +12,7 @@ import models.tm.ConstraintType;
 import models.tm.Filter;
 import models.tm.FilterConstraint;
 import models.tm.Project;
+import models.tm.StringMatcherType;
 import play.mvc.Util;
 import util.Logger;
 
@@ -31,7 +34,7 @@ public class Filters extends TMController {
         filter.owner = getConnectedUser();
         filter.filterConstraints = new ArrayList<FilterConstraint>();
 
-        if(!filter.create()) {
+        if (!filter.create()) {
             Logger.error(Logger.LogType.DB, "Could not create filter %s for entity %s", name, entity);
             error("Error saving filter, please try again");
         }
@@ -52,8 +55,16 @@ public class Filters extends TMController {
                 String value = params.get(fp);
                 filterConstraint.property = property;
                 filterConstraint.constraintType = ConstraintType.fromKey(type);
+                if (filterConstraint.constraintType == ConstraintType.STRINGMATCH) {
+                    try {
+                        StringMatcherType.valueOf(value.toUpperCase());
+                    } catch (IllegalArgumentException iae) {
+                        Logger.error(Logger.LogType.TECHNICAL, "Illegal string matcher value %s for constraint on property %s", value, property);
+                        error("Error saving filter");
+                    }
+                }
                 filterConstraint.value = value;
-                if(!filterConstraint.create()) {
+                if (!filterConstraint.create()) {
                     Logger.error(Logger.LogType.DB, "Could not create FilterConstraint");
                     error("Error saving filter, please try again");
                 }
@@ -87,10 +98,19 @@ public class Filters extends TMController {
     @Util
     public static void loadFilterById(Long id) {
         Filter filter = Filter.find("from Filter f where f.id = ? and f.owner.id = ?", id, getConnectedUserId()).<Filter>first();
-        JsonObject c = new JsonObject();
+        Map<String, JsonObject> constraints = new HashMap<String, JsonObject>();
         for (FilterConstraint fc : filter.filterConstraints) {
-            c.addProperty(fc.property, fc.value);
+            JsonObject c = constraints.get(fc.property);
+            if (c == null) {
+                c = new JsonObject();
+                constraints.put(fc.property, c);
+            }
+            c.addProperty(fc.constraintType.getKey(), fc.value);
         }
-        renderJSON(c.toString());
+        JsonObject result = new JsonObject();
+        for(String key : constraints.keySet()) {
+            result.add(key, constraints.get(key));
+        }
+        renderJSON(result.toString());
     }
 }

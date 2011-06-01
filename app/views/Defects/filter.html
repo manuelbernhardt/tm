@@ -3,17 +3,18 @@
     <div class="left_column">
         <div class="field">
             <label for="title">Summary</label>
-            <select id="titleCase" name="titleCase" data-bind="value: titleCase">
-                <option value="matches">Matches</option>
+            <select id="titleCase" name="titleCase" data-bind="value: title.match">
                 <option value="contains">Contains</option>
-                <option value="startsWith">Starts with</option>
                 <option value="notContains">Doesn't contain</option>
+                <option value="equals">Equals</option>
+                <option value="startsWith">Starts with</option>
+                <option value="endsWith">Ends with</option>
             </select>
-            <input id="title" name="title" data-bind="value: title"/>
+            <input id="title" name="title" data-bind="value: title.value"/>
         </div>
         <div class="field">
             <label for="status"/>Status</label>
-            <select id="status" name="status" data-bind="value: status">
+            <select id="status" name="status" data-bind="value: status.value">
                 <option value="">Select status</option>
                 #{list items:models.tm.DefectStatus.defectStatuses(), as:'defectStatus'}
                     <option value="${defectStatus.name}">${defectStatus.name}</option>
@@ -22,13 +23,13 @@
         </div>
         <div class="field">
             <label for="tags" class="tag-inlining-label">Tags</label>
-            <input id="tags" class="tag-inlining-input" name="tags" data-bind="value: tags"/>
+            <input id="tags" class="tag-inlining-input" name="tags" data-bind="tags: tags.value"/>
         </div>
     </div>
     <div class="right_column">
         <div class="field">
             <label for="assignedToId"/>Assigned to</label>
-            <select id="assignedToId" name="assignedToId" data-bind="value: assignedToId">
+            <select id="assignedToId" name="assignedToId" data-bind="value: assignedTo.value">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
                     <option value="${user.getId()}">${user.getFullName()}</option>
@@ -36,8 +37,8 @@
             </select>
         </div>
         <div class="field">
-            <label for="submittedById"/>Submitted by</label>
-            <select id="submittedById" name="submittedById" data-bind="value: submittedById">
+            <label for="submittedById"/>Raised by</label>
+            <select id="submittedById" name="submittedById" data-bind="value: submittedBy.value">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
                     <option value="${user.getId()}">${user.getFullName()}</option>
@@ -46,8 +47,8 @@
         </div>
         <div class="field">
             <label for="dateFrom">Reported between</label>
-            <input id="dateFrom" type="text" name="dateFrom" data-bind="value: dateFrom">
-            <input id="dateTo" type="text" name="dateTo" data-bind="value: dateTo">
+            <input id="dateFrom" type="text" name="dateFrom" data-bind="value: created.dateFrom">
+            <input id="dateTo" type="text" name="dateTo" data-bind="value: created.dateTo">
       </div>
       <button id="filter">Apply filter</button>
     </div>  

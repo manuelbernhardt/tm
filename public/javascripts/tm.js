@@ -591,7 +591,7 @@ function refreshWidgetsContent(dashboard) {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
                                     '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
-//                                    '<button id="filterExpand">Expand filter</button>' +
+                                    '<button id="filterExpand">Expand filter</button>' +
                                     '</div>' +
                                     '<div id="filterSaveDialog" title="Save filter">' +
                                     '<label for="filterName" class="name">Name</label>' +
@@ -623,7 +623,8 @@ function refreshWidgetsContent(dashboard) {
                             draggable: false,
                             buttons: {
                                 "Confirm": function() {
-                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, settings.filterParameters)).error(errorHandler);
+                                    var filterParams = settings.filterParameters.call();
+                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, filterParams)).error(errorHandler);
                                     loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
                                     $(this).dialog("close");
                                 },

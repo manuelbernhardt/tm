@@ -10,6 +10,7 @@ import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.DefectStatus;
+import models.tm.StringMatcherType;
 import models.tm.TMUser;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
@@ -42,7 +43,7 @@ public class Defects extends TMController {
                                String sColumns,
                                String sEcho,
                                String title,
-                               Integer titleCase,
+                               String titleCase,
                                String tags,
                                String status,
                                Long assignedToId,
@@ -57,32 +58,35 @@ public class Defects extends TMController {
 
         fq.addFilter("project", "=", getActiveProject());
 
-        if (title != null && !StringUtils.isEmpty(title)) {
-            if (titleCase == null)
-                titleCase = 0;
-            switch (titleCase) {
-                case (0):
+        if (StringUtils.isNotEmpty(title)) {
+            StringMatcherType type = null;
+            if (titleCase == null) {
+                type = StringMatcherType.CONTAINS;
+            } else {
+                type = StringMatcherType.valueOf(titleCase.toUpperCase());
+            }
+            switch (type) {
+                case EQUALS:
                     fq.addFilter("name", "=", title);
                     break;
-                case (1):
+                case CONTAINS:
                     fq.addFilter("name", "like", '%' + title + '%');
                     break;
-                case (2):
+                case STARTSWITH:
                     fq.addFilter("name", "like", title + '%');
                     break;
-                case (3):
+                case ENDSWITH:
                     fq.addFilter("name", "not like", '%' + title + '%');
                     break;
             }
         }
-        if (tags != null && !StringUtils.isEmpty(tags)) {
+        if (StringUtils.isNotEmpty(tags)) {
             fq.addJoin("tags", "o", "t");
             fq.setDistinct(true);
-            // Hibernate has a nasty bug that will yield in a ClassCastException when passing a String[], so we need to cast here
             fq.addWhere("t.name in (:tags)", "tags", Arrays.asList(tags.split(",")));
             fq.addAfterWhere("group by o.id having count(t.id) = " + tags.split(",").length);
         }
-        if (status != null && !StringUtils.isEmpty(status)) {
+        if (StringUtils.isNotEmpty(status)) {
             fq.addFilter("status.name", "=", status);
         }
         if (assignedToId != null) {
@@ -98,12 +102,11 @@ public class Defects extends TMController {
             fq.addWhere("o.created <= :dateTo", "dateTo", dateTo);
         }
 
-        if (iSortCol_0 != null)
+        if (iSortCol_0 != null && iSortCol_0 > -1)
             fq.addAfterWhere("order by " + sortBy[iSortCol_0] + " " + sSortDir_0);
 
 
         Query query = fq.build();
-
 
         if (iDisplayStart != null) {
             query.setFirstResult(iDisplayStart);
@@ -112,9 +115,14 @@ public class Defects extends TMController {
             query.setMaxResults(iDisplayLength);
         }
 
-        List defects = query.getResultList();
+        try {
+            List defects = query.getResultList();
+            TableController.renderJSON(defects, Defect.class, Defect.count(), sColumns, sEcho);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            error();
+        }
 
-        TableController.renderJSON(defects, Defect.class, Defect.count(), sColumns, sEcho);
     }
 
     @Before
@@ -130,7 +138,7 @@ public class Defects extends TMController {
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
-        defect.tags = getTags(params.get("defect.tags"),Tag.TagType.DEFECT);
+        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         defect.create();
         ok();
     }
@@ -142,7 +150,7 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
-        defect.tags = getTags(params.get("defect.tags"),Tag.TagType.DEFECT);
+        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         d.save();
         ok();
     }
