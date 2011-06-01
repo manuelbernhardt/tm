@@ -535,7 +535,7 @@ function errorMessage(text, title) {
         title = 'An error has occured';
     }
 
-    var errorHtml = "<p><span class='ui-icon ui-icon-alert'></span> " + text + "</p>";
+    var errorHtml = "<p><span class='ui-icon ui-icon-alert' style='float: left; margin-right: .3em'></span>" + text + "</p>";
 
     $('#errorDialog').html(errorHtml);
     $('#errorDialog').dialog({
@@ -557,15 +557,11 @@ function errorHandler(xhr, textStatus, errorThrown) {
     var text;
     if (xhr.status == 0) {
         text = "Connection with the Test Management server failed";
-    }
-    else if (xhr.status == 404 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
-
+    } else if (xhr.status == 404 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
         text = "Unexpected error.";
-    }
-    else if (xhr.status == 500 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
+    } else if (xhr.status == 500 && xhr.responseText.indexOf("UNEXPECTED") != -1) {
         text = errorThrown;
-    }
-    else {
+    } else {
         text = xhr.responseText;
     }
 
@@ -599,7 +595,7 @@ function refreshWidgetsContent(dashboard) {
                                     '</div>' +
                                     '<div id="filterSaveDialog" title="Save filter">' +
                                     '<label for="filterName" class="name">Name</label>' +
-                                    '<input id="filterName" />' +
+                                    '<input id="filterName" name="name"/>' +
                                     '</div>'
                 };
 
@@ -627,7 +623,7 @@ function refreshWidgetsContent(dashboard) {
                             draggable: false,
                             buttons: {
                                 "Confirm": function() {
-                                    $.post(settings.filterSaveAction(), settings.filterParameters).error(errorHandler);
+                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, settings.filterParameters)).error(errorHandler);
                                     loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
                                     $(this).dialog("close");
                                 },
