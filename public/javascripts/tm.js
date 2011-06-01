@@ -593,9 +593,9 @@ function refreshWidgetsContent(dashboard) {
 
                 var settings = {
                     filterTemplate:
-                            '<div style="float:right;">' +
+                            '<div style="width:100%; text-align:right;">' +
                                     '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
-                                    '<button id="filterExpand">Expand filter</button>' +
+//                                    '<button id="filterExpand">Expand filter</button>' +
                                     '</div>' +
                                     '<div id="filterSaveDialog" title="Save filter">' +
                                     '<label for="filterName" class="name">Name</label>' +
