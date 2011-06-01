@@ -3,25 +3,37 @@
 
 
 <div class="container">
-    <div class="left_tree">
-        <div id="searchBox"  class="ui-icon-search searchBox"><input id="searchInput" class="searchInput" type="text"></div>
-        #{box 'Test Script Repository'}
-        <div id="repositoryTree" class="tree" style="border-style:none;"></div>
-        #{/box}
+    <div class="tree-container">
+        <div class="left_tree">
+            #{box 'Test Script Repository'}
+                <div id="searchBox"  class="ui-icon-search searchBox"><input id="searchInput" class="searchInput" type="text"></div>
+                <div id="repositoryTree" class="tree" style="border-style:none;"></div>
+            #{/box}
     </div>
-    <div class="right_tree">
+        <div class="right_table">
 
         #{box 'Test Instances'}
 
         <div class="hiddenOnLoad">
-            <div class="left_tree">
+            <div id="actions" class="actions">
+                    <div class="actions buttons">
+                      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
+                        <button id="assign_cycle">Instance</button>
+                      #{/deadbolt.restrict}
+                      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
+                        <button id="remove_cycle">Remove</button>
+                      #{/deadbolt.restrict}
+                    </div>
+                </div>
+            <div class="tree-container">
+                <div class="left_tree">
                 #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
                 [models.general.UnitRole.TESTREPOEDIT]]}
                 #{include 'Preparation/instanceCreateDialog.html' /}
                 #{/deadbolt.restrict}
                 <div id="scriptCycleTree" class="tree"></div>
             </div>
-            <div class="right_tree">
+                <div class="right_tree inner">
 
                 <div id="innerTabs">
                     <ul>
@@ -81,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
         <div class="shownOnLoad">
             No test script selected
@@ -90,8 +103,8 @@
         #{/box}
 
     </div>
+    </div>
 </div>
-
 
 #{set 'moreScripts'}
 #{if !util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]) && util.Require.roles([[models.general.UnitRole.TESTPREPVIEW]])}

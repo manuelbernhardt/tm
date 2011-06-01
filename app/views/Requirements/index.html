@@ -3,84 +3,89 @@
 
 
 <div class="container">
-  <div class="left_tree">
-    <div id="actions">
-      #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-      <button id="create_folder">Create new folder</button>
-      <span>
-        <button id="create_requirement">Requirement</button>
-        <button id="create_actions">Select an action</button>
-          <ul>
-            <li><span id="import_requirements">Import requirements</span></li>
-          </ul>
-      </span>
-      <div id="importRequirementsDialog">
-        <div id="fileupload">
-          <form action="@{Requirements.uploadExcel()}" method="POST" enctype="multipart/form-data">
-            <div class="fileupload-buttonbar">
-              <label class="fileinput-button">
-                <span>Add files...</span>
-                <input type="file" name="files" multiple>
-              </label>
+    <div id="actions" class="actions">
+        <div class="actions buttons" style="width:30%">
+            #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+                <button id="create_folder">Create new folder</button>
+                    <span>
+                    <button id="create_requirement">Requirement</button>
+                    <button id="create_actions">Select an action</button>
+                      <ul>
+                        <li><span id="import_requirements">Import requirements</span></li>
+                      </ul>
+                    </span>
+                    <div id="importRequirementsDialog">
+                    <div id="fileupload">
+                      <form action="@{Requirements.uploadExcel()}" method="POST" enctype="multipart/form-data">
+                        <div class="fileupload-buttonbar">
+                          <label class="fileinput-button">
+                            <span>Add files...</span>
+                            <input type="file" name="files" multiple>
+                          </label>
+                        </div>
+                      </form>
+                      <div class="fileupload-content">
+                        <table class="files"></table>
+                        <div class="fileupload-progressbar"></div>
+                      </div>
+                    </div>
+                    </div>
+            #{/deadbolt.restrict}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+            <button id="remove">Remove</button>
+            #{/deadbolt.restrict}
+        </div>
+    </div>
+    <div class="tree-container">
+        <div class="left_tree">
+
+            #{box 'Requirements'}
+            <div id="searchBox" class="searchBox" >
+                    <input id="searchInput" class="searchInput" type="text">
             </div>
-          </form>
-          <div class="fileupload-content">
-            <table class="files"></table>
-            <div class="fileupload-progressbar"></div>
-          </div>
-        </div>
-      </div>
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
-      <button id="remove">Remove</button>
-      #{/deadbolt.restrict}
-      <div id="searchBox" class="searchBox">
-        <input id="searchInput" class="searchInput" type="text">
-      </div>
+            <div id="requirementTree" class="tree" style="border-style:none;">
 
-    </div>
-    #{box 'Requirements'}
-    <div id="requirementTree" class="tree" style="border-style:none;"></div>
-    #{/box}
-  </div>
-  <div class="right_tree">
-    <div id="innerTabs">
-      <ul>
-        <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
-        <li><a href="#linked"><span>Linked entities</span></a></li>
-      </ul>
-      <div id="requirementDetails">
-        <div class="hiddenOnLoad">
-          #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]),
-          id:'requirementForm', baseClass:'models.tm.Requirement'}
-          #{ox.field field:'requirement.name', label:'Name' /}
-          #{ox.field field:'requirement.description', label:'Description' /}
-          #{ox.field field:'requirement.tags', label:'Tags', type:'tags' /}
-          *{the following fields are necessary because play can't bind stuff automatically yet}*
-          #{ox.field field:'requirement.id', hidden:true /}
-          #{ox.field field:'requirement.account.id', hidden:true /}
-          #{ox.field field:'requirement.project.id', hidden:true /}
-          #{ox.field field:'requirement.project.account.id', hidden:true /}
-          #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
-          #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
-          #{ox.submit /}
-          #{/ox.form}
+            </div>
+            #{/box}
         </div>
-        <div class="shownOnLoad">
-          No requirement selected.
-        </div>
+        <div class="right_tree">
+            <div id="innerTabs">
+                <ul>
+                    <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
+                    <li><a href="#linked"><span>Linked entities</span></a></li>
+                </ul>
+                <div id="requirementDetails">
+                    <div class="hiddenOnLoad">
+                        #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]),
+                        id:'requirementForm', baseClass:'models.tm.Requirement'}
+                        #{ox.field field:'requirement.name', label:'Name' /}
+                        #{ox.field field:'requirement.description', label:'Description' /}
+                        #{ox.field field:'requirement.tags', label:'Tags', type:'tags' /}
+                        *{the following fields are necessary because play can't bind stuff automatically yet}*
+                        #{ox.field field:'requirement.id', hidden:true /}
+                        #{ox.field field:'requirement.account.id', hidden:true /}
+                        #{ox.field field:'requirement.project.id', hidden:true /}
+                        #{ox.field field:'requirement.project.account.id', hidden:true /}
+                        #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
+                        #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
+                        #{ox.submit /}
+                        #{/ox.form}
+                    </div>
+                    <div class="shownOnLoad">
+                        No requirement selected.
+                    </div>
 
+                </div>
+                <div id="linked">
+                    <div class="hiddenOnLoad">
+                        #{include 'Requirements/linkedEntities.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No requirement selected.
+                    </div>
+                </div>
+            </div>
       </div>
-      <div id="linked">
-        <div class="hiddenOnLoad">
-          #{include 'Requirements/linkedEntities.html' /}
-        </div>
-        <div class="shownOnLoad">
-          No requirement selected.
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 

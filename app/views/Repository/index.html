@@ -9,8 +9,8 @@
 
 
 <div class="container">
-    <div class="left_tree">
-        <div id="actions">
+    <div id="actions" class="actions">
+        <div class="actions buttons">
             #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
             <button id="create_folder">Folder</button>
             <button id="create_script">Test Script</button>
@@ -19,12 +19,17 @@
             <button id="remove">Remove</button>
             #{/deadbolt.restrict}
         </div>
-        <div id="searchBox" class="searchBox"><input id="searchInput" class="searchInput" type="text"></div>
+    </div>
+    <div class="tree-container">
+        <div class="left_tree">
+
+
         #{box 'Test Script Repository'}
+        <div id="searchBox" class="searchBox"><input id="searchInput" class="searchInput" type="text"></div>
         <div id="repositoryTree" class="tree" style="border-style:none;"></div>
         #{/box}
     </div>
-    <div class="right_tree">
+        <div class="right_tree">
 
         <div id="innerTabs">
             <ul>
@@ -84,6 +89,7 @@
         </div>
 
 
+    </div>
     </div>
 </div>
 

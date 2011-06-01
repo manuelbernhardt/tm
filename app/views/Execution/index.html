@@ -1,8 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Test execution' /}
-
-<br/>
-<br/>
+   
 <div id="filterContainer">
   #{box 'Filters'}
   #{include 'Execution/filter.html'/}
@@ -10,24 +8,24 @@
 <br/>
 </div>
 
-<div class="container ui-widget-content">
-
-  <div class="left_table">
-
-    <table class="display" id="instanceTable">
-      <thead>
-      <tr>
-        <th>Tags</th>
-        <th>Test instance</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
+<!--<div class="container ui-widget-content">-->
+<div class="tree-container">
+    <div class="left_table">
+      #{box 'Test Instances'}
+        <table class="display" id="instanceTable">
+          <thead>
+          <tr>
+            <th>Tags</th>
+            <th>Test instance</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      #{/box}
   </div>
 
-  <div class="right_table">
+    <div class="right_table">
     <div id="content">
 
       #{box 'Runs for test instance'}
@@ -79,8 +77,8 @@
 
     </div>
   </div>
-
 </div>
+<!--</div>-->
 
 
 <script type="text/javascript">
