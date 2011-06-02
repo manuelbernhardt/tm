@@ -18,6 +18,7 @@
             #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
             <button id="remove">Remove</button>
             #{/deadbolt.restrict}
+            <input id="searchInput" class="searchInput" type="text">
         </div>
     </div>
     <div class="tree-container">
@@ -25,7 +26,6 @@
 
 
         #{box 'Test Script Repository'}
-        <div id="searchBox" class="searchBox"><input id="searchInput" class="searchInput" type="text"></div>
         <div id="repositoryTree" class="tree" style="border-style:none;"></div>
         #{/box}
     </div>
