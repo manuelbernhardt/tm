@@ -110,10 +110,14 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             Project project = Project.findById(id);
+            // TODO FIXME this probably does not work because a lot of stuff depends on the project
             project.delete();
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = ProjectCategory.findById(id);
+            if(category.getProjects().size() > 0) {
+                return false;
+            }
             category.delete();
             return true;
         }
