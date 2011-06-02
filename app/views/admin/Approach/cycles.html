@@ -33,10 +33,12 @@ Alternatively simple tags can be used to organize the Test Execution.
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ['default', 'testCycle'])) {
+       $("#remove_cycleRelease").button('enable');
         $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
         }).error(errorHandler);
       } else if (isSelectedNodeType(data, ['release'])) {
+        $("#remove_cycleRelease").button('enable');
         $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
           $('#details').html(data);
         }).error(errorHandler);
@@ -51,7 +53,7 @@ Alternatively simple tags can be used to organize the Test Execution.
     $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
       $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
     });
-    $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+    $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
       $("#approachTree").jstree("remove", null);
     });
 
