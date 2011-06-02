@@ -85,7 +85,7 @@
       $("#removeUserButton").button('enable');
     }
 
-    $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-minus'}}).click(function () {
+    $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
       $("#dialog-confirm").dialog('open');
     });
 
