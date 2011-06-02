@@ -12,7 +12,7 @@
       $("#assign_dialog").dialog("open");
     });
 
-    $("#remove_cycle").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+    $("#remove_cycle").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
       var $tree = jQuery.jstree._reference('#scriptCycleTree');
       var selectedNode = $tree.get_selected();
       if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {

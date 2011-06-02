@@ -27,8 +27,7 @@
                 </div>
             <div class="tree-container">
                 <div class="left_tree">
-                #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
-                [models.general.UnitRole.TESTREPOEDIT]]}
+                #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
                 #{include 'Preparation/instanceCreateDialog.html' /}
                 #{/deadbolt.restrict}
                 <div id="scriptCycleTree" class="tree"></div>
@@ -132,13 +131,18 @@
         $("#repositoryTree").tree({types: repositoryTreeTypes});
         $("#repositoryTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["script", "default"])) {
-
                 $('.instanceHiddenOnLoad').hide();
                 $('.instanceShownOnLoad').show();
+                $('#remove_cycle').button('disable');
 
                 jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
                 $('.hiddenOnLoad').show();
                 $('.shownOnLoad').hide();
+            } else {
+                $('.instanceHiddenOnLoad').show();
+                $('.instanceShownOnLoad').hide();
+                $('.hiddenOnLoad').hide();
+                $('.shownOnLoad').show();
             }
         });
 
@@ -161,8 +165,9 @@
         $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
         $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["instance", "default"])) {
-                $('.instanceHiddenOnLoad').show();
-                $('.instanceShownOnLoad').hide();
+                $('.instanceHiddenOnLoad').toggle();
+                $('.instanceShownOnLoad').toggle();
+                $("#remove_cycle").button('enable');
 
                 var instanceId = getNodeIdFromData(data);
 
@@ -192,14 +197,17 @@
                         });
                     });
                 });
+            } else {
+              $('.instanceHiddenOnLoad').toggle();
+              $('.instanceShownOnLoad').toggle();
+              $("#remove_cycle").button('enable');
             }
         });
 
         $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-            $('.instanceHiddenOnLoad').hide(); //hide information about instance after it is removed
-            $('.instanceShownOnLoad').show();
+            $('.instanceHiddenOnLoad').toggle();
+            $('.instanceShownOnLoad').toggle();
         });
-
 
         $('#innerTabs').tabs();
 
