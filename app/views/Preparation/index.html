@@ -165,8 +165,8 @@
         $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
         $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["instance", "default"])) {
-                $('.instanceHiddenOnLoad').toggle();
-                $('.instanceShownOnLoad').toggle();
+                $('.instanceHiddenOnLoad').show();
+                $('.instanceShownOnLoad').hide();
                 $("#remove_cycle").button('enable');
 
                 var instanceId = getNodeIdFromData(data);
@@ -198,15 +198,15 @@
                     });
                 });
             } else {
-              $('.instanceHiddenOnLoad').toggle();
-              $('.instanceShownOnLoad').toggle();
-              $("#remove_cycle").button('enable');
+              $('.instanceHiddenOnLoad').hide();
+              $('.instanceShownOnLoad').show();
+              $("#remove_cycle").button('disable');
             }
         });
 
         $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-            $('.instanceHiddenOnLoad').toggle();
-            $('.instanceShownOnLoad').toggle();
+            $('.instanceHiddenOnLoad').hide();
+            $('.instanceShownOnLoad').show();
         });
 
         $('#innerTabs').tabs();
