@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
+import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
@@ -182,6 +183,9 @@ public class Defects extends TMController {
         if (defect == null) {
             error("Defect is not found!");
         }
-        renderText(defect.description == null ? "" : defect.description);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("defectTitle", defect.name);
+        jsonObject.addProperty("defectDescription", defect.description);
+        renderJSON(jsonObject);
     }
 }

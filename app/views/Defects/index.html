@@ -14,11 +14,6 @@
 
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTCREATE]]}
   <button id="createDefectButton">Submit a defect</button>
-  <button id="updateDefectButton">Update defect</button>
-  #{/deadbolt.restrict}
-
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
-  <button id="deleteDefectButton">Delete defect</button>
   #{/deadbolt.restrict}
 
 
@@ -34,23 +29,6 @@
     <button id="createDefectCancel">Cancel</button>
     #{/box}
   </div>
-
-  <div id="updateDefectDialog" style="display:none" title="Update a defect">
-    #{box 'Update the defect'}
-    #{ox.form id:'updateDefectForm', action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
-    #{ox.field field:'defect.name', label:'Summary' /}
-    #{ox.field field:'defect.description', label:'Description'/}
-    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.status', label:'Status' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
-    #{ox.field field:'defect.id', hidden:true/}
-    #{/ox.form}
-    <button id="updateDefectConfirm">Submit</button>
-    <button id="updateDefectCancel">Cancel</button>
-    #{/box}
-  </div>
-
-  <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
 
   <br/>
 
@@ -75,13 +53,37 @@
 </div>
 <div id="defectDetails" style="display: none;">
   <a href="#" id="back">Go back to defects list</a>
+  <br/>
+  <br/>
+  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTEDIT]]}
+  <button id="updateDefectButton">Update defect</button>
+  #{/deadbolt.restrict}
 
-  <h2>Defect XXX</h2>
+  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
+  <button id="deleteDefectButton">Delete defect</button>
+  #{/deadbolt.restrict}
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <div id="updateDefectDialog" style="display:none" title="Update a defect">
+    #{box 'Update the defect'}
+    #{ox.form id:'updateDefectForm', action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
+    #{ox.field field:'defect.name', label:'Summary' /}
+    #{ox.field field:'defect.description', label:'Description'/}
+    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
+    #{ox.field field:'defect.status', label:'Status' /}
+    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
+    #{ox.field field:'defect.id', hidden:true/}
+    #{/ox.form}
+    <button id="updateDefectConfirm">Submit</button>
+    <button id="updateDefectCancel">Cancel</button>
+    #{/box}
+  </div>
+
+    <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
+
+
+  <h2 id="defect-header"></h2>
+
+  <div id="defect-description"></div>
 </div>
 
 <script type="text/javascript">
@@ -194,7 +196,12 @@ $(document).ready(function() {
   handleRowSelection('#defectsTable', function() {
     $('#updateDefectButton').button('enable');
     $('#deleteDefectButton').button('enable');
-    $('.defect-details').remove();
+
+    $.getJSON('@{Defects.defectDescription()}', {defectId: getSelectedRowId('#defectsTable')},
+            function(data){
+                $('#defect-header').html(data.members.defectTitle.value);
+                $('#defect-description').html(data.members.defectDescription.value);
+            });
 
     $('#defectList').hide();
     $('#defectDetails').show();
