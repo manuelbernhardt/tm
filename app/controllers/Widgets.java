@@ -130,15 +130,15 @@ public class Widgets extends TMController {
     }
 
     private final static ImmutableMap<String, String[]> defaultColumnNames = ImmutableMap.of(
-            Defect.class.getSimpleName(), new String[]{"Name", "Description", "Submitted By", "Assigned To", "Status", "Tags"},
-            Requirement.class.getSimpleName(), new String[]{"Name", "Description", "Created By", "Tags"},
+            Defect.class.getSimpleName(), new String[]{"Name", "Submitted By", "Assigned To", "Status", "Tags"},
+            Requirement.class.getSimpleName(), new String[]{"Name",  "Created By", "Tags"},
             Instance.class.getSimpleName(), new String[] {"Name", "Script", "Assigned to", "Planned Execution", "Tags", "Defects"},
             Script.class.getSimpleName(), new String[] {"Name", "Created by", "Description", "Tags"}
     );
 
     private final static ImmutableMap<String, String[]> defaultColumnExpressions = ImmutableMap.of(
-            Defect.class.getSimpleName(), new String[]{"name", "description", "submittedBy", "assignedTo", "status", "tagNames"},
-            Requirement.class.getSimpleName(), new String[]{"name", "description", "createdBy", "tagNames"},
+            Defect.class.getSimpleName(), new String[]{"name", "submittedBy", "assignedTo", "status", "tagNames"},
+            Requirement.class.getSimpleName(), new String[]{"name", "createdBy", "tagNames"},
             Instance.class.getSimpleName(), new String[] {"name", "script", "responsible", "plannedExecution", "tags", "defects"},
             Script.class.getSimpleName(), new String[] {"name", "createdBy", "description", "tags"}
     );
