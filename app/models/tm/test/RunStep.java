@@ -1,6 +1,7 @@
 package models.tm.test;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PostLoad;
@@ -11,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import play.db.jpa.JPABase;
 import util.ParameterHandler;
 
@@ -26,15 +28,20 @@ public class RunStep extends ProjectModel {
 
     public Integer position;
 
+    @Required
+    @Column(nullable = false)
     public String name;
 
-    @MaxSize(5000)
+    @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
-    @MaxSize(5000)
+    @MaxSize(2000)
+    @Column(length = 2000)
     public String expectedResult;
 
-    @MaxSize(5000)
+    @MaxSize(2000)
+    @Column(length = 2000)
     public String actualResult;
 
     public Integer status;

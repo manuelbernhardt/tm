@@ -2,6 +2,7 @@ package models.tm;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -28,12 +29,11 @@ public class Requirement extends ProjectModel implements Node, TagHolder{
 
     @NodeName
     @Required
+    @Column(nullable = false)
     public String name;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
-//    public RequirementType type;
-
-    @MaxSize(5000)
+    @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
