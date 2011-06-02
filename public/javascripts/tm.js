@@ -591,7 +591,7 @@ function refreshWidgetsContent(dashboard) {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
                                     '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
-                                    '<button id="filterExpand">Expand filter</button>' +
+                                    '<button id="filterExpand">&nbsp</button>' +
                                     '</div>' +
                                     '<div id="filterSaveDialog" title="Save filter">' +
                                     '<label for="filterName" class="name">Name</label>' +
@@ -645,10 +645,14 @@ function refreshWidgetsContent(dashboard) {
                 $('#saveFilter').button().click(function() {
                     $('#filterSaveDialog').dialog('open');
                 });
-                $('#filterExpand').button({icons: {primary: 'ui-icon-triangle-1-s'}, text: false}).click(function() {
-                    // TODO toggle
-                    $this.slideDown('slow');
+                // changing button style to fit select input
+                $('#filterExpand').css("height", "19px");
+                $('#filterExpand').css("margin-bottom", "-0.4em");
+
+                $('#filterExpand').button({icons: {primary: 'ui-icon-triangle-2-n-s'}, text: false}).click(function() {
+                    $this.slideToggle('slow');
                 });
+                $('#filterExpand').children(".ui-button-text").attr("style", "padding:0.1em 0 0 0");
 
                 // filter selection handling
                 $('#filterSelect').button().change(function(data) {
