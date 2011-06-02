@@ -27,7 +27,6 @@
   #{ox.field field:'defect.name', label:'Summary' /}
   #{ox.field field:'defect.description', label:'Description'/}
   #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-  #{ox.field field:'defect.status', label:'Status' /}
   #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
   #{/ox.form}
   <button id="createDefectConfirm">Submit</button>
@@ -77,7 +76,11 @@
 
 $(document).ready(function() {
 
-//table definition
+  $('#createDefectConfirm').button();
+  $('#createDefectCancel').button();
+  $('#updateDefectConfirm').button();
+  $('#updateDefectCancel').button();
+
 
   #{tabularasa.init tableId:'defectsTable'}
   var defectsTableParameters = {
