@@ -73,7 +73,6 @@ div.left_table {
 div.right_table {
     width: 64%;
     float: right;
-    margin-top:1.8em;
 }
 
 div.left_tree {
@@ -85,11 +84,11 @@ div.left_tree {
 div.right_tree {
     width: 65%;
     float: right;
-    margin-top:2em;
+    margin-top:0.1em;
 }
 
-div.right_tree .inner{
-    margin-top:1em;
+div.inner{
+    margin-top:-0.3em;
 }
 
 div.right_column {
@@ -189,7 +188,7 @@ div#top_menu {
 .searchBox{
     float:left;
     width:100%;
-    padding:0.3em;
+    padding:0.2em;
 }
 
 .searchInput{
