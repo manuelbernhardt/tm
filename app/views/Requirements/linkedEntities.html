@@ -149,7 +149,7 @@
             $("#linkScriptDialog").dialog("open");
         });
 
-        $("#unlinkScript").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
+        $("#unlinkScript").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
             $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
                     function(data) {
                         $('#scriptTable').dataTable().fnDraw();

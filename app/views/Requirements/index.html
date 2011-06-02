@@ -131,11 +131,15 @@
       if (isSelectedNodeType(data, ["requirement", "default"])) {
         $('.shownOnLoad').hide();
         $('.hiddenOnLoad').show();
-
+        $('#remove').button('enable');
         var requirementId = getSelectedNodeId('requirementTree');
         $('#requirementForm').oxForm('load', requirementId);
 
         reloadTables();
+      } else {
+        $('.shownOnLoad').show();
+        $('.hiddenOnLoad').hide();
+        $('#remove').button('enable');
       }
     });
 
@@ -155,7 +159,7 @@
     $('#import_requirements').click(function() {
       $('#importRequirementsDialog').dialog('open');
     });
-    $('#remove').button({icons: {primary: 'ui-icon-trash'}, text: false, enable: false}).click(function () {
+    $('#remove').button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
       $("#requirementTree").jstree("remove", null);
     });
 
