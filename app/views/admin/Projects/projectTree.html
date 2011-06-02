@@ -13,6 +13,7 @@
     $("#projectTree").bind("select_node.jstree", function (e, data) {
       var tabLinks = ['@{admin.Projects.projectDetails()}', '@{admin.Approach.cycles()}', '@{admin.Projects.roles()}', '@{admin.Projects.users()}'];
       treeNodeSelectionHandler(tabLinks, ['default'], 'project', $('#innerTabs'), data);
+       $("#remove").button('enable');
     });
 
     /** Button initialisation **/
@@ -24,7 +25,7 @@
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}});
     });
 
-    $("#remove").button({icons: {primary: 'ui-icon-minus'}}).click(function () {
+    $("#remove").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled:true}).click(function () {
       $("#projectTree").jstree("remove", null);
     });
 

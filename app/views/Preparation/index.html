@@ -15,9 +15,7 @@
             #{/box}
     </div>
         <div class="right_table">
-
         #{box 'Test Instances'}
-
         <div class="hiddenOnLoad">
             <div id="actions" class="actions">
                     <div class="actions buttons">
@@ -65,39 +63,35 @@
                             baseClass:'models.tm.test.Instance'}
                             #{ox.field field:'instance.responsible', label:'Assigned to' /}
                             #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
-                          <div align="right">
                             #{ox.submit /}
-                           </div> #{/ox.form}
+                            #{/ox.form}
                         </div>
                     </div>
                     <div id="testData">
-                        <div class="instanceShownOnLoad">
-                            No test instance selected
-                        </div>
-                        <div class="instanceHiddenOnLoad" style="display: none;">
-                            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
-                            [models.general.UnitRole.TESTREPOEDIT]]}
-                            <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}"
-                                  data-bind="submit: submitForm">
-                                #{/deadbolt.restrict}
-                                <table id="instanceParamTable" class="display">
-                                    <thead>
-                                    <th>Parameter</th>
-                                    <th>Value</th>
-                                    </thead>
-                                    <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
-                                </table>
-                                #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],
-                                [models.general.UnitRole.TESTREPOEDIT]]}
-                                <button type="submit" id="saveParamsButton">Save</button>
+                        <div class="instanceShownOnLoad">No test instance selected</div>
+                          <div class="instanceHiddenOnLoad" style="display: none;">
+                            <div data-bind="visible: params().length > 0">
+                            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
+                            <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}" data-bind="submit: submitForm">
+                            #{/deadbolt.restrict}
+                              <table id="instanceParamTable" class="display">
+                                <thead>
+                                  <th>Parameter</th>
+                                  <th>Value</th>
+                                </thead>
+                                <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+                              </table>
+                            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
+                            <button type="submit" id="saveParamsButton">Save</button>
                             </form>
                             #{/deadbolt.restrict}
-
+                            </div>
+                          <div style="display: none;" data-bind="visible: params().length == 0">No test parameters defined for this test script instance</div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
         </div>
         <div class="shownOnLoad">
             No test script selected
@@ -191,7 +185,7 @@
                 $.getJSON('@{Preparation.instanceParameters()}', {instanceId: instanceId}, function(data) {
                     if (!ko.mapping.isMapped(paramViewModel)) {
                         $.extend(paramViewModel, ko.mapping.fromJS(data));
-                        ko.applyBindings(paramViewModel, document.getElementById('instanceParamForm'));
+                        ko.applyBindings(paramViewModel, document.getElementById('testData'));
                     } else {
                         ko.mapping.updateFromJS(paramViewModel, data);
                     }

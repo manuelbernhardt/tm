@@ -33,7 +33,7 @@ No project selected
         plugins: ["dnd"]
       });
 
-      $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function() {
+      $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
         $("#projectRolesAssignmentTree").jstree("remove", null);
       });
 
