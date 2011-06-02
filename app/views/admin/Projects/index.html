@@ -2,13 +2,21 @@
 #{set title:'Project administration' /}
 
 <div class="container">
-  <div class="left_tree">
-    <button id="create_category">Project Category</button>
-    <button id="create_project">Project</button>
-    <button id="remove">Remove</button>
-    <div id="projectTree" class="tree"></div>
-  </div>
-  <div class="right_tree">
+    <div class="actions">
+        <div class="actions buttons">
+            <button id="create_category">Project Category</button>
+            <button id="create_project">Project</button>
+            <button id="remove">Remove</button>
+        </div>
+    </div>
+    <div class="tree-container">
+
+      <div class="left_tree">
+        #{box 'Projects'}
+            <div id="projectTree" class="tree" style="border-style:none;"></div>
+        #{/box}
+      </div>
+      <div class="right_tree">
     <div id="innerTabs">
       <ul>
         <li><a href="@{admin.Projects.projectDetails()}" id="projectDetailsLink"><span>Project details</span></a></li>
@@ -19,6 +27,7 @@
       </ul>
     </div>
   </div>
+</div>
 </div>
 
 <script type="text/javascript">

@@ -216,3 +216,14 @@ div#top_menu {
     float:left;
     width:100%;
 }
+
+.table-inlining-tabs{
+    margin-top:3.8em;
+}
+
+.search-input-table-left{
+    width:100%;
+    float:left;
+    text-align:left;
+    margin-top:5px;
+}
