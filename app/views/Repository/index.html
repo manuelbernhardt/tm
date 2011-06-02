@@ -111,7 +111,7 @@
             if (isSelectedNodeType(data, ["script", "default"])) {
                 $('.shownOnLoad').hide();
                 $('.hiddenOnLoad').show();
-
+                $('#remove').button('enable');
                 $('#requirementScriptDialogOpen').button('enable');
 
                 var scriptId = getSelectedNodeId('repositoryTree');
@@ -119,6 +119,9 @@
 
                 reloadTables();
             } else {
+                $('.shownOnLoad').show();
+                $('.hiddenOnLoad').hide();
+                $('#remove').button('enable');
                 $('#requirementScriptDialogOpen').button('disable');
             }
         });
@@ -139,7 +142,7 @@
             $("#create_script").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
                 $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
             });
-            $("#remove").button({icons: {primary: 'ui-icon-trash'}, text: false, enable: false}).click(function () {
+            $("#remove").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
                 $("#repositoryTree").jstree("remove", null);
             });
         });
