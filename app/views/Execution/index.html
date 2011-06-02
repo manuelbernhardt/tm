@@ -110,6 +110,8 @@
       "fnDrawCallback": function() {
         refreshTableContents('#runTable', fullDrawInstanceTable);
         fullDrawInstanceTable = true;
+        $('#updateRunButton').button('disable');
+        $('#deleteRunButton').button('disable');
       }
     };
     #{/tabularasa.init}
@@ -191,6 +193,8 @@
       $('#createRunButton').button('enable');
       fullDrawRunTable = true;
       refreshTableContents('#runTable', true);
+      $('#updateRunButton').button('disable');
+      $('#deleteRunButton').button('disable');
     });
 
     handleRowSelection('#runTable', function(selectedRowId) {
@@ -199,7 +203,7 @@
       refreshTableContents('#runStepTable', true);
     });
 
-    $('#createRunButton').button({disabled: true}).click(function() {
+    $('#createRunButton').button({icons: {primary: 'ui-icon-play'}, disabled: true}).click(function() {
       $('#createRunDialog').dialog('open')
     });
 
@@ -275,7 +279,7 @@
       }
     });
 
-    $('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, disabled: true}).click(function() {
+    $('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function() {
       $('#deleteRunDialog').dialog('open');
     });
 
