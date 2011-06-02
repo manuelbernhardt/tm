@@ -2,6 +2,7 @@ package models.tm;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -11,6 +12,7 @@ import javax.persistence.UniqueConstraint;
 import models.tm.test.Tag;
 import models.tm.test.TagHolder;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import play.templates.JavaExtensions;
 
 /**
@@ -20,9 +22,12 @@ import play.templates.JavaExtensions;
 @Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
 public class Defect extends ProjectModel implements TagHolder{
 
+    @Required
+    @Column(nullable = false)
     public String name;
 
     @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})

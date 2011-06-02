@@ -33,10 +33,12 @@ public class ScriptStep extends ProjectModel {
     @Required
     public String name;
 
-    @MaxSize(5000)
+    @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
-    @MaxSize(5000)
+    @MaxSize(2000)
+    @Column(length = 2000)
     public String expectedResult;
 
     public ScriptStep(Project project) {

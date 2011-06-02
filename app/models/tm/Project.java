@@ -2,6 +2,7 @@ package models.tm;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -13,6 +14,7 @@ import models.account.AccountModel;
 import models.account.AccountProduct;
 import org.hibernate.annotations.BatchSize;
 import play.data.validation.MaxSize;
+import play.data.validation.Required;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -22,9 +24,12 @@ import play.data.validation.MaxSize;
 @BatchSize(size = 10)
 public class Project extends AccountModel {
 
+    @Required
+    @Column(nullable = false)
     public String name;
 
-    @MaxSize(5000)
+    @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = true, fetch = FetchType.LAZY)

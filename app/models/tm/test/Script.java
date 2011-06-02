@@ -34,7 +34,8 @@ public class Script extends ProjectModel implements Node, ParameterHolder, TagHo
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public TMUser createdBy;
 
-    @MaxSize(5000)
+    @MaxSize(8000)
+    @Column(length = 8000)
     public String description;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
