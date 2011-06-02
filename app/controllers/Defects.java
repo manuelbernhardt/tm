@@ -185,7 +185,12 @@ public class Defects extends TMController {
         }
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("defectTitle", defect.name);
-        jsonObject.addProperty("defectDescription", defect.description);
-        renderJSON(jsonObject);
+        jsonObject.addProperty("defectAssignedTo", defect.assignedTo == null ? "" : defect.assignedTo.toString());
+        jsonObject.addProperty("defectSubmittedBy", defect.submittedBy == null ? "" : defect.submittedBy.toString());
+        jsonObject.addProperty("defectStatus", defect.status == null ? "" : defect.status.toString());
+        jsonObject.addProperty("defectCreated", defect.created == null ? "" : defect.created.toString());
+        jsonObject.addProperty("defectTags", defect.tags == null ? "" :  defect.tags.toString());
+        jsonObject.addProperty("defectDescription", defect.description == null ? "" : defect.description);
+        renderJSON(jsonObject.toString());
     }
 }

@@ -83,6 +83,31 @@
 
   <h2 id="defect-header"></h2>
 
+  <table id="defect-detail-table" style="width:100%">
+
+      <tr>
+          <td>
+              <strong>Submitted by:</strong> <div id="defect-submittedBy"></div>
+          </td>
+          <td>
+              <strong>Assigned to: </strong><div id="defect-assignedTo"></div>
+          </td>
+          <td>
+              <strong>Created at: </strong><div id="defect-created"></div>
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <strong>Status: </strong><div id="defect-status"></div>
+          </td>
+          <td colspan="2">
+              <strong>Tags: </strong><div id="defect-tags"></div>
+          </td>
+      </tr>
+  </table>
+    <hr/>
+    <strong>Description: </strong>
+
   <div id="defect-description"></div>
 </div>
 
@@ -197,14 +222,10 @@ $(document).ready(function() {
     $('#updateDefectButton').button('enable');
     $('#deleteDefectButton').button('enable');
 
-    $.getJSON('@{Defects.defectDescription()}', {defectId: getSelectedRowId('#defectsTable')},
-            function(data){
-                $('#defect-header').html(data.members.defectTitle.value);
-                $('#defect-description').html(data.members.defectDescription.value);
-            });
-
-    $('#defectList').hide();
+    getDefectDetails();
     $('#defectDetails').show();
+    $('#defectList').hide();
+
 
   });
 
@@ -229,13 +250,14 @@ $(document).ready(function() {
   $('#updateDefectForm').oxForm({
             submissionCallback: function() {
               refreshTableContents('#defectsTable', false);
+              getDefectDetails();
             }
           });
 
   $('#updateDefectConfirm').click(function() {
     $('#updateDefectDialog').slideUp('slow');
     $('#updateDefectForm').oxForm('submitCreateForm');
-
+    getDefectDetails();
   });
   $('#updateDefectCancel').click(function() {
     $('#updateDefectDialog').slideUp('slow');
@@ -318,6 +340,20 @@ $(document).ready(function() {
           });
 
 });
+
+function getDefectDetails(){
+    $.getJSON('@{Defects.defectDescription()}', {defectId: getSelectedRowId('#defectsTable')},
+            function(data){
+                $('#defect-header').html(data.defectTitle);
+                $('#defect-description').html(data.defectDescription);
+                $('#defect-submittedBy').html(data.defectSubmittedBy);
+                $('#defect-assignedTo').html(data.defectAssignedTo);
+                $('#defect-status').html(data.defectStatus);
+                $('#defect-created').html(data.defectCreated);
+                $('#defect-tags').html(data.defectTags);
+
+            });
+}
 
 
 </script>
