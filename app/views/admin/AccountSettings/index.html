@@ -70,7 +70,7 @@
 
     $('#accountDetailsForm').oxForm('load', -1);
 
-    $("#removeRoleButton").button({icons: {primary: 'ui-icon-minus'}, disabled: true}).click(function () {
+    $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
       $("#accountRolesAssignmentTree").jstree("remove", null);
     });
     $("#accountRolesAssignmentTree").tree({
