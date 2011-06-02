@@ -14,164 +14,163 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // load the templates
-        $('body').append('<div id="templates"></div>');
-        $("#templates").hide();
-        $("#templates").load("@{'/public/templates.html'}", initDashboard);
+  $(document).ready(function() {
+    // load the templates
+    $('body').append('<div id="templates"></div>');
+    $("#templates").hide();
+    $("#templates").load("@{'/public/templates.html'}", initDashboard);
 
-        var dashboard = null;
+    var dashboard = null;
 
-        // call for the minimal dashboard
-        function initDashboard() {
-            dashboard = $('#dashboard').dashboard({
+    // call for the minimal dashboard
+    function initDashboard() {
+      dashboard = $('#dashboard').dashboard({
                 loadingHtml: "<div class=\"loading\"><img alt=\"Loading, please wait\" src=\"@{'/public/images/loading.gif'}\" /><p>Loading...</p></div>",
                 json_data : { url: "@{Dashboard.widgets()}" },
                 addWidgetSettings: {
-                    widgetDirectoryUrl:"@{Widgets.categories()}"
+                  widgetDirectoryUrl:"@{Widgets.categories()}"
                 },
+                emptyColumnHtml: "",
                 layoutClass:'layout',
                 layouts :
                         [
-                            { title: "Layout1",
-                                id: "layout1",
-                                image: "@{'/public/images/layouts/layout1.png'}",
-                                html: '<div class="layout layout-a"><div class="column first column-first"></div></div>',
-                                classname: 'layout-a'
-                            },
-                            { title: "Layout2",
-                                id: "layout2",
-                                image: "@{'/public/images/layouts/layout2.png'}",
-                                html: '<div class="layout layout-aa"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
-                                classname: 'layout-aa'
-                            },
-                            { title: "Layout3",
-                                id: "layout3",
-                                image: "@{'/public/images/layouts/layout3.png'}",
-                                html: '<div class="layout layout-ba"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
-                                classname: 'layout-ba'
-                            },
-                            { title: "Layout4",
-                                id: "layout4",
-                                image: "@{'/public/images/layouts/layout4.png'}",
-                                html: '<div class="layout layout-ab"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
-                                classname: 'layout-ab'
-                            },
-                            { title: "Layout5",
-                                id: "layout5",
-                                image: "@{'/public/images/layouts/layout5.png'}",
-                                html: '<div class="layout layout-aaa"><div class="column first column-first"></div><div class="column second column-second"></div><div class="column third column-third"></div></div>',
-                                classname: 'layout-aaa'
-                            }
+                          { title: "Layout1",
+                            id: "layout1",
+                            image: "@{'/public/images/layouts/layout1.png'}",
+                            html: '<div class="layout layout-a"><div class="column first column-first"></div></div>',
+                            classname: 'layout-a'
+                          },
+                          { title: "Layout2",
+                            id: "layout2",
+                            image: "@{'/public/images/layouts/layout2.png'}",
+                            html: '<div class="layout layout-aa"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                            classname: 'layout-aa'
+                          },
+                          { title: "Layout3",
+                            id: "layout3",
+                            image: "@{'/public/images/layouts/layout3.png'}",
+                            html: '<div class="layout layout-ba"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                            classname: 'layout-ba'
+                          },
+                          { title: "Layout4",
+                            id: "layout4",
+                            image: "@{'/public/images/layouts/layout4.png'}",
+                            html: '<div class="layout layout-ab"><div class="column first column-first"></div><div class="column second column-second"></div></div>',
+                            classname: 'layout-ab'
+                          },
+                          { title: "Layout5",
+                            id: "layout5",
+                            image: "@{'/public/images/layouts/layout5.png'}",
+                            html: '<div class="layout layout-aaa"><div class="column first column-first"></div><div class="column second column-second"></div><div class="column third column-third"></div></div>',
+                            classname: 'layout-aaa'
+                          }
                         ]
-            });
+              });
 
 
-            dashboard.element.live('dashboardAddWidget', function(e, obj) {
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '@{Dashboard.addWidget()}',
-                    data: {widgetId: obj.widget.id},
-                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-                    dataType: 'json'
+      dashboard.element.live('dashboardAddWidget', function(e, obj) {
+        jQuery.ajax({
+                  type: 'POST',
+                  url: '@{Dashboard.addWidget()}',
+                  data: {widgetId: obj.widget.id},
+                  contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                  dataType: 'json'
                 }).success(
-                        function(data) {
-                            var widget = obj.widget;
-                            dashboard.addWidget({
-                                "id":data.id,
-                                "title":widget.title,
-                                "url":widget.url,
-                                "metadata":widget.metadata
-                            }, dashboard.element.find('.column:first'));
+                function(data) {
+                  var widget = obj.widget;
+                  dashboard.addWidget({
+                            "id":data.id,
+                            "title":widget.title,
+                            "url":widget.url,
+                            "metadata":widget.metadata
+                          }, dashboard.element.find('.column:first'));
                 }).error(errorHandler);
 
-                adaptGraphSize();
-            });
+        adaptGraphSize();
+      });
 
-            dashboard.init();
-        }
-
-        $('.widget').live('widgetDeleted', function(event, obj) {
-            jQuery.ajax({
+      dashboard.init();
+    }
+    $('.widget').live('widgetDeleted', function(event, obj) {
+      jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.deleteWidget()}',
                 data: {widgetId: obj.widget.id},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(errorHandler);
+              }).error(errorHandler);
 
-        });
+    });
 
-        $('.widget').live('widgetOpen', function(event, obj) {
-            jQuery.ajax({
+    $('.widget').live('widgetOpen', function(event, obj) {
+      jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.toggleWidgetWindow()}',
                 data: {widgetId: obj.widget.id, state: true},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(errorHandler)
-            obj.widget.refreshContent();
-        });
+              }).error(errorHandler)
+      obj.widget.refreshContent();
+    });
 
-        $('.widget').live('widgetClose', function(event, obj) {
-            jQuery.ajax({
+    $('.widget').live('widgetClose', function(event, obj) {
+      jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.toggleWidgetWindow()}',
                 data: {widgetId: obj.widget.id, state: false},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(errorHandler);
-        });
+              }).error(errorHandler);
+    });
 
-        $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
-        $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
+    $('.openaddwidgetdialog').button({icons: {primary: 'ui-icon-plus'}});
+    $('.editlayout').button({icons: {primary: 'ui-icon-pencil'}});
 
 
-        $('#dashboard').live('dashboardLayoutChanged', function() {
+    $('#dashboard').live('dashboardLayoutChanged', function() {
 
-            refreshWidgetsContent(dashboard);
-            jQuery.ajax({
+      refreshWidgetsContent(dashboard);
+      jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.changeLayout()}',
                 data: {layout: dashboard.layout.id},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(errorHandler);
-        });
+              }).error(errorHandler);
+    });
 
-        $('#dashboard').live('widgetDropped', function(event, obj) {
+    $('#dashboard').live('widgetDropped', function(event, obj) {
 
-            jQuery.ajax({
+      jQuery.ajax({
                 type: 'POST',
                 url: '@{Dashboard.changeColumn()}',
                 data: {widgetId: obj.widget.id,column: obj.widget.column},
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 dataType: 'json'
-            }).error(errorHandler);
+              }).error(errorHandler);
 
-            adaptGraphSize();
-            refreshWidgetsContent(dashboard);
-        });
-
-
+      adaptGraphSize();
+      refreshWidgetsContent(dashboard);
     });
+
+  });
 
 </script>
 
 <div class="header_tile_image">
-    <div class="headerbox">
-        <div class="headerlinks" style="text-align: right; width:100%">
-            <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>
-            &nbsp;<span class="headerlink"></span>
-            <button class="editlayout headerlink" href="#">Edit layout</button>
-        </div>
+  <div class="headerbox">
+    <div class="headerlinks" style="text-align: right; width:100%">
+      <button class="openaddwidgetdialog headerlink" href="#">Add Widget</button>
+      &nbsp;<span class="headerlink"></span>
+      <button class="editlayout headerlink" href="#">Edit layout</button>
     </div>
+  </div>
 </div>
 
 <div id="dashboard" class="dashboard">
-    <div class="layout">
-        <div class="column first column-first"></div>
-        <div class="column second column-second"></div>
-        <div class="column third column-third"></div>
-    </div>
+  <div class="layout">
+    <div class="column first column-first"></div>
+    <div class="column second column-second"></div>
+    <div class="column third column-third"></div>
+  </div>
 </div>
