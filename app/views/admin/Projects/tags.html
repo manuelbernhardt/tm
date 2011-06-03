@@ -1,10 +1,23 @@
 #{if projectId == null}
 No project selected
 #{/if}
+#{else}
+<!-- add tags dialog -->
+<div id="requirementAddTagDialog" title="Add new tag">
+    <input id="requirementAddTagInput"/>
+</div>
+<div id="testScriptAddTagDialog" title="Add new tag">
+    <input id="testScriptAddTagInput"/>
+</div>
+<div id="testInstanceAddTagDialog" title="Add new tag">
+    <input id="testInstanceAddTagInput"/>
+</div>
+<div id="defectAddTagDialog" title="Add new tag">
+    <input id="defectAddTagInput"/>
+</div>
+<!-- end of add tags dialogs -->
 
-
-<!--#{else}-->
-
+<!-- rename dialogs -->
 <div id="requirementRenameDialog" title="Rename the tag">
     <input id="requirementRenameInput"/>
 </div>
@@ -20,7 +33,9 @@ No project selected
 <div id="defectRenameDialog" title="Rename the tag">
     <input id="defectRenameInput"/>
 </div>
+<!-- end of rename dialogs -->
 
+<!-- merge dialogs -->
 <div id="mergeTagDialogRequirement" title="Merge tags">
     Tag with this name already exists, do you want to merge those?
 </div>
@@ -36,12 +51,16 @@ No project selected
 <div id="mergeTagDialogDefect" title="Merge tags">
     Tag with this name already exists, do you want to merge those?
 </div>
+<!-- end of merge dialogs -->
+
+
 
 <div class="accordion ui-accordion ui-widget ui-helper-reset ui-accordion-icons" role="tablist">
 
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top ui-state-focus" role="tab" aria-expanded="true" aria-selected="true" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"></span><a href="#">Requirement</a></h3>
         <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"  role="tabpanel">
 
+            <button id="requirementAddTag">Add</button>
             <button id="requirementRenameTag">Rename</button>
             <table id="requirement" class="display">
               <thead>
@@ -55,6 +74,7 @@ No project selected
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Test script</a></h3>
         <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style=" display: none; " role="tabpanel">
 
+            <button id="testScriptAddTag">Add</button>
             <button id="testScriptRenameTag">Rename</button>
             <table id="testScript" class="display">
               <thead>
@@ -68,6 +88,7 @@ No project selected
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Test instance</a></h3>
         <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="display: none; " role="tabpanel">
 
+            <button id="testInstanceAddTag">Add</button>
             <button id="testInstanceRenameTag">Rename</button>
             <table id="testInstance" class="display">
               <thead>
@@ -81,6 +102,7 @@ No project selected
         <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all" role="tab" aria-expanded="false" aria-selected="false" tabindex="-1"><span class="ui-icon ui-icon-triangle-1-e"></span><a href="#">Defect</a></h3>
         <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="display: none; " role="tabpanel">
 
+            <button id="defectAddTag">Add</button>
             <button id="defectRenameTag">Rename</button>
             <table id="defect" class="display">
               <thead>
@@ -279,6 +301,8 @@ No project selected
                     $("#defectRenameTag").button("enable");
             });
 
+            <!-- section of JS for tag merging -->
+
             $('#mergeTagDialogRequirement').dialog({
 
             autoOpen: false,
@@ -375,6 +399,132 @@ No project selected
             }
             });
 
+            <!-- end of section of JS for merging tags -->
+
+            <!-- section of JS for adding new tags for requirements -->
+            $('#requirementAddTag').button();
+            $("#requirementAddTag").click(function(){
+                $('#requirementAddTagDialog').dialog("open");
+            });
+
+            $('#requirementAddTagDialog').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.addTag()}', {projectId:'${projectId}', name: $('#requirementAddTagInput').val(),type: "requirement" })
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#requirement', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+            <!-- end of section of JS for adding new tags -->
+
+            <!-- section of JS for adding new tags for test script -->
+            $('#testScriptAddTag').button();
+            $("#testScriptAddTag").click(function(){
+                $('#testScriptAddTagDialog').dialog("open");
+            });
+
+            $('#testScriptAddTagDialog').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.addTag()}', {projectId:'${projectId}', name: $('#testScriptAddTagInput').val(),type: "testScript" })
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#testScript', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+            <!-- end of section of JS for adding new tags -->
+
+            <!-- section of JS for adding new tags for test instance-->
+            $('#testInstanceAddTag').button();
+            $("#testInstanceAddTag").click(function(){
+                $('#testInstanceAddTagDialog').dialog("open");
+            });
+
+            $('#testInstanceAddTagDialog').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.addTag()}', {projectId:'${projectId}', name: $('#testInstanceAddTagInput').val(),type: "testInstance" })
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#testInstance', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+            <!-- end of section of JS for adding new tags -->
+
+            <!-- section of JS for adding new tags -->
+            $('#defectAddTag').button();
+            $("#defectAddTag").click(function(){
+                $('#defectAddTagDialog').dialog("open");
+            });
+
+            $('#defectAddTagDialog').dialog({
+
+            autoOpen: false,
+            height: 200,
+            width: 300,
+            modal: true,
+            buttons: {
+                "Confirm": function(){
+                    $.post('@{admin.Projects.addTag()}', {projectId:'${projectId}', name: $('#defectAddTagInput').val(),type: "defect" })
+                            .success(
+                                function(data) {
+                                    refreshTableContents('#defect', false);
+                                    $(this).dialog("close");
+                                })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                "Cancel": function(){
+                    $(this).dialog("close");
+                }
+            }
+            });
+            <!-- end of section of JS for adding new tags -->
+
             $(document).ready(function() {
 
                 
@@ -465,5 +615,4 @@ No project selected
 
         </script>
 
-
-<!--#{/else}-->
+#{/else}

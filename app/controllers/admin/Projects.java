@@ -105,6 +105,7 @@ public class Projects extends TMController {
         }
     }
 
+    @Restrict(UnitRole.ACCOUNTADMIN)
     public static void renameTag(Long tagId, String tagNewName, Long projectId){
         Tag tag = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).first();
 
@@ -150,6 +151,27 @@ public class Projects extends TMController {
              ((ProjectModel)th).save();
          }
         firstTag.delete();
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void addTag(Long projectId, String name, String type){
+        Project project =  Project.findById(projectId);
+        Tag tag = new Tag(project);
+        tag.name = name;
+        if(type.equals("requirement")){
+            tag.type = Tag.TagType.REQUIREMENT;
+        }
+        else if(type.equals("testScript")){
+            tag.type = Tag.TagType.TESTSCRIPT;
+        }
+        else if(type.equals("testInstance")){
+            tag.type = Tag.TagType.TESTINSTANCE;
+        }
+        else if(type.equals("defect")){
+            tag.type = Tag.TagType.DEFECT;
+        }
+
+        tag.save();
     }
 
 }
