@@ -50,18 +50,14 @@
             <input id="dateFrom" type="text" name="dateFrom" data-bind="value: created.dateFrom">
             <input id="dateTo" type="text" name="dateTo" data-bind="value: created.dateTo">
       </div>
-
     </div>
-      <div class="left_column">&nbsp;<br/>&nbsp;</div>
-      <div class="right_column">
-      <br/>
-        <button style="float:right;" id="saveFilter">Save filter</button>
-        <button id="filter" style="float:right;">Apply filter</button>
-      </div>
-
   </form>
 
-
+  <div class="left_column">&nbsp;<br/>&nbsp;</div>
+  <div class="right_column" style="float:right;">
+    <button style="float:right;" id="saveFilter">Save filter</button>
+    <button style="float:right;" id="filter">Apply filter</button>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -85,11 +81,8 @@
           refreshTableContents("#defectsTable", false);
       });
 
-      $('#saveFilter').button().click(function(event){
-          event.preventDefault();
-      });
 
-      // auto-filter
+        // auto-filter
         $.each($('#defectsFilterForm').find('input, select'), function(index, el) {
           $(el).change(function() {
             refreshTableContents('#defectsTable', false);

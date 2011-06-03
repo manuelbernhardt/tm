@@ -44,14 +44,13 @@
         <input id="dateTo" type="text" name="dateTo" data-bind="value: created.dateTo">
       </div>
     </div>
-      <div class="left_column">&nbsp;</div>
-      <div class="right_column">
-          <br/>
-         <button style="float:right;" id="saveFilter">Save filter</button>
-         <button style="float:right;" id="filter">Apply filter</button>
-      </div>
   </form>
 
+  <div class="left_column">&nbsp;</div>
+  <div class="right_column" style="float:right;">
+    <button style="float:right;" id="saveFilter">Save filter</button>
+    <button style="float:right;" id="filter">Apply filter</button>
+  </div>
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
@@ -72,10 +71,6 @@
     $('#filter').button().click(function(event) {
       event.preventDefault();
       refreshTableContents('#instanceTable', false);
-    });
-
-    $('#saveFilter').button().click(function(event){
-          event.preventDefault();
     });
 
     // auto-filter
