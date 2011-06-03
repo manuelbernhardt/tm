@@ -3,8 +3,8 @@
 </div>
 <div class="hiddenOnLoad">
   #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
-    <button id="createStepButton">Create step</button>
-    <button id="updateStepButton">Edit step</button>
+    <button id="createStepButton">Step</button>
+    <button id="updateStepButton">Update step</button>
   #{/deadbolt.restrict}
 
   <table class="display" id="stepTable">
@@ -30,7 +30,7 @@
   #{/ox.form}
 </div>
 
-<div id="updateStepDialog" title="Create a step">
+<div id="updateStepDialog" title="Update a step">
   #{ox.form id:'updateStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep'}
     #{ox.field field:'step.name', label:'Name' /}
     #{ox.field field:'step.position', label:'Position' /}
@@ -99,11 +99,12 @@
       modal: true,
       buttons: {
         "Create step": function() {
-          $('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')});
-          $(this).dialog("close");
+          if($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
+            $(this).dialog("close");
+          }
         },
         "Cancel": function() {
-          $('#createStepForm').resetForm();
+          $('#createStepForm').validate({meta: 'validate'}).resetForm();
           $(this).dialog("close");
         }
       }
@@ -134,8 +135,11 @@
       },
       buttons: {
         "Update step": function() {
-          $('#updateStepForm').submit();
-          $(this).dialog("close");
+          var valid = $('#updateStepForm').validate({meta: 'validate'}).form();
+          if(valid) {
+            $('#updateStepForm').submit();
+            $(this).dialog("close");
+          }
         },
         "Cancel": function() {
           $(this).dialog("close");
