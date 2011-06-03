@@ -164,11 +164,9 @@
         $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
         $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["instance", "default"])) {
-                $('.instanceHiddenOnLoad').show();
-                $('.instanceShownOnLoad').hide();
-                $("#remove_cycle").button('enable');
-
                 var instanceId = getNodeIdFromData(data);
+
+                // TODO all these requests should be in fact one request!
 
                 // tags data loading
                 $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
@@ -195,6 +193,11 @@
                             $('#saveParamsButton').button('enable');
                         });
                     });
+
+                  // only after this request is done do we display the data
+                  $('.instanceHiddenOnLoad').show();
+                  $('.instanceShownOnLoad').hide();
+                  $("#remove_cycle").button('enable');
                 });
             } else {
               $('.instanceHiddenOnLoad').hide();
