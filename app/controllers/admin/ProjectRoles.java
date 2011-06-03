@@ -4,17 +4,23 @@ import java.util.List;
 
 import controllers.Lookups;
 import controllers.TMController;
+import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.db.jpa.GenericModel;
+import play.mvc.With;
 
 /**
  * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
+@With(Deadbolt.class)
 public class ProjectRoles extends TMController {
 
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void create(ProjectRole role, Long projectId) {
         role.project = Project.findById(projectId);
         role.create();
@@ -22,6 +28,7 @@ public class ProjectRoles extends TMController {
         ok();
     }
 
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -42,6 +49,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void roleDefinition(Long roleId) {
         if (roleId == null) {
             error("No roleId provided");
@@ -53,6 +61,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void edit(Long roleId, String[] unitRoles) {
         if (roleId == null) {
             error("No roleId provided");
@@ -71,18 +80,17 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    public static void roleDelete(Long roleId){
+    @Restrict(UnitRole.PROJECTEDIT)
+    public static void roleDelete(Long roleId) {
         ProjectRole role = Lookups.getRole(roleId);
-        if(role!=null){
+        if (role != null) {
             List<TMUser> tmUser = TMUser.find("from TMUser tmu where ? in elements(tmu.projectRoles)", role).fetch();
-            if(tmUser.size()==0){
+            if (tmUser.size() == 0) {
                 role.delete();
-            }
-            else{
+            } else {
                 error("This role is assigned at least to one of users. Role is not deleted!");
             }
-        }
-        else{
+        } else {
             error("Not existing role!");
         }
     }
