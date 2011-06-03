@@ -9,16 +9,18 @@
 
 
 <div class="container">
-  <div id="actions" class="actions buttons">
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
-    <button id="create_folder">Folder</button>
-    <button id="create_script">Test Script</button>
-    #{/deadbolt.restrict}
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
-    <button id="remove">Remove</button>
-    #{/deadbolt.restrict}
-    <input id="searchInput" class="searchInput" type="text">
-  </div>
+    <div class="actions">
+      <div id="actions" class="actions buttons">
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
+        <button id="create_folder">Folder</button>
+        <button id="create_script">Test Script</button>
+        #{/deadbolt.restrict}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
+        <button id="remove">Remove</button>
+        #{/deadbolt.restrict}
+        <input id="searchInput" class="searchInput" type="text">
+      </div>
+    </div>
   <div class="tree-container">
     <div class="left_tree">
       #{box 'Test Script Repository'}

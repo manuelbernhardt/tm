@@ -19,6 +19,7 @@ import models.tm.test.Instance;
 import models.tm.test.Script;
 import models.tm.test.Tag;
 import models.tm.test.TagHolder;
+import play.Logger;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
 
@@ -155,8 +156,6 @@ public class Projects extends TMController {
         }
     }
 
-    //todo put logging
-
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void addTag(Long projectId, String name, String type){
         
@@ -182,6 +181,7 @@ public class Projects extends TMController {
         }
         else{
             error("Tag with given name already exist for type " + tag.type);
+            util.Logger.error(util.Logger.LogType.USER, "Attempt to create a tag with existing name " + tag.name + " type: " +tag.type);
         }
     }
 
@@ -198,6 +198,7 @@ public class Projects extends TMController {
                 }
                 else{
                     error("This tag is used in requirements. Tag not deleted!");
+                    util.Logger.error(util.Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " +tag.type);
                 }
             }
             else if(type.equals("testScript")){
@@ -207,6 +208,7 @@ public class Projects extends TMController {
                 }
                 else{
                     error("This tag is used in test scripts. Tag not deleted!");
+                    util.Logger.error(util.Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " +tag.type);
                 }
             }
             else if(type.equals("testInstance")){
@@ -216,6 +218,7 @@ public class Projects extends TMController {
                 }
                 else{
                     error("This tag is used in test instances. Tag not deleted!");
+                    util.Logger.error(util.Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " +tag.type);
                 }
             }
             else if(type.equals("defect")){
@@ -225,11 +228,13 @@ public class Projects extends TMController {
                 }
                 else{
                     error("This tag is used in defects. Tag not deleted!");
+                    util.Logger.error(util.Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " +tag.type);
                 }
             }
         }
         else{
             error("Tag doesn't exist!");
+            util.Logger.error(util.Logger.LogType.SECURITY, "Attempt to delete not existing tag with given id " + tagId);
         }
     }
 
