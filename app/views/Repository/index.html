@@ -59,6 +59,7 @@
           <div class="hiddenOnLoad">
             #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
             <button id="requirementScriptDialogOpen">Add requirement</button>
+            <button id="removeRequirementButton">Remove requirement</button>
             #{/deadbolt.restrict}
             <table class="display" id="requirementTable">
               <thead>
@@ -177,6 +178,11 @@
       parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
     }
 
+    handleRowSelection('#requirementTable', function() {
+        $("#removeRequirementButton").button('enable');
+    });
+
+
     $("#linkRequirementDialog").dialog({
               autoOpen: false,
               height: 550,
@@ -211,6 +217,13 @@
 
     $('#requirementScriptDialogOpen').button({icons: {primary: 'ui-icon-plus'}, disabled: true}).click(function () {
       $('#linkRequirementDialog').dialog('open');
+    });
+
+    $('#removeRequirementButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
+      $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
+        function(data) {
+            $('#requirementTable').dataTable().fnDraw();
+        }).error(errorHandler)
     });
 
     $('#searchInput').keyup(function() {

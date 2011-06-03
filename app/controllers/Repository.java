@@ -161,5 +161,4 @@ public class Repository extends TMController {
 
         TableController.renderJSON(requirements, Requirement.class, totalRecords, sColumns, sEcho);
     }
-
 }

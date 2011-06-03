@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Defect;
@@ -42,7 +43,7 @@ public class Requirements extends TMController {
         Lookups.allTags(getActiveProject().getId(), Tag.TagType.REQUIREMENT, q);
     }
 
-    @Restrict(UnitRole.REQEDIT)
+    @Restrictions({@Restrict(UnitRole.REQEDIT), @Restrict(UnitRole.TESTREPOEDIT)})
     public static void linkScript(Long requirementId, Long scriptId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Script script = Lookups.getScript(scriptId);
@@ -53,7 +54,7 @@ public class Requirements extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.REQEDIT)
+    @Restrictions({@Restrict(UnitRole.REQEDIT), @Restrict(UnitRole.TESTREPOEDIT)})
     public static void unlinkScript(Long requirementId, Long scriptId) {
         Requirement requirement = Lookups.getRequirement(requirementId);
         Script script = Lookups.getScript(scriptId);
