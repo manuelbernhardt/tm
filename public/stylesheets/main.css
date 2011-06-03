@@ -121,6 +121,11 @@ label.name {
     margin: 6px 5px 0px 0px;
 }
 
+label.extended {
+    width:25%;
+    margin:3px 10px 0px 0px;
+}
+
 span.name {
     display: block;
     float: left;

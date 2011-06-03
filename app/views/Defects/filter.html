@@ -2,7 +2,7 @@
   <form id="defectsFilterForm" action="index.html">
     <div class="left_column">
         <div class="field">
-            <label for="title">Summary</label>
+            <label class='name extended' for="title">Summary</label>
             <select id="titleCase" name="titleCase" data-bind="value: title.match">
                 <option value="contains">Contains</option>
                 <option value="notContains">Doesn't contain</option>
@@ -13,7 +13,7 @@
             <input id="title" name="title" data-bind="value: title.value"/>
         </div>
         <div class="field">
-            <label for="status"/>Status</label>
+            <label class='name extended' for="status"/>Status</label>
             <select id="status" name="status" data-bind="value: status.value">
                 <option value="">Select status</option>
                 #{list items:models.tm.DefectStatus.defectStatuses(), as:'defectStatus'}
@@ -22,13 +22,13 @@
             </select>
         </div>
         <div class="field">
-            <label for="tags" class="tag-inlining-label">Tags</label>
+            <label class='name extended' for="tags" class="tag-inlining-label">Tags</label>
             <input id="tags" class="tag-inlining-input" name="tags" data-bind="tags: tags.value"/>
         </div>
     </div>
     <div class="right_column">
         <div class="field">
-            <label for="assignedToId"/>Assigned to</label>
+            <label class="name extended" for="assignedToId"/>Assigned to</label>
             <select id="assignedToId" name="assignedToId" data-bind="value: assignedTo.value">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
@@ -37,7 +37,7 @@
             </select>
         </div>
         <div class="field">
-            <label for="submittedById"/>Raised by</label>
+            <label class='name extended' for="submittedById"/>Raised by</label>
             <select id="submittedById" name="submittedById" data-bind="value: submittedBy.value">
                 <option value="">Select a person</option>
                 #{list items:users, as:'user'}
@@ -46,16 +46,17 @@
             </select>
         </div>
         <div class="field">
-            <label for="dateFrom">Reported between</label>
+            <label class="name extended" for="dateFrom">Reported between</label>
             <input id="dateFrom" type="text" name="dateFrom" data-bind="value: created.dateFrom">
             <input id="dateTo" type="text" name="dateTo" data-bind="value: created.dateTo">
       </div>
     </div>
   </form>
+
   <div class="left_column">&nbsp;<br/>&nbsp;</div>
   <div class="right_column" style="float:right;">
-    <button id="filter">Apply filter</button>
-    <button id="saveFilter">Save filter</button>
+    <button style="float:right;" id="saveFilter">Save filter</button>
+    <button style="float:right;" id="filter">Apply filter</button>
   </div>
 </div>
 
@@ -79,6 +80,7 @@
           event.preventDefault();
           refreshTableContents("#defectsTable", false);
       });
+
 
         // auto-filter
         $.each($('#defectsFilterForm').find('input, select'), function(index, el) {

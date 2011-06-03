@@ -223,7 +223,7 @@ $(document).ready(function() {
     $('#deleteDefectButton').button('enable');
 
     getDefectDetails();
-    $('#defectDetails').show();
+
     $('#defectList').hide();
 
 
@@ -241,8 +241,6 @@ $(document).ready(function() {
   $('#updateDefectButton').button('disable');
 
   $('#updateDefectButton').click(function() {
-
-
     $('#updateDefectDialog').slideToggle('slow');
     $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
   });
@@ -351,7 +349,7 @@ function getDefectDetails(){
                 $('#defect-status').html(data.defectStatus);
                 $('#defect-created').html(data.defectCreated);
                 $('#defect-tags').html(data.defectTags);
-
+                $('#defectDetails').show();
             });
 }
 
