@@ -22,7 +22,7 @@ tm.ProjectWidget(templateWidgetDefectByDay):
       ? temporalField
       : created
       ? xAxis
-      : DAY
+      : DATE
       ? yAxis
       : COUNT
     publicWidget: true
