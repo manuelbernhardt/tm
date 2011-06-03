@@ -2,7 +2,7 @@
 <div class="field">
 <input id="${_caller.formId}_submit" type="submit" value="${_arg == null ? 'Save' : _arg}" class="formSubmit">
 <script type="text/javascript">
-$('#${_caller.formId}_submit').button();
+$('#${_caller.formId}_submit').button({disabled: true});
 </script>
 </div>
 #{/if}
