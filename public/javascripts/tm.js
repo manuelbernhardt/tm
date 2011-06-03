@@ -593,9 +593,8 @@ function refreshWidgetsContent(dashboard) {
                 var settings = {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
-                                    '<select id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Filter...\' "></select>' +
-                                    '<button id="filterExpand">&nbsp</button>' +
-                                    '</div>' +
+                                    '<button id="filterExpand">Expand filter</button>' +
+                                    '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +                                    '</div>' +
                                     '<div id="filterSaveDialog" title="Save filter">' +
                                     '<label for="filterName" class="name">Name</label>' +
                                     '<input id="filterName" name="name"/>' +
@@ -652,7 +651,8 @@ function refreshWidgetsContent(dashboard) {
                 $('#filterExpand').css("height", "19px");
                 $('#filterExpand').css("margin-bottom", "-0.4em");
 
-                $('#filterExpand').button({icons: {primary: 'ui-icon-triangle-2-n-s'}, text: false}).click(function() {
+                $('#filterExpand').button({icons: {primary: 'ui-icon-carat-1-e'}, text: false}).click(function() {
+                    $('#filterExpand span.ui-icon').toggleClass('ui-icon-carat-1-s ui-icon-carat-1-e', 'switch');
                     $this.slideToggle('slow');
                 });
                 $('#filterExpand').children(".ui-button-text").attr("style", "padding:0.1em 0 0 0");
@@ -721,7 +721,7 @@ function loadFilters(url, filterSelectionViewModel) {
                 else {
                     ko.mapping.updateFromJS(filterSelectionViewModel, json);
                 }
-                $('#filterSelect').append("<option value='customFilter'>Custom filter</option>");
+                $('#filterSelect').append("<option value='customFilter'>Create new filter</option>");
             }).error(errorHandler);
 
 }
