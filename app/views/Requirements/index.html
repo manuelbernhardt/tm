@@ -98,8 +98,6 @@
 
     $("#innerTabs").tabs();
 
-    $('.oxdisplayfield').removeClass('field');
-
     $("#requirementTree").tree({
               types: requirementTreeTypes, onRename: function(name) {
                 var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
@@ -115,7 +113,6 @@
             });
 
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
-
     var tokens = $('#requirementForm_requirement_tags').tokenInput({
               url: '@{Requirements.allTags()}',
               preventDuplicates: true,

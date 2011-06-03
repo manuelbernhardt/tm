@@ -251,6 +251,7 @@ $.TokenList = function (input, url_or_data, settings) {
                     if(!$(this).val().length) {
                         if(selected_token) {
                             delete_token($(selected_token));
+                            hidden_input.change();
                         } else if(previous_token.length) {
                             select_token($(previous_token.get(0)));
                         }
@@ -270,6 +271,7 @@ $.TokenList = function (input, url_or_data, settings) {
                 case KEY.COMMA:
                   if(selected_dropdown_item) {
                     add_token($(selected_dropdown_item));
+                    hidden_input.change();
                     return false;
                   }
                   break;
@@ -426,6 +428,7 @@ $.TokenList = function (input, url_or_data, settings) {
             .appendTo(this_token)
             .click(function () {
                 delete_token($(this).parent());
+                hidden_input.change();
                 return false;
             });
 
@@ -472,6 +475,7 @@ $.TokenList = function (input, url_or_data, settings) {
 
         // Insert the new tokens
         insert_token(li_data.id, li_data.name);
+
 
         // Check the token limit
         if(settings.tokenLimit !== null && token_count >= settings.tokenLimit) {
@@ -589,8 +593,6 @@ $.TokenList = function (input, url_or_data, settings) {
             }
         });
         hidden_input.val(token_values.join(settings.tokenDelimiter));
-        hidden_input.change();
-
     }
 
     // Hide and clear the results dropdown
@@ -640,6 +642,7 @@ $.TokenList = function (input, url_or_data, settings) {
                 })
                 .mousedown(function (event) {
                     add_token($(event.target).closest("li"));
+                    hidden_input.change();
                     return false;
                 })
                 .hide();
@@ -675,6 +678,7 @@ $.TokenList = function (input, url_or_data, settings) {
                 create.mousedown(function(event) {
                     input_box.focus();
                     insert_token(-1, input_box.val());
+                    hidden_input.change();
                     hide_dropdown();
                     input_box.val("");
                     return false;

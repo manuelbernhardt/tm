@@ -202,7 +202,7 @@ public class TMController extends Controller {
     @Util
     public static boolean controllerHasActiveProject() {
         if (request.controllerClass.equals(TMTreeController.class)) {
-            return Arrays.binarySearch(adminTrees, request.params.get("treeId")) == -1;
+            return Arrays.binarySearch(adminTrees, request.params.get("treeId")) < 0;
         }
         return !request.controller.startsWith("admin");
     }
