@@ -128,33 +128,38 @@ public class Projects extends TMController {
 
         Tag firstTag = Tag.findById(firstTagId);
         Tag secondTag = Tag.findById(secondTagId);
-        List<TagHolder> tagHolder = new ArrayList<TagHolder>();
+        if(!firstTag.equals(secondTag)){
+            List<TagHolder> tagHolder = new ArrayList<TagHolder>();
 
-        if(firstTag.type== Tag.TagType.REQUIREMENT){
-            tagHolder = Requirement.find("from Requirement r where r.project.id=?",projectId).fetch();
-        }
-        else if(firstTag.type== Tag.TagType.TESTSCRIPT){
-            tagHolder = Script.find("from Script s where s.project.id=?", projectId).fetch();
-        }
-        else if(firstTag.type==Tag.TagType.TESTINSTANCE){
-            tagHolder =  Instance.find("from Instance i where i.project.id=?", projectId).fetch();
-        }
-        else if(firstTag.type==Tag.TagType.DEFECT){
-            tagHolder = Defect.find("from Defect d where d.project.id=?", projectId).fetch();
-        }
+            if(firstTag.type== Tag.TagType.REQUIREMENT){
+                tagHolder = Requirement.find("from Requirement r where r.project.id=?",projectId).fetch();
+            }
+            else if(firstTag.type== Tag.TagType.TESTSCRIPT){
+                tagHolder = Script.find("from Script s where s.project.id=?", projectId).fetch();
+            }
+            else if(firstTag.type==Tag.TagType.TESTINSTANCE){
+                tagHolder =  Instance.find("from Instance i where i.project.id=?", projectId).fetch();
+            }
+            else if(firstTag.type==Tag.TagType.DEFECT){
+                tagHolder = Defect.find("from Defect d where d.project.id=?", projectId).fetch();
+            }
 
-         for(TagHolder th:tagHolder){
-             if(th.getTags().contains(firstTag)) {
-                th.getTags().remove(firstTag);
-                th.getTags().add(secondTag);
+             for(TagHolder th:tagHolder){
+                 if(th.getTags().contains(firstTag)) {
+                    th.getTags().remove(firstTag);
+                    th.getTags().add(secondTag);
+                 }
+                 ((ProjectModel)th).save();
              }
-             ((ProjectModel)th).save();
-         }
-        firstTag.delete();
+            firstTag.delete();
+        }
     }
+
+    //todo put logging
 
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void addTag(Long projectId, String name, String type){
+        
         Project project =  Project.findById(projectId);
         Tag tag = new Tag(project);
         tag.name = name;
@@ -171,7 +176,61 @@ public class Projects extends TMController {
             tag.type = Tag.TagType.DEFECT;
         }
 
-        tag.save();
+        Long tagsNo = Tag.count("from Tag t where t.name = ? and t.type = ?", tag.name, tag.type);
+        if(tagsNo==0){
+            tag.create();
+        }
+        else{
+            error("Tag with given name already exist for type " + tag.type);
+        }
+    }
+
+    //todo put logging
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void deleteTag(Long tagId, String type){
+        Tag tag = Tag.findById(tagId);
+        if(tag!=null){
+            if(type.equals("requirement")){
+                Long requirementNo = Requirement.count("from Requirement r where ? in elements(r.tags)", tag);
+                if(requirementNo==0){
+                    tag.delete();
+                }
+                else{
+                    error("This tag is used in requirements. Tag not deleted!");
+                }
+            }
+            else if(type.equals("testScript")){
+                Long scriptsNo = Script.count("from Script s where ? in elements(s.tags)", tag);
+                if(scriptsNo==0){
+                    tag.delete();
+                }
+                else{
+                    error("This tag is used in test scripts. Tag not deleted!");
+                }
+            }
+            else if(type.equals("testInstance")){
+                Long instancesNo = Instance.count("from Instance i where ? in elements(i.tags)", tag);
+                if(instancesNo==0){
+                    tag.delete();
+                }
+                else{
+                    error("This tag is used in test instances. Tag not deleted!");
+                }
+            }
+            else if(type.equals("defect")){
+                Long defectsNo = Defect.count("from Defect d where ? in elements(d.tags)", tag);
+                if(defectsNo==0){
+                    tag.delete();
+                }
+                else{
+                    error("This tag is used in defects. Tag not deleted!");
+                }
+            }
+        }
+        else{
+            error("Tag doesn't exist!");
+        }
     }
 
 }

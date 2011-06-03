@@ -62,6 +62,7 @@ No project selected
 
             <button id="requirementAddTag">Add</button>
             <button id="requirementRenameTag">Rename</button>
+            <button id="requirementDeleteTag">Delete</button>
             <table id="requirement" class="display">
               <thead>
               <tr>
@@ -76,6 +77,7 @@ No project selected
 
             <button id="testScriptAddTag">Add</button>
             <button id="testScriptRenameTag">Rename</button>
+            <button id="testScriptDeleteTag">Delete</button>
             <table id="testScript" class="display">
               <thead>
               <tr>
@@ -90,6 +92,7 @@ No project selected
 
             <button id="testInstanceAddTag">Add</button>
             <button id="testInstanceRenameTag">Rename</button>
+            <button id="testInstanceDeleteTag">Delete</button>
             <table id="testInstance" class="display">
               <thead>
               <tr>
@@ -104,6 +107,7 @@ No project selected
 
             <button id="defectAddTag">Add</button>
             <button id="defectRenameTag">Rename</button>
+            <button id="defectDeleteTag">Delete</button>
             <table id="defect" class="display">
               <thead>
               <tr>
@@ -133,7 +137,7 @@ No project selected
             });
 
             // button for requirement tag renaming
-            $('#requirementRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}, disabled:true});
+            $('#requirementRenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
             $("#requirementRenameTag").click(function(){
                 $('#requirementRenameDialog').dialog("open");
                 var dataTableRequirement = $('#requirement').dataTable();
@@ -157,6 +161,7 @@ No project selected
                                         $('#mergeTagDialogRequirement').dialog("open");
                                     }
                                     refreshTableContents('#requirement', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -173,10 +178,11 @@ No project selected
             handleRowSelection("#requirement", function(data){
                 if(getSelectedRowId("#requirement")!=null && getSelectedRowId("#requirement")!='')
                     $("#requirementRenameTag").button("enable");
+                    $("#requirementDeleteTag").button("enable");
             });
 
             // button for test script tag renaming
-            $('#testScriptRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}, disabled:true});
+            $('#testScriptRenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
             $("#testScriptRenameTag").click(function(){
                 $('#testScriptRenameDialog').dialog("open");
                 var dataTableTestScript = $('#testScript').dataTable();
@@ -200,6 +206,7 @@ No project selected
                                         $('#mergeTagDialogTestScript').dialog("open");
                                     }
                                     refreshTableContents('#testScript', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -215,10 +222,11 @@ No project selected
             handleRowSelection("#testScript", function(){
                 if(getSelectedRowId("#testScript")!=null && getSelectedRowId("#testScript")!='')
                     $("#testScriptRenameTag").button("enable");
+                    $("#testScriptDeleteTag").button("enable");
             });
 
             // button for test instance tag renaming
-            $('#testInstanceRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}, disabled:true});
+            $('#testInstanceRenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
             $("#testInstanceRenameTag").click(function(){
                 $('#testInstanceRenameDialog').dialog("open");
                 var dataTableTestInstance = $('#testInstance').dataTable();
@@ -242,6 +250,7 @@ No project selected
                                         $('#mergeTagDialogTestInstance').dialog("open");
                                     }
                                     refreshTableContents('#testInstance', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -257,10 +266,11 @@ No project selected
             handleRowSelection("#testInstance", function(){
                 if(getSelectedRowId("#testInstance")!=null && getSelectedRowId("#testInstance")!='')
                      $("#testInstanceRenameTag").button("enable");
+                     $("#testInstanceDeleteTag").button("enable");
             });
 
             // button for defect tag renaming
-            $('#defectRenameTag').button({icons: {primary: 'ui-icon-carat-1-e'}, disabled:true});
+            $('#defectRenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
             $("#defectRenameTag").click(function(){
                 $('#defectRenameDialog').dialog("open");
                 var dataTableDefect = $('#defect').dataTable();
@@ -284,6 +294,7 @@ No project selected
                                         $('#mergeTagDialogDefect').dialog("open");
                                     }
                                     refreshTableContents('#defect', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -299,6 +310,8 @@ No project selected
             handleRowSelection("#defect", function(){
                 if(getSelectedRowId("#defect")!=null && getSelectedRowId("#defect")!='')
                     $("#defectRenameTag").button("enable");
+                    $("#defectDeleteTag").button("enable");
+
             });
 
             <!-- section of JS for tag merging -->
@@ -402,7 +415,7 @@ No project selected
             <!-- end of section of JS for merging tags -->
 
             <!-- section of JS for adding new tags for requirements -->
-            $('#requirementAddTag').button();
+            $('#requirementAddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#requirementAddTag").click(function(){
                 $('#requirementAddTagDialog').dialog("open");
             });
@@ -419,6 +432,7 @@ No project selected
                             .success(
                                 function(data) {
                                     refreshTableContents('#requirement', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -433,7 +447,7 @@ No project selected
             <!-- end of section of JS for adding new tags -->
 
             <!-- section of JS for adding new tags for test script -->
-            $('#testScriptAddTag').button();
+            $('#testScriptAddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#testScriptAddTag").click(function(){
                 $('#testScriptAddTagDialog').dialog("open");
             });
@@ -450,6 +464,7 @@ No project selected
                             .success(
                                 function(data) {
                                     refreshTableContents('#testScript', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -464,7 +479,7 @@ No project selected
             <!-- end of section of JS for adding new tags -->
 
             <!-- section of JS for adding new tags for test instance-->
-            $('#testInstanceAddTag').button();
+            $('#testInstanceAddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#testInstanceAddTag").click(function(){
                 $('#testInstanceAddTagDialog').dialog("open");
             });
@@ -481,6 +496,7 @@ No project selected
                             .success(
                                 function(data) {
                                     refreshTableContents('#testInstance', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -495,7 +511,7 @@ No project selected
             <!-- end of section of JS for adding new tags -->
 
             <!-- section of JS for adding new tags -->
-            $('#defectAddTag').button();
+            $('#defectAddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#defectAddTag").click(function(){
                 $('#defectAddTagDialog').dialog("open");
             });
@@ -512,6 +528,7 @@ No project selected
                             .success(
                                 function(data) {
                                     refreshTableContents('#defect', false);
+                                    disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
                             .error(errorHandler);
@@ -524,6 +541,55 @@ No project selected
             }
             });
             <!-- end of section of JS for adding new tags -->
+
+            <!-- section of JS for deletion of tags -->
+
+            $('#requirementDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
+            $("#requirementDeleteTag").click(function(){
+                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#requirement'), type:'requirement'}, function(){
+                    refreshTableContents('#requirement', false);
+                    disableRenameAndDeleteButtons();
+                }).error(errorHandler);
+            });
+
+            $('#testScriptDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
+            $("#testScriptDeleteTag").click(function(){
+                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testScript'), type:'testScript'}, function(){
+                    refreshTableContents('#testScript', false);
+                    disableRenameAndDeleteButtons();
+                }).error(errorHandler);
+            });
+
+            $('#testInstanceDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
+            $("#testInstanceDeleteTag").click(function(){
+                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testInstance'), type:'testInstance'}, function(){
+                    refreshTableContents('#testInstance', false);
+                    disableRenameAndDeleteButtons();
+                }).error(errorHandler);
+            });
+
+            $('#defectDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
+            $("#defectDeleteTag").click(function(){
+                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#defect'), type:'defect'}, function(){
+                    refreshTableContents('#defect', false);
+                    disableRenameAndDeleteButtons();
+                }).error(errorHandler);
+            });
+
+            <!-- end ofsection of JS for deletion of tags -->
+
+            <!-- function for disabling all rename and delete buttons -->
+
+            function disableRenameAndDeleteButtons(){
+                $("#requirementDeleteTag").button("disable");
+                $("#requirementRenameTag").button("disable");
+                $("#testScriptDeleteTag").button("disable");
+                $("#testScriptRenameTag").button("disable");
+                $("#testInstanceDeleteTag").button("disable");
+                $("#testInstanceRenameTag").button("disable");
+                $("#defectDeleteTag").button("disable");
+                $("#defectRenameTag").button("disable");
+            }
 
             $(document).ready(function() {
 
