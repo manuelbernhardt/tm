@@ -2,6 +2,7 @@ package controllers.admin;
 
 import controllers.Lookups;
 import controllers.TMController;
+import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
 import models.general.UnitRole;
 import models.tm.Project;
@@ -9,7 +10,9 @@ import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
+import play.mvc.With;
 
+@With(Deadbolt.class)
 public class Approach extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
