@@ -13,6 +13,7 @@ import models.tm.ProjectRole;
 import models.tm.TMUser;
 import play.db.jpa.GenericModel;
 import play.mvc.With;
+import util.Logger;
 
 /**
  * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
@@ -89,9 +90,11 @@ public class ProjectRoles extends TMController {
                 role.delete();
             } else {
                 error("This role is assigned at least to one of users. Role is not deleted!");
+                Logger.error(Logger.LogType.USER, "Attempt to delete a role id %s which is assigned to at least one user", roleId);
             }
         } else {
             error("Not existing role!");
+            Logger.error(Logger.LogType.SECURITY, "Role with id %s doesn't exist", roleId);
         }
     }
 }
