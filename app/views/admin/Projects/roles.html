@@ -10,6 +10,8 @@ No project selected
     baseClass:'models.tm.ProjectRole',
     openDialogButtonText:'Create new role', submitButtonText:'Create role'}
 
+
+
     <script type="text/javascript">
       function newRoleDialogSubmissionCallback() {
         refreshTableContents('#tab', false);
@@ -18,7 +20,8 @@ No project selected
     #{input.field field:'role.name', label:'Name' /}
     <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
     #{/formDialog}
-
+    <button id='remove-role'> Remove</button>
+      
     <table id="tab" class="display">
       <thead>
       <tr>
@@ -61,6 +64,17 @@ No project selected
       }
     };
     #{/tabularasa.init}
+
+      handleRowSelection("#tab", function(){
+          $('#remove-role').button('enable');
+      });
+
+    $('#remove-role').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function(){
+        $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
+            refreshTableContents('#tab', false);
+        })
+        .error(errorHandler);
+    });
 
     /* Click listener to reload the role definition */
     $("#tab tbody").click(function(event) {

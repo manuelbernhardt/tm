@@ -2,10 +2,12 @@ package controllers.admin;
 
 import java.util.List;
 
+import controllers.Lookups;
 import controllers.TMController;
 import controllers.tabularasa.TableController;
 import models.tm.Project;
 import models.tm.ProjectRole;
+import models.tm.TMUser;
 import play.db.jpa.GenericModel;
 
 /**
@@ -66,6 +68,22 @@ public class ProjectRoles extends TMController {
             }
             role.save();
             ok();
+        }
+    }
+
+    public static void roleDelete(Long roleId){
+        ProjectRole role = Lookups.getRole(roleId);
+        if(role!=null){
+            List<TMUser> tmUser = TMUser.find("from TMUser tmu where ? in elements(tmu.projectRoles)", role).fetch();
+            if(tmUser.size()==0){
+                role.delete();
+            }
+            else{
+                error("This role is assigned at least to one of users. Role is not deleted!");
+            }
+        }
+        else{
+            error("Not existing role!");
         }
     }
 }
