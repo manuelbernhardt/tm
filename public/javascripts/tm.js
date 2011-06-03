@@ -370,6 +370,9 @@ function removeDialogs() {
                             },
                             data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters
                         });
+                return true;
+            } else {
+                return false;
             }
         },
         getFieldId: function(fieldName) {
