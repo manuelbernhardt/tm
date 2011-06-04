@@ -2,7 +2,7 @@
 #{set title:'Test Scripts repository' /}
 
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-<div id="linkRequirementDialog" title="Assign requirement to test script">
+<div id="linkRequirementDialog" title="Assign Requirement to Test Script">
   <div id="requirementTree" class="tree"></div>
 </div>
 #{/deadbolt.restrict}
@@ -60,7 +60,7 @@
         <div id="linkedRequirements">
           <div class="hiddenOnLoad">
             #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
-            <button id="requirementScriptDialogOpen">Add requirement</button>
+            <button id="requirementScriptDialogOpen">Requirement</button>
             <button id="removeRequirementButton">Remove requirement</button>
             #{/deadbolt.restrict}
             <table class="display" id="requirementTable">
@@ -191,7 +191,7 @@
               width: 300,
               modal: true,
               buttons: {
-                "Link to test script": function() {
+                "Link": function() {
                   var treeContainer = $("#requirementTree");
                   var $tree = jQuery.jstree._reference(treeContainer);
                   var selectedNode = $tree.get_selected();
