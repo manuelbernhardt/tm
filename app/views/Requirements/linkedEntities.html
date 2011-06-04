@@ -45,7 +45,7 @@
 
 
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
-<div id="linkScriptDialog" title="Assign requirement to test script">
+<div id="linkScriptDialog" title="Assign test script to requirement">
     <div id="repositoryTree" class="tree"></div>
 </div>
 #{/deadbolt.restrict}
@@ -164,7 +164,7 @@
             width: 300,
             modal: true,
             buttons: {
-                "Link to test script": function() {
+                "Link": function() {
 
                     var valid = false;
                     var treeContainer = $("#repositoryTree");
