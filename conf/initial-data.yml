@@ -1,6 +1,6 @@
-account.Account(oxiras):
+account.Account(test):
     name: Oxiras ApS
-    subdomain: oxiras
+    subdomain: test
     email: info@oxiras.com
 
 account.User(gwenUser):
@@ -8,231 +8,231 @@ account.User(gwenUser):
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
-    account: oxiras
+    account: test
 
 account.User(manuUser):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
-    account: oxiras
+    account: test
 
-account.User(nathalieUser):
-    firstName: Nathalie
-    lastName: Van Haaster
-    email: nathalie@example.com
-    password: nathalie
-    account: oxiras
+account.User(nikolaUser):
+    firstName: Nikola
+    lastName: Milivojevic
+    email: nikola@example.com
+    password: nikola
+    account: test
 
-account.User(vroniUser):
-    firstName: Vroni
-    lastName: Bodmann
-    email: vroni@example.com
-    password: vroni
-    account: oxiras
+account.User(filipUser):
+    firstName: Filip
+    lastName: Kis
+    email: filip@example.com
+    password: filip
+    account: test
 
 account.User(tamaraUser):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
-    account: oxiras
+    account: test
 
 account.User(christianUser):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
     password: christian
-    account: oxiras
+    account: test
 
 account.User(testUserAdminUser):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(testProjectAdminUser):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(testAccountAdminUser):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmRequirementsViewUser):
     firstName: Eddie
     lastName: Larrisson
     email: RequirementsView@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmRequirementsEditUser):
     firstName: Eddie
     lastName: Larrisson 2
     email: RequirementsEdit@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmRequirementsCreateUser):
     firstName: Eddie
     lastName: Larrisson 3
     email: RequirementsCreate@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmRequirementsDeleteUser):
     firstName: Eddie
     lastName: Larrisson 4
     email: RequirementsDelete@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestRepositoryViewUser):
     firstName: William
     lastName: Windows
     email: TestRepositoryView@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestRepositoryEditUser):
     firstName: William
     lastName: Windows 2
     email: TestRepositoryEdit@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestRepositoryCreateUser):
     firstName: William
     lastName: Windows 3
     email: TestRepositoryCreate@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestRepositoryDeleteUser):
     firstName: William
     lastName: Windows 4
     email: TestRepositoryDelete@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestPreparationViewUser):
     firstName: Scala
     lastName: Johansson
     email: TestPreparationView@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestPreparationEditUser):
     firstName: Scala
     lastName: Johansson 2
     email: TestPreparationEdit@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestPreparationCreateUser):
     firstName: Scala
     lastName: Johansson 3
     email: TestPreparationCreate@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestPreparationDeleteUser):
     firstName: Scala
     lastName: Johansson 4
     email: TestPreparationDelete@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestExecutionViewUser):
     firstName: Lenny
     lastName: Linux
     email: TestExecutionView@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestExecutionEditUser):
     firstName: Lenny
     lastName: Linux 2
     email: TestExecutionEdit@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestExecutionCreateUser):
     firstName: Lenny
     lastName: Linux 3
     email: TestExecutionCreate@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmTestExecutionDeleteUser):
     firstName: Lenny
     lastName: Linux 4
     email: TestExecutionDelete@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmDefectsViewUser):
     firstName: Mona Lisa
     lastName: Harddrive
     email: DefectsView@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmDefectsEditUser):
     firstName: Mona Lisa
     lastName: Harddrive 2
     email: DefectsEdit@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmDefectsCreateUser):
     firstName: Mona Lisa
     lastName: Harddrive 3
     email: DefectsCreate@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 account.User(tmDefectsDeleteUser):
     firstName: Mona Lisa
     lastName: Harddrive 4
     email: DefectsDelete@testUser.com
     password: testAuth
-    account: oxiras
+    account: test
 
 tm.ProjectCategory(projCat2011):
     name: 2011
-    account: oxiras
+    account: test
 
 tm.ProjectCategory(projCat2012):
     name: 2012
-    account: oxiras
+    account: test
 
-tm.Project(demenagement):
-    name: Demenagement
-    account: oxiras
+tm.Project(tmApplicationTestProject1):
+    name: TM Application - test project 1
+    account: test
     projectCategory: projCat2011
 
-tm.Project(testManagementApplication):
-    name: Test Management Application
-    account: oxiras
+tm.Project(tmApplicationTestProject2):
+    name: TM Application - test project 2
+    account: test
     projectCategory: projCat2011
 
-tm.Project(world):
-    name: Conquer the world
-    account: oxiras
+tm.Project(tmApplicationTestProject3):
+    name: TM Application - test project 3
+    account: test
     projectCategory: projCat2012
 
 tm.ProjectRole(demRoleViewOnly):
     name: View only
-    account: oxiras
-    project: demenagement
+    account: test
+    project: tmApplicationTestProject1
     unitRoles:
          - reqView
          - approachView
@@ -242,8 +242,8 @@ tm.ProjectRole(demRoleViewOnly):
 
 tm.ProjectRole(tmRoleTestLead):
     name: Test Lead
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - projectEdit
          - reqView
@@ -269,39 +269,39 @@ tm.ProjectRole(tmRoleTestLead):
 
 tm.ProjectRole(tmRoleRequirementsView):
     name: (unit) Requirement view
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
 
 tm.ProjectRole(tmRoleRequirementsEdit):
     name: (unit) Requirement edit
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
          - reqEdit
 
 tm.ProjectRole(tmRoleRequirementsCreate):
     name: (unit) Requirement create
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
          - reqCreate
 
 tm.ProjectRole(tmRoleRequirementsDelete):
     name: (unit) Requirement delete
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
          - reqDelete
 
 tm.ProjectRole(tmRoleRequirementsAll):
     name: Requirement all
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
          - reqCreate
@@ -310,39 +310,39 @@ tm.ProjectRole(tmRoleRequirementsAll):
 
 tm.ProjectRole(tmRoleTestRepoView):
     name: (unit) Test Repository view
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testRepoView
 
 tm.ProjectRole(tmRoleTestRepoEdit):
     name: (unit) Test Repository edit
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testRepoView
          - testRepoEdit
 
 tm.ProjectRole(tmRoleTestRepoCreate):
     name: (unit) Test Repository create
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testRepoView
          - testRepoCreate
 
 tm.ProjectRole(tmRoleTestRepoDelete):
     name: (unit) Test Repository delete
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testRepoView
          - testRepoDelete
 
 tm.ProjectRole(tmRoleTestRepoAll):
     name: Test Designer
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testRepoView
          - testRepoCreate
@@ -351,39 +351,39 @@ tm.ProjectRole(tmRoleTestRepoAll):
 
 tm.ProjectRole(tmRoleTestPreparationView):
     name: (unit) Test Preparation view
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testPrepView
 
 tm.ProjectRole(tmRoleTestPreparationEdit):
     name: (unit) Test Preparation edit
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testPrepView
          - testPrepEdit
 
 tm.ProjectRole(tmRoleTestPreparationCreate):
     name: (unit) Test Preparation create
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testPrepView
          - testPrepCreate
 
 tm.ProjectRole(tmRoleTestPreparationDelete):
     name: (unit) Test Preparation delete
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testPrepView
          - testPrepDelete
 
 tm.ProjectRole(tmRoleTestPreparationAll):
     name: Test Preparation
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testPrepView
          - testPrepCreate
@@ -392,39 +392,39 @@ tm.ProjectRole(tmRoleTestPreparationAll):
 
 tm.ProjectRole(tmRoleTestExecutionView):
     name: (unit) Test Execution view
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testExecView
 
 tm.ProjectRole(tmRoleTestExecutionEdit):
     name: (unit) Test Execution edit
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testExecView
          - testExecEdit
 
 tm.ProjectRole(tmRoleTestExecutionCreate):
     name: (unit) Test Execution create
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testExecView
          - testExecCreate
 
 tm.ProjectRole(tmRoleTestExecutionDelete):
     name: (unit) Test Execution delete
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testExecView
          - testExecDelete
 
 tm.ProjectRole(tmRoleTestExecution):
     name: Test Execution
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - testExecView
          - testExecCreate
@@ -435,39 +435,39 @@ tm.ProjectRole(tmRoleTestExecution):
 
 tm.ProjectRole(tmRoleDefectsView):
     name: (unit) Defect view
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - defectView
 
 tm.ProjectRole(tmRoleDefectsEdit):
     name: (unit) Defect edit
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - defectView
          - defectEdit
 
 tm.ProjectRole(tmRoleDefectsCreate):
     name: (unit) Defect create
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - defectView
          - defectCreate
 
 tm.ProjectRole(tmRoleDefectsDelete):
     name: (unit) Defect delete
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - defectView
          - defectDelete
 
 tm.ProjectRole(tmRoleDefectsResolution):
     name: Defect resolution
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - defectView
          - defectCreate
@@ -475,8 +475,8 @@ tm.ProjectRole(tmRoleDefectsResolution):
 
 tm.ProjectRole(tmRoleViewOnly):
     name: View only
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     unitRoles:
          - reqView
          - approachView
@@ -486,8 +486,8 @@ tm.ProjectRole(tmRoleViewOnly):
 
 tm.TMUser(gwen):
     user: gwenUser
-    account: oxiras
-    activeProject: testManagementApplication
+    account: test
+    activeProject: tmApplicationTestProject2
     accountRoles:
        - accountAdmin
        - userCreate
@@ -502,8 +502,8 @@ tm.TMUser(gwen):
 
 tm.TMUser(manu):
     user: manuUser
-    account: oxiras
-    activeProject: testManagementApplication
+    account: test
+    activeProject: tmApplicationTestProject2
     accountRoles:
        - accountAdmin
        - userCreate
@@ -517,31 +517,9 @@ tm.TMUser(manu):
        - tmRoleViewOnly
        - demRoleViewOnly
 
-tm.TMUser(nathalie):
-    user: nathalieUser
-    account: oxiras
-    activeProject: demenagement
-    projectRoles:
-       - demRoleViewOnly
-
-tm.TMUser(vroni):
-    user: vroniUser
-    account: oxiras
-    activeProject: demenagement
-    projectRoles:
-       - demRoleViewOnly
-
-tm.TMUser(tamara):
-    user: tamaraUser
-    account: oxiras
-    activeProject: testManagementApplication
-    projectRoles:
-       - demRoleViewOnly
-       - tmRoleTestExecution
-
-tm.TMUser(christian):
-    user: christianUser
-    account: oxiras
+tm.TMUser(nikola):
+    user: nikolaUser
+    account: test
     accountRoles:
        - accountAdmin
        - userCreate
@@ -550,19 +528,57 @@ tm.TMUser(christian):
        - projectCreate
        - projectEdit
        - projectDelete
-    activeProject: testManagementApplication
+    activeProject: tmApplicationTestProject1
+    projectRoles:
+       - demRoleViewOnly
+
+tm.TMUser(filip):
+    user: filipUser
+    account: test
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
+    activeProject: tmApplicationTestProject1
+    projectRoles:
+       - demRoleViewOnly
+
+tm.TMUser(tamara):
+    user: tamaraUser
+    account: test
+    activeProject: tmApplicationTestProject2
+    projectRoles:
+       - demRoleViewOnly
+       - tmRoleTestExecution
+
+tm.TMUser(christian):
+    user: christianUser
+    account: test
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
+    activeProject: tmApplicationTestProject2
     projectRoles:
        - tmRoleTestLead
 
 tm.TMUser(tmUserAccountAdmin):
     user: testAccountAdminUser
-    account: oxiras
+    account: test
     accountRoles:
        - accountAdmin
 
 tm.TMUser(tmUserProjectAdmin):
     user: testProjectAdminUser
-    account: oxiras
+    account: test
     accountRoles:
        - projectCreate
        - projectEdit
@@ -570,7 +586,7 @@ tm.TMUser(tmUserProjectAdmin):
 
 tm.TMUser(tmUserUserAdmin):
     user: testUserAdminUser
-    account: oxiras
+    account: test
     accountRoles:
        - userCreate
        - userEdit
@@ -578,162 +594,162 @@ tm.TMUser(tmUserUserAdmin):
 
 tm.TMUser(tmUserRequirementsView):
     user: tmRequirementsViewUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleRequirementsView
 
 tm.TMUser(tmUserRequirementsEdit):
     user: tmRequirementsEditUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleRequirementsEdit
 
 tm.TMUser(tmUserRequirementsCreate):
     user: tmRequirementsCreateUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleRequirementsCreate
 
 tm.TMUser(tmUserRequirementsDelete):
     user: tmRequirementsDeleteUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleRequirementsDelete
 
 tm.TMUser(tmUserTestRepositoryView):
     user: tmTestRepositoryViewUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestRepoView
 
 tm.TMUser(tmUserTestRepositoryEdit):
     user: tmTestRepositoryEditUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestRepoEdit
 
 tm.TMUser(tmUserTestRepositoryCreate):
     user: tmTestRepositoryCreateUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestRepoCreate
 
 tm.TMUser(tmTestRepositoryDelete):
     user: tmTestRepositoryDeleteUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestRepoDelete
 
 tm.TMUser(tmTestPreparationView):
     user: tmTestPreparationViewUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestPreparationView
 
 tm.TMUser(tmTestPreparationEdit):
     user: tmTestPreparationEditUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestPreparationEdit
 
 tm.TMUser(tmTestPreparationCreate):
     user: tmTestPreparationCreateUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestPreparationCreate
 
 tm.TMUser(tmTestPreparationDelete):
     user: tmTestPreparationDeleteUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestPreparationDelete
 
 tm.TMUser(tmTestExecutionView):
     user: tmTestExecutionViewUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestExecutionView
 
 tm.TMUser(tmTestExecutionEdit):
     user: tmTestExecutionEditUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestExecutionEdit
 
 tm.TMUser(tmTestExecutionCreate):
     user: tmTestExecutionCreateUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestExecutionCreate
 
 tm.TMUser(tmTestExecutionDelete):
     user: tmTestExecutionDeleteUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleTestExecutionDelete
 
 tm.TMUser(tmDefectsView):
     user: tmDefectsViewUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleDefectsView
 
 tm.TMUser(tmDefectsEdit):
     user: tmDefectsEditUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleDefectsEdit
 
 tm.TMUser(tmDefectsCreate):
     user: tmDefectsCreateUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleDefectsCreate
 
 tm.TMUser(tmDefectsDelete):
     user: tmDefectsDeleteUser
-    account: oxiras
+    account: test
     projectRoles:
        -  tmRoleDefectsDelete
 
 tm.approach.Release(releaseProto):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Proto
 
 tm.approach.TestCycle(unitTest):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Unit test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
 tm.approach.TestCycle(systemTest):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: System Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
 tm.approach.TestCycle(userAcceptanceTest):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
 tm.approach.Release(releaseBeta):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Beta
 
 tm.approach.Release(releaseV1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: V1
 
 tm.ProjectTreeNode(approachTreeNode7):
-    account: oxiras
+    account: test
     level: 0
     name: Proto
     nodeId: 1
@@ -741,10 +757,10 @@ tm.ProjectTreeNode(approachTreeNode7):
     path: '/Proto'
     treeId: approachTree
     type: release
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(approachTreeNode8):
-    account: oxiras
+    account: test
     level: 1
     name: Unit Test
     nodeId: 1
@@ -753,10 +769,10 @@ tm.ProjectTreeNode(approachTreeNode8):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(approachTreeNode9):
-    account: oxiras
+    account: test
     level: 1
     name: System Test
     nodeId: 2
@@ -765,10 +781,10 @@ tm.ProjectTreeNode(approachTreeNode9):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(approachTreeNode10):
-    account: oxiras
+    account: test
     level: 1
     name: User Acceptance Test
     nodeId: 3
@@ -777,10 +793,10 @@ tm.ProjectTreeNode(approachTreeNode10):
     treeId: approachTree
     type: testCycle
     threadRoot: approachTreeNode7
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(approachTreeNode11):
-    account: oxiras
+    account: test
     level: 0
     name: Beta
     nodeId: 2
@@ -788,10 +804,10 @@ tm.ProjectTreeNode(approachTreeNode11):
     path: '/Beta'
     treeId: approachTree
     type: release
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(approachTreeNode12):
-    account: oxiras
+    account: test
     level: 0
     name: V1
     nodeId: 3
@@ -799,44 +815,44 @@ tm.ProjectTreeNode(approachTreeNode12):
     path: '/V1'
     treeId: approachTree
     type: release
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.test.ScriptFolder(testScriptFolderAdmin):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Administration
 
 tm.test.ScriptFolder(testScriptFolderAdminUsers):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Users
 
 tm.test.ScriptFolder(testScriptFolderAdminProjects):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Projects
 
 tm.test.Script(testScriptAdminProjectsCreate):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Create new project
     createdBy: gwen
 
 tm.test.ScriptParam(projectCategoryScriptParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     script: testScriptAdminProjectsCreate
     name: projectCategory
 
 tm.test.ScriptParam(projectNameScriptParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     script: testScriptAdminProjectsCreate
     name: projectName
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     script: testScriptAdminProjectsCreate
     position: 1
     name: Step 1
@@ -844,8 +860,8 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
     expectedResult: Projects administration page is shown
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     script: testScriptAdminProjectsCreate
     position: 2
     name: Step 2
@@ -853,8 +869,8 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
     expectedResult: A new node appears in the tree under the selected project category
 
 tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     script: testScriptAdminProjectsCreate
     position: 3
     name: Step 3
@@ -862,25 +878,25 @@ tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
     expectedResult: "New project \u003C\u003C\u003CprojectName\u003E\u003E\u003E is available"
 
 tm.test.Script(testScriptAdminProjectsEdit):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Edit project details
     createdBy: gwen
 
 tm.test.ScriptFolder(testScriptFolderRequirements):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Requirements
     createdBy: gwen
 
 tm.test.Script(testScriptRequirement1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Register new requirement
     createdBy: gwen
 
 tm.ProjectTreeNode(repositoryTreeNode13):
-    account: oxiras
+    account: test
     level: 0
     name: Administration
     nodeId: 1
@@ -888,10 +904,10 @@ tm.ProjectTreeNode(repositoryTreeNode13):
     path: '/Administration'
     treeId: repositoryTree
     type: scriptFolder
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode14):
-    account: oxiras
+    account: test
     level: 1
     name: Users
     nodeId: 2
@@ -900,10 +916,10 @@ tm.ProjectTreeNode(repositoryTreeNode14):
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode15):
-    account: oxiras
+    account: test
     level: 1
     name: Projects
     nodeId: 3
@@ -912,10 +928,10 @@ tm.ProjectTreeNode(repositoryTreeNode15):
     treeId: repositoryTree
     type: scriptFolder
     threadRoot: repositoryTreeNode13
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode16):
-    account: oxiras
+    account: test
     level: 2
     name: Create new project
     nodeId: 1
@@ -924,10 +940,10 @@ tm.ProjectTreeNode(repositoryTreeNode16):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode17):
-    account: oxiras
+    account: test
     level: 2
     name: Edit project details
     nodeId: 2
@@ -936,10 +952,10 @@ tm.ProjectTreeNode(repositoryTreeNode17):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode13
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode18):
-    account: oxiras
+    account: test
     level: 0
     name: Requirement Management
     nodeId: 4
@@ -947,10 +963,10 @@ tm.ProjectTreeNode(repositoryTreeNode18):
     path: '/Requirement Management'
     treeId: repositoryTree
     type: scriptFolder
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(repositoryTreeNode19):
-    account: oxiras
+    account: test
     level: 1
     name: Register new requirement
     nodeId: 3
@@ -959,29 +975,29 @@ tm.ProjectTreeNode(repositoryTreeNode19):
     treeId: repositoryTree
     type: script
     threadRoot: repositoryTreeNode18
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.test.Tag(functionalReqTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Functional
     type: REQUIREMENT
 
 tm.test.Tag(technicalReqTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Technical
     type: REQUIREMENT
 
 
 tm.RequirementFolder(functionalReqFolder):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     name: Requirement management
 
 tm.Requirement(functionalReq0):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     createdBy: gwen
     name: Create requirement
     tags:
@@ -990,44 +1006,44 @@ tm.Requirement(functionalReq0):
          - testScriptRequirement1
 
 tm.Requirement(functionalReq1):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     createdBy: gwen
     name: List requirements (tree)
     tags:
          - functionalReqTag
 
 tm.Requirement(functionalReq2):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     createdBy: gwen
     name: Display requirement details
     tags:
          - functionalReqTag
 
 tm.Requirement(functionalReq3):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     createdBy: gwen
     name: Display entities linked to requirement
     tags:
          - functionalReqTag
 
 tm.RequirementFolder(crossConcernsFolder):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     name: Cross concerns
 
 tm.Requirement(technicalReq1):
-    project: testManagementApplication
-    account: oxiras
+    project: tmApplicationTestProject2
+    account: test
     createdBy: gwen
     name: Datatables need to be sortable
     tags:
          - technicalReqTag
 
 tm.ProjectTreeNode(requirementTreeNode1):
-    account: oxiras
+    account: test
     level: 0
     name: Requirement management
     nodeId: 1
@@ -1035,10 +1051,10 @@ tm.ProjectTreeNode(requirementTreeNode1):
     path: '/Requirement management'
     treeId: requirementTree
     type: requirementFolder
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode2):
-    account: oxiras
+    account: test
     level: 1
     name: Create requirement
     nodeId: 1
@@ -1047,10 +1063,10 @@ tm.ProjectTreeNode(requirementTreeNode2):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode3):
-    account: oxiras
+    account: test
     level: 1
     name: List requirements (tree)
     nodeId: 2
@@ -1059,10 +1075,10 @@ tm.ProjectTreeNode(requirementTreeNode3):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode4):
-    account: oxiras
+    account: test
     level: 1
     name: Display requirement details
     nodeId: 3
@@ -1071,10 +1087,10 @@ tm.ProjectTreeNode(requirementTreeNode4):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode5):
-    account: oxiras
+    account: test
     level: 1
     name: Display entities linked to requirement
     nodeId: 4
@@ -1083,10 +1099,10 @@ tm.ProjectTreeNode(requirementTreeNode5):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode1
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode6):
-    account: oxiras
+    account: test
     level: 0
     name: Cross concerns
     nodeId: 2
@@ -1094,10 +1110,10 @@ tm.ProjectTreeNode(requirementTreeNode6):
     path: '/Cross concerns'
     treeId: requirementTree
     type: requirementFolder
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.ProjectTreeNode(requirementTreeNode7):
-    account: oxiras
+    account: test
     level: 1
     name: Datatables need to be sortable
     nodeId: 5
@@ -1106,35 +1122,35 @@ tm.ProjectTreeNode(requirementTreeNode7):
     treeId: requirementTree
     type: requirement
     threadRoot: requirementTreeNode5
-    project: testManagementApplication
+    project: tmApplicationTestProject2
 
 tm.test.Tag(administrationTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Administration
     type: TESTINSTANCE
 
 tm.test.Tag(usersTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Users
     type: TESTINSTANCE
 
 tm.test.Tag(projectsTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Projects
     type: TESTINSTANCE
 
 tm.test.Tag(requirementsTag):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Requirements
     type: TESTINSTANCE
 
 tm.test.Instance(createNewProjectST1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Create new project
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
@@ -1145,8 +1161,8 @@ tm.test.Instance(createNewProjectST1):
       - projectsTag
 
 tm.test.Instance(createNewProjectST2):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Create new project (2)
     script: testScriptAdminProjectsCreate
     testCycle: systemTest
@@ -1157,8 +1173,8 @@ tm.test.Instance(createNewProjectST2):
       - projectsTag
 
 tm.test.Instance(editProjectDetails):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Edit project details
     script: testScriptAdminProjectsEdit
     testCycle: systemTest
@@ -1169,36 +1185,36 @@ tm.test.Instance(editProjectDetails):
       - projectsTag
 
 tm.test.InstanceParam(projectCategoryNewProjectST1InstanceParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     scriptParam: projectCategoryScriptParam
     instance: createNewProjectST1
     value:
 
 tm.test.InstanceParam(projectCategoryNewProjectST2InstanceParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     scriptParam: projectCategoryScriptParam
     instance: createNewProjectST2
     value: "2011"
 
 tm.test.InstanceParam(projectNameNewProjectST1InstanceParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     scriptParam: projectNameScriptParam
     instance: createNewProjectST1
     value: SAP Roll-out Denmark
 
 tm.test.InstanceParam(projectNameNewProjectST2InstanceParam):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     scriptParam: projectNameScriptParam
     instance: createNewProjectST2
     value: SAP Roll-out Finland
 
 tm.test.Instance(registerNewRequirement):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Register new requirement
     script: testScriptRequirement1
     testCycle: userAcceptanceTest
@@ -1208,8 +1224,8 @@ tm.test.Instance(registerNewRequirement):
       - requirementsTag
 
 tm.test.Run(createNewProjectST2Run1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     instance: createNewProjectST2
     tester: gwen
     executionDate: 2011-03-19 09:45:23
@@ -1217,8 +1233,8 @@ tm.test.Run(createNewProjectST2Run1):
     temporary: false
 
 tm.test.RunStep(createNewProjectST2Run1Step1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     run: createNewProjectST2Run1
     position: 1
     name: Step 1
@@ -1228,8 +1244,8 @@ tm.test.RunStep(createNewProjectST2Run1Step1):
     status: 2
 
 tm.test.RunStep(createNewProjectST2Run1Step2):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     run: createNewProjectST2Run1
     position: 2
     name: Step 2
@@ -1239,8 +1255,8 @@ tm.test.RunStep(createNewProjectST2Run1Step2):
     status: 3
 
 tm.test.RunStep(createNewProjectST2Run1Step3):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     run: createNewProjectST2Run1
     position: 3
     name: Step 3
@@ -1250,35 +1266,35 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     status: 2
 
 tm.Defect(defect1):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     created: 2011-05-02
     name: The application does not start
     submittedBy: gwen
     assignedTo: manu
 
 tm.Defect(defect2):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     name: Test for naturalID
-    submittedBy: nathalie
+    submittedBy: nikola
 
 tm.Defect(defect3):
-    account: oxiras
-    project: testManagementApplication
+    account: test
+    project: tmApplicationTestProject2
     created: 2011-05-03
     name: Issue with tabularasa
     submittedBy: manu
     assignedTo: manu
 
 tm.Defect(defect4):
-    account: oxiras
-    project: demenagement
+    account: test
+    project: tmApplicationTestProject1
     name: Box is not at the right place
-    submittedBy: vroni
+    submittedBy: filip
 
 tm.Defect(defect5):
-    account: oxiras
-    project: demenagement
-    name: Old couch is still not removed
-    submittedBy: nathalie
+    account: test
+    project: tmApplicationTestProject1
+    name: Action buttons are not named consistently
+    submittedBy: nikola
