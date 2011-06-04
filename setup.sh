@@ -36,11 +36,11 @@ git clone https://github.com/manuelbernhardt/tree modules/tree
 echo
 echo
 echo =========================================================================
-echo Done! Visit http://oxiras.localhost.com:9000
+echo Done! Visit http://test.localhost:9000
 echo
 echo Note:
 echo - you must have added the following line to your /etc/hosts file:
-echo   127.0.0.1 oxiras.localhost
+echo   127.0.0.1 test.localhost demo.localhost
 echo - we are currently developing against the 1.2.x branch of play so if you
 echo   are using a development version you need to switch to that branch via
 echo   "git checkout 1.2.x"

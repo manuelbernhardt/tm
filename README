@@ -5,4 +5,4 @@ Oxiras Test Management Suite
 Installation requirements for development:
 - mysql databases (tm, tmTest)
 - following statement in /etc/hosts
-  127.0.0.1 oxiras.localhost
+  127.0.0.1 test.localhost demo.localhost
