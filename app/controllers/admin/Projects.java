@@ -181,7 +181,7 @@ public class Projects extends TMController {
             tag.type = Tag.TagType.DEFECT;
         }
 
-        Long tagsNo = Tag.count("from Tag t where t.name = ? and t.type = ?", tag.name, tag.type);
+        Long tagsNo = Tag.count("from Tag t where t.project = ? and t.name = ? and t.type = ?", project, tag.name, tag.type);
         if(tagsNo==0){
             tag.create();
         }
