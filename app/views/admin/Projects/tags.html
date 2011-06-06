@@ -2,6 +2,14 @@
 No project selected
 #{/if}
 #{else}
+
+<!-- deletion confirmation dialogs -->
+<div id="requirementTagDeletionConfirmationDialog" title="Confirm deletion of tag"></div>
+<div id="testScriptTagDeletionConfirmationDialog" title="Confirm deletion of tag"></div>
+<div id="testInstanceTagDeletionConfirmationDialog" title="Confirm deletion of tag"></div>
+<div id="defectTagDeletionConfirmationDialog" title="Confirm deletion of tag"></div>
+<!-- end of deletion confirmation dialogs -->
+
 <!-- add tags dialog -->
 <div id="requirementAddTagDialog" title="Add new tag">
     <input id="requirementAddTagInput"/>
@@ -546,34 +554,42 @@ No project selected
 
             $('#requirementDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#requirementDeleteTag").click(function(){
-                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#requirement'), type:'requirement'}, function(){
-                    refreshTableContents('#requirement', false);
-                    disableRenameAndDeleteButtons();
-                }).error(errorHandler);
+                deletionConfirmation('requirementTagDeletionConfirmationDialog', function(){
+                    $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#requirement'), type:'requirement'}, function(){
+                        refreshTableContents('#requirement', false);
+                        disableRenameAndDeleteButtons();
+                    }).error(errorHandler);
+                });
             });
 
             $('#testScriptDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#testScriptDeleteTag").click(function(){
-                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testScript'), type:'testScript'}, function(){
-                    refreshTableContents('#testScript', false);
-                    disableRenameAndDeleteButtons();
-                }).error(errorHandler);
+                deletionConfirmation('testScriptTagDeletionConfirmationDialog', function(){
+                    $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testScript'), type:'testScript'}, function(){
+                        refreshTableContents('#testScript', false);
+                        disableRenameAndDeleteButtons();
+                    }).error(errorHandler);
+                });
             });
 
             $('#testInstanceDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#testInstanceDeleteTag").click(function(){
-                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testInstance'), type:'testInstance'}, function(){
-                    refreshTableContents('#testInstance', false);
-                    disableRenameAndDeleteButtons();
-                }).error(errorHandler);
+                deletionConfirmation('testInstanceTagDeletionConfirmationDialog', function(){
+                    $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#testInstance'), type:'testInstance'}, function(){
+                        refreshTableContents('#testInstance', false);
+                        disableRenameAndDeleteButtons();
+                    }).error(errorHandler);
+                })
             });
 
             $('#defectDeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#defectDeleteTag").click(function(){
-                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#defect'), type:'defect'}, function(){
-                    refreshTableContents('#defect', false);
-                    disableRenameAndDeleteButtons();
-                }).error(errorHandler);
+                deletionConfirmation('defectTagDeletionConfirmationDialog', function(){
+                    $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#defect'), type:'defect'}, function(){
+                        refreshTableContents('#defect', false);
+                        disableRenameAndDeleteButtons();
+                    }).error(errorHandler);
+                });
             });
 
             <!-- end ofsection of JS for deletion of tags -->
