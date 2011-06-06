@@ -350,6 +350,7 @@ function removeDialogs() {
                     } else {
                         ko.mapping.updateFromJS(oxFormData.viewModel, data);
                     }
+                    $this.find('input[type="submit"]').button('disable')
                 });
             });
         },
