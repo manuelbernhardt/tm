@@ -1,8 +1,9 @@
 /** multi-purpose trees **/
 
 var requirementTreeTypes = {
+    "multipurpose": true,
     "max_depth" : -2,
-    "max_children" : -2,
+    "max_children" : -1,
     "types" : {
         "default" : {
             "valid_children" : "none",
@@ -11,19 +12,16 @@ var requirementTreeTypes = {
             }
         },
         "requirementFolder" : {
-            "valid_children" : [ "default", "requirementFolder" ],
+            "valid_children" : [ "default", "requirement", "requirementFolder" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
-            },
-            "start_drag" : false,
-            "move_node" : true,
-            "delete_node" : true,
-            "remove" : true
+            }
         }
     }
 };
 
 var repositoryTreeTypes = {
+    "multipurpose": true,
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
@@ -34,7 +32,7 @@ var repositoryTreeTypes = {
             }
         },
         "scriptFolder" : {
-            "valid_children" : [ "default", "scriptFolder" ],
+            "valid_children" : [ "default", "script", "scriptFolder" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png" // TODO icon for release
             },
@@ -47,6 +45,7 @@ var repositoryTreeTypes = {
 };
 
 var scriptCycleTreeTypes = {
+    "multipurpose": true,
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
@@ -57,7 +56,7 @@ var scriptCycleTreeTypes = {
             }
         },
         "testCycle" : {
-            "valid_children" : [ "instance" ],
+            "valid_children" : [ "instance", "default" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png" // TODO cycle icon
             }
@@ -76,6 +75,7 @@ var scriptCycleTreeTypes = {
 };
 
 var projectTreeTypes = {
+    "multipurpose": true,
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
@@ -86,7 +86,7 @@ var projectTreeTypes = {
             }
         },
         "category" : {
-            "valid_children" : [ "default" ],
+            "valid_children" : [ "default", "project" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },
@@ -96,7 +96,7 @@ var projectTreeTypes = {
             "remove" : true
         },
         "root" : {
-            "valid_children" : [ "default", "category" ],
+            "valid_children" : [ "default", "project", "category" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },
@@ -109,6 +109,7 @@ var projectTreeTypes = {
 };
 
 var approachTreeTypes = {
+    "multipurpose": true,
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
@@ -119,7 +120,7 @@ var approachTreeTypes = {
             }
         },
         "release" : {
-            "valid_children" : [ "default" ],
+            "valid_children" : [ "default", "testCycle" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png" // TODO icon for release
             },
@@ -155,7 +156,7 @@ var projectRoleTreeTypes = {
             "remove" : false
         },
         "project" : {
-            "valid_children" : [ "default" ],
+            "valid_children" : [ "default", "projectRole" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png" // TODO project icon
             },
@@ -167,7 +168,6 @@ var projectRoleTreeTypes = {
         }
     }
 };
-
 
 var projectRolesAssignmentTreeTypes = {
     "max_depth" : -2,
@@ -222,7 +222,7 @@ var userTreeTypes = {
             "remove" : false
         },
         "root" : {
-            "valid_children" : [ "default" ],
+            "valid_children" : [ "default", "user" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },
