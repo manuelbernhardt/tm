@@ -10,16 +10,22 @@ Alternatively simple tags can be used to organize the Test Execution.
 #{/}
 
 <div class="container">
-  <div class="left_tree">
-    <div id="actions">
-      <button id="create_release">Release</button>
-      <button id="create_cycle">Cycle</button>
-      <button id="remove_cycleRelease">Remove</button>
+    <div id="actions" class="actions">
+        <div class="actions buttons">
+          <button id="create_release">Release</button>
+          <button id="create_cycle">Cycle</button>
+          <button id="remove_cycleRelease">Remove</button>
+        </div>
     </div>
-    <div id="approachTree" class="tree"></div>
-  </div>
-  <div class="right_tree" style="width:65%">
+  <div class="tree-container">
+      <div class="left_tree">
+        #{box 'Releases and Cycles'}
+        <div id="approachTree" class="tree" style="border:none;"></div>
+        #{/box}
+      </div>
+      <div class="right_table" >
     <div id="details">No cycle selected</div>
+  </div>
   </div>
 </div>
 
