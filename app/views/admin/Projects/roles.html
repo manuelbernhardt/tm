@@ -4,42 +4,48 @@ No project selected
 #{else}
 
 <div class="container">
-  <div class="left_table">
+    <div class="actions">
+        <div class="actions buttons">
+                #{formDialog id:'newRoleDialog', title:'Create a role', action:@admin.ProjectRoles.create(),
+                baseClass:'models.tm.ProjectRole',
+                openDialogButtonText:'Role', submitButtonText:'Create role'}
 
-    #{formDialog id:'newRoleDialog', title:'Create a role', action:@admin.ProjectRoles.create(),
-    baseClass:'models.tm.ProjectRole',
-    openDialogButtonText:'Role', submitButtonText:'Create role'}
 
 
-
-    <script type="text/javascript">
-      function newRoleDialogSubmissionCallback() {
-        refreshTableContents('#tab', false);
-      }
-    </script>
-    #{input.field field:'role.name', label:'Name' /}
-    <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
-    #{/formDialog}
-    <button id='remove-role'> Remove</button>
-      
-    <table id="tab" class="display">
-      <thead>
-      <tr>
-        <th>Role</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-  </div>
-
-  <div class="right_table">
-
-    <div id="roleDefinition">
-      <p align="center">Select a role in the table</p>
+                <script type="text/javascript">
+                  function newRoleDialogSubmissionCallback() {
+                    refreshTableContents('#tab', false);
+                  }
+                </script>
+                #{input.field field:'role.name', label:'Name' /}
+                <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
+                #{/formDialog}
+                <button id='remove-role'> Remove</button>
+        </div>
     </div>
+    <div class="tree-container">
+      <div class="left_table">
+        #{box 'Roles'}
+        <table id="tab" class="display">
+          <thead>
+          <tr>
+            <th>Role</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        #{/box}
 
-  </div>
+      </div>
+
+      <div class="right_table">
+        #{box 'Role details'}
+        <div id="roleDefinition">
+          <p align="center">Select a role in the table</p>
+        </div>
+        #{/box}
+      </div>
+    </div>
 </div>
 
 <script type="text/javascript">
