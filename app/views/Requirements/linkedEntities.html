@@ -1,3 +1,5 @@
+<div id='unlinkScriptConfirmationDialog' title="Confirm script deletion"></div>
+
 <div id="actions">
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
     <button id="linkScript">Script</button>
@@ -150,12 +152,15 @@
         });
 
         $("#unlinkScript").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-            $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
+            deletionConfirmation('unlinkScriptConfirmationDialog', function(){
+                $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
                     function(data) {
                         $('#scriptTable').dataTable().fnDraw();
                         refreshTableContents('#defectTable', false);
                         refreshTableContents('#instanceTable', false);
-                    }).error(errorHandler)
+                    }).error(errorHandler);
+            })
+
         });
 
         $("#linkScriptDialog").dialog({

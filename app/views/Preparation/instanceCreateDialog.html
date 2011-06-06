@@ -1,4 +1,4 @@
-
+<div id='cycleDeleteConfirmationDialog' title="Deletion confirmation of cycle"></div>
 
 <div id="assign_dialog" title="Assign Test Script to Cycle" class="modalDialog">
   <div id="approachTree" class="tree"></div>
@@ -13,13 +13,16 @@
     });
 
     $("#remove_cycle").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
-      var $tree = jQuery.jstree._reference('#scriptCycleTree');
-      var selectedNode = $tree.get_selected();
-      if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
-        selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
-        $tree.delete_node(selectedNode);
-        refreshCycleTree();
-      }
+      deletionConfirmation('cycleDeleteConfirmationDialog', function(){
+          var $tree = jQuery.jstree._reference('#scriptCycleTree');
+          var selectedNode = $tree.get_selected();
+          if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
+            selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
+            $tree.delete_node(selectedNode);
+            refreshCycleTree();
+          }
+      });
+
     });
 
     $("#assign_dialog").dialog({

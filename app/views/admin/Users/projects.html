@@ -4,6 +4,8 @@ No user selected
 #{else}
 
 
+<div id="deleteRoleConfirmationDialog" title="Role removal confirmation"></div>
+
 <div id="treeDiv">
   <button id="assign-role">Role</button>
   <button id="unassign-role">Remove</button>
@@ -87,12 +89,16 @@ No user selected
     });
 
     $("#unassign-role").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
-      var $tree = jQuery.jstree._reference('#projectRolesTree');
-      var selectedNode = $tree.get_selected();
-      if ($tree._get_type(selectedNode) == "default") {
-        selectedNode.data("args", {userId: "${user.id}"});
-        $tree.delete_node(selectedNode);
-      }
+
+      deletionConfirmation('deleteRoleConfirmationDialog', function(){
+          var $tree = jQuery.jstree._reference('#projectRolesTree');
+          var selectedNode = $tree.get_selected();
+          if ($tree._get_type(selectedNode) == "default") {
+            selectedNode.data("args", {userId: "${user.id}"});
+            $tree.delete_node(selectedNode);
+          }
+      });
+
     });
 
     $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});

@@ -1,6 +1,9 @@
 #{extends 'main.html' /}
 #{set title:'Test Scripts repository' /}
 
+<div id="testScriptDeletionConfirmationDialog" title="Confirm deletion of test script"></div>
+<div id="requirementDeletionConfirmationDialog" title="Confirm deletion of requirement"></div>
+
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
 <div id="linkRequirementDialog" title="Assign Requirement to Test Script">
   <div id="requirementTree" class="tree"></div>
@@ -144,7 +147,10 @@
       $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
     });
     $("#remove").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
-      $("#repositoryTree").jstree("remove", null);
+        deletionConfirmation('testScriptDeletionConfirmationDialog', function(){
+            $("#repositoryTree").jstree("remove", null);
+        });
+
     });
 
     $("#requirementTree").tree({types: requirementTreeTypes});
@@ -222,10 +228,13 @@
     });
 
     $('#removeRequirementButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-      $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
+      deletionConfirmation('requirementDeletionConfirmationDialog', function(){
+          $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
         function(data) {
             $('#requirementTable').dataTable().fnDraw();
-        }).error(errorHandler)
+        }).error(errorHandler);
+      });
+
     });
 
     $('#searchInput').keyup(function() {

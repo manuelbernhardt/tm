@@ -577,6 +577,27 @@ function refreshWidgetsContent(dashboard) {
     });
 }
 
+function deletionConfirmation(dialogId, callback){
+    $('#' + dialogId).dialog({
+            autoOpen: true,
+            height: 100,
+            width: 300,
+            modal: true,
+            buttons: {
+              "Confirm": function() {
+                if(typeof callback=='function'){
+                    callback.call();
+                }
+                $(this).dialog("close");
+              },
+              "Cancel": function() {
+
+                $(this).dialog("close");
+              }
+
+            }
+          });
+}
 
 /**
  * jQuery plugin for filters

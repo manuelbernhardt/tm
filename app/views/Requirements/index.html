@@ -1,7 +1,8 @@
 #{extends 'main.html' /}
 #{set title:'Requirements' /}
 
-
+<div id='deleteConfirmationDialogRequirement' title="Confirm deletion of requirement"></div>
+        
 <div class="container">
     <div id="actions" class="actions">
 
@@ -155,7 +156,9 @@
       $('#importRequirementsDialog').dialog('open');
     });
     $('#remove').button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
-      $("#requirementTree").jstree("remove", null);
+      deletionConfirmation("deleteConfirmationDialogRequirement", function(deletion){
+        $("#requirementTree").jstree("remove", null);
+      });
     });
 
     $('#importRequirementsDialog').dialog({
