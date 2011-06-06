@@ -1,6 +1,8 @@
 #{extends 'admin/main.html' /}
 #{set title:'Project administration' /}
 
+<div id="projectDeletionConfirmationDialog" title="Confirmation deletion of project"></div>
+
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
@@ -63,7 +65,10 @@
     });
 
     $("#remove").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-      $("#projectTree").jstree("remove", null);
+      deletionConfirmation('projectDeletionConfirmationDialog', function(){
+            $("#projectTree").jstree("remove", null);
+      });
+
     });
 
   });

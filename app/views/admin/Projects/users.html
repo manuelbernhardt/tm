@@ -3,6 +3,8 @@ No project selected
 #{/if}
 #{else}
 
+<div id="userDeletionConfirmDialog" title="Confirm removal of user"></div>
+
 <div id="treeDiv">
   #{infoBox}
   Assign project roles to users by dragging them into the desired role.
@@ -34,7 +36,9 @@ No project selected
       });
 
       $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
-        $("#projectRolesAssignmentTree").jstree("remove", null);
+        deletionConfirmation('userDeletionConfirmDialog', function(){
+            $("#projectRolesAssignmentTree").jstree("remove", null);
+        });
       });
 
       $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {

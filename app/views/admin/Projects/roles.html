@@ -3,6 +3,8 @@ No project selected
 #{/if}
 #{else}
 
+<div id="roleDeleteConfirmationDialog" title="Confirm deletion of a role"></div>
+
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
@@ -76,10 +78,13 @@ No project selected
       });
 
     $('#remove-role').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function(){
-        $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
-            refreshTableContents('#tab', false);
-        })
-        .error(errorHandler);
+        deletionConfirmation('roleDeleteConfirmationDialog',function(){
+            $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
+                refreshTableContents('#tab', false);
+            })
+            .error(errorHandler);
+        });
+
     });
 
     /* Click listener to reload the role definition */

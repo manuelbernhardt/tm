@@ -3,6 +3,7 @@ No project selected
 #{/if}
 #{else}
 
+<div id="cycleDeletionConfirmationDialog" title="Confirm deletion"></div>
 
 #{infoBox}
 When Test Cycles are defined for a project, the newly created Test Instances will require to be assigned to a Test Cycle. Test Execution progress can then be checked against the planned execution.<br/>
@@ -62,7 +63,10 @@ Alternatively simple tags can be used to organize the Test Execution.
       $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
     });
     $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-      $("#approachTree").jstree("remove", null);
+        deletionConfirmation('cycleDeletionConfirmationDialog',function(){
+            $("#approachTree").jstree("remove", null);
+        })
+
     });
 
   });

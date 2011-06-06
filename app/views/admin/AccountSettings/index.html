@@ -1,6 +1,8 @@
 #{extends 'admin/main.html' /}
 #{set title:'Account settings' /}
 
+<div id="accountDeletionConfirmDialog" title="Confirm removal of account administrator"> </div>
+
 <div id="tabs">
   <ul>
     <li><a href="#accountDetails"><span>Account details</span></a></li>
@@ -71,7 +73,9 @@
     $('#accountDetailsForm').oxForm('load', -1);
 
     $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-      $("#accountRolesAssignmentTree").jstree("remove", null);
+      deletionConfirmation('accountDeletionConfirmDialog', function(){
+          $("#accountRolesAssignmentTree").jstree("remove", null);
+      });
     });
     $("#accountRolesAssignmentTree").tree({
       types: adminRolesTreeTypes,
