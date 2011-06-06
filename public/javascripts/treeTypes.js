@@ -1,33 +1,24 @@
-var projectRoleTreeTypes = {
+/** multi-purpose trees **/
+
+var requirementTreeTypes = {
     "max_depth" : -2,
     "max_children" : -2,
     "types" : {
-        "default" : { // role
+        "default" : {
             "valid_children" : "none",
             "icon" : {
-                "image" : "/public/images/jstree/file.png" // TODO role icon
+                "image" : "/public/images/jstree/file.png" // TODO icon for requirement
             }
         },
-        "category" : {
-            "valid_children" : [ "project" ],
+        "requirementFolder" : {
+            "valid_children" : [ "default", "requirementFolder" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },
             "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : false,
-            "remove" : false
-        },
-        "project" : {
-            "valid_children" : [ "default" ],
-            "icon" : {
-                "image" : "/public/images/jstree/folder.png" // TODO project icon
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : false,
-            "remove" : false
-
+            "move_node" : true,
+            "delete_node" : true,
+            "remove" : true
         }
     }
 };
@@ -49,29 +40,6 @@ var repositoryTreeTypes = {
             },
             "start_drag" : false,
             "move_node" : false,
-            "delete_node" : true,
-            "remove" : true
-        }
-    }
-};
-
-var requirementTreeTypes = {
-    "max_depth" : -2,
-    "max_children" : -2,
-    "types" : {
-        "default" : {
-            "valid_children" : "none",
-            "icon" : {
-                "image" : "/public/images/jstree/file.png" // TODO icon for requirement
-            }
-        },
-        "requirementFolder" : {
-            "valid_children" : [ "default", "requirementFolder" ],
-            "icon" : {
-                "image" : "/public/images/jstree/folder.png"
-            },
-            "start_drag" : false,
-            "move_node" : true,
             "delete_node" : true,
             "remove" : true
         }
@@ -140,6 +108,67 @@ var projectTreeTypes = {
     }
 };
 
+var approachTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : {
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO icon for test cycle
+            }
+        },
+        "release" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO icon for release
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : true,
+            "remove" : true
+        }
+    }
+};
+
+
+/** selection-only trees **/
+
+var projectRoleTreeTypes = {
+    "max_depth" : -2,
+    "max_children" : -2,
+    "types" : {
+        "default" : { // role
+            "valid_children" : "none",
+            "icon" : {
+                "image" : "/public/images/jstree/file.png" // TODO role icon
+            }
+        },
+        "category" : {
+            "valid_children" : [ "project" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        },
+        "project" : {
+            "valid_children" : [ "default" ],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png" // TODO project icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+
+        }
+    }
+};
+
+
 var projectRolesAssignmentTreeTypes = {
     "max_depth" : -2,
     "max_children" : -2,
@@ -173,29 +202,6 @@ var projectRolesAssignmentTreeTypes = {
             "move_node" : false,
             "delete_node" : false,
             "remove" : false
-        }
-    }
-};
-
-var approachTreeTypes = {
-    "max_depth" : -2,
-    "max_children" : -2,
-    "types" : {
-        "default" : {
-            "valid_children" : "none",
-            "icon" : {
-                "image" : "/public/images/jstree/file.png" // TODO icon for test cycle
-            }
-        },
-        "release" : {
-            "valid_children" : [ "default" ],
-            "icon" : {
-                "image" : "/public/images/jstree/folder.png" // TODO icon for release
-            },
-            "start_drag" : false,
-            "move_node" : false,
-            "delete_node" : true,
-            "remove" : true
         }
     }
 };
