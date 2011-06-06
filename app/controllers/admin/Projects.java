@@ -74,7 +74,13 @@ public class Projects extends TMController {
                             Integer iDisplayLength,
                             String sColumns,
                             String sEcho,
-                            Long projectId) {
+                            Long projectId,
+                            String sSearch) {
+
+        if(sSearch==null){
+            sSearch = "";
+        }
+
         if (projectId == null) {
             error();
         } else {
@@ -82,19 +88,19 @@ public class Projects extends TMController {
             List<Tag> tags = new ArrayList<Tag>();
             switch (tagType){
                 case 0:
-                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.REQUIREMENT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ? and t.name like ?", projectId, Tag.TagType.REQUIREMENT, sSearch + "%").from(iDisplayStart == null ? 0 : iDisplayStart);
                     tags = query.fetch();
                     break;
                 case 1:
-                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.TESTSCRIPT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ? and t.name like ?", projectId, Tag.TagType.TESTSCRIPT, sSearch + "%").from(iDisplayStart == null ? 0 : iDisplayStart);
                     tags = query.fetch();
                     break;
                 case 2:
-                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.TESTINSTANCE).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ? and t.name like ?", projectId, Tag.TagType.TESTINSTANCE, sSearch + "%").from(iDisplayStart == null ? 0 : iDisplayStart);
                     tags = query.fetch();
                     break;
                 case 3:
-                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ?", projectId, Tag.TagType.DEFECT).from(iDisplayStart == null ? 0 : iDisplayStart);
+                    query = Tag.find("from Tag t where t.project.id = ? and t.type = ? and t.name like ?", projectId, Tag.TagType.DEFECT, sSearch + "%").from(iDisplayStart == null ? 0 : iDisplayStart);
                     tags = query.fetch();
                     break;
             }
