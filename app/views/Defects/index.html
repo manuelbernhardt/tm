@@ -282,32 +282,14 @@ $(document).ready(function() {
 // delete defect
   $('#deleteDefectButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled:true});
   $('#deleteDefectButton').click(function() {
-    $('#deleteDefectDialog').dialog("open");
+      deletionConfirmation('deleteDefectDialog', 'Defect', getSelectedRowColumn($('#defectsTable').dataTable(), 2), function(){
+          $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
+                function(data) {
+                    refreshTableContents('#defectsTable', false);
+                }).error(errorHandler);
+      })
   });
 
-  $('#deleteDefectDialog').dialog({
-            autoOpen: false,
-            height: 100,
-            width: 300,
-            modal: true,
-            buttons: {
-              "Confirm": function() {
-                $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')},
-                        function() {
-                          refreshTableContents('#defectsTable', false);
-                        }).error(errorHandler, function() {
-                          refreshTableContents('#defectsTable', false);
-                          $('#deleteDefectDialog').dialog('close');
-                        });
-
-                $(this).dialog("close");
-              },
-              "Cancel": function() {
-                $(this).dialog("close");
-              }
-
-            }
-          });
 
 // filter functions
 

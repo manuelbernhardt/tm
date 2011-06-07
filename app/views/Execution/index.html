@@ -280,37 +280,14 @@
     });
 
     $('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function() {
-      $('#deleteRunDialog').dialog('open');
+        deletionConfirmation('deleteRunDialog','Test run for', getSelectedRowColumn($('#instanceTable').dataTable(), 2), function(){
+             $.post('@{Execution.deleteRun()}', {runId: getSelectedRowId('#runTable')}).success(
+                function(data) {
+                    refreshTableContents('#instanceTable', false);
+                }).error(errorHandler);
+        })
     });
 
-    $('#deleteRunDialog').dialog({
-        autoOpen: false,
-        height: 100,
-        width: 300,
-        modal: true,
-        buttons: {
-            "Confirm": function() {
-                $.ajax({
-                  type: 'POST',
-                  url: '@{Execution.deleteRun()}',
-                  data: {runId: getSelectedRowId('#runTable')},
-                  success: function() {
-                    refreshTableContents('#instanceTable', false);
-                    $('#deleteRunDialog').dialog("close");
-                  },
-                  error: function(xhr, textStatus, errorThrown) {
-                    errorHandler(xhr, textStatus, errorThrown);
-                    refreshTableContents('#instanceTable', false);
-                    $('#deleteRunDialog').dialog("close");
-                  }
-                });
-            },
-            "Cancel": function() {
-                $(this).dialog("close");
-            }
-
-        }
-    });
 
   $('#createDefectDialog').dialog({
       autoOpen: false,

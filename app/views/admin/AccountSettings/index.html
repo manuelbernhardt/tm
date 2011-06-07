@@ -73,7 +73,7 @@
     $('#accountDetailsForm').oxForm('load', -1);
 
     $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-      deletionConfirmation('accountDeletionConfirmDialog', function(){
+      deletionConfirmation('accountDeletionConfirmDialog', 'Administrative role from', getSelectedNodeName('accountRolesAssignmentTree'), function(){
           $("#accountRolesAssignmentTree").jstree("remove", null);
       });
     });

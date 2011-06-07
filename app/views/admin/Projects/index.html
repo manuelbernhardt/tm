@@ -65,7 +65,7 @@
     });
 
     $("#remove").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-      deletionConfirmation('projectDeletionConfirmationDialog', function(){
+      deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function(){
             $("#projectTree").jstree("remove", null);
       });
 

@@ -156,7 +156,8 @@
       $('#importRequirementsDialog').dialog('open');
     });
     $('#remove').button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
-      deletionConfirmation("deleteConfirmationDialogRequirement", function(deletion){
+        var node = getSelectedNode('requirementTree');
+      deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion){
         $("#requirementTree").jstree("remove", null);
       });
     });

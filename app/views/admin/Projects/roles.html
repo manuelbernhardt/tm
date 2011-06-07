@@ -78,7 +78,7 @@ No project selected
       });
 
     $('#remove-role').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function(){
-        deletionConfirmation('roleDeleteConfirmationDialog',function(){
+        deletionConfirmation('roleDeleteConfirmationDialog', 'Role', getSelectedRowColumn($('#tab').dataTable(), 1) , function(){
             $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
                 refreshTableContents('#tab', false);
             })

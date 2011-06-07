@@ -36,7 +36,7 @@ No project selected
       });
 
       $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
-        deletionConfirmation('userDeletionConfirmDialog', function(){
+        deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
             $("#projectRolesAssignmentTree").jstree("remove", null);
         });
       });

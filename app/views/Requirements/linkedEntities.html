@@ -152,7 +152,7 @@
         });
 
         $("#unlinkScript").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-            deletionConfirmation('unlinkScriptConfirmationDialog', function(){
+            deletionConfirmation('unlinkScriptConfirmationDialog', 'Script', getSelectedRowColumn($('#scriptTable').dataTable(), 1), function(){
                 $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
                     function(data) {
                         $('#scriptTable').dataTable().fnDraw();

@@ -90,7 +90,7 @@ No user selected
 
     $("#unassign-role").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
 
-      deletionConfirmation('deleteRoleConfirmationDialog', function(){
+      deletionConfirmation('deleteRoleConfirmationDialog', 'Project role for', getSelectedRowColumn($('#tab').dataTable(), 1) + " " + getSelectedRowColumn($('#tab').dataTable(), 2),  function(){
           var $tree = jQuery.jstree._reference('#projectRolesTree');
           var selectedNode = $tree.get_selected();
           if ($tree._get_type(selectedNode) == "default") {

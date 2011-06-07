@@ -194,6 +194,16 @@ function getSelectedNode(treeId) {
     return null;
 }
 
+function getSelectedNodeName(treeId){
+    //todo implement return of selected node name
+    var tree = $.jstree._reference($('#' + treeId));
+    if (typeof tree.get_selected().attr('id') !== 'undefined') {
+
+        return tree.get_selected().children("a").html().replace('<ins class="jstree-icon ui-icon ui-icon-document">&nbsp;</ins>', '');
+    }
+    return null;
+}
+
 /**
  * Get a node within a tree by matching its type and ID
  *
@@ -578,11 +588,10 @@ function refreshWidgetsContent(dashboard) {
     });
 }
 
-function deletionConfirmation(dialogId, callback){
+function deletionConfirmation(dialogId, type, name, callback){
     $('#' + dialogId).dialog({
             autoOpen: true,
-            height: 100,
-            width: 300,
+            width: 400,
             modal: true,
             buttons: {
               "Confirm": function() {
@@ -598,6 +607,7 @@ function deletionConfirmation(dialogId, callback){
 
             }
           });
+    $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
 }
 
 /**

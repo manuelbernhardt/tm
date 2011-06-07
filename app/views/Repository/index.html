@@ -147,7 +147,9 @@
       $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
     });
     $("#remove").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
-        deletionConfirmation('testScriptDeletionConfirmationDialog', function(){
+        var node = getSelectedNodeName('repositoryTree');
+        deletionConfirmation('testScriptDeletionConfirmationDialog', 'Test script', getSelectedNodeName('repositoryTree'), function(){
+
             $("#repositoryTree").jstree("remove", null);
         });
 
@@ -228,7 +230,7 @@
     });
 
     $('#removeRequirementButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-      deletionConfirmation('requirementDeletionConfirmationDialog', function(){
+      deletionConfirmation('requirementDeletionConfirmationDialog', "Requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function(){
           $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
         function(data) {
             $('#requirementTable').dataTable().fnDraw();
