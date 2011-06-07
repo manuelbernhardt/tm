@@ -138,22 +138,13 @@ public class Preparation extends TMController {
 
         GenericModel.JPAQuery query;
 
-
-
         if(instanceId!=null){
             query = Instance.find("script.id=?", instanceId);
         }else{
             query = Instance.all();
         }
 
-
-
         List<Instance> instances = query.fetch();
-
-        for(int i = 0; i<instances.size();i++){
-            System.out.println(instances.get(i).name);
-            
-        }
 
         TableController.renderJSON(instances, Instance.class, Instance.count(), sColumns, sEcho);
     }
