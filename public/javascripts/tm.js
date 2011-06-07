@@ -199,7 +199,7 @@ function getSelectedNodeName(treeId){
     var tree = $.jstree._reference($('#' + treeId));
     if (typeof tree.get_selected().attr('id') !== 'undefined') {
 
-        return tree.get_selected().children("a").html().replace('<ins class="jstree-icon ui-icon ui-icon-document">&nbsp;</ins>', '');
+        return tree.get_selected().children("a").text();
     }
     return null;
 }
