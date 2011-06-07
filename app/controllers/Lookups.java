@@ -173,6 +173,20 @@ public class Lookups extends TMController {
     }
 
     @Util
+    public static Tag getTag(Long tagId) {
+        if (tagId == null) {
+            return null;
+        }
+        Tag tag = Tag.findById(tagId);
+        if (tag == null) {
+            return null;
+        }
+        checkInAccount(tag);
+        return tag;
+    }
+
+
+    @Util
     public static void allUsers() {
         List<TMUser> users = TMUser.listByActiveProject();
         renderJSON(users, userSerializer);
