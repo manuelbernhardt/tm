@@ -32,7 +32,25 @@
                 #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
                 #{include 'Preparation/instanceCreateDialog.html' /}
                 #{/deadbolt.restrict}
-                <div id="scriptCycleTree" class="tree"></div>
+
+                <!--if no releases, show table instead of tree-->
+
+                #{if releases>0}
+                    <div id="scriptCycleTree" class="tree"></div>
+                #{/if}
+                #{else}
+                    #{box 'Cycles'}
+                      <table class="display" id="instancesTable">
+
+                        <thead>
+                        <tr>
+                          <th>Name</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    #{/box}
+                #{/else}
             </div>
                 <div class="right_tree inner">
 
@@ -134,7 +152,8 @@
                 $('.instanceShownOnLoad').show();
                 $('#remove_cycle').button('disable');
 
-                jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+                loadInnerData();
+
                 $('.hiddenOnLoad').show();
                 $('.shownOnLoad').hide();
             } else {
@@ -143,6 +162,8 @@
                 $('.hiddenOnLoad').hide();
                 $('.shownOnLoad').show();
             }
+
+
         });
 
 
@@ -151,7 +172,7 @@
             $.ajax({
                 url: $(formElement).attr('action'),
                 type: 'POST',
-                data: $.extend({instanceId: getSelectedNodeId('scriptCycleTree')}, {params: ko.mapping.toJSON(paramViewModel)}),
+                data: $.extend( getInstanceQuery, {params: ko.mapping.toJSON(paramViewModel)}),
                 success: function() {
                     $('#saveParamsButton').button('disable');
                 },
@@ -160,13 +181,134 @@
             return false;
         }};
 
+        //initialize either tree or table, depending on releases number
+        #{if releases>0}
         // selection listener for the instance tree
         $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
         $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
             if (isSelectedNodeType(data, ["instance", "default"])) {
                 var instanceId = getNodeIdFromData(data);
+                handleTabsPopulation(instanceId);
 
-                // TODO all these requests should be in fact one request!
+            } else {
+              $('.instanceHiddenOnLoad').hide();
+              $('.instanceShownOnLoad').show();
+              $("#remove_cycle").button('disable');
+            }
+        });
+
+        $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
+            $('.instanceHiddenOnLoad').hide();
+            $('.instanceShownOnLoad').show();
+        });
+        #{/if}
+
+
+        #{else}
+            #{tabularasa.init tableId:'instancesTable'}
+              var instancesTableParameters = {
+                "aoColumns":[
+                  {"sName": "naturalId", "sClass": "sNone"},
+                  {"sName": "name"}
+
+                ],
+                "bServerSide": true,
+                "bLengthChange": false,
+                "bSort": false,
+                "bFilter": false,
+                "bAutoWidth": false,
+                "iDisplayLength": false,
+                "bInfo": false,
+                "sAjaxSource": "@{Preparation.instances()}",
+                "oLanguage": {
+                  "sZeroRecords": "No test instances reported"
+                }
+              };
+              #{/tabularasa.init}
+
+                function addRequestParameters(parameters, tableId) {
+                  parameters.push({"name": "instanceId", "value": getSelectedNodeId('repositoryTree') });
+                }
+
+                handleRowSelection("#instancesTable", function(){
+                    var instanceId  = getSelectedRowId("#instancesTable");
+                    handleTabsPopulation(instanceId);
+                });
+
+        #{/else}
+
+        $('#innerTabs').tabs();
+
+        // tags
+        $('#tags').tokenInput({
+            url: '@{Preparation.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+        });
+
+        $('#tagsSaveButton').button();
+        $('#tags').change(function() {
+            $('#tagsSaveButton').button('enable');
+        });
+        $('#tagsForm').ajaxForm({
+            success: function() {
+                $('#tagsSaveButton').button('disable');
+            },
+            beforeSubmit: function(arr, $form, options) {
+                arr.push({name:'instanceId', value: getSelectedId});
+                return true;
+            },
+            error: errorHandler
+        });
+
+        $('#scheduleForm').oxForm({
+            loadAction: '@{Preparation.schedule()}',
+            submissionParameters: getInstanceQuery
+        });
+
+        $('#saveParamsButton').button();
+
+      $('#searchInput').keyup(function() {
+        $("#repositoryTree").jstree("search", $(this).val());
+      });
+
+
+        //check for tree node or table row, depends on releases number
+        #{if releases>0}
+        function getSelectedId(){
+            return getSelectedNodeId('scriptCycleTree');
+        }
+        function getInstanceQuery() {
+            return {'instanceId': getSelectedNodeId('scriptCycleTree')};
+        }
+        function getScriptQuery() {
+            return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
+        }
+        function loadInnerData(){
+            jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+        }
+        #{/if}
+        #{else}
+        function getSelectedId(){
+            return getSelectedRowId('#instancesTable');
+        }
+        function getInstanceQuery() {
+            return {'instanceId': getSelectedRowId('#instancesTable')};
+        }
+        function loadInnerData(){
+            $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')}, function(){
+                $('#instancesTable').dataTable().fnDraw();
+            }).error(errorHandler);
+        }
+        #{/else}
+
+
+        // common function for inner tabs population, for table or tree
+        
+        function handleTabsPopulation(instanceId){
+             // TODO all these requests should be in fact one request!
 
                 // tags data loading
                 $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
@@ -199,62 +341,7 @@
                   $('.instanceShownOnLoad').hide();
                   $("#remove_cycle").button('enable');
                 });
-            } else {
-              $('.instanceHiddenOnLoad').hide();
-              $('.instanceShownOnLoad').show();
-              $("#remove_cycle").button('disable');
-            }
-        });
-
-        $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-            $('.instanceHiddenOnLoad').hide();
-            $('.instanceShownOnLoad').show();
-        });
-
-        $('#innerTabs').tabs();
-
-        function getScriptQuery() {
-            return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
         }
-
-        function getInstanceQuery() {
-            return {'instanceId': getSelectedNodeId('scriptCycleTree')};
-        }
-
-        // tags
-        $('#tags').tokenInput({
-            url: '@{Preparation.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-        });
-
-        $('#tagsSaveButton').button();
-        $('#tags').change(function() {
-            $('#tagsSaveButton').button('enable');
-        });
-        $('#tagsForm').ajaxForm({
-            success: function() {
-                $('#tagsSaveButton').button('disable');
-            },
-            beforeSubmit: function(arr, $form, options) {
-                arr.push({name:'instanceId', value: getSelectedNodeId('scriptCycleTree')});
-                return true;
-            },
-            error: errorHandler
-        });
-
-        $('#scheduleForm').oxForm({
-            loadAction: '@{Preparation.schedule()}',
-            submissionParameters: getInstanceQuery
-        });
-
-        $('#saveParamsButton').button();
-
-      $('#searchInput').keyup(function() {
-        $("#repositoryTree").jstree("search", $(this).val());
-      });
 
 
     });

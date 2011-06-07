@@ -1,18 +1,25 @@
 package controllers;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import controllers.deadbolt.Restrict;
+import controllers.tabularasa.TableController;
 import models.general.UnitRole;
+import models.tm.Defect;
 import models.tm.TMUser;
+import models.tm.approach.Release;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
+import models.tm.test.Script;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
+import play.db.jpa.GenericModel;
 import util.Logger;
 
 /**
@@ -22,7 +29,9 @@ public class Preparation extends TMController {
 
     @Restrict(UnitRole.TESTPREPVIEW)
     public static void index() {
-        render();
+        Long releases = Release.count("project.id=?", getActiveProjectId());
+
+        render(releases);
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
@@ -118,5 +127,34 @@ public class Preparation extends TMController {
             error();
         }
         ok();
+    }
+
+    public static void instances(String tableId,
+                               Integer iDisplayStart,
+                               Integer iDisplayLength,
+                               String sColumns,
+                               String sEcho,
+                               Long instanceId) {
+
+        GenericModel.JPAQuery query;
+
+
+
+        if(instanceId!=null){
+            query = Instance.find("script.id=?", instanceId);
+        }else{
+            query = Instance.all();
+        }
+
+
+
+        List<Instance> instances = query.fetch();
+
+        for(int i = 0; i<instances.size();i++){
+            System.out.println(instances.get(i).name);
+            
+        }
+
+        TableController.renderJSON(instances, Instance.class, Instance.count(), sColumns, sEcho);
     }
 }
