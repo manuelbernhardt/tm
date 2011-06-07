@@ -4,6 +4,17 @@ body {
     font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
 }
 
+/* setting margin and padding to 0px to reset browser's default settings */
+input {
+    margin: 0;
+    padding: 0;
+}
+
+textarea{
+    margin: 0;
+    padding: 0;
+}
+
 div.tree {
     min-width: 250px;
     width: auto;
@@ -118,7 +129,7 @@ label.name {
     float: left;
     width: 100px;
     text-align: right;
-    margin: 6px 5px 0px 0px;
+    margin: 2px 8px 0px 0px;
 }
 
 label.extended {
