@@ -105,7 +105,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
     }
 
     public boolean move(Long id, String type, Long target, String targetType, Long position) {
-        return false;
+        return copy(id, target, position);
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

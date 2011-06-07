@@ -5,7 +5,7 @@
         var settings = {};
 
         var defaults = {
-            "plugins" : [ "json_data", "ui", "crrm", "types", "hotkeys", "themeroller", "search" ],
+            "plugins" : [ "json_data", "ui", "types", "themeroller", "search"],
             "json_data" : {
                 "ajax" : {
                     "url" : treeChildrenRouteAction(),
@@ -19,11 +19,6 @@
                     }
                 }
             },
-            "crrm": {
-                "move": {
-                    "always_copy": "multitree"
-                }
-            },
             "themeroller": {
                 "item": ""
             },
@@ -34,14 +29,21 @@
             "search": {
                 "case_insensitive": true,
                 "show_only_matches": true
+            }
+        };
+
+        var multiPurposePlugins = ["crrm", "hotkeys", "contextmenu"];
+        var multiPurpose = {
+            "crrm": {
+                "move": {
+                    "always_copy": "multitree"
+                }
             },
             "hotkeys": {
                 "Ctrl+x" : function() {
-                    alert("foo")
                     this.cut(null)
                 },
                 "Ctrl+v" : function() {
-                    alert("bar")
                     this.paste(null)
                 }
             }
@@ -53,6 +55,10 @@
             $.extend(settings, options);
             if (options.plugins) {
                 settings.plugins = $.merge(options.plugins, defaults.plugins);
+            }
+            if(options.types.multipurpose) {
+                $.extend(settings, multiPurpose);
+                settings.plugins = $.merge(settings.plugins, multiPurposePlugins);
             }
         }
 

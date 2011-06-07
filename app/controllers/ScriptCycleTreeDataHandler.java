@@ -108,7 +108,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             Instance ti = new Instance(script.project);
             ti.testCycle = cycle;
             ti.script = script;
-            ti.name = "Test instance " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
+            ti.name = script.name + " " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
 
             boolean created = ti.create();
             if (!created) {

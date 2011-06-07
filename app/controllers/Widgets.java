@@ -15,7 +15,11 @@ import models.tm.Requirement;
 import models.tm.test.Instance;
 import models.tm.test.Script;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
+import org.apache.commons.beanutils.converters.DateTimeConverter;
 import org.apache.commons.lang.StringUtils;
+import play.Play;
 import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Router;
@@ -143,6 +147,11 @@ public class Widgets extends TMController {
             Script.class.getSimpleName(), new String[] {"name", "createdBy", "description", "tags"}
     );
 
+    static {
+        DateTimeConverter dtc = new DateConverter();
+        dtc.setPattern(Play.configuration.getProperty("date.format"));
+        ConvertUtils.register(dtc, String.class);
+    }
 
     public static void report(String entity, String title) {
 

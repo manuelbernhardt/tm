@@ -350,6 +350,7 @@ function removeDialogs() {
                     } else {
                         ko.mapping.updateFromJS(oxFormData.viewModel, data);
                     }
+                    $this.find('input[type="submit"]').button('disable')
                 });
             });
         },
@@ -614,12 +615,13 @@ function deletionConfirmation(dialogId, callback){
                 var settings = {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
-                                    '<button id="filterExpand">Expand filter</button>' +
-                                    '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +                                    '</div>' +
-                                    '<div id="filterSaveDialog" title="Save filter">' +
-                                    '<label for="filterName" class="name">Name</label>' +
-                                    '<input id="filterName" name="name"/>' +
-                                    '</div>'
+                                '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
+                                '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
+                            '</div>' +
+                            '<div id="filterSaveDialog" title="Save filter">' +
+                                '<label for="filterName" class="name">Name</label>' +
+                                '<input id="filterName" name="name"/>' +
+                            '</div>'
                 };
 
                 $.extend(settings, options);

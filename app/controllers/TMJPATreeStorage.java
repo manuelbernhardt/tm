@@ -30,6 +30,6 @@ public class TMJPATreeStorage extends JPATreeStorage {
 
     @Override
     public boolean exists(GenericTreeNode node) {
-        return findJSTreeNodes("from ProjectTreeNode n where n.path = ? and n.type = ? and n.treeId = ? and n.project.id = ?", node.getPath(), node.getType(), node.getTreeId(), ((ProjectTreeNode)node).project.getId()).size() > 0;
+        return findJSTreeNodes("from ProjectTreeNode n where n.path = ? and n.type = ? and n.treeId = ? and n.project.id = ?", node.getPath(), node.getNodeType().getName(), node.getTreeId(), ((ProjectTreeNode)node).project.getId()).size() > 0;
     }
 }
