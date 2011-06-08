@@ -194,7 +194,7 @@ function getSelectedNode(treeId) {
     return null;
 }
 
-function getSelectedNodeName(treeId){
+function getSelectedNodeName(treeId) {
     //todo implement return of selected node name
     var tree = $.jstree._reference($('#' + treeId));
     if (typeof tree.get_selected().attr('id') !== 'undefined') {
@@ -588,29 +588,29 @@ function refreshWidgetsContent(dashboard) {
     });
 }
 
-function deletionConfirmation(dialogId, type, name, callback){
+function deletionConfirmation(dialogId, type, name, callback) {
     $('#' + dialogId).dialog({
-            autoOpen: true,
-            width: 400,
-            modal: true,
-            buttons: {
-              "Confirm": function() {
-                if(typeof callback=='function'){
-                    callback.call();
+                autoOpen: true,
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Confirm": function() {
+                        if (typeof callback == 'function') {
+                            callback.call();
+                        }
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+
+                        $(this).dialog("close");
+                    }
+
                 }
-                $(this).dialog("close");
-              },
-              "Cancel": function() {
-
-                $(this).dialog("close");
-              }
-
-            }
-          });
+            });
     $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
 }
 
-function applyButtonStyles(){
+function applyButtonStyles() {
     $('.button-add').button({icons: {primary: 'ui-icon-plus'}});
     $('.button-edit').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
     $('.button-delete').button({icons: {primary: 'ui-icon-trash'}, text:false,  disabled:true});
@@ -633,13 +633,13 @@ function applyButtonStyles(){
                 var settings = {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
-                                '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
-                                '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
-                            '</div>' +
-                            '<div id="filterSaveDialog" title="Save filter">' +
-                                '<label for="filterName" class="name">Name</label>' +
-                                '<input id="filterName" name="name"/>' +
-                            '</div>'
+                                    '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
+                                    '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
+                                    '</div>' +
+                                    '<div id="filterSaveDialog" title="Save filter">' +
+                                    '<label for="filterName" class="name">Name</label>' +
+                                    '<input id="filterName" name="name"/>' +
+                                    '</div>'
                 };
 
                 $.extend(settings, options);
