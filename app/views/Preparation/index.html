@@ -20,10 +20,10 @@
             <div id="actions" class="actions">
                     <div class="actions buttons">
                       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
-                        <button id="assign_cycle">Instance</button>
+                        <button id="assign_cycle" class="button-add">Instance</button>
                       #{/deadbolt.restrict}
                       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
-                        <button id="remove_cycle">Remove</button>
+                        <button id="remove_cycle" class="button-delete">Remove</button>
                       #{/deadbolt.restrict}
                     </div>
                 </div>

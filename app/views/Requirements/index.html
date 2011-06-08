@@ -8,9 +8,9 @@
 
         <div class="actions buttons">
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-                <button id="create_folder">Create new folder</button>
+                <button id="create_folder" class='button-add-folder'>Create new folder</button>
                     <span>
-                    <button id="create_requirement">Requirement</button>
+                    <button id="create_requirement" class="button-add">Requirement</button>
                     <button id="create_actions">Select an action</button>
                       <!-- style with margin bottom and z-index is here because of menu bug -->
                       <ul style="margin-bottom:-2em;z-index:20">
@@ -35,7 +35,7 @@
                     </div>
             #{/deadbolt.restrict}
             #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
-            <button id="remove">Remove</button>
+            <button id="remove" class="button-delete">Remove</button>
             <input id="searchInput" class="searchInput" type="text">
             #{/deadbolt.restrict}
         </div>
@@ -139,11 +139,10 @@
       }
     });
 
-    $('#create_folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+    $('#create_folder').click(function () {
       $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
     });
     $('#create_requirement')
-            .button({icons: {primary: 'ui-icon-plus'}})
             .click(function () {
               $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
             })
@@ -155,7 +154,7 @@
     $('#import_requirements').click(function() {
       $('#importRequirementsDialog').dialog('open');
     });
-    $('#remove').button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
+    $('#remove').click(function () {
         var node = getSelectedNode('requirementTree');
       deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion){
         $("#requirementTree").jstree("remove", null);

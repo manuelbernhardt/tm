@@ -15,11 +15,11 @@
     <div class="actions">
       <div id="actions" class="actions buttons">
         #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
-        <button id="create_folder">Folder</button>
-        <button id="create_script">Test Script</button>
+        <button id="create_folder" class="button-add-folder">Folder</button>
+        <button id="create_script" class="button-add">Test Script</button>
         #{/deadbolt.restrict}
         #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
-        <button id="remove">Remove</button>
+        <button id="remove" class="button-delete">Remove</button>
         #{/deadbolt.restrict}
         <input id="searchInput" class="searchInput" type="text">
       </div>
@@ -63,8 +63,8 @@
         <div id="linkedRequirements">
           <div class="hiddenOnLoad">
             #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
-            <button id="requirementScriptDialogOpen">Requirement</button>
-            <button id="removeRequirementButton">Remove requirement</button>
+            <button id="requirementScriptDialogOpen" class="button-add">Requirement</button>
+            <button id="removeRequirementButton" class="button-delete">Remove requirement</button>
             #{/deadbolt.restrict}
             <table class="display" id="requirementTable">
               <thead>
@@ -140,13 +140,13 @@
       }
     });
 
-    $("#create_folder").button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+    $("#create_folder").click(function () {
       $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}, data:"New folder"});
     });
-    $("#create_script").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+    $("#create_script").click(function () {
       $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
     });
-    $("#remove").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
+    $("#remove").click(function () {
         var node = getSelectedNodeName('repositoryTree');
         deletionConfirmation('testScriptDeletionConfirmationDialog', 'Test script', getSelectedNodeName('repositoryTree'), function(){
 
@@ -225,11 +225,11 @@
 
             });
 
-    $('#requirementScriptDialogOpen').button({icons: {primary: 'ui-icon-plus'}, disabled: true}).click(function () {
+    $('#requirementScriptDialogOpen').click(function () {
       $('#linkRequirementDialog').dialog('open');
     });
 
-    $('#removeRequirementButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
+    $('#removeRequirementButton').click(function () {
       deletionConfirmation('requirementDeletionConfirmationDialog', "Requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function(){
           $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
         function(data) {

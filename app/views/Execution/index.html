@@ -31,13 +31,13 @@
       #{box 'Runs for test instance'}
 
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
-        <div id="createRunButton">Run Test Instance</div>
+        <div id="createRunButton" class="button-play">Run Test Instance</div>
       #{/deadbolt.restrict}
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
-        <div id="updateRunButton">Edit Test Run</div>
+        <div id="updateRunButton" class="button-edit">Edit Test Run</div>
       #{/deadbolt.restrict}
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECDELETE]]}
-      <div id="deleteRunButton">Delete Test Run</div>
+      <div id="deleteRunButton" class="button-delete">Delete Test Run</div>
       #{/deadbolt.restrict}
 
       <div id="createRunDialog" title="Run Test Instance"></div>
@@ -203,7 +203,7 @@
       refreshTableContents('#runStepTable', true);
     });
 
-    $('#createRunButton').button({icons: {primary: 'ui-icon-play'}, disabled: true}).click(function() {
+    $('#createRunButton').click(function() {
       $('#createRunDialog').dialog('open')
     });
 
@@ -241,7 +241,7 @@
       }
     });
 
-    $('#updateRunButton').button({icons: {primary: 'ui-icon-pencil'}, disabled: true}).click(function() {
+    $('#updateRunButton').click(function() {
       $('#updateRunDialog').dialog('open')
     });
 
@@ -279,7 +279,7 @@
       }
     });
 
-    $('#deleteRunButton').button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function() {
+    $('#deleteRunButton').click(function() {
         deletionConfirmation('deleteRunDialog','Test run for', getSelectedRowColumn($('#instanceTable').dataTable(), 2), function(){
              $.post('@{Execution.deleteRun()}', {runId: getSelectedRowId('#runTable')}).success(
                 function(data) {

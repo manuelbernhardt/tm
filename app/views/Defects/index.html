@@ -13,7 +13,7 @@
 
 
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTCREATE]]}
-  <button id="createDefectButton">Defect</button>
+  <button id="createDefectButton" class="button-add">Defect</button>
   #{/deadbolt.restrict}
 
 
@@ -56,11 +56,11 @@
   <br/>
   <br/>
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTEDIT]]}
-  <button id="updateDefectButton">Update defect</button>
+  <button id="updateDefectButton" class="button-edit">Update defect</button>
   #{/deadbolt.restrict}
 
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
-  <button id="deleteDefectButton">Delete defect</button>
+  <button id="deleteDefectButton" class="button-delete">Delete defect</button>
   #{/deadbolt.restrict}
 
   <div id="updateDefectDialog" style="display:none" title="Update a defect">
@@ -185,16 +185,7 @@ $(document).ready(function() {
   }
 
 // creating a defect
-  $('#createDefectButton').button({icons: {primary: 'ui-icon-plus'}});
   $('#createDefectButton').click(function() {
-    if ($("#createDefectButton span.ui-icon").hasClass("ui-icon-carat-1-s")) {
-      $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
-    }
-    else {
-      $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-s").removeClass("ui-icon-carat-1-e");
-      $('#createDefectForm_defect_tags').tokenInput('clearAll');
-    }
-
     $('#createDefectDialog').slideToggle('slow');
   });
 
@@ -237,8 +228,6 @@ $(document).ready(function() {
             loadAction: '@{Defects.defectDetails()}'
           });
 
-  $('#updateDefectButton').button({icons: {primary: 'ui-icon-pencil'}});
-  $('#updateDefectButton').button('disable');
 
   $('#updateDefectButton').click(function() {
     $('#updateDefectDialog').slideToggle('slow');
@@ -280,7 +269,6 @@ $(document).ready(function() {
 
 
 // delete defect
-  $('#deleteDefectButton').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled:true});
   $('#deleteDefectButton').click(function() {
       deletionConfirmation('deleteDefectDialog', 'Defect', getSelectedRowColumn($('#defectsTable').dataTable(), 2), function(){
           $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(

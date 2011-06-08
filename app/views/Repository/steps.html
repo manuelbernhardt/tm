@@ -3,8 +3,8 @@
 </div>
 <div class="hiddenOnLoad">
   #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
-    <button id="createStepButton">Step</button>
-    <button id="updateStepButton">Update step</button>
+    <button id="createStepButton" class="button-add">Step</button>
+    <button id="updateStepButton" class="button-edit">Update step</button>
   #{/deadbolt.restrict}
 
   <table class="display" id="stepTable">
@@ -79,7 +79,6 @@
       $('#updateStepButton').button('enable');
     });
 
-    $('#createStepButton').button({icons: {primary: 'ui-icon-plus'}});
     $('#createStepButton').click(function() {
       $('#createStepDialog').dialog('open');
     });
@@ -110,8 +109,6 @@
       }
     });
 
-    $('#updateStepButton').button({icons: {primary: 'ui-icon-pencil'}});
-    $('#updateStepButton').button('disable');
     $('#updateStepButton').click(function() {
       $('#updateStepDialog').dialog('open');
     });

@@ -2,8 +2,8 @@
 
 <div id="actions">
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
-    <button id="linkScript">Script</button>
-    <button id="unlinkScript">Remove</button>
+    <button id="linkScript" class="button-add">Script</button>
+    <button id="unlinkScript" class="button-delete">Remove</button>
     #{/deadbolt.restrict}
 </div>
 
@@ -147,11 +147,11 @@
 
         $("#repositoryTree").tree({types: repositoryTreeTypes});
 
-        $("#linkScript").button({icons: {primary: "ui-icon-plus"}}).click(function() {
+        $("#linkScript").click(function() {
             $("#linkScriptDialog").dialog("open");
         });
 
-        $("#unlinkScript").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
+        $("#unlinkScript").click(function () {
             deletionConfirmation('unlinkScriptConfirmationDialog', 'Script', getSelectedRowColumn($('#scriptTable').dataTable(), 1), function(){
                 $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
                     function(data) {

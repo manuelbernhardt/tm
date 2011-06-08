@@ -8,11 +8,11 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $("#assign_cycle").button({icons: {primary: "ui-icon-plus"}}).click(function() {
+    $("#assign_cycle").click(function() {
       $("#assign_dialog").dialog("open");
     });
 
-    $("#remove_cycle").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
+    $("#remove_cycle").click(function () {
       deletionConfirmation('cycleDeleteConfirmationDialog','Cycle', getSelectedNodeName('scriptCycleTree'), function(){
           var $tree = jQuery.jstree._reference('#scriptCycleTree');
           var selectedNode = $tree.get_selected();

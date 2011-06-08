@@ -610,6 +610,14 @@ function deletionConfirmation(dialogId, type, name, callback){
     $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
 }
 
+function applyButtonStyles(){
+    $('.button-add').button({icons: {primary: 'ui-icon-plus'}});
+    $('.button-edit').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
+    $('.button-delete').button({icons: {primary: 'ui-icon-trash'}, text:false,  disabled:true});
+    $('.button-add-folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false});
+    $('.button-play').button({icons: {primary: 'ui-icon-play'}, disabled: true});
+}
+
 /**
  * jQuery plugin for filters
  */
