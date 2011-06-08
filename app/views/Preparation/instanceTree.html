@@ -1,0 +1,23 @@
+<div id="actions" class="actions">
+  <div class="actions buttons">
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
+    <button id="assignToCycle" class="button-add">Instance</button>
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
+    <button id="removeFromCycle" class="button-delete">Remove</button>
+    #{/deadbolt.restrict}
+  </div>
+</div>
+
+<div class="tree-container">
+  <div class="left_tree">
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
+    #{include 'Preparation/instanceCreateDialog.html' /}
+    #{/deadbolt.restrict}
+    <div id="scriptCycleTree" class="tree"></div>
+  </div>
+  <div class="right_tree inner">
+    #{include 'Preparation/instanceTabs.html' /}
+  </div>
+
+</div>

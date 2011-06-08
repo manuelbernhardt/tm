@@ -1,4 +1,4 @@
-<div id='cycleDeleteConfirmationDialog' title="Deletion confirmation of cycle"></div>
+<div id="cycleDeleteConfirmationDialog" title="Deletion confirmation of cycle"></div>
 
 <div id="assign_dialog" title="Assign Test Script to Cycle" class="modalDialog">
   <div id="approachTree" class="tree"></div>
@@ -8,53 +8,54 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $("#assign_cycle").click(function() {
+    $("#assignToCycle").click(function() {
       $("#assign_dialog").dialog("open");
     });
 
-    $("#remove_cycle").click(function () {
-      deletionConfirmation('cycleDeleteConfirmationDialog','Cycle', getSelectedNodeName('scriptCycleTree'), function(){
-          var $tree = jQuery.jstree._reference('#scriptCycleTree');
-          var selectedNode = $tree.get_selected();
-          if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
-            selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
-            $tree.delete_node(selectedNode);
-            refreshCycleTree();
-          }
+    $("#removeFromCycle").click(function () {
+      deletionConfirmation('cycleDeleteConfirmationDialog', 'Cycle', getSelectedNodeName('scriptCycleTree'), function() {
+        var $tree = jQuery.jstree._reference('#scriptCycleTree');
+        var selectedNode = $tree.get_selected();
+        if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
+          selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
+          $tree.delete_node(selectedNode);
+          refreshCycleTree();
+        }
       });
 
     });
 
     $("#assign_dialog").dialog({
-      autoOpen: false,
-      height: 550,
-      width: 300,
-      modal: true,
-      buttons: {
-        "Assign": function() {
+              autoOpen: false,
+              height: 550,
+              width: 300,
+              modal: true,
+              buttons: {
+                "Assign": function() {
 
-          var valid = false;
-          var treeContainer = $("#approachTree");
-          var $tree = jQuery.jstree._reference(treeContainer);
-          var selectedNode = $tree.get_selected();
-          if ($tree._get_type(selectedNode) == 'testCycle') {
-            valid = true;
-          } else {
-            errorHandler
-          }
+                  var valid = false;
+                  var treeContainer = $("#approachTree");
+                  var $tree = jQuery.jstree._reference(treeContainer);
+                  var selectedNode = $tree.get_selected();
+                  if ($tree._get_type(selectedNode) == 'testCycle') {
+                    valid = true;
+                  } else {
+                    // TODO FIXME this won't work, we're not in an AJAX call
+                    errorHandler
+                  }
 
-          if (valid) {
-            var name = selectedNode.text();
-            $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: getSelectedNodeId('repositoryTree')}}}, null, true);
-            refreshCycleTree();
-            $(this).dialog("close");
-          }
-        },
-        Cancel: function() {
-          $(this).dialog("close");
-        }
-      }
-    });
+                  if (valid) {
+                    var name = selectedNode.text();
+                    $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: getSelectedNodeId('repositoryTree')}}}, null, true);
+                    refreshCycleTree();
+                    $(this).dialog("close");
+                  }
+                },
+                Cancel: function() {
+                  $(this).dialog("close");
+                }
+              }
+            });
 
     $('#approachTree').tree({"args" : {"projectId": "${project == null ? controllers.TMController.getActiveProject().getId() : project.id}"}, types: approachTreeTypes});
 
