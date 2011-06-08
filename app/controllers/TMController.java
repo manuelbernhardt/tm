@@ -62,10 +62,34 @@ import static play.modules.excel.Excel.renderExcel;
 @With(Deadbolt.class)
 public class TMController extends Controller {
 
+
     /**
-     * Set Hibernate filters for multi-tenancy and so on.
+     * Load user details for rendering, and update the session expiration timestamp.
      */
     @Before(priority = 0)
+    @Util
+    public static void loadConnectedUser() {
+        if (Security.isConnected()) {
+            User user = getConnectedUser().user;
+            renderArgs.put("firstName", user.firstName);
+            renderArgs.put("lastName", user.lastName);
+            if (controllerHasActiveProject()) {
+                renderArgs.put("activeProject", getActiveProject());
+                renderArgs.put("projects", getConnectedUser().getProjects());
+            }
+
+            // TODO write a job that goes over this time every 5 minutes and flushes the time to the database
+            // TODO but only if it is more recent than the time in the database
+            // TODO also disconnect users for which the session is not active any longer.
+            Cache.set(session.getId() + "_session_expiration", Security.getSessionExpirationTimestamp());
+        }
+    }
+
+
+    /**
+     * Set Hibernate filters for multi-tenancy, active users and active projects.
+     */
+    @Before(priority = 1)
     @Util
     public static void setFilters() {
         if (Security.isConnected()) {
@@ -86,28 +110,6 @@ public class TMController extends Controller {
                     getConnectedUser().initializeActiveProject();
                 }
             }
-        }
-    }
-
-    /**
-     * Load user details for rendering, and update the session expiration timestamp.
-     */
-    @Before(priority = 1)
-    @Util
-    public static void loadConnectedUser() {
-        if (Security.isConnected()) {
-            User user = getConnectedUser().user;
-            renderArgs.put("firstName", user.firstName);
-            renderArgs.put("lastName", user.lastName);
-            if (controllerHasActiveProject()) {
-                renderArgs.put("activeProject", getActiveProject());
-                renderArgs.put("projects", getConnectedUser().getProjects());
-            }
-
-            // TODO write a job that goes over this time every 5 minutes and flushes the time to the database
-            // TODO but only if it is more recent than the time in the database
-            // TODO also disconnect users for which the session is not active any longer.
-            Cache.set(session.getId() + "_session_expiration", Security.getSessionExpirationTimestamp());
         }
     }
 
@@ -220,6 +222,10 @@ public class TMController extends Controller {
         }
 
         checkAuthenticity();
+
+        // deactivate the project filter for this request
+        ((Session) JPA.em().getDelegate()).disableFilter("project");
+
         Project project = Lookups.getProject(projectId);
         if (project == null) {
             Logger.error(Logger.LogType.SECURITY, "Trying to switch to non-existing project with ID %s", projectId);
@@ -227,8 +233,7 @@ public class TMController extends Controller {
         }
         TMUser connectedUser = getConnectedUser();
         if (connectedUser.getProjects().contains(project)) {
-
-            // check if there is enough place on the project we want to switch to
+            // TODO check if there is enough place on the project we want to switch to
 
             // effectively switch the user to the project
             Logger.info(Logger.LogType.USER, "Switching to project '%s'", project.name);
