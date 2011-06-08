@@ -83,7 +83,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     }
 
     // TODO cache this, as it is called at each permission check! but evict the cache on Role definition change
-    public List<? extends models.deadbolt.Role> getAccountRoles() {
+    public List<? extends models.deadbolt.Role> getAccountUnitRoles() {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
         for (String accountRole : accountRoles) {
             res.add(UnitRole.role(accountRole));
