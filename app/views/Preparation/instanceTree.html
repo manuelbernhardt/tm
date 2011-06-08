@@ -19,5 +19,46 @@
   <div class="right_tree inner">
     #{include 'Preparation/instanceTabs.html' /}
   </div>
-
 </div>
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+
+    // selection listener for the instance tree
+    $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+    $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["instance", "default"])) {
+        var instanceId = getNodeIdFromData(data);
+        handleTabsPopulation(instanceId);
+      } else {
+        $('.instanceHiddenOnLoad').hide();
+        $('.instanceShownOnLoad').show();
+        $("#removeFromCycle").button('disable');
+      }
+    });
+
+    $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
+      $('.instanceHiddenOnLoad').hide();
+      $('.instanceShownOnLoad').show();
+    });
+
+  });
+
+  function getSelectedId() {
+    return getSelectedNodeId('scriptCycleTree');
+  }
+
+  function getInstanceQuery() {
+    return {'instanceId': getSelectedNodeId('scriptCycleTree')};
+  }
+
+  function getScriptQuery() {
+    return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
+  }
+
+  function loadInnerData() {
+    jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+  }
+
+</script>

@@ -21,7 +21,8 @@
     </div>
     <div class="instanceHiddenOnLoad" style="display: none;">
       #{ox.form action:@Preparation.updateSchedule(),
-      edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm', baseClass:'models.tm.test.Instance'}
+      edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm',
+      baseClass:'models.tm.test.Instance'}
       #{ox.field field:'instance.responsible', label:'Assigned to' /}
       #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
       #{ox.submit /}
@@ -71,3 +72,47 @@
   </tr>
 </script>
 #{/elseif}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#innerTabs').tabs();
+
+    // tags
+    $('#tags').tokenInput({
+              url: '@{Preparation.allTags()}',
+              preventDuplicates: true,
+              tokenValue: 'name',
+              allowCreation: true,
+              creationText: "Create new tag"
+            });
+
+    $('#tagsSaveButton').button({disabled: true});
+
+    $('#tags').change(function() {
+      $('#tagsSaveButton').button('enable');
+    });
+
+    $('#tagsForm').ajaxForm({
+              success: function() {
+                $('#tagsSaveButton').button('disable');
+              },
+              beforeSubmit: function(arr, $form, options) {
+                arr.push({name:'instanceId', value: getSelectedId});
+                return true;
+              },
+              error: errorHandler
+            });
+
+    $('#scheduleForm').oxForm({
+              loadAction: '@{Preparation.schedule()}',
+              submissionParameters: getInstanceQuery
+            });
+
+    $('#saveParamsButton').button({disabled: true});
+
+    $('#instanceParamForm :input[type!="submit"]').change(function() {
+      $('#saveParamsButton').button('enable');
+    });
+  });
+</script>

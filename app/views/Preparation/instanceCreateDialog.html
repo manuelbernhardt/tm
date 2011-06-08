@@ -13,7 +13,7 @@
     });
 
     $("#removeFromCycle").click(function () {
-      deletionConfirmation('cycleDeleteConfirmationDialog', 'Cycle', getSelectedNodeName('scriptCycleTree'), function() {
+      deletionConfirmation('cycleDeleteConfirmationDialog', 'Instance', getSelectedNodeName('scriptCycleTree'), function() {
         var $tree = jQuery.jstree._reference('#scriptCycleTree');
         var selectedNode = $tree.get_selected();
         if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {

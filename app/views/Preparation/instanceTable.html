@@ -13,3 +13,52 @@
 <div class="right_table inner">
   #{include 'Preparation/instanceTabs.html' /}
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    #{tabularasa.init tableId:'instancesTable'}
+    var instancesTableParameters = {
+      "aoColumns":[
+        {"sName": "naturalId", "sClass": "sNone"},
+        {"sName": "name"}
+
+      ],
+      "bServerSide": true,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "bAutoWidth": false,
+      "iDisplayLength": false,
+      "bInfo": false,
+      "sAjaxSource": "@{Preparation.instances()}",
+      "oLanguage": {
+        "sZeroRecords": "No test instances reported"
+      }
+    };
+    #{/tabularasa.init}
+
+    function addRequestParameters(parameters, tableId) {
+      parameters.push({"name": "instanceId", "value": getSelectedNodeId('repositoryTree') });
+    }
+
+    handleRowSelection("#instancesTable", function() {
+      var instanceId = getSelectedRowId("#instancesTable");
+      handleTabsPopulation(instanceId);
+    });
+  });
+
+  function getSelectedId() {
+    return getSelectedRowId('#instancesTable');
+  }
+
+  function getInstanceQuery() {
+    return {'instanceId': getSelectedRowId('#instancesTable')};
+  }
+
+  function loadInnerData() {
+    $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
+            function() {
+              $('#instancesTable').dataTable().fnDraw();
+            }).error(errorHandler);
+  }
+</script>

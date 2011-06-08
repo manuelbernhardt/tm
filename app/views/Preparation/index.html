@@ -1,209 +1,25 @@
 #{extends 'main.html' /}
 #{set title:'Test preparation' /}
 
-<div class="container">
-  <div class="actions">
-    <div class="actions buttons">
-      <input id="searchInput" class="searchInput" type="text">
-    </div>
-  </div>
-  <div class="tree-container">
-    <div class="left_tree">
-      #{box 'Test Script Repository'}
-      <div id="repositoryTree" class="tree" style="border-style:none;"></div>
-      #{/box}
-    </div>
-    <div class="right_table">
-      #{box 'Test Instances'}
-      <div class="hiddenOnLoad">
-        #{if hasReleases}
-        #{include 'Preparation/instanceTree.html' /}
-        #{/if}
-        #{else}
-        #{include 'Preparation/instanceTable.html' /}
-        #{/else}
-      </div>
-      <div class="shownOnLoad">
-        No test script selected
-      </div>
-      #{/box}
-    </div>
-  </div>
-</div>
-
-#{set 'moreScripts'}
-
 <script type="text/javascript">
+  /**
+   * Common function for loading the tags population based on an instance ID, used in the other templates (so we define it here)
+   * @param instanceId the ID of the instance to load
+   */
 
-$(document).ready(function () {
-
-  // selection listener for the repository tree
-  $("#repositoryTree").tree({types: repositoryTreeTypes});
-  $("#repositoryTree").bind("select_node.jstree", function (e, data) {
-    if (isSelectedNodeType(data, ["script", "default"])) {
-      $('.instanceHiddenOnLoad').hide();
-      $('.instanceShownOnLoad').show();
-      $('#removeFromCycle').button('disable');
-      loadInnerData();
-      $('.hiddenOnLoad').show();
-      $('.shownOnLoad').hide();
-    } else {
-      $('.instanceHiddenOnLoad').show();
-      $('.instanceShownOnLoad').hide();
-      $('.hiddenOnLoad').hide();
-      $('.shownOnLoad').show();
-    }
-  });
-
-
-  // viewModel for instance parameters
-  var paramViewModel = {'submitForm': function(formElement) {
-    $.ajax({
-              url: $(formElement).attr('action'),
-              type: 'POST',
-              data: $.extend(getInstanceQuery, {params: ko.mapping.toJSON(paramViewModel)}),
-              success: function() {
-                $('#saveParamsButton').button('disable');
-              },
-              error: errorHandler
-            });
-    return false;
-  }};
-
-  // initialize either tree or table, depending on releases number
-  #{if hasReleases}
-  // selection listener for the instance tree
-  $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
-  $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
-    if (isSelectedNodeType(data, ["instance", "default"])) {
-      var instanceId = getNodeIdFromData(data);
-      handleTabsPopulation(instanceId);
-    } else {
-      $('.instanceHiddenOnLoad').hide();
-      $('.instanceShownOnLoad').show();
-      $("#removeFromCycle").button('disable');
-    }
-  });
-
-  $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-    $('.instanceHiddenOnLoad').hide();
-    $('.instanceShownOnLoad').show();
-  });
-  #{/if}
-  #{else}
-  #{tabularasa.init tableId:'instancesTable'}
-  var instancesTableParameters = {
-    "aoColumns":[
-      {"sName": "naturalId", "sClass": "sNone"},
-      {"sName": "name"}
-
-    ],
-    "bServerSide": true,
-    "bLengthChange": false,
-    "bSort": false,
-    "bFilter": false,
-    "bAutoWidth": false,
-    "iDisplayLength": false,
-    "bInfo": false,
-    "sAjaxSource": "@{Preparation.instances()}",
-    "oLanguage": {
-      "sZeroRecords": "No test instances reported"
-    }
-  };
-  #{/tabularasa.init}
-
-  function addRequestParameters(parameters, tableId) {
-    parameters.push({"name": "instanceId", "value": getSelectedNodeId('repositoryTree') });
-  }
-
-  handleRowSelection("#instancesTable", function() {
-    var instanceId = getSelectedRowId("#instancesTable");
-    handleTabsPopulation(instanceId);
-  });
-
-  #{/else}
-
-  $('#innerTabs').tabs();
-
-  // tags
-  $('#tags').tokenInput({
-            url: '@{Preparation.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
-  $('#tagsSaveButton').button({disabled: true});
-  $('#tags').change(function() {
-    $('#tagsSaveButton').button('enable');
-  });
-  $('#tagsForm').ajaxForm({
-            success: function() {
-              $('#tagsSaveButton').button('disable');
-            },
-            beforeSubmit: function(arr, $form, options) {
-              arr.push({name:'instanceId', value: getSelectedId});
-              return true;
-            },
-            error: errorHandler
-          });
-
-  $('#scheduleForm').oxForm({
-            loadAction: '@{Preparation.schedule()}',
-            submissionParameters: getInstanceQuery
-          });
-
-  $('#saveParamsButton').button({disabled: true});
-
-  $('#instanceParamForm :input[type!="submit"]').change(function() {
-    $('#saveParamsButton').button('enable');
-  });
-
-  $('#searchInput').keyup(function() {
-    $("#repositoryTree").jstree("search", $(this).val());
-  });
-
-  //check for tree node or table row, depends on releases number
-  #{if hasReleases}
-  function getSelectedId() {
-    return getSelectedNodeId('scriptCycleTree');
-  }
-
-  function getInstanceQuery() {
-    return {'instanceId': getSelectedNodeId('scriptCycleTree')};
-  }
-
-  function getScriptQuery() {
-    return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
-  }
-
-  function loadInnerData() {
-    jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
-  }
-
-  #{/if}
-  #{else}
-  function getSelectedId() {
-    return getSelectedRowId('#instancesTable');
-  }
-
-  function getInstanceQuery() {
-    return {'instanceId': getSelectedRowId('#instancesTable')};
-  }
-
-  function loadInnerData() {
-    $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
-            function() {
-              $('#instancesTable').dataTable().fnDraw();
-            }).error(errorHandler);
-  }
-
-  #{/else}
-
-
-  // common function for inner tabs population, for table or tree
-
+    // viewModel for instance parameters
+    var paramViewModel = {'submitForm': function(formElement) {
+      $.ajax({
+                url: $(formElement).attr('action'),
+                type: 'POST',
+                data: $.extend(getInstanceQuery, {params: ko.mapping.toJSON(paramViewModel)}),
+                success: function() {
+                  $('#saveParamsButton').button('disable');
+                },
+                error: errorHandler
+              });
+      return false;
+    }};
 
   function handleTabsPopulation(instanceId) {
     // TODO all these requests should be in fact one request!
@@ -240,9 +56,60 @@ $(document).ready(function () {
       $("#removeFromCycle").button('enable');
     });
   }
-
-
-});
-
 </script>
-#{/set}
+
+<div class="container">
+  <div class="actions">
+    <div class="actions buttons">
+      <input id="searchInput" class="searchInput" type="text">
+    </div>
+  </div>
+  <div class="tree-container">
+    <div class="left_tree">
+      #{box 'Test Script Repository'}
+      <div id="repositoryTree" class="tree" style="border-style:none;"></div>
+      #{/box}
+    </div>
+    <div class="right_table">
+      #{box 'Test Instances'}
+      <div class="hiddenOnLoad">
+        #{if hasReleases}
+        #{include 'Preparation/instanceTree.html' /}
+        #{/if}
+        #{else}
+        #{include 'Preparation/instanceTable.html' /}
+        #{/else}
+      </div>
+      <div class="shownOnLoad">
+        No test script selected
+      </div>
+      #{/box}
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    // selection listener for the repository tree
+    $("#repositoryTree").tree({types: repositoryTreeTypes});
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["script", "default"])) {
+        $('.instanceHiddenOnLoad').hide();
+        $('.instanceShownOnLoad').show();
+        $('#removeFromCycle').button('disable');
+        loadInnerData();
+        $('.hiddenOnLoad').show();
+        $('.shownOnLoad').hide();
+      } else {
+        $('.instanceHiddenOnLoad').show();
+        $('.instanceShownOnLoad').hide();
+        $('.hiddenOnLoad').hide();
+        $('.shownOnLoad').show();
+      }
+    });
+
+    $('#searchInput').keyup(function() {
+      $("#repositoryTree").jstree("search", $(this).val());
+    });
+  });
+</script>
