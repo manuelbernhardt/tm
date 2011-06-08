@@ -40,36 +40,46 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (sId.equals("-1")) {
             return null;
         }
-        Script script = getScript(sId);
+        final Script script = getScript(sId);
         final CycleChildProducer cycleChildProducer = new CycleChildProducer(script);
 
         if (parentId == -1) {
-            // releases
-            List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
-            List<TestCycle> cycles = new ArrayList<TestCycle>();
-            for (Instance instance : instances) {
-                cycles.add(instance.testCycle);
-            }
-            final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
-            for (TestCycle c : cycles) {
-                Release r = c.getRelease();
-                List<TestCycle> cycleList = releases.get(r);
-                if (cycleList == null) {
-                    cycleList = new ArrayList<TestCycle>();
-                    releases.put(r, cycleList);
-                }
-                if (!cycleList.contains(c)) {
-                    cycleList.add(c);
-                }
-            }
-            ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
 
-            List<JSTreeNode> result = new ArrayList<JSTreeNode>();
-            for (Release r : releases.keySet()) {
-                SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
-                result.add(rNode);
-            }
-            return result;
+            // root node
+            ChildProducer rootChildProducer = new ChildProducer() {
+                public List<JSTreeNode> produce(Long id) {
+                    // releases
+                    List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
+                    List<TestCycle> cycles = new ArrayList<TestCycle>();
+                    for (Instance instance : instances) {
+                        cycles.add(instance.testCycle);
+                    }
+                    final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
+                    for (TestCycle c : cycles) {
+                        Release r = c.getRelease();
+                        List<TestCycle> cycleList = releases.get(r);
+                        if (cycleList == null) {
+                            cycleList = new ArrayList<TestCycle>();
+                            releases.put(r, cycleList);
+                        }
+                        if (!cycleList.contains(c)) {
+                            cycleList.add(c);
+                        }
+                    }
+                    ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
+
+                    List<JSTreeNode> result = new ArrayList<JSTreeNode>();
+                    for (Release r : releases.keySet()) {
+                        SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
+                        result.add(rNode);
+                    }
+                    return result;
+                }
+            };
+            SimpleNode root = new SimpleNode(0l, "Releases", "ROOT", true, true, rootChildProducer);
+            List<JSTreeNode> res = new ArrayList<JSTreeNode>();
+            res.add(root);
+            return res;
         } else {
             return null;
         }
@@ -194,7 +204,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         }
     }
 
-    private static final class CycleChildProducer implements ChildProducer {
+    public static class CycleChildProducer implements ChildProducer {
         private final Script script;
 
         private CycleChildProducer(Script script) {
