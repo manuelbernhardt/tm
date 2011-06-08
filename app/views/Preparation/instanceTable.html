@@ -15,7 +15,7 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
+
     #{tabularasa.init tableId:'instancesTable'}
     var instancesTableParameters = {
       "aoColumns":[
@@ -37,16 +37,10 @@
     };
     #{/tabularasa.init}
 
-    function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "instanceId", "value": getSelectedNodeId('repositoryTree') });
-    }
-
-    handleRowSelection("#instancesTable", function() {
-      var instanceId = getSelectedRowId("#instancesTable");
-      handleTabsPopulation(instanceId);
+    handleRowSelection("#instancesTable", function(id) {
+      handleTabsPopulation(id);
     });
-  });
-
+    
   function getSelectedId() {
     return getSelectedRowId('#instancesTable');
   }
@@ -58,7 +52,8 @@
   function loadInnerData() {
     $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
             function() {
-              $('#instancesTable').dataTable().fnDraw();
+              refreshTableContents('#instancesTable', false);
             }).error(errorHandler);
+
   }
 </script>

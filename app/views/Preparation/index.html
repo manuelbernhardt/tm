@@ -73,7 +73,7 @@
     <div class="right_table">
       #{box 'Test Instances'}
       <div class="hiddenOnLoad">
-        #{if hasReleases}
+        #{if !hasReleases}
         #{include 'Preparation/instanceTree.html' /}
         #{/if}
         #{else}
