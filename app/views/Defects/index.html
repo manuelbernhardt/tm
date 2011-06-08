@@ -1,6 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
+#{if create}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#createDefectDialog').slideToggle('slow');
+    $('#createDefectForm_defect_description').val('${defectDescription.raw()}');
+  });
+</script>
+#{/if}
+
 <div id="defectList">
 
   <div id="filterContainer">
@@ -196,7 +205,7 @@ $(document).ready(function() {
           });
 
   $('#createDefectConfirm').click(function() {
-    $('#createDefectForm').oxForm('submitCreateForm');
+    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
     $('#createDefectDialog').slideUp('slow');
     $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
   });
@@ -206,6 +215,7 @@ $(document).ready(function() {
     $('#createDefectDialog').slideUp('slow');
     $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
   });
+
 
 //updating a defect
 
@@ -328,13 +338,3 @@ function getDefectDetails(){
 
 </script>
 
-#{if edit}
-<script type="text/javascript">
-  $(document).ready(function() {
-    var id = '${id}';
-    $('#updateDefectDialog').slideToggle('slow');
-    $('#updateDefectForm').oxForm('load', id);
-    $('#updateDefectButton').button('enable');
-  });
-</script>
-#{/if}

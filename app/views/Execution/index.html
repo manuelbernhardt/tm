@@ -298,16 +298,9 @@
       modal: true,
       buttons: {
           "Yes": function(){
-            $.ajax({
-                type: 'POST',
-                url: '@{Execution.createDefect()}',
-                data: {id: createdRunId},
-                success: function(data){
-                    $(this).dialog("close");
-                    window.location="/defects/"+data+"/edit";
-                },
-                error: errorHandler
-            })
+                $(this).dialog("close");
+                window.location="/defects/create/" + createdRunId;
+                 
           },
           "No": function(){
               $(this).dialog("close");

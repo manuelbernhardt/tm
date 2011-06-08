@@ -13,6 +13,9 @@ import models.tm.Defect;
 import models.tm.DefectStatus;
 import models.tm.StringMatcherType;
 import models.tm.TMUser;
+import models.tm.test.Instance;
+import models.tm.test.Run;
+import models.tm.test.RunStep;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.mvc.Before;
@@ -32,9 +35,20 @@ public class Defects extends TMController {
         render(users);
     }
 
-    public static void edit(Long id) {
-        boolean edit = true;
-        render("Defects/index.html", id, edit);
+    public static void create(Long runId) {
+        boolean create = true;
+        
+        List<RunStep> runSteps = RunStep.find("from RunStep rs where rs.run.id=? and rs.status=3", runId).fetch();
+        Instance instance = Run.find("select r.instance from Run r where r.id=?",runId ).first();
+
+        String defectDescription="Test instance ran: "+instance.name;
+
+        for(RunStep runStep:runSteps){
+            defectDescription = defectDescription + "\\n\\nExpected result: "
+                    +runStep.expectedResult + "\\nActual result: " +runStep.actualResult;
+        }
+
+        render("Defects/index.html", create, runId, defectDescription);
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
@@ -141,6 +155,13 @@ public class Defects extends TMController {
         defect.status = DefectStatus.getDefaultDefectStatus();
         defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         defect.create();
+        
+        Long runId = Long.valueOf(params.get("runId"));
+        if(runId!=null){
+            Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
+            instance.defects.add(defect);
+            instance.save();
+        }
         ok();
     }
 
