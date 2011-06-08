@@ -56,11 +56,11 @@ public class TMDeadboltHandler extends Controller implements DeadboltHandler {
         crh.addRoles(a.getRoles());
 
         TMUser u = TMUser.find("byUser", a).first();
-        crh.addRoles(u.getAccountRoles());
+        crh.addRoles(u.getAccountUnitRoles());
         if (project != null) {
             crh.addRoles(u.getProjectRoles(project));
         }
-        crh.addRoles(u.getAccountRoles());
+        crh.addRoles(u.getAccountUnitRoles());
         return crh;
     }
 

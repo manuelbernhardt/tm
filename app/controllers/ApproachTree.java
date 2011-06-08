@@ -6,8 +6,11 @@ import java.util.Map;
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
+import models.tm.ProjectTreeNode;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
+import models.tree.jpa.TreeNode;
+import play.db.jpa.JPA;
 import play.libs.F;
 import tree.JSTreeNode;
 import tree.persistent.GenericTreeNode;
@@ -17,7 +20,9 @@ import tree.persistent.NodeType;
 import static models.general.UnitRole.roles;
 
 /**
- * Test Approach tree - contains releases and test cycles
+ * Test Approach tree - contains releases and test cycles.
+ * This tree is special in that it is shared between the admin area and the rest of the application, and there is no
+ * an "active project" concept in the admin area, this we have to handle the project linking differently.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -96,6 +101,40 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
+
+        // before removing a Release or a Cycle, check whether there are no linked test instances.
+        if(getNodeType(type).getNodeClass().equals(Release.class)) {
+            Release release = Lookups.getRelease(id);
+            if(release == null) {
+                return false;
+            }
+
+            // Release -> TreeNode of Release -> TreeNodes of Children -> Cycles -> Instances
+            ProjectTreeNode releaseNode = TreeNode.find("from ProjectTreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", release.getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.RELEASE).first();
+            List resultList = JPA.em().createQuery("from ProjectTreeNode n, Instance i, TestCycle c where i.testCycle = c and n.nodeId = c.id and n.treeId = :treeId and n.level = :level and n.path like :pathLike and n.threadRoot = :threadRoot")
+                    .setParameter("treeId", ApproachTree.APPROACH_TREE)
+                    .setParameter("level", releaseNode.getLevel() + 1)
+                    .setParameter("pathLike", releaseNode.getPath() + "%")
+                    .setParameter("threadRoot", releaseNode.getThreadRoot())
+                    .getResultList();
+            if(resultList.size() > 0) {
+                return false;
+            }
+        } else if(getNodeType(type).getNodeClass().equals(TestCycle.class)) {
+            TestCycle cycle = Lookups.getCycle(id);
+            if(cycle == null) {
+                return false;
+            }
+            if(cycle.getInstances().size() > 0) {
+                return false;
+            }
+        }
+
+        return super.remove(id, parentId, type, args);
     }
 
     public List<UnitRole> getViewRoles() {

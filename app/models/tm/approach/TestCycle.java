@@ -1,6 +1,7 @@
 package models.tm.approach;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,6 +12,7 @@ import controllers.ScriptCycleTreeDataHandler;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;
+import models.tm.test.Instance;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import tree.persistent.Node;
@@ -48,5 +50,9 @@ public class TestCycle extends ProjectModel implements Node {
     public Release getRelease() {
         ProjectTreeNode n = ProjectTreeNode.find("from ProjectTreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.TEST_CYCLE).first();
         return Release.findById(n.getParent().getNodeId());
+    }
+
+    public List<Instance> getInstances() {
+        return Instance.find("from Instance i where i.testCycle = ?", this).<Instance>fetch();
     }
 }

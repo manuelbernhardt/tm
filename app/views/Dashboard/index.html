@@ -14,6 +14,26 @@
 
 
 <script type="text/javascript">
+
+  /**
+   * Adjusts the size of all graphs to their container
+   */
+  function adaptGraphSize() {
+      $('.visualize').remove();
+      var width = $('.graphTable').parent().width() - 100;
+      $('.graphTable').visualize({type: 'bar', width: width, appendTitle:false});
+  }
+
+  /**
+   * Refreshes the contents of all widgets of the dashboard
+   * @param dashboard the dashboard instance
+   */
+  function refreshWidgetsContent(dashboard) {
+      $('#dashboard').find('.widget').each(function(index) {
+          dashboard.getWidget($(this).attr('id')).refreshContent();
+      });
+  }
+
   $(document).ready(function() {
     // load the templates
     $('body').append('<div id="templates"></div>');

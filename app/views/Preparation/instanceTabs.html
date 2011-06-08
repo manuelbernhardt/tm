@@ -1,0 +1,118 @@
+<div id="innerTabs">
+  <ul>
+    <li><a href="#tagsTab"><span>Tags</span></a></li>
+    <li><a href="#schedule"><span>Schedule</span></a></li>
+    <li><a href="#testData"><span>Test data</span></a></li>
+  </ul>
+  <div id="tagsTab">
+    <div class="instanceShownOnLoad">
+      No test instance selected
+    </div>
+    <div class="instanceHiddenOnLoad" style="display: none;">
+      <form id="tagsForm" action="@{Preparation.updateTags()}" method="post">
+        <input name="tags" id="tags" type="text"/>
+        <button id="tagsSaveButton">Save</button>
+      </form>
+    </div>
+  </div>
+  <div id="schedule">
+    <div class="instanceShownOnLoad">
+      No test instance selected
+    </div>
+    <div class="instanceHiddenOnLoad" style="display: none;">
+      #{ox.form action:@Preparation.updateSchedule(),
+      edit:util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]), id:'scheduleForm',
+      baseClass:'models.tm.test.Instance'}
+      #{ox.field field:'instance.responsible', label:'Assigned to' /}
+      #{ox.field field:'instance.plannedExecution', label:'Planned execution' /}
+      #{ox.submit /}
+      #{/ox.form}
+    </div>
+  </div>
+  <div id="testData">
+    <div class="instanceShownOnLoad">No test instance selected</div>
+    <div class="instanceHiddenOnLoad" style="display: none;">
+      <div data-bind="visible: params().length > 0">
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
+        <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}"
+              data-bind="submit: submitForm">
+          #{/deadbolt.restrict}
+          <table id="instanceParamTable" class="display">
+            <thead>
+            <th>Parameter</th>
+            <th>Value</th>
+            </thead>
+            <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+          </table>
+          #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
+          <button type="submit" id="saveParamsButton">Save</button>
+        </form>
+        #{/deadbolt.restrict}
+      </div>
+      <div style="display: none;" data-bind="visible: params().length == 0">No test parameters defined for
+        this test script instance
+      </div>
+    </div>
+  </div>
+</div>
+
+#{if !util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]]) && util.Require.roles([[models.general.UnitRole.TESTPREPVIEW]])}
+<script type="text/html" id="paramRowTemplate">
+  <tr>
+    <td><span data-bind="text: name"></span></td>
+    <td><span id="paramValue" data-bind="text: value"></span></td>
+  </tr>
+</script>
+#{/if}
+#{elseif util.Require.roles([[models.general.UnitRole.TESTPREPEDIT]])}
+<script type="text/html" id="paramRowTemplate">
+  <tr>
+    <td><span data-bind="text: name"></span></td>
+    <td><input id="paramValue" type="text" data-bind="name: id, value: value"></td>
+  </tr>
+</script>
+#{/elseif}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $('#innerTabs').tabs();
+
+    // tags
+    $('#tags').tokenInput({
+              url: '@{Preparation.allTags()}',
+              preventDuplicates: true,
+              tokenValue: 'name',
+              allowCreation: true,
+              creationText: "Create new tag"
+            });
+
+    $('#tagsSaveButton').button({disabled: true});
+
+    $('#tags').change(function() {
+      $('#tagsSaveButton').button('enable');
+    });
+
+    $('#tagsForm').ajaxForm({
+              success: function() {
+                $('#tagsSaveButton').button('disable');
+              },
+              beforeSubmit: function(arr, $form, options) {
+                arr.push({name:'instanceId', value: getSelectedId});
+                return true;
+              },
+              error: errorHandler
+            });
+
+    $('#scheduleForm').oxForm({
+              loadAction: '@{Preparation.schedule()}',
+              submissionParameters: getInstanceQuery
+            });
+
+    $('#saveParamsButton').button({disabled: true});
+
+    $('#instanceParamForm :input[type!="submit"]').change(function() {
+      $('#saveParamsButton').button('enable');
+    });
+  });
+</script>

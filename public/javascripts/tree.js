@@ -104,6 +104,9 @@
                             },
                             success : function (r) {
                                 if (!r.status) {
+                                    if(typeof options.onDeleteFailed === 'function') {
+                                        options.onDeleteFailed.call();
+                                    }
                                     data.inst.refresh();
                                 }
                             }

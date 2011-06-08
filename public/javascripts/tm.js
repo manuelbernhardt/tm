@@ -194,12 +194,10 @@ function getSelectedNode(treeId) {
     return null;
 }
 
-function getSelectedNodeName(treeId){
-    //todo implement return of selected node name
+function getSelectedNodeName(treeId) {
     var tree = $.jstree._reference($('#' + treeId));
     if (typeof tree.get_selected().attr('id') !== 'undefined') {
-
-        return tree.get_selected().children("a").text();
+        return tree.get_selected().children("a").text().trim();
     }
     return null;
 }
@@ -469,6 +467,10 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
             .error(errorHandler);
 };
 
+/**
+ * Custom knockoutJS handler for seamlessly handling tags binding. This handler makes it possible to
+ * integrate knockoutJS and the jquery-token-plugin and this binds token values using a viewModel & updates them accordingly.
+ */
 ko.bindingHandlers.tags = {
     init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
         viewModel.lock = false;
@@ -525,6 +527,7 @@ ko.bindingHandlers.tags = {
             }
 };
 
+
 function toggleFilter(buttonId, divId) {
     $(document).ready(function() {
         $(buttonId).attr('style', 'float:right');
@@ -538,12 +541,11 @@ function toggleFilter(buttonId, divId) {
     });
 }
 
-function adaptGraphSize() {
-    $('.visualize').remove();
-    var width = $('.graphTable').parent().width() - 100;
-    $('.graphTable').visualize({type: 'bar', width: width, appendTitle:false});
-}
-
+/**
+ * Displays an error message in an error dialog
+ * @param text the text to display
+ * @param title the title of the error dialog
+ */
 function errorMessage(text, title) {
     if (title == null) {
         title = 'An error has occured';
@@ -567,6 +569,16 @@ function errorMessage(text, title) {
             });
 }
 
+/**
+ * Handler function for jQuery ajax requests that displays the correct error dialog.
+ * This closure can be passed directly to a jQuery error() handler like e.g.
+ *
+ *    $.post(...).succes(...).error(errorHandler)
+ *
+ * @param xhr the XHR request object returned by a jQuery AJAX call
+ * @param textStatus the status of the call
+ * @param errorThrown the error thrown by the request
+ */
 function errorHandler(xhr, textStatus, errorThrown) {
     var text;
     if (xhr.status == 0) {
@@ -582,35 +594,39 @@ function errorHandler(xhr, textStatus, errorThrown) {
     errorMessage(text);
 }
 
-function refreshWidgetsContent(dashboard) {
-    $('#dashboard').find('.widget').each(function(index) {
-        dashboard.getWidget($(this).attr('id')).refreshContent();
-    });
-}
-
-function deletionConfirmation(dialogId, type, name, callback){
+/**
+ * Confirmation dialog for deletion of objects
+ * @param dialogId the ID of the dialog div in the page
+ * @param type the type of the object (used in the title)
+ * @param name the name of the object selected for deletion (used in the message)
+ * @param callback a callback to execute after the object was deleted
+ */
+function deletionConfirmation(dialogId, type, name, callback) {
     $('#' + dialogId).dialog({
-            autoOpen: true,
-            width: 400,
-            modal: true,
-            buttons: {
-              "Confirm": function() {
-                if(typeof callback=='function'){
-                    callback.call();
+                autoOpen: true,
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Confirm": function() {
+                        if (typeof callback == 'function') {
+                            callback.call();
+                        }
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+
+                        $(this).dialog("close");
+                    }
+
                 }
-                $(this).dialog("close");
-              },
-              "Cancel": function() {
-
-                $(this).dialog("close");
-              }
-
-            }
-          });
+            });
     $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
 }
 
-function applyButtonStyles(){
+/**
+ * Initializes styles for all buttons in the application
+ */
+function applyButtonStyles() {
     $('.button-add').button({icons: {primary: 'ui-icon-plus'}});
     $('.button-edit').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
     $('.button-delete').button({icons: {primary: 'ui-icon-trash'}, text:false,  disabled:true});
@@ -633,13 +649,13 @@ function applyButtonStyles(){
                 var settings = {
                     filterTemplate:
                             '<div style="width:100%; text-align:right;">' +
-                                '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
-                                '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
-                            '</div>' +
-                            '<div id="filterSaveDialog" title="Save filter">' +
-                                '<label for="filterName" class="name">Name</label>' +
-                                '<input id="filterName" name="name"/>' +
-                            '</div>'
+                                    '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
+                                    '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
+                                    '</div>' +
+                                    '<div id="filterSaveDialog" title="Save filter">' +
+                                    '<label for="filterName" class="name">Name</label>' +
+                                    '<input id="filterName" name="name"/>' +
+                                    '</div>'
                 };
 
                 $.extend(settings, options);

@@ -1,0 +1,59 @@
+<div class="left_table inner">
+  #{box 'Test Instances'}
+  <table class="display" id="instancesTable">
+    <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  #{/box}
+</div>
+<div class="right_table inner">
+  #{include 'Preparation/instanceTabs.html' /}
+</div>
+
+<script type="text/javascript">
+
+    #{tabularasa.init tableId:'instancesTable'}
+    var instancesTableParameters = {
+      "aoColumns":[
+        {"sName": "naturalId", "sClass": "sNone"},
+        {"sName": "name"}
+
+      ],
+      "bServerSide": true,
+      "bLengthChange": false,
+      "bSort": false,
+      "bFilter": false,
+      "bAutoWidth": false,
+      "iDisplayLength": false,
+      "bInfo": false,
+      "sAjaxSource": "@{Preparation.instances()}",
+      "oLanguage": {
+        "sZeroRecords": "No test instances reported"
+      }
+    };
+    #{/tabularasa.init}
+
+    handleRowSelection("#instancesTable", function(id) {
+      handleTabsPopulation(id);
+    });
+    
+  function getSelectedId() {
+    return getSelectedRowId('#instancesTable');
+  }
+
+  function getInstanceQuery() {
+    return {'instanceId': getSelectedRowId('#instancesTable')};
+  }
+
+  function loadInnerData() {
+    $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
+            function() {
+              refreshTableContents('#instancesTable', false);
+            }).error(errorHandler);
+
+  }
+</script>
