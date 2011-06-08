@@ -30,6 +30,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
     public static final String INSTANCE = "default";
     public static final String TEST_CYCLE = "testCycle";
     public static final String RELEASE = "release";
+    public static final String ROOT = "root";
 
     public String getName() {
         return "scriptCycleTree";
@@ -76,7 +77,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                     return result;
                 }
             };
-            SimpleNode root = new SimpleNode(0l, "Releases", "ROOT", true, true, rootChildProducer);
+            SimpleNode root = new SimpleNode(0l, "Releases", ROOT, true, true, rootChildProducer);
             List<JSTreeNode> res = new ArrayList<JSTreeNode>();
             res.add(root);
             return res;
@@ -157,6 +158,49 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
     }
 
     public boolean move(Long id, String type, Long target, String targetType, Long position) {
+
+        if(!type.equals(INSTANCE)) {
+            return false;
+        } else {
+            if(targetType.equals(RELEASE)) {
+                return false;
+            }
+            if(targetType.equals(TEST_CYCLE)) {
+                TestCycle cycle = Lookups.getCycle(target);
+                if(target == null) {
+                    Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve cycle with ID %s", target);
+                    return false;
+                }
+                Instance instance = Lookups.getInstance(id);
+                if(instance == null) {
+                    Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve instance with ID %s", id);
+                    return false;
+                }
+                instance.testCycle = cycle;
+                try {
+                    instance.save();
+                    return true;
+                } catch(Throwable t) {
+                    Logger.error(Logger.LogType.DB, t, "Error while saving instance %s", id);
+                    return false;
+                }
+            }
+            if(targetType.equals(ROOT)) {
+                Instance instance = Lookups.getInstance(id);
+                if(instance == null) {
+                    Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve instance with ID %s", id);
+                    return false;
+                }
+                instance.testCycle = null;
+                try {
+                    instance.save();
+                    return true;
+                } catch(Throwable t) {
+                    Logger.error(Logger.LogType.DB, t, "Error while saving instance %s", id);
+                    return false;
+                }
+            }
+        }
         return false;
     }
 

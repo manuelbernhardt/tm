@@ -53,7 +53,9 @@ var scriptCycleTreeTypes = {
             "valid_children" : "none",
             "icon" : {
                 "image" : "/public/images/jstree/file.png" // TODO instance icon
-            }
+            },
+            "start_drag" : true,
+            "move_node" : true
         },
         "testCycle" : {
             "valid_children" : [ "instance", "default" ],
@@ -72,7 +74,7 @@ var scriptCycleTreeTypes = {
             "remove" : false
         },
         "root": {
-            "valid_children" : ["instance, default, release"],
+            "valid_children" : ["instance", "default", "release"],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },
