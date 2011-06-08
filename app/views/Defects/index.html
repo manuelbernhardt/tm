@@ -286,6 +286,8 @@ $(document).ready(function() {
           $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
                 function(data) {
                     refreshTableContents('#defectsTable', false);
+                    $('#defectDetails').hide();
+                    $('#defectList').show();
                 }).error(errorHandler);
       })
   });
