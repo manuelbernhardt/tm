@@ -1,8 +1,6 @@
 package controllers;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -11,12 +9,10 @@ import com.google.gson.stream.JsonReader;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
-import models.tm.Defect;
 import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
-import models.tm.test.Script;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
@@ -30,8 +26,8 @@ public class Preparation extends TMController {
     @Restrict(UnitRole.TESTPREPVIEW)
     public static void index() {
         Long releases = Release.count("project.id=?", getActiveProjectId());
-
-        render(releases);
+        Boolean hasReleases = releases > 0;
+        render(hasReleases);
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)

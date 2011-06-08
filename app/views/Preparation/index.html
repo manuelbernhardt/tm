@@ -34,8 +34,7 @@
                 #{/deadbolt.restrict}
 
                 <!--if no releases, show table instead of tree-->
-
-                #{if releases>0}
+                #{if hasReleases}
                     <div id="scriptCycleTree" class="tree"></div>
                 #{/if}
                 #{else}
@@ -181,8 +180,8 @@
             return false;
         }};
 
-        //initialize either tree or table, depending on releases number
-        #{if releases>0}
+        // initialize either tree or table, depending on releases number
+        #{if hasReleases}
         // selection listener for the instance tree
         $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
         $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
@@ -276,7 +275,7 @@
 
 
         //check for tree node or table row, depends on releases number
-        #{if releases>0}
+        #{if hasReleases}
         function getSelectedId(){
             return getSelectedNodeId('scriptCycleTree');
         }
