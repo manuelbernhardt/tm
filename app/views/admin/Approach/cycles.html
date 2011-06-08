@@ -37,7 +37,15 @@ Alternatively simple tags can be used to organize the Test Execution.
 
   $(document).ready(function () {
 
-    $('#approachTree').tree({"args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"}, types: approachTreeTypes});
+    $('#approachTree').tree(
+            {
+              "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"},
+              types: approachTreeTypes,
+              onDeleteFailed: function() {
+                errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
+              }
+            }
+    );
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
