@@ -42,13 +42,51 @@
       </div>
       <div class="right_tree">
 
-            <div id="innerTabs">
-              <ul>
-                <li><a href="@{admin.Users.userDetails()}" id="userDetailsLink"><span>User details</span></a></li>
-                <li><a href="@{admin.Users.projects()}" id="projectsLink"><span>Projects</span></a></li>
-                <li><a href="@{admin.Users.account()}" id="accountLink"><span>Account</span></a></li>
-              </ul>
-            </div>
+
+
+          <div id="innerTabs">
+        <ul>
+          <li><a href="#userDetails"><span>User details</span></a></li>
+          <li><a href="#projects"><span>Projects</span></a></li>
+          <li><a href="#account"><span>Account</span></a></li>
+        </ul>
+        <div id="userDetails">
+          <div class="hiddenOnLoad">
+            #{ox.form action:@admin.Users.edit(), edit:util.Require.roles([[models.general.UnitRole.USEREDIT]]), id:'userDetailsForm', baseClass:'models.tm.TMUser'}
+                #{ox.field field:'tmUser.user.firstName', label:'First Name' /}
+                #{ox.field field:'tmUser.user.lastName', label:'Last Name' /}
+                #{ox.field field:'tmUser.user.email', label:'Email' /}
+                #{ox.field field:'tmUser.user.phone', label:'Phone' /}
+                #{ox.field field:'tmUser.id', hidden:true /}
+                #{ox.field field:'tmUser.user.id', hidden:true /}
+                #{ox.field field:'tmUser.account.id', hidden:true /}
+                #{ox.field field:'tmUser.user.account.id', hidden:true /}
+                #{ox.submit /}
+            #{/ox.form}
+          </div>
+          <div class="shownOnLoad">
+            No user selected.
+          </div>
+        </div>
+        <div id="projects">
+          <div class="hiddenOnLoad">
+
+          </div>
+          <div class="shownOnLoad">
+            No user selected.
+          </div>
+        </div>
+        <div id="account">
+          <div class="hiddenOnLoad">
+
+          </div>
+          <div class="shownOnLoad">
+            No user selected.
+          </div>
+        </div>
+
+
+      </div>
   </div>
 
 </div>
@@ -60,11 +98,13 @@
 
   $(document).ready(function() {
 
-    $("#innerTabs").tabs({
-      select: function() {
-        removeDialogs();
-      }
+    $("#innerTabs").tabs();
+    $('.hiddenOnLoad').hide();
+
+    $('#userDetailsForm').oxForm({
+      loadAction: '@{admin.Users.userDetailsData()}'
     });
+
 
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
@@ -86,13 +126,12 @@
     };
     #{/tabularasa.init}
 
-    handleRowSelection('#tab', reloadTabs);
-
-    function reloadTabs(selectedUser) {
-      var links = ['@{admin.Users.userDetails()}', '@{admin.Users.projects()}', '@{admin.Users.account()}'];
-      selectTab(links, selectedUser, 'user', $('#innerTabs'));
-      $("#removeUserButton").button('enable');
-    }
+    handleRowSelection('#tab', function(){
+        $("#removeUserButton").button('enable');
+        $('.hiddenOnLoad').show();
+        $('.shownOnLoad').hide();
+        $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
+    });
 
     $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
       $("#dialog-confirm").dialog('open');
@@ -123,6 +162,7 @@
 
       //search filter align to left side
       $('#tab_filter').addClass('search-input-table-left');
+
 
   });
 

@@ -40,13 +40,6 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.USEREDIT)
-    public static void userDetails(Long userId) {
-        Router.ActionDefinition action = Router.reverse("admin.Users.edit");
-        TMUser user = Lookups.getUser(userId);
-        render("/general/userProfile.html", action, user);
-    }
-
-    @Restrict(UnitRole.USEREDIT)
     public static void projects(Long userId) {
         TMUser user = null;
         if (userId != null) {
@@ -79,6 +72,11 @@ public class Users extends TMController {
         render("/admin/Users/account.html", user, userAdmin, projectAdmin, accountAdmin);
     }
 
+    @Restrict(UnitRole.USEREDIT)
+    public static void userDetailsData(Long baseObjectId, String[] fields){
+        Object base = Lookups.getUser(baseObjectId);
+        renderFields(base, fields);
+    }
 
     @Restrict(UnitRole.USERCREATE)
     public static void create(TMUser user) {
@@ -94,14 +92,11 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.USEREDIT)
-    public static void edit(@Valid TMUser user) {
+    public static void edit(@Valid TMUser tmUser) {
         if (Validation.hasErrors()) {
-            // TODO test if this works
-            // display a message at least with the validation errors?
-            Long selectedUser = user.getId();
-            render("@index", user, selectedUser);
+            error();
         }
-        user.save();
+        tmUser.save();
         ok();
     }
 
