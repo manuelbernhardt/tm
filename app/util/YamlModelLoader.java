@@ -42,7 +42,7 @@ public class YamlModelLoader {
      */
 
     @Util
-    public static void loadModels(String name, Callback<Model> onCreate, Callback<Model> afterCreate) {
+    public static void loadModels(String name, Callback<Model> onCreate, Callback<Model> afterCreate, CustomLoadBinder... loadBinders) {
         Map<String, Object> idCache = new HashMap<String, Object>();
         VirtualFile yamlFile = null;
         try {
@@ -92,7 +92,14 @@ public class YamlModelLoader {
                             if (f.getType().equals(byte[].class)) {
                                 f.set(model, objects.get(key).get(f.getName()));
                             }
+                            for(CustomLoadBinder binder : loadBinders) {
+                                if(model.getClass().equals(binder.getEntityType()) && f.getName().equals(binder.getPropertyName())) {
+                                    Object value = binder.bindValue(params.get("object." + f.getName()), params, idCache);
+                                    f.set(model, value);
+                                }
+                            }
                         }
+
                         if (onCreate != null) {
                             model = onCreate.invoke(model);
                         }
@@ -181,8 +188,13 @@ public class YamlModelLoader {
     }
 
     public static interface Callback<T> {
-
         T invoke(T result);
+    }
+
+    public static interface CustomLoadBinder {
+        String getPropertyName();
+        Class<?> getEntityType();
+        Object bindValue(String[] value, Map<String, String[]> params, Map<String, Object> idCache);
     }
 
 }

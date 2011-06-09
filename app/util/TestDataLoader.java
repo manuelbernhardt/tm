@@ -9,6 +9,7 @@ import models.tm.DefectStatus;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;
+import models.tm.approach.Release;
 import models.tree.jpa.TreeNode;
 import play.Play;
 import play.db.jpa.JPA;
@@ -33,45 +34,74 @@ public class TestDataLoader {
 
         Fixtures.deleteDatabase();
         YamlModelLoader.loadModels("initial-data.yml", new YamlModelLoader.Callback<Model>() {
-            public Model invoke(Model result) {
-                if (result instanceof Defect) {
-                    // fetch the new defect status of the current project
-                    Defect defect = (Defect) result;
-                    DefectStatus status = (DefectStatus) templateDataCache.get(DefectStatus.class.getName()).get(defect.project);
-                    status = JPA.em().merge(status);
-                    defect.status = status;
-                    return defect;
-                }
-                return result;
-            }
-        }, new YamlModelLoader.Callback<Model>() {
-            public Model invoke(Model result) {
-                // we have a project, load project template data
-                if (result instanceof Project) {
-                    final Project project = (Project) result;
-                    YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
-                        public Model invoke(Model result) {
-                            ProjectModel projectModel = (ProjectModel) result;
-                            projectModel.project = project;
-                            projectModel.account = project.account;
-                            return projectModel;
+                    public Model invoke(Model result) {
+                        if (result instanceof Defect) {
+                            // fetch the new defect status of the current project
+                            Defect defect = (Defect) result;
+                            DefectStatus status = (DefectStatus) templateDataCache.get(DefectStatus.class.getName()).get(defect.project);
+                            status = JPA.em().merge(status);
+                            defect.status = status;
+                            return defect;
                         }
-                    }, new YamlModelLoader.Callback<Model>() {
-                        public Model invoke(Model result) {
-                            // put template DefectStatus entities in the cache so we can use them later on
-                            if (result instanceof DefectStatus) {
-                                addCacheEntry(result.getClass().getName(), ((ProjectModel) result).project, result, templateDataCache);
+                        return result;
+                    }
+                }, new YamlModelLoader.Callback<Model>() {
+                    public Model invoke(Model result) {
+                        // we have a project, load project template data
+                        if (result instanceof Project) {
+                            final Project project = (Project) result;
+                            YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
+                                        public Model invoke(Model result) {
+                                            ProjectModel projectModel = (ProjectModel) result;
+                                            projectModel.project = project;
+                                            projectModel.account = project.account;
+                                            return projectModel;
+                                        }
+                                    }, new YamlModelLoader.Callback<Model>() {
+                                public Model invoke(Model result) {
+                                    // put template DefectStatus entities in the cache so we can use them later on
+                                    if (result instanceof DefectStatus) {
+                                        addCacheEntry(result.getClass().getName(), ((ProjectModel) result).project, result, templateDataCache);
+                                    }
+                                    return result;
+                                }
                             }
-                            return result;
+                            );
+
+                            return project;
                         }
-                    });
+                        return result;
+                    }
 
-                    return project;
+                },
+                new YamlModelLoader.CustomLoadBinder() {
+                    public String getPropertyName() {
+                        return "nodeId";
+                    }
+
+                    public Class<?> getEntityType() {
+                        return ProjectTreeNode.class;
+                    }
+
+                    public Object bindValue(String[] value, Map<String, String[]> params, Map<String, Object> idCache) {
+                        if(value[0] == null) return null;
+                        if(value[0] instanceof String) {
+                            // is this really a string?
+                            try {
+                                Long.parseLong(value[0]);
+                            } catch(Throwable t) {
+                                String key = Release.class.getName() + "-" + value[0];
+                                if (!idCache.containsKey(key)) {
+                                    throw new RuntimeException("No previous reference found for object of type " + getPropertyName() + " with key " + key);
+                                }
+                                Long releaseId = (Long) idCache.get(key);
+                                return releaseId;
+                            }
+                        }
+                        return Long.parseLong(value[0]);
+                    }
                 }
-                return result;
-            }
-
-        });
+        );
 
         Play.pluginCollection.afterFixtureLoad();
 
