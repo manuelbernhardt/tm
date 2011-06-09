@@ -6,3 +6,8 @@ Installation requirements for development:
 - mysql databases (tm, tmTest)
 - following statement in /etc/hosts
   127.0.0.1 test.localhost demo.localhost
+
+You can install the full development stack by running
+sh setup-play.sh
+sh setup-scala.sh
+sh setup-tm.sh

@@ -41,11 +41,6 @@ echo
 echo Note:
 echo - you must have added the following line to your /etc/hosts file:
 echo   127.0.0.1 test.localhost demo.localhost
-echo - we are currently developing against the 1.2.x branch of play so if you
-echo   are using a development version you need to switch to that branch via
-echo   "git checkout 1.2.x"
-echo   and re-compile the framework via
-echo   "cd play/framework && ant"
 echo =========================================================================
 echo
 echo
