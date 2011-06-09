@@ -53,7 +53,9 @@ var scriptCycleTreeTypes = {
             "valid_children" : "none",
             "icon" : {
                 "image" : "/public/images/jstree/file.png" // TODO instance icon
-            }
+            },
+            "start_drag" : true,
+            "move_node" : true
         },
         "testCycle" : {
             "valid_children" : [ "instance", "default" ],
@@ -65,6 +67,16 @@ var scriptCycleTreeTypes = {
             "valid_children" : [ "testCycle" ],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png" // TODO release icon
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
+        },
+        "root": {
+            "valid_children" : ["instance", "default", "release"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
             },
             "start_drag" : false,
             "move_node" : false,
