@@ -9,10 +9,12 @@ import com.google.gson.stream.JsonReader;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
+import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
+import models.tm.test.Script;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
@@ -50,10 +52,14 @@ public class Preparation extends TMController {
     @Restrict(UnitRole.TESTPREPVIEW)
     public static void instanceParameters(Long instanceId) {
         Instance instance = Lookups.getInstance(instanceId);
+        if (instance == null) {
+            Logger.error(Logger.LogType.TECHNICAL, "Instance with ID %s was not found", instanceId);
+            notFound("Instance with ID " + instanceId + " could not be found");
+        }
         List<InstanceParam> parameters = instance.getParams();
         JsonObject params = new JsonObject();
         JsonArray array = new JsonArray();
-        for(InstanceParam p : parameters) {
+        for (InstanceParam p : parameters) {
             JsonObject object = new JsonObject();
             object.addProperty("id", p.id);
             object.addProperty("name", p.scriptParam.name);
@@ -91,23 +97,23 @@ public class Preparation extends TMController {
         JsonReader reader = new JsonReader(new StringReader(paramsJson));
         try {
             reader.beginObject();
-            while(reader.hasNext()) {
+            while (reader.hasNext()) {
                 String name = reader.nextName();
-                if(name.equals("params")) {
+                if (name.equals("params")) {
                     reader.beginArray();
-                    while(reader.hasNext()) {
+                    while (reader.hasNext()) {
                         reader.beginObject();
                         Long id = -1l;
                         String paramValue = "", paramName;
-                        while(reader.hasNext()) {
+                        while (reader.hasNext()) {
                             String n = reader.nextName();
-                            if(n.equals("id")) {
+                            if (n.equals("id")) {
                                 id = reader.nextLong();
                             }
-                            if(n.equals("value")) {
+                            if (n.equals("value")) {
                                 paramValue = reader.nextString();
                             }
-                            if(n.equals("name")) {
+                            if (n.equals("name")) {
                                 reader.nextString();
                             }
                         }
@@ -118,30 +124,45 @@ public class Preparation extends TMController {
                 }
             }
 
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             Logger.error(Logger.LogType.TECHNICAL, t, "Could not extract JSON parameters for test instance parameter update, instanceId is '%s' and JSON string is '%s'", instanceId, paramsJson);
             error();
         }
         ok();
     }
 
-    public static void instances(String tableId,
-                               Integer iDisplayStart,
-                               Integer iDisplayLength,
-                               String sColumns,
-                               String sEcho,
-                               Long instanceId) {
-
+    @Restrict(UnitRole.TESTPREPVIEW)
+    public static void instances(String tableId, Integer iDisplayStart, Integer iDisplayLength, String sColumns, String sEcho, Long instanceId) {
         GenericModel.JPAQuery query;
-
-        if(instanceId!=null){
+        if (instanceId != null) {
             query = Instance.find("script.id=?", instanceId);
-        }else{
+        } else {
             query = Instance.all();
         }
-
         List<Instance> instances = query.fetch();
-
         TableController.renderJSON(instances, Instance.class, Instance.count(), sColumns, sEcho);
+    }
+
+    @Restrict(UnitRole.TESTPREPCREATE)
+    public static void createInstance(String name, Long scriptId) {
+        if(scriptId == null) {
+            error("No scriptId provided");
+        }
+        Script script = Lookups.getScript(scriptId);
+        if(script == null) {
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find script with ID %s", scriptId);
+            notFound("Could not find script with ID " + scriptId);
+        }
+        Project project = Lookups.getProject(getActiveProjectId());
+        Instance instance = new Instance(project);
+        instance.name = name;
+        instance.script = script;
+        boolean created = instance.create();
+        if(!created) {
+            Logger.error(Logger.LogType.DB, "Could not create new instance");
+            error("Error creating new instance, please try again");
+        } else {
+            ok();
+        }
     }
 }
