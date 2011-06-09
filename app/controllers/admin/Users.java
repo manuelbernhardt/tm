@@ -1,10 +1,14 @@
 package controllers.admin;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
@@ -56,22 +60,6 @@ public class Users extends TMController {
         }
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void account(Long userId) {
-        TMUser user = null;
-        if (userId != null) {
-            user = TMUser.findById(userId);
-        }
-        boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
-        if (user != null) {
-            List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
-            userAdmin = accountRoles.contains(AccountRole.USER_ADMIN);
-            projectAdmin = accountRoles.contains(AccountRole.PROJECT_ADMIN);
-            accountAdmin = accountRoles.contains(AccountRole.ACCOUNT_ADMIN);
-        }
-        render("/admin/Users/account.html", user, userAdmin, projectAdmin, accountAdmin);
-    }
-
     @Restrict(UnitRole.USEREDIT)
     public static void userDetailsData(Long baseObjectId, String[] fields){
         Object base = Lookups.getUser(baseObjectId);
@@ -98,6 +86,36 @@ public class Users extends TMController {
         }
         tmUser.save();
         ok();
+    }
+
+    @Restrict(UnitRole.ACCOUNTADMIN)
+    public static void getAccountRoles(Long userId) {
+        TMUser user = null;
+        if (userId != null) {
+            user = TMUser.findById(userId);
+        }
+        String[] accounts = new String[3];
+        Gson gson = new Gson();
+
+        boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
+        if (user != null) {
+            List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
+
+            userAdmin = accountRoles.contains(AccountRole.USER_ADMIN);
+            if(userAdmin){
+                accounts[0] = "userAdmin";
+            }
+            projectAdmin = accountRoles.contains(AccountRole.PROJECT_ADMIN);
+            if(projectAdmin){
+                accounts[1] = "projectAdmin";
+            }
+            accountAdmin = accountRoles.contains(AccountRole.ACCOUNT_ADMIN);
+            if(accountAdmin){
+                accounts[2] = "accountAdmin";
+            }
+
+        }
+        renderJSON(gson.toJson(accounts));
     }
 
     @Restrict(UnitRole.ACCOUNTADMIN)

@@ -78,7 +78,13 @@
         </div>
         <div id="account">
           <div class="hiddenOnLoad">
+              <div id="accountActions">
 
+                        <div><input id='userAdmin' type="checkbox" value="userAdmin" data-bind="checked: accounts" /> User administration</div>
+                        <div><input id="projectAdmin" type="checkbox" value="projectAdmin" data-bind="checked: accounts" /> Project administration</div>
+                        <div><input id="accountAdmin" type="checkbox" value="accountAdmin" data-bind="checked: accounts" /> Account administration</div>
+                        <button id="saveButton">Save</button>
+              </div>
           </div>
           <div class="shownOnLoad">
             No user selected.
@@ -97,6 +103,26 @@
 <script type="text/javascript">
 
   $(document).ready(function() {
+
+      var viewModel = {
+            accounts: ko.observableArray([''])
+      };
+      ko.applyBindings(viewModel, document.getElementById('accountActions'));
+
+    $('#saveButton').button({disabled:true}).click(function(){
+        var userAdminChecked = $('#userAdmin').is(':checked');
+        var projectAdminChecked = $('#projectAdmin').is(':checked');
+        var accountAdminChecked = $('#accountAdmin').is(':checked');
+
+        $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), userAdmin: userAdminChecked, projectAdmin: projectAdminChecked, accountAdmin: accountAdminChecked},function(){
+            updateCheckboxes();
+        }).error(errorHandler);
+        $('#saveButton').button('disable');
+    });
+      
+    $(':checkbox').click(function(){
+        $('#saveButton').button('enable');
+    });
 
     $("#innerTabs").tabs();
     $('.hiddenOnLoad').hide();
@@ -131,6 +157,7 @@
         $('.hiddenOnLoad').show();
         $('.shownOnLoad').hide();
         $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
+        updateCheckboxes();
     });
 
     $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
@@ -163,6 +190,15 @@
       //search filter align to left side
       $('#tab_filter').addClass('search-input-table-left');
 
+      function updateCheckboxes(){
+        viewModel.accounts.removeAll();
+        $.getJSON('@{admin.Users.getAccountRoles()}', {userId: getSelectedRowId("#tab")}, function(data){
+            for(var i=0;i<data.length;i++){
+                viewModel.accounts.push(data[i]);
+
+            }
+        });
+      }
 
   });
 

@@ -1,7 +1,4 @@
-#{if user == null}
-No user selected
-#{/if}
-#{else}
+
 
 
 <div id="deleteRoleConfirmationDialog" title="Role removal confirmation"></div>
@@ -68,7 +65,7 @@ No user selected
 
                   if (valid) {
                     var name = $('#roles option:selected').text();
-                    $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
+                    $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: getSelectedRowId('#tab')}}}, null, true);
                     var treeContainer = $("#projectRolesTree");
                     jQuery.jstree._reference(treeContainer).refresh();
                     jQuery.jstree._reference(treeContainer).deselect_all();
@@ -94,17 +91,16 @@ No user selected
           var $tree = jQuery.jstree._reference('#projectRolesTree');
           var selectedNode = $tree.get_selected();
           if ($tree._get_type(selectedNode) == "default") {
-            selectedNode.data("args", {userId: "${user.id}"});
+            selectedNode.data("args", {userId: getSelectedRowId('#tab')});
             $tree.delete_node(selectedNode);
           }
       });
 
     });
 
-    $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});
+    $("#projectRolesTree").tree({"args" : {"userId": 1}, types: projectRoleTreeTypes});
 
     $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
-
       // pre-select assignment form fields based on what we select in the tree
 
       // category selected
@@ -169,7 +165,7 @@ No user selected
     $('#roles').find('option').remove().end();
     $('#roles').addOption('-1', 'Please select a role');
     $('#roles').attr('disabled', true);
-    $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.user.account.id}'}, false, callback);
+    $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '1'}, false, callback);
   }
 
   function selectProject(projectId, callback) {
@@ -189,4 +185,3 @@ No user selected
   }
 </script>
 
-#{/else}
