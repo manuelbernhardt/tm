@@ -23,10 +23,20 @@ public class ProjectRoles extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
     public static void create(ProjectRole role, Long projectId) {
-        role.project = Project.findById(projectId);
-        role.create();
-        // TODO validation
-        ok();
+        Project project = Lookups.getProject(projectId);
+        if(project == null) {
+            Logger.error(Logger.LogType.SECURITY, "Unknown project %s", projectId);
+            notFound("Project was not found");
+        }
+        role.project = project;
+        role.account = project.account;
+        boolean created = role.create();
+        if(!created) {
+            Logger.error(Logger.LogType.DB, "Could not create ProjectRole");
+            error("Error creating the role, please try again");
+        } else {
+            ok();
+        }
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
