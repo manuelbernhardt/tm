@@ -19,6 +19,10 @@
   </tbody>
 </table>
 
+    #{if entity!=''}
+        <a href="${entity}/export" class="export">Export</a>
+    #{/if}
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('#table_${tableUUID}').dataTable({
