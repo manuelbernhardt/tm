@@ -44,6 +44,14 @@ var repositoryTreeTypes = {
     }
 };
 
+var preparationRepositoryTreeTypes = {
+    "multipurpose": false,
+    "max_depth" : repositoryTreeTypes.max_depth,
+    "max_children" : repositoryTreeTypes.max_children,
+    "types" : repositoryTreeTypes.types
+};
+
+
 var scriptCycleTreeTypes = {
     "multipurpose": true,
     "max_depth" : -2,
