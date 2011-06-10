@@ -119,16 +119,20 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void updateAccountRoles(Long userId, boolean userAdmin, boolean projectAdmin, boolean accountAdmin) {
+    public static void updateAccountRoles(Long userId, String[] roles) {
         List<String> accountRoles = new ArrayList<String>();
-        if (userAdmin) {
-            accountRoles.addAll(AccountRole.USER_ADMIN.getUnitRoles());
-        }
-        if (projectAdmin) {
-            accountRoles.addAll(AccountRole.PROJECT_ADMIN.getUnitRoles());
-        }
-        if (accountAdmin) {
-            accountRoles.addAll(AccountRole.ACCOUNT_ADMIN.getUnitRoles());
+        if(roles!=null){
+            for(String role: roles){
+                if (role.equals("userAdmin")) {
+                    accountRoles.addAll(AccountRole.USER_ADMIN.getUnitRoles());
+                }
+                if (role.equals("projectAdmin")) {
+                    accountRoles.addAll(AccountRole.PROJECT_ADMIN.getUnitRoles());
+                }
+                if (role.equals("accountAdmin")) {
+                    accountRoles.addAll(AccountRole.ACCOUNT_ADMIN.getUnitRoles());
+                }
+            }
         }
         TMUser user = Lookups.getUser(userId);
         if (user != null) {

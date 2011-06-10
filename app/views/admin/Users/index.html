@@ -114,7 +114,7 @@
         var projectAdminChecked = $('#projectAdmin').is(':checked');
         var accountAdminChecked = $('#accountAdmin').is(':checked');
 
-        $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), userAdmin: userAdminChecked, projectAdmin: projectAdminChecked, accountAdmin: accountAdminChecked},function(){
+        $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },function(){
             updateCheckboxes();
         }).error(errorHandler);
         $('#saveButton').button('disable');
