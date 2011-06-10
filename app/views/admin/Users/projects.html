@@ -12,6 +12,7 @@
 
 <div id="assign-dialog" title="Assign a new role" class="modalDialog">
     <div id="categoriesContainer">
+        <label for="categoriesSelect" class="name">Category</label>
         <select id="categoriesSelect" data-bind="options:categories,
                        optionsValue:'categoryValue',
                        optionsText:'categoryName',
@@ -20,18 +21,22 @@
         </select>
     </div>
     <div id="projectsContainer">
+        <label for="projectsSelect" class="name">Project</label>
         <select id="projectsSelect" data-bind="options:projects,
                        optionsValue:'projectValue',
                        optionsText:'projectName',
                        optionsCaption:'Select project...'">
+            <option>Select project...</option>
 
         </select>
     </div>
     <div id="rolesContainer">
+        <label for="rolesSelect" class="name">Role</label>
         <select id="rolesSelect" data-bind="options:roles,
                        optionsValue:'roleValue',
                        optionsText:'roleName',
                        optionsCaption:'Select role...'">
+            <option>Select role...</option>
 
         </select>
     </div>
@@ -57,13 +62,13 @@
                     ko.mapping.updateFromJS(viewModelCategory,data);
                 }
           });
-
       });
 
       $('#categoriesSelect').change(function(){
           var categoryId = $(this).val();
           if(categoryId==''){
               categoryId='-1';
+              bindRoles(categoryId);
           }
           $.getJSON('@{admin.Users.projectOptions()}', {categoryId: categoryId}, function(data){
                 if(!ko.mapping.isMapped(viewModelProject)){
@@ -81,7 +86,10 @@
           if(projectId==''){
               projectId='-1';
           }
-          alert(projectId);
+          bindRoles(projectId);
+      });
+
+      function bindRoles(projectId){
           $.getJSON('@{admin.Users.rolesOptions()}', {projectId: projectId}, function(data){
                 if(!ko.mapping.isMapped(viewModelRole)){
                     viewModelRole = ko.mapping.fromJS(data);
@@ -91,8 +99,7 @@
                     ko.mapping.updateFromJS(viewModelRole,data);
                 }
           });
-      });
-
+      }
 
     $("#assign-dialog").dialog({
               autoOpen: false,
