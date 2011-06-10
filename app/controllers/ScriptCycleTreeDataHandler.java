@@ -50,7 +50,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             ChildProducer rootChildProducer = new ChildProducer() {
                 public List<JSTreeNode> produce(Long id) {
                     // releases
-                    List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
+                    List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle is not null", script).fetch();
                     List<TestCycle> cycles = new ArrayList<TestCycle>();
                     for (Instance instance : instances) {
                         cycles.add(instance.testCycle);
@@ -74,6 +74,13 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                         SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
                         result.add(rNode);
                     }
+
+                    // also display unattached instances
+                    List<Instance> unattachedInstances = Instance.find("from Instance i where i.script = ? and i.testCycle is null", script).fetch();
+                    for(Instance i : unattachedInstances) {
+                        result.add(new SimpleNode(i.getId(), i.name, INSTANCE, false, false, null));
+                    }
+
                     return result;
                 }
             };

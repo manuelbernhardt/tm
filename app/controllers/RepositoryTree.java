@@ -36,6 +36,11 @@ public class RepositoryTree extends TMTree implements TreeRoleHolder {
     }
 
     @Override
+    protected String getRootName() {
+        return "Test Scripts";
+    }
+
+    @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
         if (type.getNodeClass().equals(ScriptFolder.class)) {

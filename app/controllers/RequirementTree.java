@@ -35,6 +35,11 @@ public class RequirementTree extends TMTree implements TreeRoleHolder {
     }
 
     @Override
+    protected String getRootName() {
+        return "Requirements";
+    }
+
+    @Override
     protected Node createObjectNode(String name, NodeType type, Map<String, String> args) {
 
         if (type.getNodeClass().equals(RequirementFolder.class)) {

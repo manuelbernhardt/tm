@@ -16,6 +16,16 @@ var requirementTreeTypes = {
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             }
+        },
+        "root": {
+            "valid_children" : ["default", "requirement", "requirementFolder"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
         }
     }
 };
@@ -40,9 +50,27 @@ var repositoryTreeTypes = {
             "move_node" : false,
             "delete_node" : true,
             "remove" : true
+        },
+        "root": {
+            "valid_children" : ["default", "script", "scriptFolder"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
         }
     }
 };
+
+var preparationRepositoryTreeTypes = {
+    "multipurpose": false,
+    "max_depth" : repositoryTreeTypes.max_depth,
+    "max_children" : repositoryTreeTypes.max_children,
+    "types" : repositoryTreeTypes.types
+};
+
 
 var scriptCycleTreeTypes = {
     "multipurpose": true,
@@ -140,6 +168,16 @@ var approachTreeTypes = {
             "move_node" : false,
             "delete_node" : true,
             "remove" : true
+        },
+        "root": {
+            "valid_children" : ["default", "release"],
+            "icon" : {
+                "image" : "/public/images/jstree/folder.png"
+            },
+            "start_drag" : false,
+            "move_node" : false,
+            "delete_node" : false,
+            "remove" : false
         }
     }
 };

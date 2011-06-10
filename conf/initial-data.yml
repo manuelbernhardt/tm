@@ -1432,7 +1432,7 @@ tm.ProjectTreeNode(demoApproachTreeNode1):
     account: demo
     level: 0
     name: Template
-    nodeId: 4
+    nodeId: demoProjectSAPrelease1
     opened: true
     path: '/Template'
     treeId: approachTree
@@ -1443,7 +1443,7 @@ tm.ProjectTreeNode(demoApproachTreeNode2):
     account: demo
     level: 1
     name: Application Test
-    nodeId: 4
+    nodeId: demoProjectSAPrelease1Cycle1
     opened: false
     path: '/Template/Application Test'
     treeId: approachTree
@@ -1455,7 +1455,7 @@ tm.ProjectTreeNode(demoApproachTreeNode3):
     account: demo
     level: 1
     name: Product Test
-    nodeId: 5
+    nodeId: demoProjectSAPrelease1Cycle2
     opened: false
     path: '/Template/Product Test'
     treeId: approachTree
@@ -1467,7 +1467,7 @@ tm.ProjectTreeNode(demoApproachTreeNode4):
     account: demo
     level: 1
     name: User Acceptance Test
-    nodeId: 6
+    nodeId: demoProjectSAPrelease1Cycle3
     opened: false
     path: '/Template/User Acceptance Test'
     treeId: approachTree
@@ -1479,7 +1479,7 @@ tm.ProjectTreeNode(demoApproachTreeNode5):
     account: demo
     level: 0
     name: Roll-out UK
-    nodeId: 5
+    nodeId: demoProjectSAPrelease2
     opened: true
     path: '/Roll-out UK'
     treeId: approachTree
@@ -1490,7 +1490,7 @@ tm.ProjectTreeNode(demoApproachTreeNode6):
     account: demo
     level: 0
     name: Roll-out AT
-    nodeId: 6
+    nodeId: demoProjectSAPrelease3
     opened: true
     path: '/Roll-out AT'
     treeId: approachTree
