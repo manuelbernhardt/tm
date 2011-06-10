@@ -188,27 +188,45 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.USEREDIT)
-    public static void projectOptions(Long categoryId, Long accountId) {
-        if (categoryId == null || accountId == null) {
+    public static void categoryOptions(){
+        List<ProjectCategory> projectCategories = ProjectCategory.findAll();
+        JsonArray jsonArray = new JsonArray();
+        JsonObject result = new JsonObject();
+        for(ProjectCategory projectCategory:projectCategories){
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("categoryValue", projectCategory.id);
+            jsonObject.addProperty("categoryName", projectCategory.name);
+            jsonArray.add(jsonObject);
+        }
+        result.add("categories", jsonArray);
+        renderJSON(result.toString());
+    }
+
+    @Restrict(UnitRole.USEREDIT)
+    public static void projectOptions(Long categoryId) {
+        if (categoryId == null) {
             error();
         } else {
-            if (!accountId.equals(getConnectedUserAccount().getId())) {
-                forbidden();
-            }
+
             List<Project> projects;
             if (categoryId == -1l) {
                 // all non-assigned projects
-                projects = Project.find("from Project p where p.projectCategory is null and p.account.id = ?", accountId).<Project>fetch();
+                projects = Project.find("from Project p where p.projectCategory is null and p.account.id = ?", getConnectedUserAccountId()).<Project>fetch();
             } else {
                 ProjectCategory pc = ProjectCategory.findById(categoryId);
                 checkInAccount(pc);
                 projects = pc.getProjects();
             }
-            Map<Long, String> m = new HashMap<Long, String>();
-            for (Project p : projects) {
-                m.put(p.getId(), p.name);
+            JsonObject result = new JsonObject();
+            JsonArray jsonArray = new JsonArray();
+            for (Project project : projects) {
+                JsonObject property = new JsonObject();
+                property.addProperty("projectValue", project.id);
+                property.addProperty("projectName", project.name);
+                jsonArray.add(property);
             }
-            renderJSON(m);
+            result.add("projects", jsonArray);
+            renderJSON(result.toString());
         }
     }
 
@@ -217,17 +235,30 @@ public class Users extends TMController {
         if (projectId == null) {
             error();
         } else {
-            Project p = Project.findById(projectId);
-            if (p == null) {
-                notFound();
+            List<ProjectRole> roles;
+            if (projectId == -1l) {
+                System.out.println("is null");
+                roles = ProjectRole.find("from ProjectRole r where r.project = null").<ProjectRole>fetch();
             }
-            checkInAccount(p);
-            List<ProjectRole> roles = ProjectRole.find("from ProjectRole r where r.project.id = ?", projectId).<ProjectRole>fetch();
-            Map<Long, String> m = new HashMap<Long, String>();
-            for (ProjectRole r : roles) {
-                m.put(r.getId(), r.name);
+            else{
+                Project p = Project.findById(projectId);
+                if (p == null) {
+                    notFound();
+                }
+                checkInAccount(p);
+                roles = ProjectRole.find("from ProjectRole r where r.project.id = ?", projectId).<ProjectRole>fetch();
             }
-            renderJSON(m);
+            
+            JsonObject result = new JsonObject();
+            JsonArray jsonArray = new JsonArray();
+            for(ProjectRole role: roles){
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("roleName", role.name);
+                jsonObject.addProperty("roleValue", role.id);
+                jsonArray.add(jsonObject);
+            }
+            result.add("roles", jsonArray);
+            renderJSON(result.toString());
         }
     }
 

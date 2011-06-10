@@ -70,7 +70,7 @@
         </div>
         <div id="projects">
           <div class="hiddenOnLoad">
-
+                #{include 'admin/Users/projects.html'/}
           </div>
           <div class="shownOnLoad">
             No user selected.
@@ -110,9 +110,6 @@
       ko.applyBindings(viewModel, document.getElementById('accountActions'));
 
     $('#saveButton').button({disabled:true}).click(function(){
-        var userAdminChecked = $('#userAdmin').is(':checked');
-        var projectAdminChecked = $('#projectAdmin').is(':checked');
-        var accountAdminChecked = $('#accountAdmin').is(':checked');
 
         $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },function(){
             updateCheckboxes();
