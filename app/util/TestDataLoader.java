@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.TMTree;
 import models.tm.Defect;
 import models.tm.DefectStatus;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;
-import models.tm.approach.Release;
 import models.tree.jpa.TreeNode;
 import play.Play;
 import play.db.jpa.JPA;
@@ -90,12 +90,12 @@ public class TestDataLoader {
                             try {
                                 Long.parseLong(value[0]);
                             } catch(Throwable t) {
-                                String key = Release.class.getName() + "-" + value[0];
+                                String type = params.get("object.type")[0];
+                                String key = TMTree.getNodeType(type).getNodeClass().getName() + "-" + value[0];
                                 if (!idCache.containsKey(key)) {
                                     throw new RuntimeException("No previous reference found for object of type " + getPropertyName() + " with key " + key);
                                 }
-                                Long releaseId = (Long) idCache.get(key);
-                                return releaseId;
+                                return idCache.get(key);
                             }
                         }
                         return Long.parseLong(value[0]);
