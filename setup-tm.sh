@@ -28,7 +28,7 @@ echo Installing additional modules
 echo =============================
 echo
 echo
-git clone https://github.com/manuelbernhardt/tree modules/tree
+git clone git://github.com/manuelbernhardt/tree.git modules/tree
 
 echo
 echo
