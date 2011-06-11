@@ -138,8 +138,8 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
         if (roleId == null || userId == null || roleId == -1 || userId == -1) {
             return null;
         }
-        ProjectRole role = ProjectRole.findById(roleId);
-        TMUser user = TMUser.findById(userId);
+        ProjectRole role = Lookups.getRole(roleId);
+        TMUser user = Lookups.getUser(userId);
         if (role == null || user == null) {
             return null;
         } else {

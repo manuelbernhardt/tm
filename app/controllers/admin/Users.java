@@ -50,11 +50,10 @@ public class Users extends TMController {
     public static void projects(Long userId) {
         TMUser user = null;
         if (userId != null) {
-            user = TMUser.findById(userId);
+            user = Lookups.getUser(userId);
             if (user == null) {
                 notFound();
             } else {
-                checkInAccount(user);
                 List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.user.account.getId());
                 render("/admin/Users/projects.html", user, projectCategories);
             }
@@ -67,7 +66,7 @@ public class Users extends TMController {
     public static void account(Long userId) {
         TMUser user = null;
         if (userId != null) {
-            user = TMUser.findById(userId);
+            user = Lookups.getUser(userId);
         }
         boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
         if (user != null) {
@@ -132,7 +131,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.USERDELETE)
     public static void removeUser(Long userId) {
-        User u = User.findById(userId);
+        User u = Lookups.getAccountUser(userId);
         if (u != null) {
             Logger.info(Logger.LogType.ADMIN, "Deactivating user '%s'", u.getDebugString());
 
@@ -183,7 +182,7 @@ public class Users extends TMController {
                 // all non-assigned projects
                 projects = Project.find("from Project p where p.projectCategory is null and p.account.id = ?", accountId).<Project>fetch();
             } else {
-                ProjectCategory pc = ProjectCategory.findById(categoryId);
+                ProjectCategory pc = Lookups.getProjectCategory(categoryId);
                 checkInAccount(pc);
                 projects = pc.getProjects();
             }
@@ -200,7 +199,7 @@ public class Users extends TMController {
         if (projectId == null) {
             error();
         } else {
-            Project p = Project.findById(projectId);
+            Project p = Lookups.getProject(projectId);
             if (p == null) {
                 notFound();
             }

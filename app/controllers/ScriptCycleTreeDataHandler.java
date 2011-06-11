@@ -97,7 +97,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (sId == null) {
             return null;
         }
-        Script ts = Script.findById(Long.parseLong(sId));
+        Script ts = Lookups.getScript(Long.parseLong(sId));
         if (ts == null) {
             return null;
         }
@@ -115,8 +115,8 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             if (cycleNodeId == null || scriptId == null) {
                 return null;
             }
-            TestCycle cycle = TestCycle.findById(Long.parseLong(cycleNodeId));
-            Script script = Script.findById(Long.parseLong(scriptId));
+            TestCycle cycle = Lookups.getCycle(Long.parseLong(cycleNodeId));
+            Script script = Lookups.getScript(Long.parseLong(scriptId));
             if (cycle == null || script == null) {
                 return null;
             }
@@ -152,7 +152,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
     public boolean rename(Long id, String name, String type) {
 
         if (INSTANCE.equals(type)) {
-            Instance instance = Instance.findById(id);
+            Instance instance = Lookups.getInstance(id);
             instance.name = name;
             instance.save();
             return true;
@@ -216,11 +216,11 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (scriptId == null) {
             return false;
         }
-        Script script = Script.findById(Long.parseLong(scriptId));
+        Script script = Lookups.getScript(Long.parseLong(scriptId));
         if (script == null || !script.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }
-        Instance instance = Instance.findById(id);
+        Instance instance = Lookups.getInstance(id);
         if (instance == null || !instance.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }

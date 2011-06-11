@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import controllers.Lookups;
 import controllers.TMController;
 import models.account.Account;
 import models.account.AccountEntity;
@@ -117,7 +118,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     public static List<TMUser> listByProject(Long projectId) {
         // TODO cache this together with the caching of getRoles() (I mean, evict the caches together)
         List<TMUser> res = new ArrayList<TMUser>();
-        Project project = Project.<Project>findById(projectId);
+        Project project = Lookups.getProject(projectId);
         if (project == null) {
             return null;
         }

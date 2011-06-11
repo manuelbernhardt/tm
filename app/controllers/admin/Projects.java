@@ -147,7 +147,7 @@ public class Projects extends TMController {
     @Restrict(UnitRole.PROJECTEDIT)
     public static void addTag(Long projectId, String name, String type) {
 
-        Project project = Project.findById(projectId);
+        Project project = Lookups.getProject(projectId);
         Tag tag = new Tag(project);
         tag.name = name;
         tag.type = getTagType(type);

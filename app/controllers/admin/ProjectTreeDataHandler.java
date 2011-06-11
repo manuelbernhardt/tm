@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import controllers.Lookups;
 import controllers.TMController;
 import models.account.Account;
 import models.general.TreeRoleHolder;
@@ -51,7 +52,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
         Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
-            ProjectCategory category = ProjectCategory.findById(parentId);
+            ProjectCategory category = Lookups.getProjectCategory(parentId);
             final Project project = new Project(name, userAccount, category);
             project.account = userAccount;
             project.create();
@@ -80,15 +81,15 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     public boolean rename(Long id, String name, String type) {
         Account userAccount = TMController.getConnectedUserAccount();
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
-            Project p = Project.<Project>findById(id);
-            if (!p.isInAccount(userAccount)) {
+            Project p = Lookups.getProject(id);
+            if (p == null) {
                 return false;
             }
             p.name = name;
             p.save();
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
-            ProjectCategory p = ProjectCategory.findById(id);
+            ProjectCategory p = Lookups.getProjectCategory(id);
             if (!p.isInAccount(userAccount)) {
                 return false;
             }
@@ -109,12 +110,12 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
-            Project project = Project.findById(id);
-            // TODO FIXME this probably does not work because a lot of stuff depends on the project
+            Project project = Lookups.getProject(id);
+            // TODO FIXME this does not work because a lot of stuff depends on the project
             project.delete();
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
-            ProjectCategory category = ProjectCategory.findById(id);
+            ProjectCategory category = Lookups.getProjectCategory(id);
             if(category.getProjects().size() > 0) {
                 return false;
             }

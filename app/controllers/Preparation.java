@@ -117,7 +117,7 @@ public class Preparation extends TMController {
                                 reader.nextString();
                             }
                         }
-                        InstanceParam p = InstanceParam.<InstanceParam>findById(id);
+                        InstanceParam p = Lookups.getInstanceParam(id);
                         p.value = paramValue;
                         p.save();
                     }

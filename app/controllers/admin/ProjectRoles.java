@@ -65,7 +65,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            ProjectRole role = ProjectRole.findById(roleId);
+            ProjectRole role = Lookups.getRole(roleId);
             checkInAccount(role);
             List<String> unitRoles = role.unitRoles;
             render(role, unitRoles);
@@ -77,7 +77,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            ProjectRole role = ProjectRole.findById(roleId);
+            ProjectRole role = Lookups.getRole(roleId);
 
             checkInAccount(role);
 

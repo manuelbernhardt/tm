@@ -7,13 +7,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import models.account.User;
+import models.tm.Defect;
 import models.tm.Project;
+import models.tm.ProjectCategory;
 import models.tm.ProjectRole;
 import models.tm.Requirement;
 import models.tm.TMUser;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
 import models.tm.test.Instance;
+import models.tm.test.InstanceParam;
 import models.tm.test.Run;
 import models.tm.test.RunParam;
 import models.tm.test.Script;
@@ -22,7 +26,9 @@ import models.tm.test.Tag;
 import play.mvc.Util;
 
 /**
- * Lookups. There must be a way to make these methods generic.
+ * Lookups for retrieving single entities. We use this class because it does security checks (we check if the retrieved entity belongs
+ * to the account of the user), and also this is a way to centralize data
+ * access to single entities, which may come in handy in the future.
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -40,6 +46,20 @@ public class Lookups extends TMController {
         checkInAccount(user);
         return user;
     }
+
+    @Util
+    public static User getAccountUser(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        User user = TMUser.<User>findById(userId);
+        if (user == null) {
+            return null;
+        }
+        checkInAccount(user);
+        return user;
+    }
+
 
     @Util
     public static Requirement getRequirement(Long requirementId) {
@@ -80,7 +100,6 @@ public class Lookups extends TMController {
         return scriptStep;
     }
 
-
     @Util
     public static Instance getInstance(Long instanceId) {
         if (instanceId == null) {
@@ -93,6 +112,20 @@ public class Lookups extends TMController {
         checkInAccount(instance);
         return instance;
     }
+
+    @Util
+    public static InstanceParam getInstanceParam(Long instanceParamId) {
+        if (instanceParamId == null) {
+            return null;
+        }
+        InstanceParam instanceParam = InstanceParam.<InstanceParam>findById(instanceParamId);
+        if (instanceParam == null) {
+            return null;
+        }
+        checkInAccount(instanceParam);
+        return instanceParam;
+    }
+
 
     @Util
     public static Run getRun(Long runId) {
@@ -119,6 +152,20 @@ public class Lookups extends TMController {
         checkInAccount(project);
         return project;
     }
+
+    @Util
+    public static ProjectCategory getProjectCategory(Long projectCategoryId) {
+        ProjectCategory projectCategory = null;
+        if (projectCategoryId != null) {
+            projectCategory = Project.<ProjectCategory>findById(projectCategoryId);
+        }
+        if (projectCategory == null) {
+            return null;
+        }
+        checkInAccount(projectCategory);
+        return projectCategory;
+    }
+
 
     @Util
     public static RunParam getRunParam(Long runParamId) {
@@ -151,7 +198,7 @@ public class Lookups extends TMController {
         if (cycleId == null) {
             return null;
         }
-        TestCycle cycle = TestCycle.findById(cycleId);
+        TestCycle cycle = TestCycle.<TestCycle>findById(cycleId);
         if (cycle == null) {
             return null;
         }
@@ -164,13 +211,27 @@ public class Lookups extends TMController {
         if (releaseId == null) {
             return null;
         }
-        Release release = Release.findById(releaseId);
+        Release release = Release.<Release>findById(releaseId);
         if (release == null) {
             return null;
         }
         checkInAccount(release);
         return release;
     }
+
+    @Util
+    public static Defect getDefect(Long defectId) {
+        if (defectId == null) {
+            return null;
+        }
+        Defect defect = Defect.<Defect>findById(defectId);
+        if (defect == null) {
+            return null;
+        }
+        checkInAccount(defect);
+        return defect;
+    }
+
 
     @Util
     public static Tag getTag(Long tagId) {
