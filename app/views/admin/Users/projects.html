@@ -76,13 +76,14 @@
 
         $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
 
-            var categoryId = 1; //preventing any error
+            var categoryId = null;
             var projectId = null;
             var roleId = null;
 
             if (data.inst._get_type(data.rslt.obj) == "category") {
                 categoryId = extractId(data.rslt.obj.attr("id"));
                 $("#unassign-role").button('disable');
+
             }
             else if (data.inst._get_type(data.rslt.obj) == "project") {
                 projectId = extractId(data.rslt.obj.attr("id"));
@@ -117,14 +118,20 @@
                             }.bind(this)
                           }, ko.mapping.fromJS(data));
                   ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
+
                 } else {
                   ko.mapping.updateFromJS(viewModelRoles, data);
+                    
                 }
+            }).success(function(){
+                $('#categoriesSelect :last-child').attr('selected','selected');
             });
 
 
         });
+
     });
+
 
     $("#assign-dialog").dialog({
               autoOpen: false,
@@ -135,6 +142,13 @@
                   id:"assignRole",
                   text: "Assign Role",
                   click: function() {
+                    var selectedRoleId = viewModelRoles.role().id();
+                    var name = $('#rolesSelect option:selected').text();
+                      //todo this is broken in BL level probably
+                    $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: getSelectedRowId('#tab')}}}, null, true);
+                    var treeContainer = $("#projectRolesTree");
+                    jQuery.jstree._reference(treeContainer).refresh();
+                    jQuery.jstree._reference(treeContainer).deselect_all();
                     $(this).dialog("close");
                   }},
                 {
@@ -148,17 +162,19 @@
 
     $("#assign-role").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
       $("#assign-dialog").dialog("open");
+
+
     });
 
     $('#assignRole').attr('disabled', 'disabled');
     $('#categoriesSelect').change(function(){
-        manageRoleSaveButton('categoriesSelect', 'Select category...');
+        manageRoleSaveButton();
     });
     $('#projectsSelect').change(function(){
-        manageRoleSaveButton('projectsSelect', 'Select project...');
+        manageRoleSaveButton();
     });
     $('#rolesSelect').change(function(){
-        manageRoleSaveButton('rolesSelect', 'Select role...');
+        manageRoleSaveButton();
     });
 
 
@@ -176,15 +192,14 @@
 
     });
 
-      //todo make this button managing works
-       function manageRoleSaveButton(selectId, compare){
-          if($('#' + selectId+  ':selected').text()!=compare){
-              $('#assignRole').removeAttr('disabled');
-          }
-          else{
-              $('#assignRole').attr('disabled', 'disabled');
-          }
-       }
+   function manageRoleSaveButton(){
+      if($('#rolesSelect :selected').text()!='Select role...' && $('#rolesSelect :selected').text()!='' ){
+          $('#assignRole').removeAttr('disabled');
+      }
+      else{
+          $('#assignRole').attr('disabled', 'disabled');
+      }
+   }
 
 
 
