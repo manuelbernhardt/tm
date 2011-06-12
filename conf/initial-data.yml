@@ -1,238 +1,238 @@
-account.Account(test):
+account.Account(accountTest):
     name: Oxiras ApS
     subdomain: test
     email: info@oxiras.com
 
-account.User(gwenUser):
+account.User(testUserGwen):
     firstName: Gwenael
     lastName: Alizon
     email: gwenael.alizon@oxiras.com
     password: gwen
-    account: test
+    account: accountTest
 
-account.User(manuUser):
+account.User(testUserManu):
     firstName: Manuel
     lastName: Bernhardt
     email: manuel.bernhardt@oxiras.com
     password: manu
-    account: test
+    account: accountTest
 
-account.User(nikolaUser):
+account.User(testUserNikola):
     firstName: Nikola
     lastName: Milivojevic
     email: nikola@example.com
     password: nikola
-    account: test
+    account: accountTest
 
-account.User(filipUser):
+account.User(testUserFilip):
     firstName: Filip
     lastName: Kis
     email: filip@example.com
     password: filip
-    account: test
+    account: accountTest
 
-account.User(tamaraUser):
+account.User(testUserTamara):
     firstName: Tamara
     lastName: Forza
     email: tamara.forza@gmail.com
     password: tamy
-    account: test
+    account: accountTest
 
-account.User(christianUser):
+account.User(testUserChristian):
     firstName: Christian
     lastName: Carlsen
     email: christian@example.com
     password: christian
-    account: test
+    account: accountTest
 
 account.User(testUserAdminUser):
     firstName: Ballmer
     lastName: Peak
     email: UserAdmin@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
 account.User(testProjectAdminUser):
     firstName: Angelina
     lastName: Jolie
     email: ProjectAdmin@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
 account.User(testAccountAdminUser):
     firstName: Steven
     lastName: Springberg
     email: AccountAdmin@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmRequirementsViewUser):
+account.User(testRequirementsViewUser):
     firstName: Eddie
     lastName: Larrisson
     email: RequirementsView@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmRequirementsEditUser):
+account.User(testRequirementsEditUser):
     firstName: Eddie
     lastName: Larrisson 2
     email: RequirementsEdit@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmRequirementsCreateUser):
+account.User(testRequirementsCreateUser):
     firstName: Eddie
     lastName: Larrisson 3
     email: RequirementsCreate@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmRequirementsDeleteUser):
+account.User(testRequirementsDeleteUser):
     firstName: Eddie
     lastName: Larrisson 4
     email: RequirementsDelete@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestRepositoryViewUser):
+account.User(testTestRepositoryViewUser):
     firstName: William
     lastName: Windows
     email: TestRepositoryView@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestRepositoryEditUser):
+account.User(testTestRepositoryEditUser):
     firstName: William
     lastName: Windows 2
     email: TestRepositoryEdit@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestRepositoryCreateUser):
+account.User(testTestRepositoryCreateUser):
     firstName: William
     lastName: Windows 3
     email: TestRepositoryCreate@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestRepositoryDeleteUser):
+account.User(testTestRepositoryDeleteUser):
     firstName: William
     lastName: Windows 4
     email: TestRepositoryDelete@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestPreparationViewUser):
+account.User(testTestPreparationViewUser):
     firstName: Scala
     lastName: Johansson
     email: TestPreparationView@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestPreparationEditUser):
+account.User(testTestPreparationEditUser):
     firstName: Scala
     lastName: Johansson 2
     email: TestPreparationEdit@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestPreparationCreateUser):
+account.User(testTestPreparationCreateUser):
     firstName: Scala
     lastName: Johansson 3
     email: TestPreparationCreate@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestPreparationDeleteUser):
+account.User(testTestPreparationDeleteUser):
     firstName: Scala
     lastName: Johansson 4
     email: TestPreparationDelete@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestExecutionViewUser):
+account.User(testTestExecutionViewUser):
     firstName: Lenny
     lastName: Linux
     email: TestExecutionView@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestExecutionEditUser):
+account.User(testTestExecutionEditUser):
     firstName: Lenny
     lastName: Linux 2
     email: TestExecutionEdit@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestExecutionCreateUser):
+account.User(testTestExecutionCreateUser):
     firstName: Lenny
     lastName: Linux 3
     email: TestExecutionCreate@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmTestExecutionDeleteUser):
+account.User(testTestExecutionDeleteUser):
     firstName: Lenny
     lastName: Linux 4
     email: TestExecutionDelete@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmDefectsViewUser):
+account.User(testDefectsViewUser):
     firstName: Mona Lisa
     lastName: Harddrive
     email: DefectsView@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmDefectsEditUser):
+account.User(testDefectsEditUser):
     firstName: Mona Lisa
     lastName: Harddrive 2
     email: DefectsEdit@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmDefectsCreateUser):
+account.User(testDefectsCreateUser):
     firstName: Mona Lisa
     lastName: Harddrive 3
     email: DefectsCreate@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-account.User(tmDefectsDeleteUser):
+account.User(testDefectsDeleteUser):
     firstName: Mona Lisa
     lastName: Harddrive 4
     email: DefectsDelete@testUser.com
     password: testAuth
-    account: test
+    account: accountTest
 
-tm.ProjectCategory(projCat2011):
+tm.ProjectCategory(testTMprojCat2011):
     name: 2011
-    account: test
+    account: accountTest
 
-tm.ProjectCategory(projCat2012):
+tm.ProjectCategory(testTMprojCat2012):
     name: 2012
-    account: test
+    account: accountTest
 
-tm.Project(tmApplicationTestProject1):
+tm.Project(testTMtestProject1):
     name: TM Application - test project 1
-    account: test
-    projectCategory: projCat2011
+    account: accountTest
+    projectCategory: testTMprojCat2011
 
-tm.Project(tmApplicationTestProject2):
+tm.Project(testTMtestProject2):
     name: TM Application - test project 2
-    account: test
-    projectCategory: projCat2011
+    account: accountTest
+    projectCategory: testTMprojCat2011
 
-tm.Project(tmApplicationTestProject3):
+tm.Project(testTMtestProject3):
     name: TM Application - test project 3
-    account: test
-    projectCategory: projCat2012
+    account: accountTest
+    projectCategory: testTMprojCat2012
 
-tm.ProjectRole(demRoleViewOnly):
+tm.ProjectRole(testTMtestProject1RoleViewOnly):
     name: View only
-    account: test
-    project: tmApplicationTestProject1
+    account: accountTest
+    project: testTMtestProject1
     unitRoles:
          - reqView
          - approachView
@@ -240,10 +240,10 @@ tm.ProjectRole(demRoleViewOnly):
          - testExecView
          - defectView
 
-tm.ProjectRole(tmRoleTestLead):
+tm.ProjectRole(testTMtestProject2RoleTestLead):
     name: Test Lead
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - projectEdit
          - reqView
@@ -267,164 +267,164 @@ tm.ProjectRole(tmRoleTestLead):
          - defectEdit
          - defectDelete
 
-tm.ProjectRole(tmRoleRequirementsView):
+tm.ProjectRole(testTMtestProject2RoleRequirementsView):
     name: (unit) Requirement view
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
 
-tm.ProjectRole(tmRoleRequirementsEdit):
+tm.ProjectRole(testTMtestProject2RoleRequirementsEdit):
     name: (unit) Requirement edit
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
          - reqEdit
 
-tm.ProjectRole(tmRoleRequirementsCreate):
+tm.ProjectRole(testTMtestProject2RoleRequirementsCreate):
     name: (unit) Requirement create
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
          - reqCreate
 
-tm.ProjectRole(tmRoleRequirementsDelete):
+tm.ProjectRole(testTMtestProject2RoleRequirementsDelete):
     name: (unit) Requirement delete
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
          - reqDelete
 
-tm.ProjectRole(tmRoleRequirementsAll):
+tm.ProjectRole(testTMtestProject2RoleRequirementsAll):
     name: Requirement all
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
          - reqCreate
          - reqEdit
          - reqDelete
 
-tm.ProjectRole(tmRoleTestRepoView):
+tm.ProjectRole(testTMtestProject2RoleTestRepoView):
     name: (unit) Test Repository view
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testRepoView
 
-tm.ProjectRole(tmRoleTestRepoEdit):
+tm.ProjectRole(testTMtestProject2RoleTestRepoEdit):
     name: (unit) Test Repository edit
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testRepoView
          - testRepoEdit
 
-tm.ProjectRole(tmRoleTestRepoCreate):
+tm.ProjectRole(testTMtestProject2RoleTestRepoCreate):
     name: (unit) Test Repository create
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testRepoView
          - testRepoCreate
 
-tm.ProjectRole(tmRoleTestRepoDelete):
+tm.ProjectRole(testTMtestProject2RoleTestRepoDelete):
     name: (unit) Test Repository delete
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testRepoView
          - testRepoDelete
 
-tm.ProjectRole(tmRoleTestRepoAll):
+tm.ProjectRole(testTMtestProject2RoleTestRepoAll):
     name: Test Designer
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testRepoView
          - testRepoCreate
          - testRepoEdit
          - testRepoDelete
 
-tm.ProjectRole(tmRoleTestPreparationView):
+tm.ProjectRole(testTMtestProject2RoleTestPreparationView):
     name: (unit) Test Preparation view
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testPrepView
 
-tm.ProjectRole(tmRoleTestPreparationEdit):
+tm.ProjectRole(testTMtestProject2RoleTestPreparationEdit):
     name: (unit) Test Preparation edit
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testPrepView
          - testPrepEdit
 
-tm.ProjectRole(tmRoleTestPreparationCreate):
+tm.ProjectRole(testTMtestProject2RoleTestPreparationCreate):
     name: (unit) Test Preparation create
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testPrepView
          - testPrepCreate
 
-tm.ProjectRole(tmRoleTestPreparationDelete):
+tm.ProjectRole(testTMtestProject2RoleTestPreparationDelete):
     name: (unit) Test Preparation delete
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testPrepView
          - testPrepDelete
 
-tm.ProjectRole(tmRoleTestPreparationAll):
+tm.ProjectRole(testTMtestProject2RoleTestPreparationAll):
     name: Test Preparation
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testPrepView
          - testPrepCreate
          - testPrepEdit
          - testPrepDelete
 
-tm.ProjectRole(tmRoleTestExecutionView):
+tm.ProjectRole(testTMtestProject2RoleTestExecutionAll):
     name: (unit) Test Execution view
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testExecView
 
-tm.ProjectRole(tmRoleTestExecutionEdit):
+tm.ProjectRole(testTMtestProject2RoleTestExecutionEdit):
     name: (unit) Test Execution edit
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testExecView
          - testExecEdit
 
-tm.ProjectRole(tmRoleTestExecutionCreate):
+tm.ProjectRole(testTMtestProject2RoleTestExecutionCreate):
     name: (unit) Test Execution create
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testExecView
          - testExecCreate
 
-tm.ProjectRole(tmRoleTestExecutionDelete):
+tm.ProjectRole(testTMtestProject2RoleTestExecutionDelete):
     name: (unit) Test Execution delete
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testExecView
          - testExecDelete
 
-tm.ProjectRole(tmRoleTestExecution):
+tm.ProjectRole(testTMtestProject2RoleTestExecution):
     name: Test Execution
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - testExecView
          - testExecCreate
@@ -433,50 +433,50 @@ tm.ProjectRole(tmRoleTestExecution):
          - defectCreate
          - defectEdit
 
-tm.ProjectRole(tmRoleDefectsView):
+tm.ProjectRole(testTMtestProject2RoleDefectsView):
     name: (unit) Defect view
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - defectView
 
-tm.ProjectRole(tmRoleDefectsEdit):
+tm.ProjectRole(testTMtestProject2RoleDefectsEdit):
     name: (unit) Defect edit
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - defectView
          - defectEdit
 
-tm.ProjectRole(tmRoleDefectsCreate):
+tm.ProjectRole(testTMtestProject2RoleDefectsCreate):
     name: (unit) Defect create
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - defectView
          - defectCreate
 
-tm.ProjectRole(tmRoleDefectsDelete):
+tm.ProjectRole(testTMtestProject2RoleDefectsDelete):
     name: (unit) Defect delete
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - defectView
          - defectDelete
 
-tm.ProjectRole(tmRoleDefectsResolution):
+tm.ProjectRole(testTMtestProject2RoleDefectsResolution):
     name: Defect resolution
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - defectView
          - defectCreate
          - defectEdit
 
-tm.ProjectRole(tmRoleViewOnly):
+tm.ProjectRole(testTMtestProject2RoleViewOnly):
     name: View only
-    account: test
-    project: tmApplicationTestProject2
+    account: accountTest
+    project: testTMtestProject2
     unitRoles:
          - reqView
          - approachView
@@ -484,10 +484,10 @@ tm.ProjectRole(tmRoleViewOnly):
          - testExecView
          - defectView
 
-tm.TMUser(gwen):
-    user: gwenUser
-    account: test
-    activeProject: tmApplicationTestProject2
+tm.TMUser(testTMuserGwen):
+    user: testUserGwen
+    account: accountTest
+    activeProject: testTMtestProject2
     accountRoles:
        - accountAdmin
        - userCreate
@@ -497,13 +497,13 @@ tm.TMUser(gwen):
        - projectEdit
        - projectDelete
     projectRoles:
-       - tmRoleTestLead
-       - demRoleViewOnly
+       - testTMtestProject2RoleTestLead
+       - testTMtestProject1RoleViewOnly
 
-tm.TMUser(manu):
-    user: manuUser
-    account: test
-    activeProject: tmApplicationTestProject2
+tm.TMUser(testTMuserManu):
+    user: testUserManu
+    account: accountTest
+    activeProject: testTMtestProject2
     accountRoles:
        - accountAdmin
        - userCreate
@@ -513,13 +513,13 @@ tm.TMUser(manu):
        - projectEdit
        - projectDelete
     projectRoles:
-       - tmRoleTestLead
-       - tmRoleViewOnly
-       - demRoleViewOnly
+       - testTMtestProject2RoleTestLead
+       - testTMtestProject2RoleViewOnly
+       - testTMtestProject1RoleViewOnly
 
-tm.TMUser(nikola):
-    user: nikolaUser
-    account: test
+tm.TMUser(testTMuserNikola):
+    user: testUserNikola
+    account: accountTest
     accountRoles:
        - accountAdmin
        - userCreate
@@ -528,13 +528,13 @@ tm.TMUser(nikola):
        - projectCreate
        - projectEdit
        - projectDelete
-    activeProject: tmApplicationTestProject1
+    activeProject: testTMtestProject1
     projectRoles:
-       - demRoleViewOnly
+       - testTMtestProject1RoleViewOnly
 
-tm.TMUser(filip):
-    user: filipUser
-    account: test
+tm.TMUser(testTMuserFilip):
+    user: testUserFilip
+    account: accountTest
     accountRoles:
        - accountAdmin
        - userCreate
@@ -543,21 +543,21 @@ tm.TMUser(filip):
        - projectCreate
        - projectEdit
        - projectDelete
-    activeProject: tmApplicationTestProject1
+    activeProject: testTMtestProject1
     projectRoles:
-       - demRoleViewOnly
+       - testTMtestProject1RoleViewOnly
 
-tm.TMUser(tamara):
-    user: tamaraUser
-    account: test
-    activeProject: tmApplicationTestProject2
+tm.TMUser(testTMuserTamara):
+    user: testUserTamara
+    account: accountTest
+    activeProject: testTMtestProject2
     projectRoles:
-       - demRoleViewOnly
-       - tmRoleTestExecution
+       - testTMtestProject1RoleViewOnly
+       - testTMtestProject2RoleTestExecution
 
-tm.TMUser(christian):
-    user: christianUser
-    account: test
+tm.TMUser(testTMuserChristian):
+    user: testUserChristian
+    account: accountTest
     accountRoles:
        - accountAdmin
        - userCreate
@@ -566,676 +566,676 @@ tm.TMUser(christian):
        - projectCreate
        - projectEdit
        - projectDelete
-    activeProject: tmApplicationTestProject2
+    activeProject: testTMtestProject2
     projectRoles:
-       - tmRoleTestLead
+       - testTMtestProject2RoleTestLead
 
-tm.TMUser(tmUserAccountAdmin):
+tm.TMUser(testTMuserAccountAdmin):
     user: testAccountAdminUser
-    account: test
+    account: accountTest
     accountRoles:
        - accountAdmin
 
-tm.TMUser(tmUserProjectAdmin):
+tm.TMUser(testTMuserProjectAdmin):
     user: testProjectAdminUser
-    account: test
+    account: accountTest
     accountRoles:
        - projectCreate
        - projectEdit
        - projectDelete
 
-tm.TMUser(tmUserUserAdmin):
+tm.TMUser(testTMuserUserAdmin):
     user: testUserAdminUser
-    account: test
+    account: accountTest
     accountRoles:
        - userCreate
        - userEdit
        - userDelete
 
-tm.TMUser(tmUserRequirementsView):
-    user: tmRequirementsViewUser
-    account: test
+tm.TMUser(testTMuserRequirementsView):
+    user: testRequirementsViewUser
+    account: accountTest
     projectRoles:
-       -  tmRoleRequirementsView
+       -  testTMtestProject2RoleRequirementsView
 
-tm.TMUser(tmUserRequirementsEdit):
-    user: tmRequirementsEditUser
-    account: test
+tm.TMUser(testTMuserRequirementsEdit):
+    user: testRequirementsEditUser
+    account: accountTest
     projectRoles:
-       -  tmRoleRequirementsEdit
+       -  testTMtestProject2RoleRequirementsEdit
 
-tm.TMUser(tmUserRequirementsCreate):
-    user: tmRequirementsCreateUser
-    account: test
+tm.TMUser(testTMuserRequirementsCreate):
+    user: testRequirementsCreateUser
+    account: accountTest
     projectRoles:
-       -  tmRoleRequirementsCreate
+       -  testTMtestProject2RoleRequirementsCreate
 
-tm.TMUser(tmUserRequirementsDelete):
-    user: tmRequirementsDeleteUser
-    account: test
+tm.TMUser(testTMuserRequirementsDelete):
+    user: testRequirementsDeleteUser
+    account: accountTest
     projectRoles:
-       -  tmRoleRequirementsDelete
+       -  testTMtestProject2RoleRequirementsDelete
 
-tm.TMUser(tmUserTestRepositoryView):
-    user: tmTestRepositoryViewUser
-    account: test
+tm.TMUser(testTMuserTestRepositoryView):
+    user: testTestRepositoryViewUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestRepoView
+       -  testTMtestProject2RoleTestRepoView
 
-tm.TMUser(tmUserTestRepositoryEdit):
-    user: tmTestRepositoryEditUser
-    account: test
+tm.TMUser(testTMuserTestRepositoryEdit):
+    user: testTestRepositoryEditUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestRepoEdit
+       -  testTMtestProject2RoleTestRepoEdit
 
-tm.TMUser(tmUserTestRepositoryCreate):
-    user: tmTestRepositoryCreateUser
-    account: test
+tm.TMUser(testTMuserTestRepositoryCreate):
+    user: testTestRepositoryCreateUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestRepoCreate
+       -  testTMtestProject2RoleTestRepoCreate
 
-tm.TMUser(tmTestRepositoryDelete):
-    user: tmTestRepositoryDeleteUser
-    account: test
+tm.TMUser(testTMuserTestRepositoryDelete):
+    user: testTestRepositoryDeleteUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestRepoDelete
+       -  testTMtestProject2RoleTestRepoDelete
 
-tm.TMUser(tmTestPreparationView):
-    user: tmTestPreparationViewUser
-    account: test
+tm.TMUser(testTMuserTestPreparationView):
+    user: testTestPreparationViewUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestPreparationView
+       -  testTMtestProject2RoleTestPreparationView
 
-tm.TMUser(tmTestPreparationEdit):
-    user: tmTestPreparationEditUser
-    account: test
+tm.TMUser(testTMuserTestPreparationEdit):
+    user: testTestPreparationEditUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestPreparationEdit
+       -  testTMtestProject2RoleTestPreparationEdit
 
-tm.TMUser(tmTestPreparationCreate):
-    user: tmTestPreparationCreateUser
-    account: test
+tm.TMUser(testTMuserTestPreparationCreate):
+    user: testTestPreparationCreateUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestPreparationCreate
+       -  testTMtestProject2RoleTestPreparationCreate
 
-tm.TMUser(tmTestPreparationDelete):
-    user: tmTestPreparationDeleteUser
-    account: test
+tm.TMUser(testTMuserTestPreparationDelete):
+    user: testTestPreparationDeleteUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestPreparationDelete
+       -  testTMtestProject2RoleTestPreparationDelete
 
-tm.TMUser(tmTestExecutionView):
-    user: tmTestExecutionViewUser
-    account: test
+tm.TMUser(testTMuserTestExecutionView):
+    user: testTestExecutionViewUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestExecutionView
+       -  testTMtestProject2RoleTestExecutionAll
 
-tm.TMUser(tmTestExecutionEdit):
-    user: tmTestExecutionEditUser
-    account: test
+tm.TMUser(testTMuserTestExecutionEdit):
+    user: testTestExecutionEditUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestExecutionEdit
+       -  testTMtestProject2RoleTestExecutionEdit
 
-tm.TMUser(tmTestExecutionCreate):
-    user: tmTestExecutionCreateUser
-    account: test
+tm.TMUser(testTMuserTestExecutionCreate):
+    user: testTestExecutionCreateUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestExecutionCreate
+       -  testTMtestProject2RoleTestExecutionCreate
 
-tm.TMUser(tmTestExecutionDelete):
-    user: tmTestExecutionDeleteUser
-    account: test
+tm.TMUser(testTMuserTestExecutionDelete):
+    user: testTestExecutionDeleteUser
+    account: accountTest
     projectRoles:
-       -  tmRoleTestExecutionDelete
+       -  testTMtestProject2RoleTestExecutionDelete
 
-tm.TMUser(tmDefectsView):
-    user: tmDefectsViewUser
-    account: test
+tm.TMUser(testTMuserDefectsView):
+    user: testDefectsViewUser
+    account: accountTest
     projectRoles:
-       -  tmRoleDefectsView
+       -  testTMtestProject2RoleDefectsView
 
-tm.TMUser(tmDefectsEdit):
-    user: tmDefectsEditUser
-    account: test
+tm.TMUser(testTMuserDefectsEdit):
+    user: testDefectsEditUser
+    account: accountTest
     projectRoles:
-       -  tmRoleDefectsEdit
+       -  testTMtestProject2RoleDefectsEdit
 
-tm.TMUser(tmDefectsCreate):
-    user: tmDefectsCreateUser
-    account: test
+tm.TMUser(testTMuserDefectsCreate):
+    user: testDefectsCreateUser
+    account: accountTest
     projectRoles:
-       -  tmRoleDefectsCreate
+       -  testTMtestProject2RoleDefectsCreate
 
-tm.TMUser(tmDefectsDelete):
-    user: tmDefectsDeleteUser
-    account: test
+tm.TMUser(testTMuserDefectsDelete):
+    user: testDefectsDeleteUser
+    account: accountTest
     projectRoles:
-       -  tmRoleDefectsDelete
+       -  testTMtestProject2RoleDefectsDelete
 
-tm.approach.Release(releaseProto):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.Release(testTMtestProject2ReleaseProto):
+    account: accountTest
+    project: testTMtestProject2
     name: Proto
 
-tm.approach.TestCycle(unitTest):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.TestCycle(testTMtestProject2ReleaseProtoTestCycleUnitTest):
+    account: accountTest
+    project: testTMtestProject2
     name: Unit test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
-tm.approach.TestCycle(systemTest):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.TestCycle(testTMtestProject2ReleaseProtoTestCycleSystemTest):
+    account: accountTest
+    project: testTMtestProject2
     name: System Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
-tm.approach.TestCycle(userAcceptanceTest):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.TestCycle(testTMtestProject2ReleaseProtoTestCycleUserAcceptanceTest):
+    account: accountTest
+    project: testTMtestProject2
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
-tm.approach.Release(releaseBeta):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.Release(testTMtestProject2ReleaseBeta):
+    account: accountTest
+    project: testTMtestProject2
     name: Beta
 
-tm.approach.Release(releaseV1):
-    account: test
-    project: tmApplicationTestProject2
+tm.approach.Release(testTMtestProject2ReleaseV1):
+    account: accountTest
+    project: testTMtestProject2
     name: V1
 
-tm.ProjectTreeNode(approachTreeNode7):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseProto):
+    account: accountTest
     level: 0
     name: Proto
-    nodeId: 1
+    nodeId: testTMtestProject2ReleaseProto
     opened: true
     path: '/Proto'
     treeId: approachTree
     type: release
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(approachTreeNode8):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseProtoTestCycleUnitTest):
+    account: accountTest
     level: 1
     name: Unit Test
-    nodeId: 1
+    nodeId: testTMtestProject2ReleaseProtoTestCycleUnitTest
     opened: false
     path: '/Proto/Unit Test'
     treeId: approachTree
     type: testCycle
-    threadRoot: approachTreeNode7
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2ApproachTreeNodeReleaseProto
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(approachTreeNode9):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseProtoTestCycleUnitTest):
+    account: accountTest
     level: 1
     name: System Test
-    nodeId: 2
+    nodeId: testTMtestProject2ReleaseProtoTestCycleSystemTest
     opened: false
     path: '/Proto/System Test'
     treeId: approachTree
     type: testCycle
-    threadRoot: approachTreeNode7
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2ApproachTreeNodeReleaseProto
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(approachTreeNode10):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseProtoTestCycleUserAcceptanceTest):
+    account: accountTest
     level: 1
     name: User Acceptance Test
-    nodeId: 3
+    nodeId: testTMtestProject2ReleaseProtoTestCycleUserAcceptanceTest
     opened: false
     path: '/Proto/User Acceptance Test'
     treeId: approachTree
     type: testCycle
-    threadRoot: approachTreeNode7
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2ApproachTreeNodeReleaseProto
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(approachTreeNode11):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseBeta):
+    account: accountTest
     level: 0
     name: Beta
-    nodeId: 2
+    nodeId: testTMtestProject2ReleaseBeta
     opened: true
     path: '/Beta'
     treeId: approachTree
     type: release
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(approachTreeNode12):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2ApproachTreeNodeReleaseV1):
+    account: accountTest
     level: 0
     name: V1
-    nodeId: 3
+    nodeId: testTMtestProject2ReleaseV1
     opened: true
     path: '/V1'
     treeId: approachTree
     type: release
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.test.ScriptFolder(testScriptFolderAdmin):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.ScriptFolder(testTMtestProject2TestScriptFolderAdmin):
+    account: accountTest
+    project: testTMtestProject2
     name: Administration
 
-tm.test.ScriptFolder(testScriptFolderAdminUsers):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.ScriptFolder(testTMtestProject2TestScriptFolderAdminUsers):
+    account: accountTest
+    project: testTMtestProject2
     name: Users
 
-tm.test.ScriptFolder(testScriptFolderAdminProjects):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.ScriptFolder(testTMtestProject2TestScriptFolderAdminProjects):
+    account: accountTest
+    project: testTMtestProject2
     name: Projects
 
-tm.test.Script(testScriptAdminProjectsCreate):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Script(testTMtestProject2TestScriptAdminProjectsCreate):
+    account: accountTest
+    project: testTMtestProject2
     name: Create new project
-    createdBy: gwen
+    createdBy: testTMuserGwen
 
-tm.test.ScriptParam(projectCategoryScriptParam):
-    account: test
-    project: tmApplicationTestProject2
-    script: testScriptAdminProjectsCreate
+tm.test.ScriptParam(testTMtestProject2TestScriptAdminProjectsCreateParamProjectCategory):
+    account: accountTest
+    project: testTMtestProject2
+    script: testTMtestProject2TestScriptAdminProjectsCreate
     name: projectCategory
 
-tm.test.ScriptParam(projectNameScriptParam):
-    account: test
-    project: tmApplicationTestProject2
-    script: testScriptAdminProjectsCreate
+tm.test.ScriptParam(testTMtestProject2TestScriptAdminProjectsCreateParamProjectName):
+    account: accountTest
+    project: testTMtestProject2
+    script: testTMtestProject2TestScriptAdminProjectsCreate
     name: projectName
 
-tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep1):
-    account: test
-    project: tmApplicationTestProject2
-    script: testScriptAdminProjectsCreate
+tm.test.ScriptStep(testTMtestProject2TestScriptAdminProjectsCreateStep1):
+    account: accountTest
+    project: testTMtestProject2
+    script: testTMtestProject2TestScriptAdminProjectsCreate
     position: 1
     name: Step 1
     description: Enter the URL /admin/projects
     expectedResult: Projects administration page is shown
 
-tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep2):
-    account: test
-    project: tmApplicationTestProject2
-    script: testScriptAdminProjectsCreate
+tm.test.ScriptStep(testTMtestProject2TestScriptAdminProjectsCreateStep2):
+    account: accountTest
+    project: testTMtestProject2
+    script: testTMtestProject2TestScriptAdminProjectsCreate
     position: 2
     name: Step 2
     description: "Select project category \u003C\u003C\u003CprojectCategory\u003E\u003E\u003E and click on New project"
     expectedResult: A new node appears in the tree under the selected project category
 
-tm.test.ScriptStep(testScriptStep1AdminProjectsCreateStep3):
-    account: test
-    project: tmApplicationTestProject2
-    script: testScriptAdminProjectsCreate
+tm.test.ScriptStep(testTMtestProject2TestScriptAdminProjectsCreateStep3):
+    account: accountTest
+    project: testTMtestProject2
+    script: testTMtestProject2TestScriptAdminProjectsCreate
     position: 3
     name: Step 3
     description: "Enter \u003C\u003C\u003CprojectName\u003E\u003E\u003E and press enter"
     expectedResult: "New project \u003C\u003C\u003CprojectName\u003E\u003E\u003E is available"
 
-tm.test.Script(testScriptAdminProjectsEdit):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Script(testTMtestProject2TestScriptAdminProjectsEdit):
+    account: accountTest
+    project: testTMtestProject2
     name: Edit project details
-    createdBy: gwen
+    createdBy: testTMuserGwen
 
-tm.test.ScriptFolder(testScriptFolderRequirements):
-    account: test
-    project: tmApplicationTestProject2
-    name: Requirements
-    createdBy: gwen
+tm.test.ScriptFolder(testTMtestProject2TestScriptFolderRequirements):
+    account: accountTest
+    project: testTMtestProject2
+    name: Requirement management
+    createdBy: testTMuserGwen
 
-tm.test.Script(testScriptRequirement1):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Script(testTMtestProject2TestScriptReqCreate):
+    account: accountTest
+    project: testTMtestProject2
     name: Register new requirement
-    createdBy: gwen
+    createdBy: testTMuserGwen
 
-tm.ProjectTreeNode(repositoryTreeNode13):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderAdministration):
+    account: accountTest
     level: 0
     name: Administration
-    nodeId: 1
+    nodeId: testTMtestProject2TestScriptFolderAdmin
     opened: true
     path: '/Administration'
     treeId: repositoryTree
     type: scriptFolder
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode14):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderAdministrationUsers):
+    account: accountTest
     level: 1
     name: Users
-    nodeId: 2
+    nodeId: testTMtestProject2TestScriptFolderAdminUsers
     opened: true
     path: '/Administration/Users'
     treeId: repositoryTree
     type: scriptFolder
-    threadRoot: repositoryTreeNode13
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RepositoryTreeNodeFolderAdministration
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode15):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderAdministrationProjects):
+    account: accountTest
     level: 1
     name: Projects
-    nodeId: 3
+    nodeId: testTMtestProject2TestScriptFolderAdminProjects
     opened: true
     path: '/Administration/Projects'
     treeId: repositoryTree
     type: scriptFolder
-    threadRoot: repositoryTreeNode13
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RepositoryTreeNodeFolderAdministration
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode16):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderAdministrationProjectsScriptProjectCreate):
+    account: accountTest
     level: 2
     name: Create new project
-    nodeId: 1
+    nodeId: testTMtestProject2TestScriptAdminProjectsCreate
     opened: true
     path: '/Administration/Projects/Create new project'
     treeId: repositoryTree
     type: script
-    threadRoot: repositoryTreeNode13
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RepositoryTreeNodeFolderAdministration
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode17):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderAdministrationProjectsScriptProjectEdit):
+    account: accountTest
     level: 2
     name: Edit project details
-    nodeId: 2
+    nodeId: testTMtestProject2TestScriptAdminProjectsEdit
     opened: true
     path: '/Administration/Projects/Edit project details'
     treeId: repositoryTree
     type: script
-    threadRoot: repositoryTreeNode13
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RepositoryTreeNodeFolderAdministration
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode18):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderRequirements):
+    account: accountTest
     level: 0
     name: Requirement Management
-    nodeId: 4
+    nodeId: testTMtestProject2TestScriptFolderRequirements
     opened: true
     path: '/Requirement Management'
     treeId: repositoryTree
     type: scriptFolder
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(repositoryTreeNode19):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RepositoryTreeNodeFolderRequirementsScriptRequirementCreate):
+    account: accountTest
     level: 1
     name: Register new requirement
-    nodeId: 3
+    nodeId: testTMtestProject2TestScriptReqCreate
     opened: true
     path: '/Requirement Management/Register new requirement'
     treeId: repositoryTree
     type: script
-    threadRoot: repositoryTreeNode18
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RepositoryTreeNodeFolderRequirements
+    project: testTMtestProject2
 
-tm.test.Tag(functionalReqTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2RequirementTagFunctional):
+    account: accountTest
+    project: testTMtestProject2
     name: Functional
     type: REQUIREMENT
 
-tm.test.Tag(technicalReqTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2RequirementTag-Technical):
+    account: accountTest
+    project: testTMtestProject2
     name: Technical
     type: REQUIREMENT
 
 
-tm.RequirementFolder(functionalReqFolder):
-    project: tmApplicationTestProject2
-    account: test
+tm.RequirementFolder(testTMtestProject2RequirementFolder-RequirementManagement):
+    project: testTMtestProject2
+    account: accountTest
     name: Requirement management
 
-tm.Requirement(functionalReq0):
-    project: tmApplicationTestProject2
-    account: test
-    createdBy: gwen
+tm.Requirement(testTMtestProject2RequirementFolderRequirementManagementRequirement-CreateReq):
+    project: testTMtestProject2
+    account: accountTest
+    createdBy: testTMuserGwen
     name: Create requirement
     tags:
-         - functionalReqTag
+         - testTMtestProject2RequirementTagFunctional
     linkedScripts:
-         - testScriptRequirement1
+         - testTMtestProject2TestScriptReqCreate
 
-tm.Requirement(functionalReq1):
-    project: tmApplicationTestProject2
-    account: test
-    createdBy: gwen
+tm.Requirement(testTMtestProject2RequirementFolderRequirementManagementRequirement-ListReq):
+    project: testTMtestProject2
+    account: accountTest
+    createdBy: testTMuserGwen
     name: List requirements (tree)
     tags:
-         - functionalReqTag
+         - testTMtestProject2RequirementTagFunctional
 
-tm.Requirement(functionalReq2):
-    project: tmApplicationTestProject2
-    account: test
-    createdBy: gwen
+tm.Requirement(testTMtestProject2RequirementFolderRequirementManagementRequirement-DisplayReqDetails):
+    project: testTMtestProject2
+    account: accountTest
+    createdBy: testTMuserGwen
     name: Display requirement details
     tags:
-         - functionalReqTag
+         - testTMtestProject2RequirementTagFunctional
 
-tm.Requirement(functionalReq3):
-    project: tmApplicationTestProject2
-    account: test
-    createdBy: gwen
+tm.Requirement(testTMtestProject2RequirementFolderRequirementManagementRequirement-DisplayLinkedEntities):
+    project: testTMtestProject2
+    account: accountTest
+    createdBy: testTMuserGwen
     name: Display entities linked to requirement
     tags:
-         - functionalReqTag
+         - testTMtestProject2RequirementTagFunctional
 
-tm.RequirementFolder(crossConcernsFolder):
-    project: tmApplicationTestProject2
-    account: test
+tm.RequirementFolder(testTMtestProject2RequirementFolder-CrossConcerns):
+    project: testTMtestProject2
+    account: accountTest
     name: Cross concerns
 
-tm.Requirement(technicalReq1):
-    project: tmApplicationTestProject2
-    account: test
-    createdBy: gwen
+tm.Requirement(testTMtestProject2RequirementFolderCrossConcernsRequirement-SortableDatatables):
+    project: testTMtestProject2
+    account: accountTest
+    createdBy: testTMuserGwen
     name: Datatables need to be sortable
     tags:
-         - technicalReqTag
+         - testTMtestProject2RequirementTag-Technical
 
-tm.ProjectTreeNode(requirementTreeNode1):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolder-RequirementManagement):
+    account: accountTest
     level: 0
     name: Requirement management
-    nodeId: 1
+    nodeId: testTMtestProject2RequirementFolder-RequirementManagement
     opened: true
     path: '/Requirement management'
     treeId: requirementTree
     type: requirementFolder
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode2):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolderRequirementManagementRequirement-CreateReq):
+    account: accountTest
     level: 1
     name: Create requirement
-    nodeId: 1
+    nodeId: testTMtestProject2RequirementFolderRequirementManagementRequirement-CreateReq
     opened: false
     path: '/Requirement management/Create requirement'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode1
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RequirementTreeNodeFolder-RequirementManagement
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode3):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolderRequirementManagementRequirement-ListReq):
+    account: accountTest
     level: 1
     name: List requirements (tree)
-    nodeId: 2
+    nodeId: testTMtestProject2RequirementFolderRequirementManagementRequirement-ListReq
     opened: false
     path: '/Requirement management/List requirements (tree)'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode1
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RequirementTreeNodeFolder-RequirementManagement
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode4):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolderRequirementManagementRequirement-DisplayReqDetails):
+    account: accountTest
     level: 1
     name: Display requirement details
-    nodeId: 3
+    nodeId: testTMtestProject2RequirementFolderRequirementManagementRequirement-DisplayReqDetails
     opened: false
     path: '/Requirement management/Display requirement details'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode1
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RequirementTreeNodeFolder-RequirementManagement
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode5):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolderRequirementManagementRequirement-DisplayLinkedEntities):
+    account: accountTest
     level: 1
     name: Display entities linked to requirement
-    nodeId: 4
+    nodeId: testTMtestProject2RequirementFolderRequirementManagementRequirement-DisplayLinkedEntities
     opened: false
     path: '/Requirement management/Display entities linked to requirement'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode1
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RequirementTreeNodeFolder-RequirementManagement
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode6):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolder-CrossConcerns):
+    account: accountTest
     level: 0
     name: Cross concerns
-    nodeId: 2
+    nodeId: testTMtestProject2RequirementFolder-CrossConcerns
     opened: false
     path: '/Cross concerns'
     treeId: requirementTree
     type: requirementFolder
-    project: tmApplicationTestProject2
+    project: testTMtestProject2
 
-tm.ProjectTreeNode(requirementTreeNode7):
-    account: test
+tm.ProjectTreeNode(testTMtestProject2RequirementTreeNodeFolderCrossConcernsRequirement-SortableDatatables):
+    account: accountTest
     level: 1
     name: Datatables need to be sortable
-    nodeId: 5
+    nodeId: testTMtestProject2RequirementFolderCrossConcernsRequirement-SortableDatatables
     opened: false
     path: '/Cross concerns/Datatables need to be sortable'
     treeId: requirementTree
     type: requirement
-    threadRoot: requirementTreeNode5
-    project: tmApplicationTestProject2
+    threadRoot: testTMtestProject2RequirementTreeNodeFolder-CrossConcerns
+    project: testTMtestProject2
 
-tm.test.Tag(administrationTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2InstanceTagAdministration):
+    account: accountTest
+    project: testTMtestProject2
     name: Administration
     type: TESTINSTANCE
 
-tm.test.Tag(usersTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2InstanceTagUsers):
+    account: accountTest
+    project: testTMtestProject2
     name: Users
     type: TESTINSTANCE
 
-tm.test.Tag(projectsTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2InstanceTagProjects):
+    account: accountTest
+    project: testTMtestProject2
     name: Projects
     type: TESTINSTANCE
 
-tm.test.Tag(requirementsTag):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Tag(testTMtestProject2InstanceTagRequirements):
+    account: accountTest
+    project: testTMtestProject2
     name: Requirements
     type: TESTINSTANCE
 
-tm.test.Instance(createNewProjectST1):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance1):
+    account: accountTest
+    project: testTMtestProject2
     name: Create new project
-    script: testScriptAdminProjectsCreate
-    testCycle: systemTest
-    responsible: manu
+    script: testTMtestProject2TestScriptAdminProjectsCreate
+    testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
+    responsible: testTMuserManu
     plannedExecution: 2011-03-18
     tags:
-      - administrationTag
-      - projectsTag
+      - testTMtestProject2InstanceTagAdministration
+      - testTMtestProject2InstanceTagProjects
 
-tm.test.Instance(createNewProjectST2):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2):
+    account: accountTest
+    project: testTMtestProject2
     name: Create new project (2)
-    script: testScriptAdminProjectsCreate
-    testCycle: systemTest
-    responsible: christian
+    script: testTMtestProject2TestScriptAdminProjectsCreate
+    testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
+    responsible: testTMuserChristian
     plannedExecution: 2011-03-18
     tags:
-      - administrationTag
-      - projectsTag
+      - testTMtestProject2InstanceTagAdministration
+      - testTMtestProject2InstanceTagProjects
 
-tm.test.Instance(editProjectDetails):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsEditInstance1):
+    account: accountTest
+    project: testTMtestProject2
     name: Edit project details
-    script: testScriptAdminProjectsEdit
-    testCycle: systemTest
-    responsible: gwen
+    script: testTMtestProject2TestScriptAdminProjectsEdit
+    testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
+    responsible: testTMuserGwen
     plannedExecution: 2011-03-19
     tags:
-      - administrationTag
-      - projectsTag
+      - testTMtestProject2InstanceTagAdministration
+      - testTMtestProject2InstanceTagProjects
 
-tm.test.InstanceParam(projectCategoryNewProjectST1InstanceParam):
-    account: test
-    project: tmApplicationTestProject2
-    scriptParam: projectCategoryScriptParam
-    instance: createNewProjectST1
+tm.test.InstanceParam(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance1ParamProjCat):
+    account: accountTest
+    project: testTMtestProject2
+    scriptParam: testTMtestProject2TestScriptAdminProjectsCreateParamProjectCategory
+    instance: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance1
     value:
 
-tm.test.InstanceParam(projectCategoryNewProjectST2InstanceParam):
-    account: test
-    project: tmApplicationTestProject2
-    scriptParam: projectCategoryScriptParam
-    instance: createNewProjectST2
+tm.test.InstanceParam(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2ParamProjCat):
+    account: accountTest
+    project: testTMtestProject2
+    scriptParam: testTMtestProject2TestScriptAdminProjectsCreateParamProjectCategory
+    instance: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2
     value: "2011"
 
-tm.test.InstanceParam(projectNameNewProjectST1InstanceParam):
-    account: test
-    project: tmApplicationTestProject2
-    scriptParam: projectNameScriptParam
-    instance: createNewProjectST1
+tm.test.InstanceParam(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance1ParamProjName):
+    account: accountTest
+    project: testTMtestProject2
+    scriptParam: testTMtestProject2TestScriptAdminProjectsCreateParamProjectName
+    instance: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance1
     value: SAP Roll-out Denmark
 
-tm.test.InstanceParam(projectNameNewProjectST2InstanceParam):
-    account: test
-    project: tmApplicationTestProject2
-    scriptParam: projectNameScriptParam
-    instance: createNewProjectST2
+tm.test.InstanceParam(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2ParamProjName):
+    account: accountTest
+    project: testTMtestProject2
+    scriptParam: testTMtestProject2TestScriptAdminProjectsCreateParamProjectName
+    instance: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2
     value: SAP Roll-out Finland
 
-tm.test.Instance(registerNewRequirement):
-    account: test
-    project: tmApplicationTestProject2
+tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptReqCreateInstance1):
+    account: accountTest
+    project: testTMtestProject2
     name: Register new requirement
-    script: testScriptRequirement1
-    testCycle: userAcceptanceTest
-    responsible: christian
+    script: testTMtestProject2TestScriptReqCreate
+    testCycle: testTMtestProject2ReleaseProtoTestCycleUserAcceptanceTest
+    responsible: testTMuserChristian
     plannedExecution: 2011-03-19
     tags:
-      - requirementsTag
+      - testTMtestProject2InstanceTagRequirements
 
-tm.test.Run(createNewProjectST2Run1):
-    account: test
-    project: tmApplicationTestProject2
-    instance: createNewProjectST2
-    tester: gwen
+tm.test.Run(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1):
+    account: accountTest
+    project: testTMtestProject2
+    instance: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2
+    tester: testTMuserGwen
     executionDate: 2011-03-19 09:45:23
     status: 3
     temporary: false
 
-tm.test.RunStep(createNewProjectST2Run1Step1):
-    account: test
-    project: tmApplicationTestProject2
-    run: createNewProjectST2Run1
+tm.test.RunStep(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1Step1):
+    account: accountTest
+    project: testTMtestProject2
+    run: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1
     position: 1
     name: Step 1
     description: Enter the URL /admin/projects
@@ -1243,10 +1243,10 @@ tm.test.RunStep(createNewProjectST2Run1Step1):
     actualResult:
     status: 2
 
-tm.test.RunStep(createNewProjectST2Run1Step2):
-    account: test
-    project: tmApplicationTestProject2
-    run: createNewProjectST2Run1
+tm.test.RunStep(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1Step2):
+    account: accountTest
+    project: testTMtestProject2
+    run: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1
     position: 2
     name: Step 2
     description: "Select project category 2011 and click on New project"
@@ -1254,10 +1254,10 @@ tm.test.RunStep(createNewProjectST2Run1Step2):
     actualResult: 
     status: 3
 
-tm.test.RunStep(createNewProjectST2Run1Step3):
-    account: test
-    project: tmApplicationTestProject2
-    run: createNewProjectST2Run1
+tm.test.RunStep(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1Step3):
+    account: accountTest
+    project: testTMtestProject2
+    run: testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminProjectsCreateInstance2Run1
     position: 3
     name: Step 3
     description: "Enter SAP Roll-out Denmark and press enter"
@@ -1265,43 +1265,43 @@ tm.test.RunStep(createNewProjectST2Run1Step3):
     actualResult:
     status: 2
 
-tm.Defect(defect1):
-    account: test
-    project: tmApplicationTestProject2
+tm.Defect(testTMtestProject2Defect1):
+    account: accountTest
+    project: testTMtestProject2
     created: 2011-05-02
     name: The application does not start
-    submittedBy: gwen
-    assignedTo: manu
+    submittedBy: testTMuserGwen
+    assignedTo: testTMuserManu
 
-tm.Defect(defect2):
-    account: test
-    project: tmApplicationTestProject2
+tm.Defect(testTMtestProject2Defect2):
+    account: accountTest
+    project: testTMtestProject2
     name: Test for naturalID
-    submittedBy: nikola
+    submittedBy: testTMuserNikola
 
-tm.Defect(defect3):
-    account: test
-    project: tmApplicationTestProject2
+tm.Defect(testTMtestProject2Defect3):
+    account: accountTest
+    project: testTMtestProject2
     created: 2011-05-03
     name: Issue with tabularasa
-    submittedBy: manu
-    assignedTo: manu
+    submittedBy: testTMuserManu
+    assignedTo: testTMuserManu
 
-tm.Defect(defect4):
-    account: test
-    project: tmApplicationTestProject1
+tm.Defect(testTMtestProject1Defect1):
+    account: accountTest
+    project: testTMtestProject1
     name: Box is not at the right place
-    submittedBy: filip
+    submittedBy: testTMuserFilip
 
-tm.Defect(defect5):
-    account: test
-    project: tmApplicationTestProject1
+tm.Defect(testTMtestProject1Defect2):
+    account: accountTest
+    project: testTMtestProject1
     name: Action buttons are not named consistently
-    submittedBy: nikola
+    submittedBy: testTMuserNikola
 
 
 
-account.Account(demo):
+account.Account(accountDemo):
     name: ACME
     subdomain: demo
     email: demo@example.com
@@ -1311,34 +1311,34 @@ account.User(demoUserJohnSmith):
     lastName: Smith
     email: demo@example.com
     password: demo
-    account: demo
+    account: accountDemo
 
 account.User(demoUserHuiZhong):
     firstName: Hui Zhong
     lastName: Huáng
     email: hui.zhong.huang@example.com
     password: demo
-    account: demo
+    account: accountDemo
 
 account.User(demoUserAnneLechauve):
     firstName: Anne
     lastName: Le Chauve
     email: anne.lechauve@example.com
     password: demo
-    account: demo
+    account: accountDemo
 
 tm.ProjectCategory(demoProjCatERP):
     name: ERP
-    account: demo
+    account: accountDemo
 
 tm.Project(demoProjectSAP):
     name: SAP Implementation
-    account: demo
+    account: accountDemo
     projectCategory: demoProjCatERP
 
 tm.ProjectRole(demoProjectSAProleTestLead):
     name: Test Lead
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     unitRoles:
          - projectEdit
@@ -1365,7 +1365,7 @@ tm.ProjectRole(demoProjectSAProleTestLead):
 
 tm.TMUser(demoTMUserJohnSmith):
     user: demoUserJohnSmith
-    account: demo
+    account: accountDemo
     activeProject: demoProjectSAP
     accountRoles:
        - accountAdmin
@@ -1380,56 +1380,56 @@ tm.TMUser(demoTMUserJohnSmith):
 
 tm.TMUser(demoTMUserHuiZhong):
     user: demoUserHuiZhong
-    account: demo
+    account: accountDemo
     activeProject: demoProjectSAP
     projectRoles:
        - demoProjectSAProleTestLead
 
 tm.TMUser(demoTMUserAnneLechauve):
     user: demoUserAnneLechauve
-    account: demo
+    account: accountDemo
     activeProject: demoProjectSAP
     projectRoles:
        - demoProjectSAProleTestLead
 
 tm.approach.Release(demoProjectSAPrelease1):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: Template
 
 tm.approach.TestCycle(demoProjectSAPrelease1Cycle1):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: Application test
     fromDate: 2011-03-01
     toDate: 2011-03-12
 
 tm.approach.TestCycle(demoProjectSAPrelease1Cycle2):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: Product Test
     fromDate: 2011-03-15
     toDate: 2011-03-19
 
 tm.approach.TestCycle(demoProjectSAPrelease1Cycle3):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: User Acceptance test
     fromDate: 2011-03-22
     toDate: 2011-03-25
 
 tm.approach.Release(demoProjectSAPrelease2):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: Roll-out UK
 
 tm.approach.Release(demoProjectSAPrelease3):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     name: Roll-out AT
 
 tm.ProjectTreeNode(demoApproachTreeNode1):
-    account: demo
+    account: accountDemo
     level: 0
     name: Template
     nodeId: demoProjectSAPrelease1
@@ -1440,7 +1440,7 @@ tm.ProjectTreeNode(demoApproachTreeNode1):
     project: demoProjectSAP
 
 tm.ProjectTreeNode(demoApproachTreeNode2):
-    account: demo
+    account: accountDemo
     level: 1
     name: Application Test
     nodeId: demoProjectSAPrelease1Cycle1
@@ -1452,7 +1452,7 @@ tm.ProjectTreeNode(demoApproachTreeNode2):
     project: demoProjectSAP
 
 tm.ProjectTreeNode(demoApproachTreeNode3):
-    account: demo
+    account: accountDemo
     level: 1
     name: Product Test
     nodeId: demoProjectSAPrelease1Cycle2
@@ -1464,7 +1464,7 @@ tm.ProjectTreeNode(demoApproachTreeNode3):
     project: demoProjectSAP
 
 tm.ProjectTreeNode(demoApproachTreeNode4):
-    account: demo
+    account: accountDemo
     level: 1
     name: User Acceptance Test
     nodeId: demoProjectSAPrelease1Cycle3
@@ -1476,7 +1476,7 @@ tm.ProjectTreeNode(demoApproachTreeNode4):
     project: demoProjectSAP
 
 tm.ProjectTreeNode(demoApproachTreeNode5):
-    account: demo
+    account: accountDemo
     level: 0
     name: Roll-out UK
     nodeId: demoProjectSAPrelease2
@@ -1487,7 +1487,7 @@ tm.ProjectTreeNode(demoApproachTreeNode5):
     project: demoProjectSAP
 
 tm.ProjectTreeNode(demoApproachTreeNode6):
-    account: demo
+    account: accountDemo
     level: 0
     name: Roll-out AT
     nodeId: demoProjectSAPrelease3
@@ -1500,7 +1500,7 @@ tm.ProjectTreeNode(demoApproachTreeNode6):
 
 
 tm.Defect(demoProjectSAPdefect1):
-    account: demo
+    account: accountDemo
     project: demoProjectSAP
     created: 2011-06-02
     name: The application does not start
