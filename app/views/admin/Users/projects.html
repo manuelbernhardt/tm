@@ -71,58 +71,59 @@
         }
       });
         $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes});
-    });
 
 
-    $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
 
-        var categoryId = 1; //preventing any error
-        var projectId = null;
-        var roleId = null;
+        $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
 
-        if (data.inst._get_type(data.rslt.obj) == "category") {
-            categoryId = extractId(data.rslt.obj.attr("id"));
-            $("#unassign-role").button('disable');
-        }
-        else if (data.inst._get_type(data.rslt.obj) == "project") {
-            projectId = extractId(data.rslt.obj.attr("id"));
-            var parent = data.inst._get_parent(data.rslt.obj);
-            categoryId = extractId($(parent).attr("id"));
-            $("#unassign-role").button('disable');
-        }
-        else{
+            var categoryId = 1; //preventing any error
+            var projectId = null;
+            var roleId = null;
 
-            roleId = extractId(data.rslt.obj.attr("id"));
-            var roleParent = data.inst._get_parent(data.rslt.obj);
-            projectId = extractId($(roleParent).attr("id"));
-            var projectParent = data.inst._get_parent(roleParent);
-            categoryId = extractId($(projectParent).attr("id"));
-            $("#unassign-role").button('enable');
-        }
-
-
-        $.getJSON('@{admin.Users.rolesTreeData()}', {categoryId:categoryId, projectId: projectId, roleId:roleId}, function(data) {
-            if (!ko.mapping.isMapped(viewModelRoles)) {
-              viewModelRoles = $.extend({
-                        category: ko.observable(),
-                        project: ko.observable(),
-                        role: ko.observable(),
-                        updates: function() {
-                          this.category.subscribe(function() {
-                            this.project({id: -1, name: "Test"});
-                          }.bind(this));
-                          this.project.subscribe(function() {
-                            this.role(undefined);
-                          }.bind(this));
-                        }.bind(this)
-                      }, ko.mapping.fromJS(data));
-              ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
-            } else {
-              ko.mapping.updateFromJS(viewModelRoles, data);
+            if (data.inst._get_type(data.rslt.obj) == "category") {
+                categoryId = extractId(data.rslt.obj.attr("id"));
+                $("#unassign-role").button('disable');
             }
+            else if (data.inst._get_type(data.rslt.obj) == "project") {
+                projectId = extractId(data.rslt.obj.attr("id"));
+                var parent = data.inst._get_parent(data.rslt.obj);
+                categoryId = extractId($(parent).attr("id"));
+                $("#unassign-role").button('disable');
+            }
+            else{
+
+                roleId = extractId(data.rslt.obj.attr("id"));
+                var roleParent = data.inst._get_parent(data.rslt.obj);
+                projectId = extractId($(roleParent).attr("id"));
+                var projectParent = data.inst._get_parent(roleParent);
+                categoryId = extractId($(projectParent).attr("id"));
+                $("#unassign-role").button('enable');
+            }
+
+
+            $.getJSON('@{admin.Users.rolesTreeData()}', {categoryId:categoryId, projectId: projectId, roleId:roleId}, function(data) {
+                if (!ko.mapping.isMapped(viewModelRoles)) {
+                  viewModelRoles = $.extend({
+                            category: ko.observable(),
+                            project: ko.observable(),
+                            role: ko.observable(),
+                            updates: function() {
+                              this.category.subscribe(function() {
+                                this.project({id: -1, name: "Test"});
+                              }.bind(this));
+                              this.project.subscribe(function() {
+                                this.role(undefined);
+                              }.bind(this));
+                            }.bind(this)
+                          }, ko.mapping.fromJS(data));
+                  ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
+                } else {
+                  ko.mapping.updateFromJS(viewModelRoles, data);
+                }
+            });
+
+
         });
-
-
     });
 
     $("#assign-dialog").dialog({
