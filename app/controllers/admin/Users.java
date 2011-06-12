@@ -262,4 +262,100 @@ public class Users extends TMController {
         }
     }
 
+    @Restrict(UnitRole.USEREDIT)
+    public static void rolesData() {
+        List<ProjectCategory> projectCategories = ProjectCategory.findAll();
+        JsonObject res = new JsonObject();
+        JsonArray categories = new JsonArray();
+        res.add("categories", categories);
+        for(ProjectCategory pc : projectCategories) {
+           JsonObject category = new JsonObject();
+            categories.add(category);
+            category.addProperty("name", pc.name);
+            category.addProperty("id", pc.getId());
+            JsonArray projects = new JsonArray();
+            category.add("projects", projects);
+            for(Project p : pc.getProjects()) {
+                JsonObject project = new JsonObject();
+                projects.add(project);
+                project.addProperty("id", p.getId());
+                project.addProperty("name", p.name);
+                JsonArray roles = new JsonArray();
+                project.add("roles", roles);
+                for(ProjectRole r : ProjectRole.findByProject(p.getId())) {
+                    JsonObject role = new JsonObject();
+                    roles.add(role);
+                    role.addProperty("id", r.getId());
+                    role.addProperty("name", r.name);
+                }
+            }
+        }
+        renderJSON(res.toString());
+    }
+
+    @Restrict(UnitRole.USEREDIT)
+    public static void rolesTreeData(Long categoryId, Long projectId, Long roleId) {
+
+        if(categoryId==null){
+            error("Category id must not be null!");
+        }
+        List<ProjectRole> projectRoles = new ArrayList<ProjectRole>();
+        List<Project> projects = new ArrayList<Project>();
+        List<ProjectCategory> projectCategories = new ArrayList<ProjectCategory>();
+        if(roleId!=null){
+            projectRoles = ProjectRole.find("id=?", roleId).fetch();
+        }
+        if(projectId!=null){
+            projects = Project.find("id=?", projectId).fetch();
+            if(roleId==null){
+                projectRoles = ProjectRole.findByProject(projectId);
+            }
+        }
+        if (projectCategories!=null){
+            projectCategories = ProjectCategory.find("id=?", categoryId).fetch();
+            if(projectId==null){
+                for(ProjectCategory pc: projectCategories){
+                    for(Project p:pc.getProjects()){
+                       projects.add(p);
+                        if(roleId==null){
+                            for(ProjectRole pr: ProjectRole.findByProject(p.getId())){
+                                projectRoles.add(pr);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+
+        JsonObject res = new JsonObject();
+        JsonArray categories = new JsonArray();
+        res.add("categories", categories);
+        for(ProjectCategory pc : projectCategories) {
+           JsonObject category = new JsonObject();
+            categories.add(category);
+            category.addProperty("name", pc.name);
+            category.addProperty("id", pc.getId());
+            JsonArray projectsArray = new JsonArray();
+            category.add("projects", projectsArray);
+            for(Project p : projects) {
+                JsonObject project = new JsonObject();
+                projectsArray.add(project);
+                project.addProperty("id", p.getId());
+                project.addProperty("name", p.name);
+                JsonArray roles = new JsonArray();
+                project.add("roles", roles);
+                for(ProjectRole r : projectRoles) {
+                    JsonObject role = new JsonObject();
+                    roles.add(role);
+                    role.addProperty("id", r.getId());
+                    role.addProperty("name", r.name);
+                }
+            }
+        }
+        renderJSON(res.toString());
+    }
+
 }

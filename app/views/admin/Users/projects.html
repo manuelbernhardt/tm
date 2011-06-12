@@ -6,25 +6,25 @@
 <div id="treeDiv">
   <button id="assign-role">Role</button>
   <button id="unassign-role">Remove</button>
-<span data-bind="text: fullName"></span>
+  <div id="projectRolesTree" class="tree"></div>
 
 </div>
 
 <div id="assign-dialog" title="Assign a new role" class="modalDialog">
     <div id="categoriesContainer">
         <label for="categoriesSelect" class="name">Category</label>
-        <select id="categoriesSelect" data-bind="options:categories,
-                       optionsValue:'categoryValue',
-                       optionsText:'categoryName',
+        <select id="categoriesSelect" data-bind="options:categories(),
+                       value:category,
+                       optionsText:'name',
                        optionsCaption:'Select category...'">
 
         </select>
     </div>
     <div id="projectsContainer">
         <label for="projectsSelect" class="name">Project</label>
-        <select id="projectsSelect" data-bind="options:projects,
-                       optionsValue:'projectValue',
-                       optionsText:'projectName',
+        <select id="projectsSelect" data-bind="options: category() ? category().projects : null,
+                       value:project,
+                       optionsText:'name',
                        optionsCaption:'Select project...'">
             <option>Select project...</option>
 
@@ -32,9 +32,9 @@
     </div>
     <div id="rolesContainer">
         <label for="rolesSelect" class="name">Role</label>
-        <select id="rolesSelect" data-bind="options:roles,
-                       optionsValue:'roleValue',
-                       optionsText:'roleName',
+        <select id="rolesSelect" data-bind="options: project() ? project().roles : null,
+                       value:role,
+                       optionsText:'name',
                        optionsCaption:'Select role...'">
             <option>Select role...</option>
 
@@ -47,92 +47,143 @@
 
   $(document).ready(function () {
 
-      var viewModelCategory = {};
-      var viewModelProject = {};
-      var viewModelRole = {};
+      var viewModelRoles = {};
 
-      handleRowSelection("#tab",function(){
-          $.getJSON('@{admin.Users.categoryOptions()}', function(data){
-
-                if(!ko.mapping.isMapped(viewModelCategory)){
-                    viewModelCategory = ko.mapping.fromJS(data);
-                    ko.applyBindings(viewModelCategory, document.getElementById('categoriesContainer'));
-                }
-                else{
-                    ko.mapping.updateFromJS(viewModelCategory,data);
-                }
-          });
+    handleRowSelection("#tab", function() {
+      $.getJSON('@{admin.Users.rolesData()}', function(data) {
+        if (!ko.mapping.isMapped(viewModelRoles)) {
+          viewModelRoles = $.extend({
+                    category: ko.observable(),
+                    project: ko.observable(),
+                    role: ko.observable(),
+                    updates: function() {
+                      this.category.subscribe(function() {
+                        this.project({id: -1, name: "Test"});
+                      }.bind(this));
+                      this.project.subscribe(function() {
+                        this.role(undefined);
+                      }.bind(this));
+                    }.bind(this)
+                  }, ko.mapping.fromJS(data));
+          ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
+        } else {
+          ko.mapping.updateFromJS(viewModelRoles, data);
+        }
       });
+        $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes});
+    });
 
-      $('#categoriesSelect').change(function(){
-          var categoryId = $(this).val();
-          if(categoryId==''){
-              categoryId='-1';
-              bindRoles(categoryId);
-          }
-          $.getJSON('@{admin.Users.projectOptions()}', {categoryId: categoryId}, function(data){
-                if(!ko.mapping.isMapped(viewModelProject)){
-                    viewModelProject = ko.mapping.fromJS(data);
-                    ko.applyBindings(viewModelProject, document.getElementById('projectsContainer'));
-                }
-                else{
-                    ko.mapping.updateFromJS(viewModelProject,data);
-                }
-          });
-      });
 
-      $('#projectsSelect').change(function(){
-          var projectId = $(this).val();
-          if(projectId==''){
-              projectId='-1';
-          }
-          bindRoles(projectId);
-      });
+    $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
 
-      function bindRoles(projectId){
-          $.getJSON('@{admin.Users.rolesOptions()}', {projectId: projectId}, function(data){
-                if(!ko.mapping.isMapped(viewModelRole)){
-                    viewModelRole = ko.mapping.fromJS(data);
-                    ko.applyBindings(viewModelRole, document.getElementById('rolesContainer'));
-                }
-                else{
-                    ko.mapping.updateFromJS(viewModelRole,data);
-                }
-          });
-      }
+        var categoryId = 1; //preventing any error
+        var projectId = null;
+        var roleId = null;
+
+        if (data.inst._get_type(data.rslt.obj) == "category") {
+            categoryId = extractId(data.rslt.obj.attr("id"));
+            $("#unassign-role").button('disable');
+        }
+        else if (data.inst._get_type(data.rslt.obj) == "project") {
+            projectId = extractId(data.rslt.obj.attr("id"));
+            var parent = data.inst._get_parent(data.rslt.obj);
+            categoryId = extractId($(parent).attr("id"));
+            $("#unassign-role").button('disable');
+        }
+        else{
+
+            roleId = extractId(data.rslt.obj.attr("id"));
+            var roleParent = data.inst._get_parent(data.rslt.obj);
+            projectId = extractId($(roleParent).attr("id"));
+            var projectParent = data.inst._get_parent(roleParent);
+            categoryId = extractId($(projectParent).attr("id"));
+            $("#unassign-role").button('enable');
+        }
+
+
+        $.getJSON('@{admin.Users.rolesTreeData()}', {categoryId:categoryId, projectId: projectId, roleId:roleId}, function(data) {
+            if (!ko.mapping.isMapped(viewModelRoles)) {
+              viewModelRoles = $.extend({
+                        category: ko.observable(),
+                        project: ko.observable(),
+                        role: ko.observable(),
+                        updates: function() {
+                          this.category.subscribe(function() {
+                            this.project({id: -1, name: "Test"});
+                          }.bind(this));
+                          this.project.subscribe(function() {
+                            this.role(undefined);
+                          }.bind(this));
+                        }.bind(this)
+                      }, ko.mapping.fromJS(data));
+              ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
+            } else {
+              ko.mapping.updateFromJS(viewModelRoles, data);
+            }
+        });
+
+
+    });
 
     $("#assign-dialog").dialog({
               autoOpen: false,
               height: 300,
               width: 350,
               modal: true,
-              buttons: {
-                "Assign role": function() {
+              buttons: [{
+                  id:"assignRole",
+                  text: "Assign Role",
+                  click: function() {
+                    $(this).dialog("close");
+                  }},
+                {
+                    text: "Cancel",
+                    click: function() {
 
-                },
-                "Cancel": function() {
-
-                  $(this).dialog("close");
-                }
-              }
+                      $(this).dialog("close");
+                    }
+              }]
             });
 
     $("#assign-role").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
       $("#assign-dialog").dialog("open");
     });
 
+    $('#assignRole').attr('disabled', 'disabled');
+    $('#categoriesSelect').change(function(){
+        manageRoleSaveButton('categoriesSelect', 'Select category...');
+    });
+    $('#projectsSelect').change(function(){
+        manageRoleSaveButton('projectsSelect', 'Select project...');
+    });
+    $('#rolesSelect').change(function(){
+        manageRoleSaveButton('rolesSelect', 'Select role...');
+    });
+
+
+
     $("#unassign-role").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
 
       deletionConfirmation('deleteRoleConfirmationDialog', 'Project role for', getSelectedRowColumn($('#tab').dataTable(), 1) + " " + getSelectedRowColumn($('#tab').dataTable(), 2),  function(){
-//          var $tree = jQuery.jstree._reference('#projectRolesTree');
-//          var selectedNode = $tree.get_selected();
-//          if ($tree._get_type(selectedNode) == "default") {
-//            selectedNode.data("args", {userId: getSelectedRowId('#tab')});
-//            $tree.delete_node(selectedNode);
-//          }
+          var $tree = jQuery.jstree._reference('#projectRolesTree');
+          var selectedNode = $tree.get_selected();
+          if ($tree._get_type(selectedNode) == "default") {
+            selectedNode.data("args", {userId: getSelectedRowId('#tab')});
+            $tree.delete_node(selectedNode);
+          }
       });
 
     });
+
+      //todo make this button managing works
+       function manageRoleSaveButton(selectId, compare){
+          if($('#' + selectId+  ':selected').text()!=compare){
+              $('#assignRole').removeAttr('disabled');
+          }
+          else{
+              $('#assignRole').attr('disabled', 'disabled');
+          }
+       }
 
 
 
