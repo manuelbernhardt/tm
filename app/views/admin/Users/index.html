@@ -6,11 +6,6 @@
         <div class="actions buttons">
             #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.TMUser',
         openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
-        <script type="text/javascript">
-          function newUserDialogSubmissionCallback() {
-            refreshTableContents('#tab', false);
-          }
-        </script>
         #{input.field field:'user.user.firstName', label:'First Name' /}
         #{input.field field:'user.user.lastName', label:'Last Name' /}
         #{input.field field:'user.user.email', label:'Email' /}
@@ -44,7 +39,7 @@
 
 
 
-          <div id="innerTabs">
+        <div id="innerTabs">
         <ul>
           <li><a href="#userDetails"><span>User details</span></a></li>
           <li><a href="#projects"><span>Projects</span></a></li>
@@ -125,7 +120,10 @@
     $('.hiddenOnLoad').hide();
 
     $('#userDetailsForm').oxForm({
-      loadAction: '@{admin.Users.userDetailsData()}'
+      loadAction: '@{admin.Users.userDetailsData()}',
+      submissionCallback:function() {
+                            refreshTableContents('#tab', false);
+                          }
     });
 
 

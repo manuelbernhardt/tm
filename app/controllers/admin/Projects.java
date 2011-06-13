@@ -35,9 +35,9 @@ public class Projects extends TMController {
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void projectDetails(Long projectId) {
-        Project project = Lookups.getProject(projectId);
-        render(project);
+    public static void projectDetails(Long baseObjectId, String[] fields) {
+        Object base = Lookups.getProject(baseObjectId);
+        renderFields(base, fields);
     }
 
     @Restrict(UnitRole.PROJECTEDIT)

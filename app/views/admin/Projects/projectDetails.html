@@ -1,31 +1,17 @@
-#{if project == null}
-No project selected
-#{/if}
-#{else}
-        
+
 #{ifErrors}
 <div class="error">
     <h2>Oops, please correct these errors</h2>
 </div>
 #{/ifErrors}
 
-#{input.form action:@admin.Projects.edit(), id:'projectForm'}
-  <script type="text/javascript">
-    function projectFormSubmissionCallback() {
-      refreshTree('projectTree');
-    }
+#{ox.form action:@admin.Projects.edit(), edit:util.Require.roles([[models.general.UnitRole.PROJECTEDIT]]), id:'projectForm', baseClass:'models.tm.Project'}
+  #{ox.field field:'project.name', label:'Name' /}
+  #{ox.field field:'project.description', label:'Description' /}
+  #{ox.field field:'project.id', hidden:true /}
+  #{ox.field field:'project.account.id', hidden:true /}
+  #{ox.field field:'project.projectCategory.id', hidden:true /}
+  #{ox.field field:'project.projectCategory.account.id', hidden:true /}
+  #{ox.submit /}
+#{/ox.form}
 
-  </script>
-  #{input.field field:'project.name', label:'Name', baseObject:project /}
-  #{input.field field:'project.description', label:'Description', baseObject:project /}
-  <input type="hidden" name="project.id" value="${project.id}"/>
-  <input type="hidden" name="project.account.id" value="${project.account.id}"/>
-  #{if project.projectCategory != null}
-    <input type="hidden" name="project.projectCategory.id" value="${project.projectCategory.id}"/>
-    <input type="hidden" name="project.projectCategory.account.id" value="${project.projectCategory.account.id}"/>
-  #{/if}
-  #{input.submit /}
-
-#{/input.form}
-
-#{/else}
