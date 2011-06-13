@@ -1,27 +1,15 @@
-#{if project == null}
-No project selected
-#{/if}
-#{else}
 
 <div id="roleDeleteConfirmationDialog" title="Confirm deletion of a role"></div>
 
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
-                #{formDialog id:'newRoleDialog', title:'Create a role', action:@admin.ProjectRoles.create(),
-                baseClass:'models.tm.ProjectRole',
-                openDialogButtonText:'Role', submitButtonText:'Create role'}
 
+        <div id="newRoleDialog" title="Add role">
 
-
-                <script type="text/javascript">
-                  function newRoleDialogSubmissionCallback() {
-                    refreshTableContents('#tab', false);
-                  }
-                </script>
-                #{input.field field:'role.name', label:'Name' /}
-                <input type="hidden" name="projectId" id="projectId" value="${project.id}"/>
-                #{/formDialog}
+                <input id="roleInput"/>
+        </div>
+                <button id='add-role'> Role</button>
                 <button id='remove-role'> Remove</button>
         </div>
     </div>
@@ -53,13 +41,15 @@ No project selected
 <script type="text/javascript">
 
   $(document).ready(function() {
+
+
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
       "aoColumns": [
         {"sName": "id", "sClass": "sNone" },
         {"sName": "name"}
       ],
-      "sAjaxSource": '@{admin.ProjectRoles.data().add("projectId", project.id)}',
+      "sAjaxSource": '@{admin.ProjectRoles.data()}',
       "bProcessing": false,
       "bServerSide": true,
       "bLengthChange": false,
@@ -73,8 +63,25 @@ No project selected
     };
     #{/tabularasa.init}
 
+      function addRequestParameters(parameters, tableId) {
+            if (tableId == 'tab') {
+              var nodeId = getSelectedNodeId('projectTree');
+                if(nodeId==null){
+                    nodeId=1;
+                }
+              parameters.push({"name": "projectId", "value": nodeId });
+            }
+          }
+      $("#projectTree").bind("select_node.jstree", function (e, data) {
+          refreshTableContents('#tab', false);
+      });
+
       handleRowSelection("#tab", function(){
           $('#remove-role').button('enable');
+      });
+
+      $('#add-role').button({icons: {primary: 'ui-icon-plus'}}).click(function(){
+          $('#newRoleDialog').dialog('open');
       });
 
     $('#remove-role').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function(){
@@ -84,7 +91,27 @@ No project selected
             })
             .error(errorHandler);
         });
+    });
 
+    $('#newRoleDialog').dialog({
+      autoOpen: false,
+      width: 300,
+      height: 200,
+      draggable: true,
+      resizable: false,
+      modal: true,
+      buttons: {
+        "Create step": function() {
+          $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
+                refreshTableContents('#tab', false);
+                $('#roleInput').val('');
+                $('#newRoleDialog').dialog("close");
+          }).error(errorHandler);
+        },
+        "Cancel": function() {
+          $(this).dialog("close");
+        }
+      }
     });
 
     /* Click listener to reload the role definition */
@@ -108,4 +135,3 @@ No project selected
 
 </script>
 
-#{/else}

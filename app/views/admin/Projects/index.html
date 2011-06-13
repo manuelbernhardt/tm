@@ -1,6 +1,56 @@
 #{extends 'admin/main.html' /}
 #{set title:'Project administration' /}
 
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $('#projectForm').oxForm({
+      loadAction: '@{admin.Projects.projectDetails()}',
+      submissionCallback:function() {
+                            refreshTree('projectTree');
+                          }
+    });
+
+    $("#innerTabs").tabs();
+
+    $("#projectTree").tree({types: projectTreeTypes, onRename: function(name){
+
+         $('#projectForm_project_name').val(name);
+    }
+    });
+
+    /** Selection listener **/
+    $("#projectTree").bind("select_node.jstree", function (e, data) {
+        $('.hiddenOnLoad').show();
+        $('.shownOnLoad').hide();
+        $("#remove").button('enable');
+        $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
+
+    });
+
+
+
+
+    /** Button initialisation **/
+    $("#create_category").button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
+    });
+
+    $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
+    });
+
+    $("#remove").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
+      deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function(){
+            $("#projectTree").jstree("remove", null);
+      });
+
+    });
+
+  });
+</script>
+
+
 <div id="projectDeletionConfirmationDialog" title="Confirmation deletion of project"></div>
 
 <div class="container">
@@ -46,7 +96,7 @@
         </div>
         <div id='tags'>
             <div class="hiddenOnLoad">
-
+                 #{include 'admin/Projects/tags.html' /}
             </div>
             <div class="shownOnLoad">
                 No project selected
@@ -75,51 +125,3 @@
 </div>
 </div>
 
-<script type="text/javascript">
-  $(document).ready(function () {
-
-    $('#projectForm').oxForm({
-      loadAction: '@{admin.Projects.projectDetails()}',
-      submissionCallback:function() {
-                            refreshTree('projectTree');
-                          }
-    });
-      
-    $("#innerTabs").tabs();
-
-    $("#projectTree").tree({types: projectTreeTypes, onRename: function(name){
-
-         $('#projectForm_project_name').val(name);
-    }
-    });
-
-    /** Selection listener **/
-    $("#projectTree").bind("select_node.jstree", function (e, data) {
-        $('.hiddenOnLoad').show();
-        $('.shownOnLoad').hide();
-        $("#remove").button('enable');
-        $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
-
-    });
-
-
-
-
-    /** Button initialisation **/
-    $("#create_category").button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
-    });
-
-    $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
-    });
-
-    $("#remove").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
-      deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function(){
-            $("#projectTree").jstree("remove", null);
-      });
-
-    });
-
-  });
-</script>

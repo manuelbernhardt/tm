@@ -22,10 +22,15 @@ import util.Logger;
 public class ProjectRoles extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void create(ProjectRole role, Long projectId) {
-        role.project = Project.findById(projectId);
-        role.create();
-        // TODO validation
+    public static void create(String roleName, Long projectId) {
+        Project project = Project.findById(projectId);
+        ProjectRole projectRole = new ProjectRole(project);
+        List<ProjectRole> projectRoles = ProjectRole.find("name=? and project.id=?", roleName, projectId).fetch();
+        if(projectRoles.size()>0){
+            error("Project role with this name already exists. Role is not created!");
+        }
+        projectRole.name = roleName;
+        projectRole.create();
         ok();
     }
 
