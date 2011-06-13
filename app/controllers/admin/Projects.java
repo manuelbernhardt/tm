@@ -174,47 +174,30 @@ public class Projects extends TMController {
 
         if (tag != null) {
             Tag.TagType tagType = getTagType(type);
+            Long usageCount = 0l;
             switch (tagType) {
                 case REQUIREMENT:
-                    Long requirementNo = Requirement.count("from Requirement r where ? in elements(r.tags)", tag);
-                    if (requirementNo == 0) {
-                        tag.delete();
-                    } else {
-                        error("This tag is still in use in a requirement. Tag not deleted.");
-                        Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
-                    }
+                    usageCount = Requirement.count("from Requirement r where ? in elements(r.tags)", tag);
                     break;
                 case TESTSCRIPT:
-                    Long scriptsNo = Script.count("from Script s where ? in elements(s.tags)", tag);
-                    if (scriptsNo == 0) {
-                        tag.delete();
-                    } else {
-                        error("This tag is still in use in a test script. Tag not deleted.");
-                        Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
-                    }
+                    usageCount = Script.count("from Script s where ? in elements(s.tags)", tag);
                     break;
                 case TESTINSTANCE:
-                    Long instancesNo = Instance.count("from Instance i where ? in elements(i.tags)", tag);
-                    if (instancesNo == 0) {
-                        tag.delete();
-                    } else {
-                        error("This tag is still in use in a test instances. Tag not deleted.");
-                        Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
-                    }
+                    usageCount = Instance.count("from Instance i where ? in elements(i.tags)", tag);
                     break;
                 case DEFECT:
-                    Long defectsNo = Defect.count("from Defect d where ? in elements(d.tags)", tag);
-                    if (defectsNo == 0) {
-                        tag.delete();
-                    } else {
-                        error("This tag is still in use in a defect. Tag not deleted.");
-                        Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
-                    }
+                    usageCount = Defect.count("from Defect d where ? in elements(d.tags)", tag);
                     break;
                 default:
                     // unknown type
                     Logger.error(Logger.LogType.SECURITY, "Attempt to delete tag with unknown type %s", type);
                     error("Unknown tag type");
+            }
+            if (usageCount == 0l) {
+                tag.delete();
+            } else {
+                error("This tag is still in use in a " + tagType.getName() + ". Tag not deleted.");
+                Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
             }
         }
     }
