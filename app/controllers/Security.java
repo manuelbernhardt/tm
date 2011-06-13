@@ -36,7 +36,7 @@ public class Security extends Secure.Security {
 
     private static Account getAccountFromHost() {
         if(Play.runingInTestMode()) {
-            return Account.find("from Account a where a.subdomain = 'oxiras'").first();
+            return Account.find("from Account a where a.subdomain = 'test'").first();
         }
         String host = request.host;
         if(host.indexOf(":") > -1) {
