@@ -98,10 +98,14 @@
 
     $("#innerTabs").tabs();
 
-    $('#repositoryTree').tree({types: repositoryTreeTypes, onRename: function(name) {
-              var fieldName = '#' + $('#scriptDetailsForm').oxForm('getFieldId', 'script.name');
-              $(fieldName).val(name);
-            }
+    $('#repositoryTree').tree({types: repositoryTreeTypes,
+              onRename: function(name) {
+                var fieldName = '#' + $('#scriptDetailsForm').oxForm('getFieldId', 'script.name');
+                $(fieldName).val(name);
+              },
+              onDeleteFailed: function() {
+                errorMessage("Could not delete test script - make sure there are no linked entities left.", "Error deleting test script")
+              }
             });
 
     $('#scriptDetailsForm').oxForm({
