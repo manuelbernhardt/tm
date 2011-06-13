@@ -1,7 +1,4 @@
-#{if project == null}
-No project selected
-#{/if}
-#{else}
+
 
 <div id="cycleDeletionConfirmationDialog" title="Confirm deletion"></div>
 
@@ -36,16 +33,33 @@ Alternatively simple tags can be used to organize the Test Execution.
 <script type="text/javascript">
 
   $(document).ready(function () {
+    $("#projectTree").bind("select_node.jstree", function (e, data) {
+        $('#approachTree').tree(
+                {
+                  "args" : {"projectId": getSelectedNodeId('projectTree')},
+                  types: approachTreeTypes,
+                  onDeleteFailed: function() {
+                    errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
+                  },
+                  onRename: function(name) {
+                    $('#cycle_name').val(name);
+                  }
+                }
+        );
+        /** button initialisation **/
+        $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+          $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+        });
+        $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+          $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+        });
+        $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
+            deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
+                $("#approachTree").jstree("remove", null);
+            })
 
-    $('#approachTree').tree(
-            {
-              "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"},
-              types: approachTreeTypes,
-              onDeleteFailed: function() {
-                errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
-              }
-            }
-    );
+        });
+    });
 
     /** Selection listener **/
     $("#approachTree").bind("select_node.jstree", function (e, data) {
@@ -62,23 +76,7 @@ Alternatively simple tags can be used to organize the Test Execution.
       }
     });
 
-
-    /** button initialisation **/
-    $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: '${project.id}'}}});
-    });
-    $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
-    });
-    $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-        deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
-            $("#approachTree").jstree("remove", null);
-        })
-
-    });
-
   });
 
 </script>
 
-#{/else}
