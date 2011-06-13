@@ -59,13 +59,13 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
 
             // load defaults
             YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
-                public Model invoke(Model result) {
-                    ProjectModel pm = (ProjectModel) result;
-                    pm.project = project;
-                    pm.account = project.account;
-                    return pm;
-                }
-            }, null);
+                        public Model invoke(Model result) {
+                            ProjectModel pm = (ProjectModel) result;
+                            pm.project = project;
+                            pm.account = project.account;
+                            return pm;
+                        }
+                    }, null);
 
             return new F.Tuple<Long, String>(project.id, PROJECT);
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
@@ -111,12 +111,15 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             Project project = Lookups.getProject(id);
-            // TODO FIXME this does not work because a lot of stuff depends on the project
-            project.delete();
+            try {
+                project.delete();
+            } catch (Throwable t) {
+                return false;
+            }
             return true;
         } else if (type.equals(ProjectTreeDataHandler.CATEGORY)) {
             ProjectCategory category = Lookups.getProjectCategory(id);
-            if(category.getProjects().size() > 0) {
+            if (category.getProjects().size() > 0) {
                 return false;
             }
             category.delete();
