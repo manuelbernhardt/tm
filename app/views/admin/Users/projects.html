@@ -66,6 +66,7 @@
           ko.mapping.updateFromJS(viewModelRoles, data);
         }
       });
+
         $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes, plugins: ["crrm"]});
 
         $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
@@ -77,7 +78,6 @@
             if (data.inst._get_type(data.rslt.obj) == "category") {
                 categoryId = extractId(data.rslt.obj.attr("id"));
                 $("#unassign-role").button('disable');
-
             }
             else if (data.inst._get_type(data.rslt.obj) == "project") {
                 projectId = extractId(data.rslt.obj.attr("id"));
@@ -95,35 +95,11 @@
                 $("#unassign-role").button('enable');
             }
 
-
             $.getJSON('@{admin.Users.rolesTreeData()}', {categoryId:categoryId, projectId: projectId, roleId:roleId}, function(data) {
-                if (!ko.mapping.isMapped(viewModelRoles)) {
-                  viewModelRoles = $.extend({
-                            category: ko.observable(),
-                            project: ko.observable(),
-                            role: ko.observable(),
-                            updates: function() {
-                              this.category.subscribe(function() {
-                                this.project({id: -1, name: "Test"});
-                              }.bind(this));
-                              this.project.subscribe(function() {
-                                this.role(undefined);
-                              }.bind(this));
-                            }.bind(this)
-                          }, ko.mapping.fromJS(data));
-                  ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
-
-                } else {
-                  ko.mapping.updateFromJS(viewModelRoles, data);
-                    
-                }
+                   ko.mapping.updateFromJS(viewModelRoles, data);
             });
-
-
         });
-
     });
-
 
     $("#assign-dialog").dialog({
               autoOpen: false,
