@@ -22,15 +22,15 @@ public class Approach extends TMController {
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void cycleDetails(Long cycleId) {
-        TestCycle cycle = Lookups.getCycle(cycleId);
-        render(cycle);
+    public static void cycleDetails(Long baseObjectId, String[] fields) {
+        TestCycle cycle = Lookups.getCycle(baseObjectId);
+        renderFields(cycle, fields);
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void releaseDetails(Long releaseId) {
-        Release release = Lookups.getRelease(releaseId);
-        render(release);
+    public static void releaseDetails(Long baseObjectId, String[] fields) {
+        Release release = Lookups.getRelease(baseObjectId);
+        renderFields(release, fields);
     }
 
 

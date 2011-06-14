@@ -24,7 +24,46 @@ Alternatively simple tags can be used to organize the Test Execution.
         #{/box}
       </div>
       <div class="right_table" style="width:70%">
-    <div id="details">No cycle selected</div>
+    <div id="details">
+        <div id="shownOnLoad">
+            No cycle or realise chosen
+        </div>
+        <div id="releaseDetails">
+            #{box 'Release details'}
+            #{ox.form action:@admin.Approach.editRelease(), id:'releaseForm', edit:util.Require.roles([[models.general.UnitRole.PROJECTEDIT]]), baseClass:'models.tm.approach.Release'}
+
+                #{ox.field field:'release.name', label:'Name' /}
+                #{ox.field field:'release.id', hidden:true /}
+                #{ox.field field:'release.project.id', hidden:true /}
+                #{ox.field field:'release.account.id', hidden:true /}
+                #{ox.field field:'release.project.account.id', hidden:true /}
+                #{ox.field field:'release.project.projectCategory.id', hidden:true /}
+                #{ox.field field:'release.project.projectCategory.account.id', hidden:true /}
+
+                #{ox.submit /}
+            #{/ox.form}
+            #{/box}
+        </div>
+        <div id="cycleDetails">
+            #{box 'Cycle details'}
+            #{ox.form action:@admin.Approach.editCycle(), id:'cycleForm', edit:util.Require.roles([[models.general.UnitRole.PROJECTEDIT]]), baseClass:'models.tm.approach.TestCycle'}
+
+                #{ox.field field:'cycle.name', label:'Name' /}
+                #{ox.field field:'cycle.description', label:'Description' /}
+                #{ox.field field:'cycle.fromDate', label:'From' /}
+                #{ox.field field:'cycle.toDate', label:'To' /}
+                #{ox.field field:'cycle.id', hidden:true /}
+                #{ox.field field:'cycle.project.id', hidden:true /}
+                #{ox.field field:'cycle.account.id', hidden:true /}
+                #{ox.field field:'cycle.project.account.id', hidden:true /}
+                #{ox.field field:'cycle.project.projectCategory.id', hidden:true /}
+                #{ox.field field:'cycle.project.projectCategory.account.id', hidden:true /}
+
+                #{ox.submit /}
+            #{/ox.form}
+            #{/box}
+        </div>
+    </div>
   </div>
   </div>
 </div>
@@ -33,6 +72,24 @@ Alternatively simple tags can be used to organize the Test Execution.
 <script type="text/javascript">
 
   $(document).ready(function () {
+
+        $('#cycleForm').oxForm({
+          loadAction: '@{admin.Approach.cycleDetails()}',
+          submissionCallback:function() {
+                                refreshTree('approachTree');
+                              }
+        });
+
+        $('#releaseForm').oxForm({
+          loadAction: '@{admin.Approach.releaseDetails()}',
+          submissionCallback:function() {
+                                refreshTree('approachTree');
+                              }
+        });
+
+        $('#releaseDetails').hide();
+        $('#cycleDetails').hide();
+        $('#shownOnLoad').show();
 
         $("#projectTree").bind("select_node.jstree", function (e, data) {
 
@@ -69,17 +126,23 @@ Alternatively simple tags can be used to organize the Test Execution.
     /** Selection listener **/
         $("#approachTree").bind("select_node.jstree", function (e, data) {
           if (isSelectedNodeType(data, ['default', 'testCycle'])) {
-           $("#remove_cycleRelease").button('enable');
-            $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
-              $('#details').html(data);
-            }).error(errorHandler);
+             $("#remove_cycleRelease").button('enable');
+             $('#releaseDetails').hide();
+             $('#cycleDetails').show();
+             $('#shownOnLoad').hide();
+             $('#cycleForm').oxForm('load', getSelectedNodeId('approachTree'));
           } else if (isSelectedNodeType(data, ['release'])) {
-            $("#remove_cycleRelease").button('enable');
-            $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
-              $('#details').html(data);
-            }).error(errorHandler);
+             $("#remove_cycleRelease").button('enable');
+              $('#releaseForm').oxForm('load', getSelectedNodeId('approachTree'));
+              $('#releaseDetails').show();
+              $('#cycleDetails').hide();
+              $('#shownOnLoad').hide();
+
           }
+
         });
+
+
      });
 
   });

@@ -11,6 +11,8 @@
                           }
     });
 
+    
+
     $("#innerTabs").tabs();
 
     $("#projectTree").tree({types: projectTreeTypes, onRename: function(name){
@@ -27,9 +29,6 @@
         $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
 
     });
-
-
-
 
     /** Button initialisation **/
     $("#create_category").button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
