@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
+import controllers.Lookups;
 import controllers.ScriptCycleTreeDataHandler;
 import models.tm.Project;
 import models.tm.ProjectModel;
@@ -49,7 +50,7 @@ public class TestCycle extends ProjectModel implements Node {
 
     public Release getRelease() {
         ProjectTreeNode n = ProjectTreeNode.find("from ProjectTreeNode n where n.nodeId = ? and n.treeId = ? and n.type = ?", getId(), ApproachTree.APPROACH_TREE, ScriptCycleTreeDataHandler.TEST_CYCLE).first();
-        return Release.findById(n.getParent().getNodeId());
+        return Lookups.getRelease(n.getParent().getNodeId());
     }
 
     public List<Instance> getInstances() {

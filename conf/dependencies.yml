@@ -4,7 +4,6 @@ require:
     - play
     - play -> crud
     - play -> secure
-#    - play -> scala 0.9
     - play -> tabularasa 0.2
     - play -> deadbolt 1.4
     - play -> excel 1.1

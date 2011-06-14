@@ -33,13 +33,14 @@ public class ExcelImporterTest extends UnitTest {
         // count before import
         Long count = Requirement.count("from Requirement r order by r.created asc");
 
-        Project p = Project.find("from Project p where p.name = 'Test Management Application'").first();
+        Project p = Project.find("from Project p where p.name = 'TM Application - test project 2'").first();
 
         Importer importer = new ExcelImporter();
         File f = new File("test/ExcelImport.xls");
         Map<String, Object> contextData = new HashMap<String, Object>();
         contextData.put("accountId", p.account.getId());
 
+        // FIXME this will fail if the user is not already logged in due to Authentication
         try {
             importer.importFile(Requirement.class, contextData, p, f);
         } catch (Throwable throwable) {

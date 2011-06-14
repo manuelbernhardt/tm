@@ -29,16 +29,22 @@ public class Tag extends ProjectModel {
     public String name;
 
     public enum TagType {
-        REQUIREMENT(Requirement.class), TESTSCRIPT(Script.class), TESTINSTANCE(Instance.class), DEFECT(Defect.class);
+        REQUIREMENT(Requirement.class, "requirement"), TESTSCRIPT(Script.class, "test script"), TESTINSTANCE(Instance.class, "test instance"), DEFECT(Defect.class, "defect");
 
         private Class<?> clazz;
+        private String name;
 
-        TagType(Class<?> clazz) {
+        TagType(Class<?> clazz, String name) {
             this.clazz = clazz;
+            this.name  = name;
         }
 
         public Class<?> getClazz() {
             return this.clazz;
+        }
+
+        public String getName() {
+            return this.name();
         }
 
         public static TagType getFromClass(Class<?> clazz) {

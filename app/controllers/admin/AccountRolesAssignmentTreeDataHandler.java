@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import controllers.Lookups;
 import controllers.TMController;
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
@@ -88,7 +89,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
             return false;
         }
         AccountRole role = AccountRole.getById(target);
-        TMUser u = TMUser.findById(id);
+        TMUser u = Lookups.getUser(id);
         if(TMUser.listUsersInAccountRole(role).contains(u)) {
             // do nothing
             return false;
@@ -109,7 +110,7 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {
-        TMUser u = TMUser.findById(id);
+        TMUser u = Lookups.getUser(id);
         if (u == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find user '%s' in order to remove administration role '%s'", id, parentId);
             return false;

@@ -20,6 +20,7 @@ import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.mvc.Before;
 import util.FilterQuery;
+import util.Logger;
 
 
 /**
@@ -37,15 +38,15 @@ public class Defects extends TMController {
 
     public static void create(Long runId) {
         boolean create = true;
-        
+
         List<RunStep> runSteps = RunStep.find("from RunStep rs where rs.run.id=? and rs.status=3", runId).fetch();
-        Instance instance = Run.find("select r.instance from Run r where r.id=?",runId ).first();
+        Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
 
-        String defectDescription="Test instance ran: "+instance.name;
+        String defectDescription = "Test instance ran: " + instance.name;
 
-        for(RunStep runStep:runSteps){
+        for (RunStep runStep : runSteps) {
             defectDescription = defectDescription + "\\n\\nExpected result: "
-                    +runStep.expectedResult + "\\nActual result: " +runStep.actualResult;
+                    + runStep.expectedResult + "\\nActual result: " + runStep.actualResult;
         }
 
         render("Defects/index.html", create, runId, defectDescription);
@@ -155,9 +156,9 @@ public class Defects extends TMController {
         defect.status = DefectStatus.getDefaultDefectStatus();
         defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         defect.create();
-        
+
         Long runId = Long.valueOf(params.get("runId"));
-        if(runId!=null){
+        if (runId != null) {
             Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
             instance.defects.add(defect);
             instance.save();
@@ -167,28 +168,40 @@ public class Defects extends TMController {
 
     @Restrict(UnitRole.DEFECTEDIT)
     public static void updateDefect(Defect defect) {
-        Defect d = Defect.findById(defect.id);
+        Defect d = Lookups.getDefect(defect.id);
+        if (d == null) {
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
+            notFound("Could not find defect " + defect.id);
+        }
         d.name = defect.name;
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
         defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+        // TODO try...catch and log db error
         d.save();
         ok();
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
     public static void defectDetails(Long baseObjectId, String[] fields) {
-        Defect defect = Defect.findById(baseObjectId);
+        Defect defect = Lookups.getDefect(baseObjectId);
+        if(defect == null) {
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
+            notFound("Could not find defect " + defect.id);
+        }
+
         renderFields(defect, fields);
     }
 
     @Restrict(UnitRole.DEFECTDELETE)
     public static void deleteDefect(Long defectId) {
-        Defect defect = Defect.findById(defectId);
+        Defect defect = Lookups.getDefect(defectId);
         if (defect == null) {
-            error("Defect is not found!");
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect for deletion %s", defectId);
+            notFound("Could not find defect with ID " + defectId);
         }
+        // TODO try...catch and log db error
         defect.delete();
         ok();
     }
@@ -200,9 +213,10 @@ public class Defects extends TMController {
 
     @Restrict(UnitRole.DEFECTVIEW)
     public static void defectDescription(Long defectId) {
-        Defect defect = Defect.findById(defectId);
+        Defect defect = Lookups.getDefect(defectId);
         if (defect == null) {
-            error("Defect is not found!");
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
+            notFound("Could not find defect " + defect.id);
         }
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("defectTitle", defect.name);
@@ -210,7 +224,7 @@ public class Defects extends TMController {
         jsonObject.addProperty("defectSubmittedBy", defect.submittedBy == null ? "" : defect.submittedBy.toString());
         jsonObject.addProperty("defectStatus", defect.status == null ? "" : defect.status.toString());
         jsonObject.addProperty("defectCreated", defect.created == null ? "" : defect.created.toString());
-        jsonObject.addProperty("defectTags", defect.tags == null ? "" :  defect.tags.toString());
+        jsonObject.addProperty("defectTags", defect.tags == null ? "" : defect.tags.toString());
         jsonObject.addProperty("defectDescription", defect.description == null ? "" : defect.description);
         renderJSON(jsonObject.toString());
     }
