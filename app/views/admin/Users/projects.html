@@ -66,9 +66,7 @@
           ko.mapping.updateFromJS(viewModelRoles, data);
         }
       });
-        $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes});
-
-
+        $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes, plugins: ["crrm"]});
 
         $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
 
