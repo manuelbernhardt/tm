@@ -33,7 +33,9 @@ Alternatively simple tags can be used to organize the Test Execution.
 <script type="text/javascript">
 
   $(document).ready(function () {
-    $("#projectTree").bind("select_node.jstree", function (e, data) {
+
+        $("#projectTree").bind("select_node.jstree", function (e, data) {
+
         $('#approachTree').tree(
                 {
                   "args" : {"projectId": getSelectedNodeId('projectTree')},
@@ -46,6 +48,9 @@ Alternatively simple tags can be used to organize the Test Execution.
                   }
                 }
         );
+
+        refreshTree('approachTree');
+
         /** button initialisation **/
         $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
           $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
@@ -59,22 +64,23 @@ Alternatively simple tags can be used to organize the Test Execution.
             })
 
         });
-    });
+
 
     /** Selection listener **/
-    $("#approachTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ['default', 'testCycle'])) {
-       $("#remove_cycleRelease").button('enable');
-        $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
-          $('#details').html(data);
-        }).error(errorHandler);
-      } else if (isSelectedNodeType(data, ['release'])) {
-        $("#remove_cycleRelease").button('enable');
-        $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
-          $('#details').html(data);
-        }).error(errorHandler);
-      }
-    });
+        $("#approachTree").bind("select_node.jstree", function (e, data) {
+          if (isSelectedNodeType(data, ['default', 'testCycle'])) {
+           $("#remove_cycleRelease").button('enable');
+            $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
+              $('#details').html(data);
+            }).error(errorHandler);
+          } else if (isSelectedNodeType(data, ['release'])) {
+            $("#remove_cycleRelease").button('enable');
+            $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
+              $('#details').html(data);
+            }).error(errorHandler);
+          }
+        });
+     });
 
   });
 
