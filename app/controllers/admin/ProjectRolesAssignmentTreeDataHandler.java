@@ -36,7 +36,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
 
     public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
         Long projectId = Long.parseLong(args.get("projectId"));
-        Project project = Project.findById(projectId);
+        Project project = Lookups.getProject(projectId);
         if(!project.isInAccount(TMController.getConnectedUserAccount())) {
             Logger.error(Logger.LogType.SECURITY, "Project not in account, project ID '%s'", projectId);
         }
@@ -110,7 +110,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
     }
 
     public boolean move(Long id, String type, Long target, String targetType, Long position) {
-        return false;
+        return copy(id, target, position);
     }
 
     public boolean remove(Long id, Long parentId, String type, Map<String, String> args) {

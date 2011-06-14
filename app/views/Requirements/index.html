@@ -100,11 +100,15 @@
     $("#innerTabs").tabs();
 
     $("#requirementTree").tree({
-              types: requirementTreeTypes, onRename: function(name) {
+              types: requirementTreeTypes,
+              onRename: function(name) {
                 var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
                 $(fieldName).val(name);
+              },
+              onDeleteFailed: function() {
+                errorMessage("Could not delete requirement - make sure there are no linked entities left.", "Error deleting requirement")
               }
-    });
+            });
 
     $('#requirementForm').oxForm({
               loadAction: '@{Requirements.requirementsDetailsData()}',

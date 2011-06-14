@@ -22,16 +22,21 @@ import util.Logger;
 public class ProjectRoles extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void create(String roleName, Long projectId) {
-        Project project = Project.findById(projectId);
-        ProjectRole projectRole = new ProjectRole(project);
-        List<ProjectRole> projectRoles = ProjectRole.find("name=? and project.id=?", roleName, projectId).fetch();
-        if(projectRoles.size()>0){
-            error("Project role with this name already exists. Role is not created!");
+    public static void create(ProjectRole role, Long projectId) {
+        Project project = Lookups.getProject(projectId);
+        if(project == null) {
+            Logger.error(Logger.LogType.SECURITY, "Unknown project %s", projectId);
+            notFound("Project was not found");
         }
-        projectRole.name = roleName;
-        projectRole.create();
-        ok();
+        role.project = project;
+        role.account = project.account;
+        boolean created = role.create();
+        if(!created) {
+            Logger.error(Logger.LogType.DB, "Could not create ProjectRole");
+            error("Error creating the role, please try again");
+        } else {
+            ok();
+        }
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
@@ -60,7 +65,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            ProjectRole role = ProjectRole.findById(roleId);
+            ProjectRole role = Lookups.getRole(roleId);
             checkInAccount(role);
             List<String> unitRoles = role.unitRoles;
             render(role, unitRoles);
@@ -72,7 +77,7 @@ public class ProjectRoles extends TMController {
         if (roleId == null) {
             error("No roleId provided");
         } else {
-            ProjectRole role = ProjectRole.findById(roleId);
+            ProjectRole role = Lookups.getRole(roleId);
 
             checkInAccount(role);
 

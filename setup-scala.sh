@@ -36,6 +36,7 @@ echo
 echo
 
 cd tm
+mkdir modules
 echo '../play-scala' > modules/scala
 
 echo

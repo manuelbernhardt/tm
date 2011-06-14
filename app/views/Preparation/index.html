@@ -91,7 +91,7 @@
 <script type="text/javascript">
   $(document).ready(function () {
     // selection listener for the repository tree
-    $("#repositoryTree").tree({types: repositoryTreeTypes});
+    $("#repositoryTree").tree({types: preparationRepositoryTreeTypes});
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["script", "default"])) {
         $('.instanceHiddenOnLoad').hide();

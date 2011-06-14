@@ -78,7 +78,7 @@ public class Repository extends TMController {
             Logger.error(Logger.LogType.TECHNICAL, "Could not update script step '%s', no scriptId passed", step.name);
             error("Could not update script step, no script ID passed");
         }
-        Script script = Script.findById(scriptId);
+        Script script = Lookups.getScript(scriptId);
         if (script == null) {
             notFound();
         } else {

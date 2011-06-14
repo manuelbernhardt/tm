@@ -50,7 +50,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             ChildProducer rootChildProducer = new ChildProducer() {
                 public List<JSTreeNode> produce(Long id) {
                     // releases
-                    List<Instance> instances = Instance.find("from Instance i where i.script = ?", script).fetch();
+                    List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle is not null", script).fetch();
                     List<TestCycle> cycles = new ArrayList<TestCycle>();
                     for (Instance instance : instances) {
                         cycles.add(instance.testCycle);
@@ -74,6 +74,13 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                         SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
                         result.add(rNode);
                     }
+
+                    // also display unattached instances
+                    List<Instance> unattachedInstances = Instance.find("from Instance i where i.script = ? and i.testCycle is null", script).fetch();
+                    for(Instance i : unattachedInstances) {
+                        result.add(new SimpleNode(i.getId(), i.name, INSTANCE, false, false, null));
+                    }
+
                     return result;
                 }
             };
@@ -90,7 +97,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (sId == null) {
             return null;
         }
-        Script ts = Script.findById(Long.parseLong(sId));
+        Script ts = Lookups.getScript(Long.parseLong(sId));
         if (ts == null) {
             return null;
         }
@@ -108,8 +115,8 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             if (cycleNodeId == null || scriptId == null) {
                 return null;
             }
-            TestCycle cycle = TestCycle.findById(Long.parseLong(cycleNodeId));
-            Script script = Script.findById(Long.parseLong(scriptId));
+            TestCycle cycle = Lookups.getCycle(Long.parseLong(cycleNodeId));
+            Script script = Lookups.getScript(Long.parseLong(scriptId));
             if (cycle == null || script == null) {
                 return null;
             }
@@ -145,7 +152,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
     public boolean rename(Long id, String name, String type) {
 
         if (INSTANCE.equals(type)) {
-            Instance instance = Instance.findById(id);
+            Instance instance = Lookups.getInstance(id);
             instance.name = name;
             instance.save();
             return true;
@@ -209,11 +216,11 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
         if (scriptId == null) {
             return false;
         }
-        Script script = Script.findById(Long.parseLong(scriptId));
+        Script script = Lookups.getScript(Long.parseLong(scriptId));
         if (script == null || !script.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }
-        Instance instance = Instance.findById(id);
+        Instance instance = Lookups.getInstance(id);
         if (instance == null || !instance.isInAccount(TMController.getConnectedUserAccount())) {
             return false;
         }

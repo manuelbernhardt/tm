@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import controllers.ApproachTree;
+import controllers.Lookups;
 import controllers.ScriptCycleTreeDataHandler;
 import models.tm.Project;
 import models.tm.ProjectModel;
@@ -41,7 +42,7 @@ public class Release extends ProjectModel implements Node {
         List<JSTreeNode> children = n.getChildren();
         List<TestCycle> cycles = new ArrayList<TestCycle>();
         for (JSTreeNode child : children) {
-            cycles.add(TestCycle.<TestCycle>findById(((ProjectTreeNode) child).nodeId));
+            cycles.add(Lookups.getCycle(((ProjectTreeNode) child).nodeId));
         }
         return cycles;
     }
