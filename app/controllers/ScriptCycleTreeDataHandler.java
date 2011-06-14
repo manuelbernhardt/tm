@@ -46,48 +46,39 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
         if (parentId == -1) {
 
-            // root node
-            ChildProducer rootChildProducer = new ChildProducer() {
-                public List<JSTreeNode> produce(Long id) {
-                    // releases
-                    List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle is not null", script).fetch();
-                    List<TestCycle> cycles = new ArrayList<TestCycle>();
-                    for (Instance instance : instances) {
-                        cycles.add(instance.testCycle);
-                    }
-                    final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
-                    for (TestCycle c : cycles) {
-                        Release r = c.getRelease();
-                        List<TestCycle> cycleList = releases.get(r);
-                        if (cycleList == null) {
-                            cycleList = new ArrayList<TestCycle>();
-                            releases.put(r, cycleList);
-                        }
-                        if (!cycleList.contains(c)) {
-                            cycleList.add(c);
-                        }
-                    }
-                    ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
-
-                    List<JSTreeNode> result = new ArrayList<JSTreeNode>();
-                    for (Release r : releases.keySet()) {
-                        SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
-                        result.add(rNode);
-                    }
-
-                    // also display unattached instances
-                    List<Instance> unattachedInstances = Instance.find("from Instance i where i.script = ? and i.testCycle is null", script).fetch();
-                    for(Instance i : unattachedInstances) {
-                        result.add(new SimpleNode(i.getId(), i.name, INSTANCE, false, false, null));
-                    }
-
-                    return result;
+            // releases
+            List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle is not null", script).fetch();
+            List<TestCycle> cycles = new ArrayList<TestCycle>();
+            for (Instance instance : instances) {
+                cycles.add(instance.testCycle);
+            }
+            final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
+            for (TestCycle c : cycles) {
+                Release r = c.getRelease();
+                List<TestCycle> cycleList = releases.get(r);
+                if (cycleList == null) {
+                    cycleList = new ArrayList<TestCycle>();
+                    releases.put(r, cycleList);
                 }
-            };
-            SimpleNode root = new SimpleNode(0l, "Releases", ROOT, true, true, rootChildProducer);
-            List<JSTreeNode> res = new ArrayList<JSTreeNode>();
-            res.add(root);
-            return res;
+                if (!cycleList.contains(c)) {
+                    cycleList.add(c);
+                }
+            }
+            ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
+
+            List<JSTreeNode> result = new ArrayList<JSTreeNode>();
+            for (Release r : releases.keySet()) {
+                SimpleNode rNode = new SimpleNode(r.getId(), r.name, RELEASE, true, true, releaseChildProducer);
+                result.add(rNode);
+            }
+
+            // also display unattached instances
+            List<Instance> unattachedInstances = Instance.find("from Instance i where i.script = ? and i.testCycle is null", script).fetch();
+            for (Instance i : unattachedInstances) {
+                result.add(new SimpleNode(i.getId(), i.name, INSTANCE, false, false, null));
+            }
+
+            return result;
         } else {
             return null;
         }
@@ -166,20 +157,20 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
     public boolean move(Long id, String type, Long target, String targetType, Long position) {
 
-        if(!type.equals(INSTANCE)) {
+        if (!type.equals(INSTANCE)) {
             return false;
         } else {
-            if(targetType.equals(RELEASE)) {
+            if (targetType.equals(RELEASE)) {
                 return false;
             }
-            if(targetType.equals(TEST_CYCLE)) {
+            if (targetType.equals(TEST_CYCLE)) {
                 TestCycle cycle = Lookups.getCycle(target);
-                if(target == null) {
+                if (target == null) {
                     Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve cycle with ID %s", target);
                     return false;
                 }
                 Instance instance = Lookups.getInstance(id);
-                if(instance == null) {
+                if (instance == null) {
                     Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve instance with ID %s", id);
                     return false;
                 }
@@ -187,14 +178,14 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                 try {
                     instance.save();
                     return true;
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     Logger.error(Logger.LogType.DB, t, "Error while saving instance %s", id);
                     return false;
                 }
             }
-            if(targetType.equals(ROOT)) {
+            if (targetType.equals(ROOT)) {
                 Instance instance = Lookups.getInstance(id);
-                if(instance == null) {
+                if (instance == null) {
                     Logger.error(Logger.LogType.TECHNICAL, "Could not retrieve instance with ID %s", id);
                     return false;
                 }
@@ -202,7 +193,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                 try {
                     instance.save();
                     return true;
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     Logger.error(Logger.LogType.DB, t, "Error while saving instance %s", id);
                     return false;
                 }
