@@ -4,13 +4,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import models.general.TemporalModel;
-
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class PurchaseOrder extends TemporalModel {
+public class PurchaseOrder extends AccountModel {
 
     @ManyToOne
     public AccountProduct product;
