@@ -244,3 +244,11 @@ div#top_menu {
     text-align:left;
     margin-top:5px;
 }
+
+a.export{
+    height:18px;
+    background-image:url("../images/icons/page_excel.png");
+    background-repeat:no-repeat;
+    padding-left:20px;
+    display:inline-block;
+}

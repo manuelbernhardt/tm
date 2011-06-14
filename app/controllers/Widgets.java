@@ -178,7 +178,19 @@ public class Widgets extends TMController {
             rowList.add(values);
         }
 
-        render(columnNames, rowList, rowList, title);
+        if(entity.equals("Defect") || entity.equals("Requirement") || entity.equals("Instance")){
+            if(entity.equals("Instance")){
+                entity = "Preparation";
+            }
+            else{
+                entity = entity + "s";
+            }
+        }
+        else{
+            entity = "";
+        }
+
+        render(columnNames, rowList, rowList, title, entity);
     }
 
     private static F.Tuple<String, ExpressionType> transformExpression(String axis, String tmp) {
