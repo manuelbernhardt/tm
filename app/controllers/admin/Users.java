@@ -277,13 +277,9 @@ public class Users extends TMController {
         res.add("categories", categories);
         for(ProjectCategory pc : projectCategories) {
            JsonObject category = new JsonObject();
-           JsonObject selectedCategory = new JsonObject();
             categories.add(category);
-            categories.add(selectedCategory);
             category.addProperty("name", pc.name);
             category.addProperty("id", pc.getId());
-            selectedCategory.addProperty("name", pc.name);
-            selectedCategory.addProperty("id", pc.getId());
             JsonArray projectsArray = new JsonArray();
             category.add("projects", projectsArray);
             for(Project p : projects) {
