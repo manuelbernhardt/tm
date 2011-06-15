@@ -1,7 +1,4 @@
-#{if projectId == null}
-No project selected
-#{/if}
-#{else}
+
 
 #{tagsManagement.dialogsAndInputs type:'requirement'/}
 #{tagsManagement.dialogsAndInputs type:'testInstance'/}
@@ -37,10 +34,10 @@ No project selected
         </div>
 
 </div>
-        #{tagsManagement.scripts type:'requirement', projectId:projectId /}
-        #{tagsManagement.scripts type:'testScript', projectId:projectId /}
-        #{tagsManagement.scripts type:'testInstance', projectId:projectId /}
-        #{tagsManagement.scripts type:'defect', projectId:projectId /}
+        #{tagsManagement.scripts type:'requirement' /}
+        #{tagsManagement.scripts type:'testScript' /}
+        #{tagsManagement.scripts type:'testInstance' /}
+        #{tagsManagement.scripts type:'defect' /}
 
         <script type="text/javascript">
 
@@ -73,7 +70,7 @@ No project selected
                     {"sName": "id", "sClass": "sNone" },
                     {"sName": "name"}
                   ],
-                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", "requirement")}',
+                  "sAjaxSource": '@{admin.Projects.tagsData()}',
                   "bProcessing": false,
                   "bServerSide": true,
                   "bLengthChange": false,
@@ -86,6 +83,8 @@ No project selected
                   }
                 };
                 #{/tabularasa.init}
+
+
 
                 #{tabularasa.init tableId:'testScript'}
                 var testScriptParameters = {
@@ -93,7 +92,7 @@ No project selected
                     {"sName": "id", "sClass": "sNone" },
                     {"sName": "name"}
                   ],
-                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", "testScript")}',
+                  "sAjaxSource": '@{admin.Projects.tagsData()}',
                   "bProcessing": false,
                   "bServerSide": true,
                   "bLengthChange": false,
@@ -107,13 +106,14 @@ No project selected
                 };
                 #{/tabularasa.init}
 
+
                 #{tabularasa.init tableId:'testInstance'}
                 var testInstanceParameters = {
                   "aoColumns": [
                     {"sName": "id", "sClass": "sNone" },
                     {"sName": "name"}
                   ],
-                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", "testInstance")}',
+                  "sAjaxSource": '@{admin.Projects.tagsData()}',
                   "bProcessing": false,
                   "bServerSide": true,
                   "bLengthChange": false,
@@ -134,7 +134,7 @@ No project selected
                     {"sName": "id", "sClass": "sNone" },
                     {"sName": "name"}
                   ],
-                  "sAjaxSource": '@{admin.Projects.tagsData().add("projectId", projectId).add("tagType", "defect")}',
+                  "sAjaxSource": '@{admin.Projects.tagsData()}',
                   "bProcessing": false,
                   "bServerSide": true,
                   "bLengthChange": false,
@@ -147,9 +147,33 @@ No project selected
                   }
                 };
                 #{/tabularasa.init}
+
+
+
+                function addRequestParameters(parameters, tableId) {
+                    var nodeId = getSelectedNodeId('projectTree');
+                        if(nodeId==null){
+                            nodeId=1;
+                        }
+                    if (tableId == 'requirement') {
+                      parameters.push({"name": "projectId", "value": nodeId });
+                      parameters.push({"name": "tagType", "value": 'requirement' });
+                    }
+                    if (tableId == 'testScript') {
+                      parameters.push({"name": "projectId", "value": nodeId });
+                      parameters.push({"name": "tagType", "value": 'testScript' });
+                    }
+                    if (tableId == 'testInstance') {
+                      parameters.push({"name": "projectId", "value": nodeId });
+                      parameters.push({"name": "tagType", "value": 'testInstance' });
+                    }
+                    if (tableId == 'defect') {
+                      parameters.push({"name": "projectId", "value": nodeId });
+                      parameters.push({"name": "tagType", "value": 'defect' });
+                    }
+                }
+
             });
 
 
         </script>
-
-#{/else}

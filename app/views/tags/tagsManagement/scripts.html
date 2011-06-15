@@ -19,7 +19,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:'${_projectId}'})
+                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
                             .success(
                                 function(data) {
                                     if(data!=null && data!=''){
@@ -55,7 +55,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:'${_projectId}'})
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
                             .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);
@@ -84,7 +84,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.addTag()}', {projectId:'${_projectId}', name: $('#${_type}AddTagInput').val(),type: "${_type}" })
+                    $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
                             .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);

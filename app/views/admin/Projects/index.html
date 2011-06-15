@@ -27,6 +27,10 @@
         $('.shownOnLoad').hide();
         $("#remove").button('enable');
         $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
+        refreshTableContents('#requirement', false);
+        refreshTableContents('#testScript', false);
+        refreshTableContents('#testInstance', false);
+        refreshTableContents('#defect', false);
 
     });
 
