@@ -1,0 +1,507 @@
+account.Account(accountDemo):
+    name: ACME
+    subdomain: demo
+    email: demo@example.com
+
+account.User(demoUserJohnSmith):
+    firstName: John
+    lastName: Smith
+    email: demo@example.com
+    password: demo
+    account: accountDemo
+
+account.User(demoUserHuiZhong):
+    firstName: Hui Zhong
+    lastName: Huáng
+    email: hui.zhong.huang@example.com
+    password: demo
+    account: accountDemo
+
+account.User(demoUserAnneLechauve):
+    firstName: Anne
+    lastName: Le Chauve
+    email: anne.lechauve@example.com
+    password: demo
+    account: accountDemo
+
+tm.ProjectCategory(demoProjCatERP):
+    name: ERP
+    account: accountDemo
+
+tm.Project(demoProjectSAP):
+    name: SAP Implementation
+    account: accountDemo
+    projectCategory: demoProjCatERP
+
+tm.ProjectRole(demoProjectSAProleTestLead):
+    name: Test Lead
+    account: accountDemo
+    project: demoProjectSAP
+    unitRoles:
+         - projectEdit
+         - reqView
+         - reqCreate
+         - reqEdit
+         - reqDelete
+         - testRepoView
+         - testRepoCreate
+         - testRepoEdit
+         - testRepoDelete
+         - testPrepView
+         - testPrepCreate
+         - testPrepEdit
+         - testPrepDelete
+         - testExecView
+         - testExecCreate
+         - testExecEdit
+         - testExecDelete
+         - defectView
+         - defectCreate
+         - defectEdit
+         - defectDelete
+
+tm.TMUser(demoTMUserJohnSmith):
+    user: demoUserJohnSmith
+    account: accountDemo
+    activeProject: demoProjectSAP
+    accountRoles:
+       - accountAdmin
+       - userCreate
+       - userEdit
+       - userDelete
+       - projectCreate
+       - projectEdit
+       - projectDelete
+    projectRoles:
+       - demoProjectSAProleTestLead
+
+tm.TMUser(demoTMUserHuiZhong):
+    user: demoUserHuiZhong
+    account: accountDemo
+    activeProject: demoProjectSAP
+    projectRoles:
+       - demoProjectSAProleTestLead
+
+tm.TMUser(demoTMUserAnneLechauve):
+    user: demoUserAnneLechauve
+    account: accountDemo
+    activeProject: demoProjectSAP
+    projectRoles:
+       - demoProjectSAProleTestLead
+
+tm.approach.Release(demoProjectSAPrelease1):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Template
+
+tm.approach.TestCycle(demoProjectSAPrelease1Cycle1):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Application test
+    fromDate: 2011-03-01
+    toDate: 2011-03-12
+
+tm.approach.TestCycle(demoProjectSAPrelease1Cycle2):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Product Test
+    fromDate: 2011-03-15
+    toDate: 2011-03-19
+
+tm.approach.TestCycle(demoProjectSAPrelease1Cycle3):
+    account: accountDemo
+    project: demoProjectSAP
+    name: User Acceptance test
+    fromDate: 2011-03-22
+    toDate: 2011-03-25
+
+tm.approach.Release(demoProjectSAPrelease2):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Roll-out UK
+
+tm.approach.Release(demoProjectSAPrelease3):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Roll-out AT
+
+tm.ProjectTreeNode(demoApproachTreeNode1):
+    account: accountDemo
+    level: 0
+    name: Template
+    nodeId: demoProjectSAPrelease1
+    opened: true
+    path: '/Template'
+    treeId: approachTree
+    type: release
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoApproachTreeNode2):
+    account: accountDemo
+    level: 1
+    name: Application Test
+    nodeId: demoProjectSAPrelease1Cycle1
+    opened: false
+    path: '/Template/Application Test'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: demoApproachTreeNode1
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoApproachTreeNode3):
+    account: accountDemo
+    level: 1
+    name: Product Test
+    nodeId: demoProjectSAPrelease1Cycle2
+    opened: false
+    path: '/Template/Product Test'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: demoApproachTreeNode1
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoApproachTreeNode4):
+    account: accountDemo
+    level: 1
+    name: User Acceptance Test
+    nodeId: demoProjectSAPrelease1Cycle3
+    opened: false
+    path: '/Template/User Acceptance Test'
+    treeId: approachTree
+    type: testCycle
+    threadRoot: demoApproachTreeNode1
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoApproachTreeNode5):
+    account: accountDemo
+    level: 0
+    name: Roll-out UK
+    nodeId: demoProjectSAPrelease2
+    opened: true
+    path: '/Roll-out UK'
+    treeId: approachTree
+    type: release
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoApproachTreeNode6):
+    account: accountDemo
+    level: 0
+    name: Roll-out AT
+    nodeId: demoProjectSAPrelease3
+    opened: true
+    path: '/Roll-out AT'
+    treeId: approachTree
+    type: release
+    project: demoProjectSAP
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderFI):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Finance
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderFIcustomers):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Customers
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderFIassets):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Assets
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderFIGL):
+    account: accountDemo
+    project: demoProjectSAP
+    name: General Ledger
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderLO):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Logistics
+
+tm.test.ScriptFolder(demoProjectSAPTestScriptFolderPUR):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Purchasing
+
+tm.test.Script(demoProjectSAPTestScriptFIassetsCreate):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Create asset master
+    createdBy: demoTMUserJohnSmith
+
+tm.test.ScriptParam(demoProjectSAPTestScriptFIassetsCreateParamCompanyCode):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    name: companyCode
+
+tm.test.ScriptParam(demoProjectSAPTestScriptFIassetsCreateParamAssetClass):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    name: assetClass
+
+tm.test.ScriptParam(demoProjectSAPTestScriptFIassetsCreateParamAssetDescription):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    name: assetDescription
+
+tm.test.ScriptParam(demoProjectSAPTestScriptFIassetsCreateParamCostCenter):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    name: costCenter
+
+tm.test.ScriptParam(demoProjectSAPTestScriptFIassetsCreateParamUsefulLife):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    name: usefulLife
+
+tm.test.ScriptStep(demoProjectSAPTestScriptFIassetsCreateStep1):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    position: 1
+    name: Initial screen
+    description: "Go to transaction AS01 \u000D
+                 Enter compay code \u003C\u003C\u003CcompanyCode\u003E\u003E\u003E \u000D
+                 Enter asset class \u003C\u003C\u003CassetClass\u003E\u003E\u003E"
+    expectedResult: ""
+
+tm.test.ScriptStep(demoProjectSAPTestScriptFIassetsCreateStep2):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    position: 2
+    name: General tab
+    description: "Enter asset description \u003C\u003C\u003CassetDescription\u003E\u003E\u003E"
+    expectedResult: ""
+
+tm.test.ScriptStep(demoProjectSAPTestScriptFIassetsCreateStep3):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    position: 3
+    name: Time dependent tab
+    description: "Enter cost center \u003C\u003C\u003CcostCenter\u003E\u003E\u003E"
+    expectedResult: ""
+
+tm.test.ScriptStep(demoProjectSAPTestScriptFIassetsCreateStep4):
+    account: accountDemo
+    project: demoProjectSAP
+    script: demoProjectSAPTestScriptFIassetsCreate
+    position: 4
+    name: Depreciation Areas tab
+    description: "Enter useful life \u003C\u003C\u003CusefulLife\u003E\u003E\u003E \u000DSave"
+    expectedResult: "Asset \u003C\u003C\u003CassetDescription\u003E\u003E\u003E created in company code \u003C\u003C\u003CcompanyCode\u003E\u003E\u003E"
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderFI):
+    account: accountDemo
+    level: 0
+    name: Finance
+    nodeId: demoProjectSAPTestScriptFolderFI
+    opened: true
+    path: '/Finance'
+    treeId: repositoryTree
+    type: scriptFolder
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderFIassets):
+    account: accountDemo
+    level: 1
+    name: Assets
+    nodeId: demoProjectSAPTestScriptFolderFIassets
+    opened: true
+    path: '/Finance/Assets'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: demoProjectSAPRepositoryTreeNodeFolderFI
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderFIcustomers):
+    account: accountDemo
+    level: 1
+    name: Customers
+    nodeId: demoProjectSAPTestScriptFolderFIcustomers
+    opened: true
+    path: '/Finance/Customers'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: demoProjectSAPRepositoryTreeNodeFolderFI
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderFIGL):
+    account: accountDemo
+    level: 1
+    name: General Ledger
+    nodeId: demoProjectSAPTestScriptFolderFIGL
+    opened: true
+    path: '/Finance/General Ledger'
+    treeId: repositoryTree
+    type: scriptFolder
+    threadRoot: demoProjectSAPRepositoryTreeNodeFolderFI
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderLO):
+    account: accountDemo
+    level: 0
+    name: Logistics
+    nodeId: demoProjectSAPTestScriptFolderLO
+    opened: true
+    path: '/Logistics'
+    treeId: repositoryTree
+    type: scriptFolder
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPRepositoryTreeNodeFolderPUR):
+    account: accountDemo
+    level: 0
+    name: Purchasing
+    nodeId: demoProjectSAPTestScriptFolderPUR
+    opened: true
+    path: '/Purchasing'
+    treeId: repositoryTree
+    type: scriptFolder
+    project: demoProjectSAP
+
+tm.ProjectTreeNode(demoProjectSAPTestScriptFIassetsCreate):
+    account: accountDemo
+    level: 2
+    name: Create asset master
+    nodeId: demoProjectSAPTestScriptFIassetsCreate
+    opened: true
+    path: '/FI/Assets/Create asset master'
+    treeId: repositoryTree
+    type: script
+    threadRoot: demoProjectSAPRepositoryTreeNodeFolderFI
+    project: demoProjectSAP
+
+tm.test.Tag(demoProjectSAPRequirementTagFunctional):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Functional
+    type: REQUIREMENT
+
+tm.test.Tag(demoProjectSAPRequirementTagSecurity):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Security & Control
+    type: REQUIREMENT
+
+tm.test.Tag(demoProjectSAPRequirementTagInterface):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Interface & Data
+    type: REQUIREMENT
+
+tm.RequirementFolder(demoProjectSAPRequirementFolderFI):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Finance
+
+tm.Requirement(demoProjectSAPRequirementFolderFIRequirementAPaccessRestriction):
+    account: accountDemo
+    project: demoProjectSAP
+    createdBy: demoTMUserJohnSmith
+    name: AP user access restriction
+    tags:
+         - demoProjectSAPRequirementTagSecurity
+
+tm.ProjectTreeNode(demoProjectSAPRequirementTreeNodeFolderFI):
+    account: accountDemo
+    project: demoProjectSAP
+    treeId: requirementTree
+    type: requirementFolder
+    level: 0
+    name: Finance
+    nodeId: demoProjectSAPRequirementFolderFI
+    opened: true
+    path: '/Finance'
+
+tm.ProjectTreeNode(demoProjectSAPRequirementTreeNodeFolderFIAPaccessResctriction):
+    account: accountDemo
+    project: demoProjectSAP
+    treeId: requirementTree
+    type: requirement
+    threadRoot: demoProjectSAPRequirementTreeNodeFolderFI
+    level: 1
+    name: Finance
+    nodeId: demoProjectSAPRequirementFolderFIRequirementAPaccessRestriction
+    opened: true
+    path: '/Finance/AP User access restriction'
+
+tm.test.Tag(demoProjectSAPInstanceTagFI):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Finance
+    type: TESTINSTANCE
+
+tm.test.Tag(demoProjectSAPInstanceTagLO):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Logistics
+    type: TESTINSTANCE
+
+tm.test.Tag(demoProjectSAPInstanceTagPUR):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Purchasing
+    type: TESTINSTANCE
+
+tm.test.Instance(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1):
+    account: accountDemo
+    project: demoProjectSAP
+    name: Create new moveable asset
+    script: demoProjectSAPTestScriptFIassetsCreate
+    testCycle: demoProjectSAPrelease1Cycle2
+    responsible: demoTMUserJohnSmith
+    plannedExecution: 2011-06-18
+    tags:
+      - demoProjectSAPInstanceTagFI
+
+tm.test.InstanceParam(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1ParamCompCode):
+    account: accountDemo
+    project: demoProjectSAP
+    scriptParam: demoProjectSAPTestScriptFIassetsCreateParamCompanyCode
+    instance: demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1
+    value:
+
+tm.test.InstanceParam(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1ParamAssetClass):
+    account: accountDemo
+    project: demoProjectSAP
+    scriptParam: demoProjectSAPTestScriptFIassetsCreateParamAssetClass
+    instance: demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1
+    value:
+
+tm.test.InstanceParam(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1ParamAssetDescription):
+    account: accountDemo
+    project: demoProjectSAP
+    scriptParam: demoProjectSAPTestScriptFIassetsCreateParamAssetDescription
+    instance: demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1
+    value:
+
+tm.test.InstanceParam(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1ParamCostCenter):
+    account: accountDemo
+    project: demoProjectSAP
+    scriptParam: demoProjectSAPTestScriptFIassetsCreateParamCostCenter
+    instance: demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1
+    value:
+
+tm.test.InstanceParam(demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1ParamUsefulLife):
+    account: accountDemo
+    project: demoProjectSAP
+    scriptParam: demoProjectSAPTestScriptFIassetsCreateParamUsefulLife
+    instance: demoProjectSAPRelease1Cycle2ScriptFIAssetsCreateInstance1
+    value: "5"
+
+
+tm.Defect(demoProjectSAPdefect1):
+    account: accountDemo
+    project: demoProjectSAP
+    created: 2011-06-02
+    name: The application does not start
+    submittedBy: demoTMUserHuiZhong
+    assignedTo: demoTMUserAnneLechauve
