@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ACCOUNT_ID=1
-GENERAL_OPTS=--no-create-info
+GENERAL_OPTS="--no-create-info --skip-add-locks --skip-triggers"
 
 # dump meta-Account tables
 mysqldump -u root tm $GENERAL_OPTS Product > products.sql
@@ -24,6 +24,7 @@ mysqldump -u root --lock-all-tables tm $GENERAL_OPTS Script_Tag --where="Script_
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS TMUser_ProjectRole --where="TMUser_id in (select id from TMUser where account_id = $ACCOUNT_ID)" > tmuser_projectRole.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS TMUser_accountRoles --where="TMUser_id in (select id from TMUser where account_id = $ACCOUNT_ID)" > tmuser_accountRoles.sql
 
-cat products.sql account.sql general.sql accountEntities.sql defect_tag.sql filter_filterConstraint.sql instance_defect.sql instance_tag.sql projectrole_unitRoles.sql projectwidget_parameters.sql requirement_script.sql requirement_tag.sql script_tag.sql tmuser_projectRole.sql tmuser_accountRoles.sql > tmDemoDump.sql
+rm conf/initial-data-demo.sql
+cat products.sql account.sql general.sql accountEntities.sql defect_tag.sql filter_filterConstraint.sql instance_defect.sql instance_tag.sql projectrole_unitRoles.sql projectwidget_parameters.sql requirement_script.sql requirement_tag.sql script_tag.sql tmuser_projectRole.sql tmuser_accountRoles.sql > conf/initial-data-demo.sql
 
 rm -f products.sql account.sql general.sql accountEntities.sql defect_tag.sql filter_filterConstraint.sql instance_defect.sql instance_tag.sql projectrole_unitRoles.sql projectwidget_parameters.sql requirement_script.sql requirement_tag.sql script_tag.sql tmuser_projectRole.sql tmuser_accountRoles.sql

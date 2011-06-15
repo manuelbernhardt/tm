@@ -15,6 +15,7 @@ import play.Play;
 import play.db.jpa.JPA;
 import play.db.jpa.Model;
 import play.test.Fixtures;
+import play.vfs.VirtualFile;
 
 /**
  * TestDataLoader for TM. We load demonstration / test data from initial-data.yml but also have template data for e.g. new Projects in project-data.yml.
@@ -27,13 +28,24 @@ import play.test.Fixtures;
  */
 public class TestDataLoader {
 
+    public static final String INITIAL_DATA_YML = "initial-data.yml";
+    public static final String INITIAL_DATA_DEMO_SQL = "initial-data-demo.sql";
 
     public TestDataLoader() {
 
         final Map<String, Map<Project, Model>> templateDataCache = new HashMap<String, Map<Project, Model>>();
 
         Fixtures.deleteDatabase();
-        YamlModelLoader.loadModels("initial-data.yml", new YamlModelLoader.Callback<Model>() {
+
+        VirtualFile sqlFile = null;
+        for (VirtualFile vf : Play.javaPath) {
+            sqlFile = vf.child(INITIAL_DATA_DEMO_SQL);
+            if (sqlFile != null && sqlFile.exists()) {
+                break;
+            }
+        }
+        Fixtures.executeSQL(sqlFile.getRealFile());
+        YamlModelLoader.loadModels(INITIAL_DATA_YML, new YamlModelLoader.Callback<Model>() {
                     public Model invoke(Model result) {
                         if (result instanceof Defect) {
                             // fetch the new defect status of the current project
@@ -84,12 +96,12 @@ public class TestDataLoader {
                     }
 
                     public Object bindValue(String[] value, Map<String, String[]> params, Map<String, Object> idCache) {
-                        if(value[0] == null) return null;
-                        if(value[0] instanceof String) {
+                        if (value[0] == null) return null;
+                        if (value[0] instanceof String) {
                             // is this really a string?
                             try {
                                 Long.parseLong(value[0]);
-                            } catch(Throwable t) {
+                            } catch (Throwable t) {
                                 String type = params.get("object.type")[0];
                                 String key = TMTree.getNodeType(type).getNodeClass().getName() + "-" + value[0];
                                 if (!idCache.containsKey(key)) {
