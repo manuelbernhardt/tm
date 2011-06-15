@@ -52,7 +52,7 @@ public class Lookups extends TMController {
         if (userId == null) {
             return null;
         }
-        User user = TMUser.<User>findById(userId);
+        User user = User.<User>findById(userId);
         if (user == null) {
             return null;
         }
@@ -157,7 +157,7 @@ public class Lookups extends TMController {
     public static ProjectCategory getProjectCategory(Long projectCategoryId) {
         ProjectCategory projectCategory = null;
         if (projectCategoryId != null) {
-            projectCategory = Project.<ProjectCategory>findById(projectCategoryId);
+            projectCategory = ProjectCategory.<ProjectCategory>findById(projectCategoryId);
         }
         if (projectCategory == null) {
             return null;
