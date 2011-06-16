@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    color: #333333;
     font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
+    background-color:#E2E4FF;
 }
 
 /* setting margin and padding to 0px to reset browser's default settings */
@@ -184,8 +184,8 @@ ul#tabs_header {
 
 div#top_menu {
     position: absolute;
-    right: 20px;
-    top: 0;
+    right: 22px;
+    top: 10px;
     z-index: 1000; /* probably a lower value is enough */
     text-align: right;
 }
@@ -252,3 +252,11 @@ a.export{
     padding-left:20px;
     display:inline-block;
 }
+
+/* additional style for jquery UI */
+#main-wrapper{
+    margin:40px 20px 20px 20px;
+    background-color:transparent;
+}
+
+

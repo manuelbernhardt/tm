@@ -155,6 +155,9 @@
             .oxMenu()
             .parent()
             .buttonset();
+    $('#create_actions').click(function(){
+        $(this).attr("style", "margin-left:-0.3em");
+    })
     $('#import_requirements').click(function() {
       $('#importRequirementsDialog').dialog('open');
     });

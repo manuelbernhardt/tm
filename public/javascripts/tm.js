@@ -808,10 +808,15 @@ function loadFilters(url, filterSelectionViewModel) {
                     }
 
                     menu.menu("blur").show().position({
-                                my: "left top",
-                                at: "left bottom",
+                                my: "right top",
+                                at: "right bottom",
                                 of: this
                             });
+                    
+                    if($(this).width()>menu.width()){
+                        menu.width($(this).width()-5);
+                    }
+                    $(this).attr('style', 'text-align:center');
                     $(document).one("click", function() {
                         menu.hide();
                     });
