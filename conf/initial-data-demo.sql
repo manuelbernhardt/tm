@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,12 +31,12 @@
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -67,12 +67,12 @@ INSERT INTO `Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',NULL
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -118,12 +118,12 @@ INSERT INTO `Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',NULL
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -221,7 +221,7 @@ INSERT INTO `ProjectCategory` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `ProjectRole` DISABLE KEYS */;
-INSERT INTO `ProjectRole` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55',1,'Test Lead',1,1);
+INSERT INTO `ProjectRole` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55',1,'Test Lead',1,1),(30,'2011-06-16 15:09:37','2011-06-16 15:45:39',2,'Test Preparation and Execution',1,1),(31,'2011-06-16 15:10:17','2011-06-16 15:10:17',31,'Test Execution',1,1),(32,'2011-06-16 15:10:25','2011-06-16 15:10:25',32,'Defect Resolution',1,1);
 /*!40000 ALTER TABLE `ProjectRole` ENABLE KEYS */;
 
 --
@@ -326,7 +326,7 @@ INSERT INTO `ScriptStep` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `TMUser` DISABLE KEYS */;
-INSERT INTO `TMUser` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,1),(2,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,2),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',NULL,NULL,1,1,3);
+INSERT INTO `TMUser` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,1),(2,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,2),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',NULL,NULL,1,1,3),(33,'2011-06-16 15:14:11','2011-06-16 16:02:35',NULL,NULL,1,1,33),(34,'2011-06-16 15:16:47','2011-06-16 16:02:43',NULL,NULL,1,1,34);
 /*!40000 ALTER TABLE `TMUser` ENABLE KEYS */;
 
 --
@@ -353,7 +353,7 @@ INSERT INTO `TestCycle` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','demo@example.com','John','Smith','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(2,'2011-06-15 20:10:54','2011-06-15 20:10:54',2,'','hui.zhong.huang@example.com','Hui Zhong','Huáng','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(3,'2011-06-15 20:10:54','2011-06-15 20:10:54',3,'','anne.lechauve@example.com','Anne','Le Chauve','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1);
+INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','demo@example.com','John','Smith','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(2,'2011-06-15 20:10:54','2011-06-15 20:10:54',2,'','hui.zhong.huang@example.com','Hui Zhong','Hu','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(3,'2011-06-15 20:10:54','2011-06-15 20:10:54',3,'','anne.lechauve@example.com','Anne','Le Chauve','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(33,'2011-06-16 15:14:11','2011-06-16 15:14:11',4,'','soren@example.com','Søren','Jensen','j4dT9l/2qYxWYc8ABvRGIA==',NULL,1),(34,'2011-06-16 15:16:47','2011-06-16 15:16:47',34,'','sanjivani@example.com','Sanjivani','Sharma','NBuJzJXsWg2AdwYQS1TdZw==',NULL,1);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 
 --
@@ -373,12 +373,12 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -408,12 +408,12 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -443,12 +443,12 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -478,12 +478,12 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -514,12 +514,12 @@ INSERT INTO `Instance_Tag` VALUES (1,4);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -538,7 +538,7 @@ INSERT INTO `Instance_Tag` VALUES (1,4);
 -- WHERE:  ProjectRole_id in (select id from ProjectRole where account_id = 1)
 
 /*!40000 ALTER TABLE `ProjectRole_unitRoles` DISABLE KEYS */;
-INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(1,'reqCreate',2),(1,'reqEdit',3),(1,'reqDelete',4),(1,'testRepoView',5),(1,'testRepoCreate',6),(1,'testRepoEdit',7),(1,'testRepoDelete',8),(1,'testPrepView',9),(1,'testPrepCreate',10),(1,'testPrepEdit',11),(1,'testPrepDelete',12),(1,'testExecView',13),(1,'testExecCreate',14),(1,'testExecEdit',15),(1,'testExecDelete',16),(1,'defectView',17),(1,'defectCreate',18),(1,'defectEdit',19),(1,'defectDelete',20);
+INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(1,'reqCreate',2),(1,'reqEdit',3),(1,'reqDelete',4),(1,'testRepoView',5),(1,'testRepoCreate',6),(1,'testRepoEdit',7),(1,'testRepoDelete',8),(1,'testPrepView',9),(1,'testPrepCreate',10),(1,'testPrepEdit',11),(1,'testPrepDelete',12),(1,'testExecView',13),(1,'testExecCreate',14),(1,'testExecEdit',15),(1,'testExecDelete',16),(1,'defectView',17),(1,'defectCreate',18),(1,'defectEdit',19),(1,'defectDelete',20),(30,'reqView',0),(30,'reqCreate',1),(30,'reqEdit',2),(30,'testRepoView',3),(30,'testRepoCreate',4),(30,'testRepoEdit',5),(30,'testPrepView',6),(30,'testPrepCreate',7),(30,'testPrepEdit',8),(30,'testExecView',9),(30,'testExecCreate',10),(30,'testExecEdit',11),(30,'defectView',12),(30,'defectCreate',13),(30,'defectEdit',14),(31,'testExecView',0),(31,'testExecCreate',1),(31,'testExecEdit',2),(31,'defectView',3),(31,'defectCreate',4),(31,'defectEdit',5),(32,'defectView',0),(32,'defectEdit',1);
 /*!40000 ALTER TABLE `ProjectRole_unitRoles` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -550,12 +550,12 @@ INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -586,12 +586,12 @@ INSERT INTO `ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects 
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -621,12 +621,12 @@ INSERT INTO `ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects 
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -657,12 +657,12 @@ INSERT INTO `Requirement_Tag` VALUES (1,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -692,12 +692,12 @@ INSERT INTO `Requirement_Tag` VALUES (1,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:42
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -716,7 +716,7 @@ INSERT INTO `Requirement_Tag` VALUES (1,2);
 -- WHERE:  TMUser_id in (select id from TMUser where account_id = 1)
 
 /*!40000 ALTER TABLE `TMUser_ProjectRole` DISABLE KEYS */;
-INSERT INTO `TMUser_ProjectRole` VALUES (1,1),(2,1),(3,1);
+INSERT INTO `TMUser_ProjectRole` VALUES (1,1),(34,32),(33,31),(2,30),(3,30);
 /*!40000 ALTER TABLE `TMUser_ProjectRole` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -728,12 +728,12 @@ INSERT INTO `TMUser_ProjectRole` VALUES (1,1),(2,1),(3,1);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:43
--- MySQL dump 10.13  Distrib 5.1.57, for apple-darwin10.3.0 (i386)
+-- Dump completed on 2011-06-16 18:03:30
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
 -- ------------------------------------------------------
--- Server version	5.1.57-log
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -752,7 +752,7 @@ INSERT INTO `TMUser_ProjectRole` VALUES (1,1),(2,1),(3,1);
 -- WHERE:  TMUser_id in (select id from TMUser where account_id = 1)
 
 /*!40000 ALTER TABLE `TMUser_accountRoles` DISABLE KEYS */;
-INSERT INTO `TMUser_accountRoles` VALUES (1,'accountAdmin',0),(1,'userCreate',1),(1,'userEdit',2),(1,'userDelete',3),(1,'projectCreate',4),(1,'projectEdit',5),(1,'projectDelete',6);
+INSERT INTO `TMUser_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1,'userDelete',2),(1,'projectCreate',3),(1,'projectEdit',4),(1,'projectDelete',5),(1,'accountAdmin',6);
 /*!40000 ALTER TABLE `TMUser_accountRoles` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -764,4 +764,4 @@ INSERT INTO `TMUser_accountRoles` VALUES (1,'accountAdmin',0),(1,'userCreate',1)
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-15 22:14:43
+-- Dump completed on 2011-06-16 18:03:30
