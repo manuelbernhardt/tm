@@ -31,7 +31,7 @@
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -67,7 +67,7 @@ INSERT INTO `Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',NULL
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -118,7 +118,7 @@ INSERT INTO `Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',NULL
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -230,7 +230,7 @@ INSERT INTO `ProjectRole` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55',
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `ProjectTreeNode` DISABLE KEYS */;
-INSERT INTO `ProjectTreeNode` VALUES (1,0,'Template',1,'','/Template','approachTree','release',1,1,1),(2,1,'Application Test',1,'\0','/Template/Application Test','approachTree','testCycle',1,1,1),(3,1,'Product Test',2,'\0','/Template/Product Test','approachTree','testCycle',1,1,1),(4,1,'User Acceptance Test',3,'\0','/Template/User Acceptance Test','approachTree','testCycle',1,1,1),(5,0,'Roll-out UK',2,'','/Roll-out UK','approachTree','release',1,1,5),(6,0,'Roll-out AT',3,'','/Roll-out AT','approachTree','release',1,1,6),(7,0,'Finance',1,'','/Finance','repositoryTree','scriptFolder',1,1,7),(8,1,'Assets',3,'','/Finance/Assets','repositoryTree','scriptFolder',1,1,7),(9,1,'Customers',2,'','/Finance/Customers','repositoryTree','scriptFolder',1,1,7),(10,1,'General Ledger',4,'','/Finance/General Ledger','repositoryTree','scriptFolder',1,1,7),(11,0,'Logistics',5,'','/Logistics','repositoryTree','scriptFolder',1,1,11),(12,0,'Purchasing',6,'','/Purchasing','repositoryTree','scriptFolder',1,1,12),(13,2,'Create asset master',1,'','/Create asset master','repositoryTree','script',1,1,7),(14,0,'Finance',1,'','/Finance','requirementTree','requirementFolder',1,1,14),(15,1,'Finance',1,'','/Finance/AP User access restriction','requirementTree','requirement',1,1,14);
+INSERT INTO `ProjectTreeNode` VALUES (1,0,'Template',1,'','/Template','approachTree','release',1,1,1),(2,1,'Application Test',1,'\0','/Template/Application Test','approachTree','testCycle',1,1,1),(3,1,'Product Test',2,'\0','/Template/Product Test','approachTree','testCycle',1,1,1),(4,1,'User Acceptance Test',3,'\0','/Template/User Acceptance Test','approachTree','testCycle',1,1,1),(5,0,'Roll-out UK',2,'','/Roll-out UK','approachTree','release',1,1,5),(6,0,'Roll-out AT',3,'','/Roll-out AT','approachTree','release',1,1,6),(7,0,'Finance',1,'','/Finance','repositoryTree','scriptFolder',1,1,7),(8,1,'Assets',3,'','/Finance/Assets','repositoryTree','scriptFolder',1,1,7),(9,1,'Customers',2,'','/Finance/Customers','repositoryTree','scriptFolder',1,1,7),(10,1,'General Ledger',4,'','/Finance/General Ledger','repositoryTree','scriptFolder',1,1,7),(11,0,'Logistics',5,'','/Logistics','repositoryTree','scriptFolder',1,1,11),(12,0,'Purchasing',6,'','/Purchasing','repositoryTree','scriptFolder',1,1,12),(13,2,'Create asset master',1,'','/Finance/Assets/Create asset master','repositoryTree','script',1,1,7),(14,0,'Finance',1,'','/Finance','requirementTree','requirementFolder',1,1,14),(15,1,'AP user access restriction',1,'','/Finance/AP user access restriction','requirementTree','requirement',1,1,14);
 /*!40000 ALTER TABLE `ProjectTreeNode` ENABLE KEYS */;
 
 --
@@ -248,7 +248,7 @@ INSERT INTO `ProjectWidget` VALUES (1,'2011-06-15 20:10:55','2011-06-15 20:10:55
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `Requirement` DISABLE KEYS */;
-INSERT INTO `Requirement` VALUES (1,'2011-06-15 20:10:57','2011-06-15 20:10:57',1,NULL,'AP user access restriction',1,1,1);
+INSERT INTO `Requirement` VALUES (1,'2011-06-15 20:10:57','2011-06-16 16:10:40',1,'','AP user access restriction',1,1,1);
 /*!40000 ALTER TABLE `Requirement` ENABLE KEYS */;
 
 --
@@ -373,7 +373,7 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -408,7 +408,7 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -443,7 +443,7 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:06
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -478,7 +478,7 @@ INSERT INTO `User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -514,7 +514,7 @@ INSERT INTO `Instance_Tag` VALUES (1,4);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -550,7 +550,7 @@ INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -586,7 +586,7 @@ INSERT INTO `ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects 
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -621,7 +621,7 @@ INSERT INTO `ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects 
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -657,7 +657,7 @@ INSERT INTO `Requirement_Tag` VALUES (1,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -692,7 +692,7 @@ INSERT INTO `Requirement_Tag` VALUES (1,2);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -728,7 +728,7 @@ INSERT INTO `TMUser_ProjectRole` VALUES (1,1),(34,32),(33,31),(2,30),(3,30);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -764,4 +764,4 @@ INSERT INTO `TMUser_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1,
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-06-16 18:03:30
+-- Dump completed on 2011-06-16 18:47:07
