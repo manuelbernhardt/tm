@@ -84,7 +84,7 @@ public class Projects extends TMController {
         Tag tag = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).first();
 
         // are there duplicate tags
-        List<Tag> tags = Tag.find("select t from Tag t where t.name=? and t.type=? and t.project.id=?", tagNewName, tag.type, projectId).fetch();
+        List<Tag> tags = Tag.find("select t from Tag t where t.id!=? and t.name=? and t.type=? and t.project.id=?", tagId, tagNewName, tag.type, projectId).fetch();
 
         if (tags.size() == 0) {
             tag.name = tagNewName;
