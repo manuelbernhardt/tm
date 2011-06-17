@@ -9,8 +9,8 @@
 
                 <input id="roleInput"/>
         </div>
-                <button id='add-role'> Role</button>
-                <button id='remove-role'> Remove</button>
+                <button class="button-add" id='add-role'> Role</button>
+                <button class="button-delete" id='remove-role'> Remove</button>
         </div>
     </div>
     <div class="tree-container">
@@ -80,11 +80,11 @@
           $('#remove-role').button('enable');
       });
 
-      $('#add-role').button({icons: {primary: 'ui-icon-plus'}}).click(function(){
+      $('#add-role').click(function(){
           $('#newRoleDialog').dialog('open');
       });
 
-    $('#remove-role').button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function(){
+    $('#remove-role').click(function(){
         deletionConfirmation('roleDeleteConfirmationDialog', 'Role', getSelectedRowColumn($('#tab').dataTable(), 1) , function(){
             $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
                 refreshTableContents('#tab', false);

@@ -35,15 +35,15 @@
     });
 
     /** Button initialisation **/
-    $("#create_category").button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false}).click(function () {
+    $("#create_category").click(function () {
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
     });
 
-    $("#create_project").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+    $("#create_project").click(function () {
       $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
     });
 
-    $("#remove").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function () {
+    $("#remove").click(function () {
       deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function(){
             $("#projectTree").jstree("remove", null);
       });
@@ -59,9 +59,9 @@
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
-            <button id="create_category">Project Category</button>
-            <button id="create_project">Project</button>
-            <button id="remove">Remove</button>
+            <button class="button-add-folder" id="create_category">Project Category</button>
+            <button class="button-add" id="create_project">Project</button>
+            <button class="button-delete" id="remove">Remove</button>
         </div>
     </div>
     <div class="tree-container">

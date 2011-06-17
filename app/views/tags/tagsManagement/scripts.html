@@ -4,7 +4,6 @@
 $(document).ready(function() {
     var ${_type}SecondTagId = null;
 
-    $('#${_type}RenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
     $("#${_type}RenameTag").click(function(){
         $('#${_type}RenameDialog').dialog("open");
         var ${_type}DataTable = $('#${_type}').dataTable();
@@ -71,7 +70,6 @@ $(document).ready(function() {
             }
     });
 
-    $('#${_type}AddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#${_type}AddTag").click(function(){
                 $('#${_type}AddTagDialog').dialog("open");
             });
@@ -101,7 +99,6 @@ $(document).ready(function() {
             }
     });
 
-    $('#${_type}DeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#${_type}DeleteTag").click(function(){
                 deletionConfirmation('${_type}TagDeletionConfirmationDialog','${_type} tag', getSelectedRowColumn($('#${_type}').dataTable(), 1), function(){
                     $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#${_type}'), type:'${_type}'}, function(){

@@ -12,7 +12,7 @@
         #{input.field field:'user.user.password', label:'Password' /}
         #{/formDialog}
 
-        <button id="removeUserButton">Remove</button>
+        <button class="button-delete" id="removeUserButton">Remove</button>
 
         <div id="dialog-confirm" title="Confirm user removal">
           <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="confirmationMessage"></span></p>
@@ -155,7 +155,7 @@
         updateCheckboxes();
     });
 
-    $("#removeUserButton").button({disabled: true, icons: {primary: 'ui-icon-trash'}, text: false}).click(function () {
+    $("#removeUserButton").click(function () {
       $("#dialog-confirm").dialog('open');
     });
 

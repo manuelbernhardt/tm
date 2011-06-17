@@ -12,9 +12,9 @@ Alternatively simple tags can be used to organize the Test Execution.
 <div class="container">
     <div id="actions" class="actions">
         <div class="actions buttons">
-          <button id="create_release">Release</button>
-          <button id="create_cycle">Cycle</button>
-          <button id="remove_cycleRelease">Remove</button>
+          <button class="button-add" id="create_release">Release</button>
+          <button class="button-add" id="create_cycle">Cycle</button>
+          <button class="button-delete" id="remove_cycleRelease">Remove</button>
         </div>
     </div>
   <div class="tree-container">
@@ -120,13 +120,13 @@ Alternatively simple tags can be used to organize the Test Execution.
         refreshTree('approachTree');
 
         /** button initialisation **/
-        $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+        $("#create_release").click(function () {
           $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
         });
-        $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
+        $("#create_cycle").click(function () {
           $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
         });
-        $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
+        $("#remove_cycleRelease").click(function () {
             deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
                 $("#approachTree").jstree("remove", null);
             })

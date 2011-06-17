@@ -6,7 +6,7 @@
   #{infoBox}
   Assign project roles to users by dragging them into the desired role.
   #{/}
-  <button id="removeRoleButton">Remove</button>
+  <button class="button-delete" id="removeRoleButton">Remove</button>
   <div id="searchBox" style="float:right;">Search: <input id="userSearchInput" type="text"></div>
   <div class="container">
     <div class="left_column">
@@ -33,7 +33,7 @@
             plugins: ["dnd"]
           });
 
-          $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
+          $("#removeRoleButton").click(function() {
             deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
                 $("#projectRolesAssignmentTree").jstree("remove", null);
             });

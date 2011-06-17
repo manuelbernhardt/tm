@@ -4,8 +4,8 @@
 <div id="deleteRoleConfirmationDialog" title="Role removal confirmation"></div>
 
 <div id="treeDiv">
-  <button id="assign-role">Role</button>
-  <button id="unassign-role">Remove</button>
+  <button class="button-add" id="assign-role">Role</button>
+  <button class="button-delete" id="unassign-role">Remove</button>
   <div id="projectRolesTree" class="tree"></div>
 
 </div>
@@ -128,7 +128,7 @@
               }]
             });
 
-    $("#assign-role").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
+    $("#assign-role").click(function() {
       $("#assign-dialog").dialog("open");
 
 
@@ -147,7 +147,7 @@
 
 
 
-    $("#unassign-role").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
+    $("#unassign-role").click(function() {
 
       deletionConfirmation('deleteRoleConfirmationDialog', 'Project role for', getSelectedRowColumn($('#tab').dataTable(), 1) + " " + getSelectedRowColumn($('#tab').dataTable(), 2),  function(){
           var $tree = jQuery.jstree._reference('#projectRolesTree');
