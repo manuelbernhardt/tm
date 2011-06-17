@@ -10,8 +10,12 @@
 
 <!--<div class="container ui-widget-content">-->
 <div class="tree-container">
+
     <div class="left_table">
       #{box 'Test Instances'}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
+            <div id="createRunButton" class="button-play">Run Test Instance</div>
+        #{/deadbolt.restrict}
         <table class="display" id="instanceTable">
           <thead>
           <tr>
@@ -29,10 +33,6 @@
     <div id="content">
 
       #{box 'Runs for test instance'}
-
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
-        <div id="createRunButton" class="button-play">Run Test Instance</div>
-      #{/deadbolt.restrict}
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
         <div id="updateRunButton" class="button-edit">Edit Test Run</div>
       #{/deadbolt.restrict}
