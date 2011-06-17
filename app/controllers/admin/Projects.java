@@ -7,6 +7,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Defect;
@@ -29,18 +30,18 @@ import util.Logger;
 @With(Deadbolt.class)
 public class Projects extends TMController {
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void index() {
         render();
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void projectDetails(Long projectId) {
         Project project = Lookups.getProject(projectId);
         render(project);
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void edit(Project project) {
         checkInAccount(project);
         project.save();
@@ -48,13 +49,13 @@ public class Projects extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void roles(Long projectId) {
         Project project = Lookups.getProject(projectId);
         render(project);
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void users(Long projectId) {
         Project project = Lookups.getProject(projectId);
         List<ProjectRole> projectRoles = ProjectRole.findByProject(projectId);
@@ -62,12 +63,12 @@ public class Projects extends TMController {
         render(project, projectRoles, accountUsers);
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void tags(Long projectId) {
         render(projectId);
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void tagsData(String tableId,
                                 String tagType,
                                 Integer iDisplayStart,
@@ -92,7 +93,7 @@ public class Projects extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void renameTag(Long tagId, String tagNewName, Long projectId) {
         Tag tag = Tag.find("select t from Tag t where t.id=? and t.project.id=?", tagId, projectId).first();
 
@@ -109,7 +110,7 @@ public class Projects extends TMController {
 
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void mergeTags(Long firstTagId, Long secondTagId, Long projectId) {
 
         Tag firstTag = Lookups.getTag(firstTagId);
@@ -144,7 +145,7 @@ public class Projects extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void addTag(Long projectId, String name, String type) {
 
         Project project = Lookups.getProject(projectId);
@@ -162,7 +163,7 @@ public class Projects extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void deleteTag(Long tagId, String type) {
         Tag tag = Lookups.getTag(tagId);
 

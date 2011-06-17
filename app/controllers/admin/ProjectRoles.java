@@ -6,6 +6,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Project;
@@ -21,7 +22,7 @@ import util.Logger;
 @With(Deadbolt.class)
 public class ProjectRoles extends TMController {
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void create(ProjectRole role, Long projectId) {
         Project project = Lookups.getProject(projectId);
         if(project == null) {
@@ -39,7 +40,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -60,7 +61,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void roleDefinition(Long roleId) {
         if (roleId == null) {
             error("No roleId provided");
@@ -72,7 +73,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void edit(Long roleId, String[] unitRoles) {
         if (roleId == null) {
             error("No roleId provided");
@@ -91,7 +92,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void roleDelete(Long roleId) {
         ProjectRole role = Lookups.getRole(roleId);
         if (role != null) {
