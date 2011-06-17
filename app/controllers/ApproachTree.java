@@ -138,18 +138,18 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
     }
 
     public List<UnitRole> getViewRoles() {
-        return roles(UnitRole.PROJECTEDIT, UnitRole.TESTPREPCREATE);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN, UnitRole.TESTPREPCREATE);
     }
 
     public List<UnitRole> getCreateRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 
     public List<UnitRole> getUpdateRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 
     public List<UnitRole> getDeleteRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 }
