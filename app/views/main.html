@@ -3,7 +3,7 @@
 <div id="screen" style="display:none;">
   #{topMenu space:'application' /}
 
-  #{tabLayout}
+  #{tabLayout id:'main-wrapper'}
     #{tabs id:'tabs'}
       #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
       #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}

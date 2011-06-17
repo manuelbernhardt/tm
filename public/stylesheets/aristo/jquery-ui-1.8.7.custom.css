@@ -427,6 +427,7 @@
 	margin: 0;
 	display:block;
 	float: left;
+    text-align:left;
 }
 .ui-menu .ui-menu {
 	margin-top: -3px;
@@ -621,7 +622,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  * http://docs.jquery.com/UI/Tabs#theming
  */
 .ui-tabs { position: relative; zoom: 1; border: 0; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-.ui-tabs .ui-tabs-nav { margin: 0; padding: 0; background: transparent; border-width: 0 0 1px 0; }
+.ui-tabs .ui-tabs-nav { margin: 0; padding: 0; background: #fff; border-width: 0 0 1px 0; }
 .ui-tabs .ui-tabs-nav { 
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
@@ -632,7 +633,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; background: #fff; border-color: #B6B6B6; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; outline: none; }
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
-.ui-tabs .ui-tabs-panel { display: block; border-width: 0 1px 1px 1px; padding: 1.7em 1.4em; background: none; }
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0 1px 1px 1px; padding: 1.7em 1.4em; background: #fff; }
 .ui-tabs .ui-tabs-panel { 
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;

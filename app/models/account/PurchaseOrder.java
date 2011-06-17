@@ -3,14 +3,15 @@ package models.account;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
-import models.general.TemporalModel;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-public class PurchaseOrder extends TemporalModel {
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"naturalId", "account_id"})})
+public class PurchaseOrder extends AccountModel {
 
     @ManyToOne
     public AccountProduct product;

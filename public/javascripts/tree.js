@@ -1,5 +1,13 @@
+/**
+ * Helper function for using the JSTree plugin in TM.
+ * The options array can take the following parameters:
+ *
+ * types: the types plugin configuration. See predefined confingurations for each tree in treeTypes.js
+ * plugins: an array of additional plugins to load
+ * onRename: callback to run after a successful rename operation
+ * onDeleteFailed: callback to run after an unsuccessful delete operation
+ */
 (function($) {
-
     $.fn.tree = function(options) {
 
         var settings = {};

@@ -2,7 +2,7 @@
 
 #{topMenu space:'admin' /}
 
-#{tabLayout}
+#{tabLayout id:'main-wrapper'}
   #{tabs id:'tabs'}
   #{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
     #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}

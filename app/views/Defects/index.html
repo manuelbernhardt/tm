@@ -25,18 +25,33 @@
   <button id="createDefectButton" class="button-add">Defect</button>
   #{/deadbolt.restrict}
 
+  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTVIEW]]}
+  <button id="updateDefectButton" class="button-edit">Update defect</button>
+  #{/deadbolt.restrict}
 
-  <div id="createDefectDialog" style="display:none" title="Create a defect">
-    #{box 'Submit a defect'}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
+  <button id="deleteDefectButton" class="button-delete">Delete defect</button>
+  #{/deadbolt.restrict}
+
+
+  <div id="createDefectDialog" title="Create a defect">
     #{ox.form id:'createDefectForm', action:@Defects.createDefect(), baseClass:'models.tm.Defect', create:true}
     #{ox.field field:'defect.name', label:'Summary' /}
     #{ox.field field:'defect.description', label:'Description'/}
     #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
+    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
     #{/ox.form}
-    <button id="createDefectConfirm">Submit</button>
-    <button id="createDefectCancel">Cancel</button>
-    #{/box}
+  </div>
+
+  <div id="updateDefectDialog" title="Update a defect">
+    #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
+    #{ox.field field:'defect.name', label:'Summary' /}
+    #{ox.field field:'defect.description', label:'Description'/}
+    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
+    #{ox.field field:'defect.status', label:'Status' /}
+    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
+    #{ox.field field:'defect.id', hidden:true/}
+    #{/ox.form}
   </div>
 
   <br/>
@@ -60,77 +75,14 @@
   #{/box}
 
 </div>
-<div id="defectDetails" style="display: none;">
-  <a href="#" id="back">Go back to defects list</a>
-  <br/>
-  <br/>
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTEDIT]]}
-  <button id="updateDefectButton" class="button-edit">Update defect</button>
-  #{/deadbolt.restrict}
-
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
-  <button id="deleteDefectButton" class="button-delete">Delete defect</button>
-  #{/deadbolt.restrict}
-
-  <div id="updateDefectDialog" style="display:none" title="Update a defect">
-    #{box 'Update the defect'}
-    #{ox.form id:'updateDefectForm', action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
-    #{ox.field field:'defect.name', label:'Summary' /}
-    #{ox.field field:'defect.description', label:'Description'/}
-    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.status', label:'Status' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
-    #{ox.field field:'defect.id', hidden:true/}
-    #{/ox.form}
-    <button id="updateDefectConfirm">Submit</button>
-    <button id="updateDefectCancel">Cancel</button>
-    #{/box}
-  </div>
-
-    <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
+  <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
 
 
-  <h2 id="defect-header"></h2>
 
-  <table id="defect-detail-table" style="width:100%">
-
-      <tr>
-          <td>
-              <strong>Submitted by:</strong> <div id="defect-submittedBy"></div>
-          </td>
-          <td>
-              <strong>Assigned to: </strong><div id="defect-assignedTo"></div>
-          </td>
-          <td>
-              <strong>Created at: </strong><div id="defect-created"></div>
-          </td>
-      </tr>
-      <tr>
-          <td>
-              <strong>Status: </strong><div id="defect-status"></div>
-          </td>
-          <td colspan="2">
-              <strong>Tags: </strong><div id="defect-tags"></div>
-          </td>
-      </tr>
-  </table>
-    <hr/>
-    <strong>Description: </strong>
-
-  <div id="defect-description"></div>
-</div>
 
 <script type="text/javascript">
 
 $(document).ready(function() {
-
-
-
-  $('#defectDetails').hide();
-  $('#back').click(function() {
-    $('#defectDetails').hide();
-    $('#defectList').show();
-  });
 
   $('#createDefectConfirm').button();
   $('#createDefectCancel').button();
@@ -197,7 +149,7 @@ $(document).ready(function() {
 
 // creating a defect
   $('#createDefectButton').click(function() {
-    $('#createDefectDialog').slideToggle('slow');
+    $('#createDefectDialog').dialog('open');
   });
 
   $('#createDefectForm').oxForm({
@@ -206,31 +158,23 @@ $(document).ready(function() {
             }
           });
 
-  $('#createDefectConfirm').click(function() {
-    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
-    $('#createDefectDialog').slideUp('slow');
-    $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
-  });
-  $('#createDefectCancel').click(function() {
-    $('#createDefectForm').resetForm();
-    $('#createDefectForm_defect_tags').tokenInput('clearAll');
-    $('#createDefectDialog').slideUp('slow');
-    $("#createDefectButton span.ui-icon").addClass("ui-icon-carat-1-e").removeClass("ui-icon-carat-1-s");
-  });
+    $('#createDefectDialog').dialog({
+        autoOpen: false,
+        width: 700,
+        modal: true,
+        buttons: {
+            "Confirm": function() {
+                $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
 
+                $(this).dialog("close");
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
 
 //updating a defect
-
-  handleRowSelection('#defectsTable', function() {
-    $('#updateDefectButton').button('enable');
-    $('#deleteDefectButton').button('enable');
-
-    getDefectDetails();
-
-    $('#defectList').hide();
-
-
-  });
 
 
   $('#updateDefectForm').oxForm({
@@ -242,43 +186,51 @@ $(document).ready(function() {
 
 
   $('#updateDefectButton').click(function() {
-    $('#updateDefectDialog').slideToggle('slow');
-    $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+
+      $('#updateDefectDialog').dialog('open');
   });
 
-  $('#updateDefectForm').oxForm({
-            submissionCallback: function() {
-              refreshTableContents('#defectsTable', false);
-              getDefectDetails();
+    $('#updateDefectDialog').dialog({
+        autoOpen: false,
+        width: 700,
+        modal: true,
+        buttons: {
+            "Confirm": function() {
+                $('#updateDefectForm').ajaxSubmit({
+                    success: function(){
+                        refreshTableContents('#defectsTable', false);
+                    }
+                });
+                $(this).dialog("close");
+            },
+            "Cancel": function() {
+                $(this).dialog("close");
             }
-          });
-
-  $('#updateDefectConfirm').click(function() {
-    $('#updateDefectDialog').slideUp('slow');
-    $('#updateDefectForm').oxForm('submitCreateForm');
-    getDefectDetails();
-  });
-  $('#updateDefectCancel').click(function() {
-    $('#updateDefectDialog').slideUp('slow');
-  });
+        }
+    });
 
 
-  var tokens = $('#createDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
+//  var tokens = $('#createDefectForm_defect_tags').tokenInput({
+//            url: '@{Defects.allTags()}',
+//            preventDuplicates: true,
+//            tokenValue: 'name',
+//            allowCreation: true,
+//            creationText: "Create new tag"
+//          });
+//
+//  $('#updateDefectForm_defect_tags').tokenInput({
+//            url: '@{Defects.allTags()}',
+//            preventDuplicates: true,
+//            tokenValue: 'name',
+//            allowCreation: true,
+//            creationText: "Create new tag"
+//          });
 
-  $('#updateDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
+    handleRowSelection('#defectsTable', function() {
+        $('#updateDefectButton').button('enable');
+        $('#deleteDefectButton').button('enable');
+        $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+    });
 
 // delete defect
   $('#deleteDefectButton').click(function() {
@@ -286,11 +238,15 @@ $(document).ready(function() {
           $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
                 function(data) {
                     refreshTableContents('#defectsTable', false);
+                    $('#updateDefectButton').button('disable');
+                    $('#deleteDefectButton').button('disable');
                     $('#defectDetails').hide();
                     $('#defectList').show();
                 }).error(errorHandler);
       })
   });
+
+
 
 
 // filter functions
@@ -323,20 +279,5 @@ $(document).ready(function() {
 
 });
 
-function getDefectDetails(){
-    $.getJSON('@{Defects.defectDescription()}', {defectId: getSelectedRowId('#defectsTable')},
-            function(data){
-                $('#defect-header').html(data.defectTitle);
-                $('#defect-description').html(data.defectDescription);
-                $('#defect-submittedBy').html(data.defectSubmittedBy);
-                $('#defect-assignedTo').html(data.defectAssignedTo);
-                $('#defect-status').html(data.defectStatus);
-                $('#defect-created').html(data.defectCreated);
-                $('#defect-tags').html(data.defectTags);
-                $('#defectDetails').show();
-            });
-}
-
 
 </script>
-

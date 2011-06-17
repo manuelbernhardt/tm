@@ -154,14 +154,18 @@ public class Defects extends TMController {
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
-        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+//        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         defect.create();
 
-        Long runId = Long.valueOf(params.get("runId"));
-        if (runId != null) {
-            Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
-            instance.defects.add(defect);
-            instance.save();
+        try{
+            Long runId = Long.valueOf(params.get("runId"));
+            if (runId != null) {
+                Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
+                instance.defects.add(defect);
+                instance.save();
+            }
+        }catch(Exception e){
+            // do nothing if run id is not passed it means that we create defect not connected to any run instance
         }
         ok();
     }
@@ -177,7 +181,7 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
-        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+//        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         // TODO try...catch and log db error
         d.save();
         ok();
