@@ -104,20 +104,32 @@
       };
       ko.applyBindings(viewModel, document.getElementById('accountActions'));
 
-    $('#saveButton').button({disabled:true}).click(function(){
+      $("#removeUserButton").click(function () {
+          $("#dialog-confirm").dialog('open');
+      });
 
-        $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },function(){
-            updateCheckboxes();
-        }).error(errorHandler);
-        $('#saveButton').button('disable');
+    $("#dialog-confirm").dialog({
+          autoOpen: false,
+          resizable: false,
+          width:300,
+          height: 'auto',
+          modal: true,
+          open: function() {
+            $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
+          },
+          buttons: {
+            "Remove the user": function() {
+              $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
+                refreshTableContents('#tab', false);
+                $("#removeUserButton").button('disable');
+              }).error(errorHandler);
+              $(this).dialog("close");
+            },
+            Cancel: function() {
+              $(this).dialog("close");
+            }
+          }
     });
-      
-    $(':checkbox').click(function(){
-        $('#saveButton').button('enable');
-    });
-
-    $("#innerTabs").tabs();
-    $('.hiddenOnLoad').hide();
 
     $('#userDetailsForm').oxForm({
       loadAction: '@{admin.Users.userDetailsData()}',
@@ -125,7 +137,6 @@
                             refreshTableContents('#tab', false);
                           }
     });
-
 
     #{tabularasa.init tableId:'tab'}
     var tabParameters = {
@@ -155,32 +166,20 @@
         updateCheckboxes();
     });
 
-    $("#removeUserButton").click(function () {
-      $("#dialog-confirm").dialog('open');
-    });
+      $("#innerTabs").tabs();
+      $('.hiddenOnLoad').hide();
 
-    $("#dialog-confirm").dialog({
-      autoOpen: false,
-      resizable: false,
-      width:300,
-      height: 'auto',
-      modal: true,
-      open: function() {
-        $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
-      },
-      buttons: {
-        "Remove the user": function() {
-          $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
-            refreshTableContents('#tab', false);
-            $("#removeUserButton").button('disable');
-          }).error(errorHandler);
-          $(this).dialog("close");
-        },
-        Cancel: function() {
-          $(this).dialog("close");
-        }
-      }
-    });
+      $('#saveButton').button({disabled:true}).click(function(){
+
+            $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },function(){
+                updateCheckboxes();
+            }).error(errorHandler);
+            $('#saveButton').button('disable');
+      });
+
+      $(':checkbox').click(function(){
+            $('#saveButton').button('enable');
+      });
 
       //search filter align to left side
       $('#tab_filter').addClass('search-input-table-left');
