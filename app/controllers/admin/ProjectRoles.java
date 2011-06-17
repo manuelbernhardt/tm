@@ -40,6 +40,20 @@ public class ProjectRoles extends TMController {
     }
 
     @Restrict(UnitRole.PROJECTEDIT)
+    public static void renameRole(Long projectId, Long roleId, String roleName){
+        List<ProjectRole> projectRoles = ProjectRole.find("id!=? and name=? and project.id=?", roleId, roleName, projectId).fetch();
+        if(projectRoles.size()>0){
+            error("Project role with this name is already defined for this project. Role is not renamed!");
+        }
+        else{
+            ProjectRole projectRole = ProjectRole.find("id=?",roleId).first();
+            projectRole.name = roleName;
+            projectRole.save();
+            ok();
+        }
+    }
+
+    @Restrict(UnitRole.PROJECTEDIT)
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
