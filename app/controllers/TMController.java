@@ -515,6 +515,15 @@ public class TMController extends Controller {
         return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getCreateRole(request.controllerClass));
     }
 
+    @Util
+    protected static boolean canEdit() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getEditRole(request.controllerClass));
+    }
+
+    @Util
+    protected static boolean canDelete() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getDeleteRole(request.controllerClass));
+    }
 
     private final static ImmutableMap<String, Class<? extends ProjectModel>> controllerToEntityMapping = ImmutableMap.of(
             Requirements.class.getName(), Requirement.class,

@@ -67,6 +67,23 @@ public class UnitRole implements models.deadbolt.Role {
             Defects.class.getName(), UnitRole.DEFECTCREATE
     );
 
+    private final static ImmutableMap<String, String> editRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQEDIT,
+            Repository.class.getName(), UnitRole.TESTREPOEDIT,
+            Preparation.class.getName(), UnitRole.TESTPREPEDIT,
+            Execution.class.getName(), UnitRole.TESTEXECEDIT,
+            Defects.class.getName(), UnitRole.DEFECTEDIT
+    );
+
+    private final static ImmutableMap<String, String> deleteRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQDELETE,
+            Repository.class.getName(), UnitRole.TESTREPODELETE,
+            Preparation.class.getName(), UnitRole.TESTPREPDELETE,
+            Execution.class.getName(), UnitRole.TESTEXECDELETE,
+            Defects.class.getName(), UnitRole.DEFECTDELETE
+    );
+
+
     private String name;
 
     public String getRoleName() {
@@ -92,8 +109,17 @@ public class UnitRole implements models.deadbolt.Role {
     public static UnitRole getViewRole(Class controllerClass) {
         return role(createRolesPerController.get(controllerClass.getName()));
     }
+
     public static UnitRole getCreateRole(Class controllerClass) {
         return role(viewRolesPerController.get(controllerClass.getName()));
+    }
+
+    public static UnitRole getEditRole(Class controllerClass) {
+        return role(editRolesPerController.get(controllerClass.getName()));
+    }
+
+    public static UnitRole getDeleteRole(Class controllerClass) {
+        return role(editRolesPerController.get(controllerClass.getName()));
     }
 
     @Override
