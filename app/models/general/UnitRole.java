@@ -16,6 +16,7 @@ import controllers.Requirements;
  */
 public class UnitRole implements models.deadbolt.Role {
 
+    /* Account unit roles */
     public static final String ACCOUNTADMIN = "accountAdmin";
 
     public static final String USERCREATE = "userCreate";
@@ -25,6 +26,10 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String PROJECTCREATE = "projectCreate";
     public static final String PROJECTEDIT = "projectEdit";
     public static final String PROJECTDELETE = "projectDelete";
+
+
+    /* Project unit roles */
+    public static final String PROJECTADMIN = "projectAdmin";
 
     public static final String REQVIEW = "reqView";
     public static final String REQCREATE = "reqCreate";
@@ -59,6 +64,7 @@ public class UnitRole implements models.deadbolt.Role {
             Execution.class.getName(), UnitRole.TESTEXECVIEW,
             Defects.class.getName(), UnitRole.DEFECTVIEW
     );
+
     private final static ImmutableMap<String, String> createRolesPerController = ImmutableMap.of(
             Requirements.class.getName(), UnitRole.REQCREATE,
             Repository.class.getName(), UnitRole.TESTREPOCREATE,
