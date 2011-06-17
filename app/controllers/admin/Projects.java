@@ -54,19 +54,6 @@ public class Projects extends TMController {
         render(project);
     }
 
-//    @Restrict(UnitRole.PROJECTEDIT)
-//    public static void users(Long projectId) {
-//        Project project = Lookups.getProject(projectId);
-//        List<ProjectRole> projectRoles = ProjectRole.findByProject(projectId);
-//        List<TMUser> accountUsers = TMUser.listByAccount(getConnectedUserAccount().getId());
-//        render(project, projectRoles, accountUsers);
-//    }
-
-    @Restrict(UnitRole.PROJECTEDIT)
-    public static void tags(Long projectId) {
-        render(projectId);
-    }
-
     @Restrict(UnitRole.PROJECTEDIT)
     public static void tagsData(String tableId,
                                 String tagType,

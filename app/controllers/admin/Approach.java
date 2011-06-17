@@ -16,12 +16,6 @@ import play.mvc.With;
 public class Approach extends TMController {
 
     @Restrict(UnitRole.PROJECTEDIT)
-    public static void cycles(Long projectId) {
-        Project project = Lookups.getProject(projectId);
-        render(project);
-    }
-
-    @Restrict(UnitRole.PROJECTEDIT)
     public static void cycleDetails(Long baseObjectId, String[] fields) {
         TestCycle cycle = Lookups.getCycle(baseObjectId);
         renderFields(cycle, fields);

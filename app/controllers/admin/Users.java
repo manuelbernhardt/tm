@@ -44,41 +44,9 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.USEREDIT)
-    public static void projects(Long userId) {
-        TMUser user = null;
-        if (userId != null) {
-            user = Lookups.getUser(userId);
-            if (user == null) {
-                notFound();
-            } else {
-                List<ProjectCategory> projectCategories = ProjectCategory.findByAccount(user.user.account.getId());
-                render("/admin/Users/projects.html", user, projectCategories);
-            }
-        } else {
-            render("/admin/Users/projects.html");
-        }
-    }
-
-    @Restrict(UnitRole.USEREDIT)
     public static void userDetailsData(Long baseObjectId, String[] fields){
         Object base = Lookups.getUser(baseObjectId);
         renderFields(base, fields);
-    }
-
-    @Restrict(UnitRole.ACCOUNTADMIN)
-    public static void account(Long userId) {
-        TMUser user = null;
-        if (userId != null) {
-            user = Lookups.getUser(userId);
-        }
-        boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
-        if (user != null) {
-            List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
-            userAdmin = accountRoles.contains(AccountRole.USER_ADMIN);
-            projectAdmin = accountRoles.contains(AccountRole.PROJECT_ADMIN);
-            accountAdmin = accountRoles.contains(AccountRole.ACCOUNT_ADMIN);
-        }
-        render("/admin/Users/account.html", user, userAdmin, projectAdmin, accountAdmin);
     }
 
     @Restrict(UnitRole.USERCREATE)
