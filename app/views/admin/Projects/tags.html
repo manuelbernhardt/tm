@@ -30,14 +30,8 @@
             <!-- function for disabling all rename and delete buttons -->
 
             function disableRenameAndDeleteButtons(){
-                $("#requirementDeleteTag").button("disable");
-                $("#requirementRenameTag").button("disable");
-                $("#testScriptDeleteTag").button("disable");
-                $("#testScriptRenameTag").button("disable");
-                $("#testInstanceDeleteTag").button("disable");
-                $("#testInstanceRenameTag").button("disable");
-                $("#defectDeleteTag").button("disable");
-                $("#defectRenameTag").button("disable");
+                $(".button-delete").button("disable");
+                $(".button-edit").button("disable");
             }
 
             $(document).ready(function() {
