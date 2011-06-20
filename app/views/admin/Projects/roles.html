@@ -9,12 +9,8 @@
 
                 <input id="roleInput"/>
         </div>
-        <div id="renameRoleDialog" title="Rename role">
 
-                <input id="renameInput"/>
-        </div>
                 <button class="button-add" id='add-role'> Role</button>
-                <button class="button-edit" id='rename-role'> Rename</button>
                 <button class="button-delete" id='remove-role'> Remove</button>
         </div>
     </div>
@@ -82,17 +78,12 @@
       });
 
       handleRowSelection("#tab", function(){
-          $('#rename-role').button('enable');
           $('#remove-role').button('enable');
+
       });
 
       $('#add-role').click(function(){
           $('#newRoleDialog').dialog('open');
-      });
-
-      $('#rename-role').click(function(){
-          $('#renameInput').val(getSelectedRowColumn($('#tab').dataTable(), 1));
-          $('#renameRoleDialog').dialog('open');
       });
 
     $('#remove-role').click(function(){
@@ -125,26 +116,6 @@
       }
     });
 
-    $('#renameRoleDialog').dialog({
-      autoOpen: false,
-      width: 300,
-      height: 200,
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Confirm": function() {
-          $.post('@{admin.ProjectRoles.renameRole()}', {projectId:getSelectedNodeId('projectTree'), roleId:getSelectedRowId("#tab"), roleName: $('#renameInput').val()}, function(){
-                refreshTableContents('#tab', false);
-          }).error(errorHandler);
-            $(this).dialog("close");
-        },
-        "Cancel": function() {
-          $(this).dialog("close");
-        }
-      }
-    });
-
     /* Click listener to reload the role definition */
     $("#tab tbody").click(function(event) {
       $(tabDataTable.fnSettings().aoData).each(function () {
@@ -158,6 +129,7 @@
         // reloads the role definition
         $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
           $('#roleDefinition').html(data);
+          $('#renameInput').val(getSelectedRowColumn($('#tab').dataTable(), 1));
         }).error(errorHandler);
       }
     });

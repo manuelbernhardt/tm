@@ -9,7 +9,11 @@ No role selected
     $('#flash').show();
     $('#flash').fadeOut(3000, 'easeInExpo');
   });
-  $('#roleSubmit').button();
+  $('#roleSubmit').button().click(function(){
+      $.post('@{admin.ProjectRoles.renameRole()}', {projectId:getSelectedNodeId('projectTree'), roleId:getSelectedRowId("#tab"), roleName: $('#renameInput').val()}, function(){
+                refreshTableContents('#tab', false);
+      }).error(errorHandler);
+  });
 
 </script>
 
@@ -18,6 +22,9 @@ No role selected
   <div id="flash" style="display: none; text-align: center;"></div>
 
   #{form action:@admin.ProjectRoles.edit(), id:'roleDetailsForm'}
+
+    <label class="name"><strong>Role name</strong></label> <input id="renameInput"/> <br/> <br/>
+    
   <table>
     <tr>
       <th>Project administration</th>
