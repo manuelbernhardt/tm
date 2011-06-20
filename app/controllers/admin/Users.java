@@ -1,10 +1,9 @@
 package controllers.admin;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -24,7 +23,6 @@ import models.tm.TMUser;
 import play.data.validation.Valid;
 import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
-import play.mvc.Router;
 import play.mvc.With;
 import play.templates.JavaExtensions;
 import util.Logger;
@@ -44,7 +42,7 @@ public class Users extends TMController {
     }
 
     @Restrict(UnitRole.USEREDIT)
-    public static void userDetailsData(Long baseObjectId, String[] fields){
+    public static void userDetailsData(Long baseObjectId, String[] fields) {
         Object base = Lookups.getUser(baseObjectId);
         renderFields(base, fields);
     }
@@ -82,18 +80,18 @@ public class Users extends TMController {
 
         boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
         if (user == null) {
-            error("Could not find user "+ userId);
+            error("Could not find user " + userId);
         }
 
         List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
 
-        if(accountRoles.contains(AccountRole.USER_ADMIN)){
+        if (accountRoles.contains(AccountRole.USER_ADMIN)) {
             accounts[0] = "userAdmin";
         }
-        if(accountRoles.contains(AccountRole.PROJECT_ADMIN)){
+        if (accountRoles.contains(AccountRole.PROJECT_ADMIN)) {
             accounts[1] = "projectAdmin";
         }
-        if(accountRoles.contains(AccountRole.ACCOUNT_ADMIN)){
+        if (accountRoles.contains(AccountRole.ACCOUNT_ADMIN)) {
             accounts[2] = "accountAdmin";
         }
         renderJSON(gson.toJson(accounts));
@@ -102,8 +100,8 @@ public class Users extends TMController {
     @Restrict(UnitRole.ACCOUNTADMIN)
     public static void updateAccountRoles(Long userId, String[] roles) {
         List<String> accountRoles = new ArrayList<String>();
-        if(roles!=null){
-            for(String role: roles){
+        if (roles != null) {
+            for (String role : roles) {
                 if (role.equals("userAdmin")) {
                     accountRoles.addAll(AccountRole.USER_ADMIN.getUnitRoles());
                 }
@@ -170,89 +168,71 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.USEREDIT)
     public static void rolesData() {
-        JsonObject res = computeRolesData(null, null, null);
-        renderJSON(res.toString());
+        renderJSON(computeRolesData(null, null, null));
     }
 
     @Restrict(UnitRole.USEREDIT)
     public static void rolesTreeData(Long categoryId, Long projectId, Long roleId) {
 
-        if(categoryId==null){
-            error("Category id must not be null!");
-        }
         List<ProjectRole> projectRoles = new ArrayList<ProjectRole>();
         List<Project> projects = new ArrayList<Project>();
         List<ProjectCategory> projectCategories = new ArrayList<ProjectCategory>();
-        if(roleId!=null){
-            projectRoles.add(Lookups.getRole(roleId));
-        }
-        if(projectId!=null){
-            projects.add(Lookups.getProject(projectId));
-            if(roleId==null){
-                projectRoles = ProjectRole.findByProject(projectId);
 
-            }
-        }
-        if (projectCategories!=null){
+        if(categoryId != null && projectId == null && roleId == null) {
             projectCategories.add(Lookups.getProjectCategory(categoryId));
-            if(projectId==null){
-                for(ProjectCategory pc: projectCategories){
-                    for(Project p:pc.getProjects()){
-                       projects.add(p);
-                        if(roleId==null){
-                            for(ProjectRole pr: ProjectRole.findByProject(p.getId())){
-                                projectRoles.add(pr);
-                            }
-                        }
-                    }
-
-                }
-
-            }
+            renderJSON(computeRolesData(projectCategories, null, null));
+        } else if(categoryId != null && projectId != null && roleId == null) {
+            projectCategories.add(Lookups.getProjectCategory(categoryId));
+            projects.add(Lookups.getProject(projectId));
+            renderJSON(computeRolesData(projectCategories, projects, null));
+        } else if(categoryId != null && projectId != null && roleId != null) {
+            // we're stuffed
+            projectCategories.add(Lookups.getProjectCategory(categoryId));
+            projects.add(Lookups.getProject(projectId));
+            projectRoles.add(Lookups.getRole(roleId));
+            renderJSON(computeRolesData(projectCategories, projects, projectRoles));
+        } else {
+            Logger.error(Logger.LogType.TECHNICAL, "Incorrect roles pre-selection: categoryId %s, projectId %s, roleId %s", categoryId, projectId, roleId);
+            error("Invalid role pre-selection");
         }
-
-        JsonObject res = computeRolesData(projectCategories,projects, projectRoles);
-
-        renderJSON(res.toString());
     }
 
-    private static JsonObject computeRolesData(List<ProjectCategory> projectCategories, List<Project> projects, List<ProjectRole> projectRoles){
+    private static String computeRolesData(@Nullable List<ProjectCategory> projectCategories, @Nullable List<Project> projects, @Nullable List<ProjectRole> projectRoles) {
         JsonObject res = new JsonObject();
         JsonArray categories = new JsonArray();
         res.add("categories", categories);
-        if(projectCategories==null){
+        if (projectCategories == null) {
             projectCategories = ProjectCategory.findAll();
         }
-        for(ProjectCategory pc : projectCategories) {
-           JsonObject category = new JsonObject();
+        for (ProjectCategory pc : projectCategories) {
+            JsonObject category = new JsonObject();
             categories.add(category);
             category.addProperty("name", pc.name);
             category.addProperty("id", pc.getId());
             JsonArray projectsArray = new JsonArray();
             category.add("projects", projectsArray);
-            if(projects==null){
+            if (projects == null) {
                 projects = pc.getProjects();
             }
-            for(Project p : projects) {
+            for (Project p : projects) {
                 JsonObject project = new JsonObject();
                 projectsArray.add(project);
                 project.addProperty("id", p.getId());
                 project.addProperty("name", p.name);
                 JsonArray roles = new JsonArray();
                 project.add("roles", roles);
-                if(projectRoles ==null){
+                if (projectRoles == null) {
                     projectRoles = ProjectRole.findByProject(p.getId());
                 }
-                for(ProjectRole r : projectRoles) {
+                for (ProjectRole r : projectRoles) {
                     JsonObject role = new JsonObject();
                     roles.add(role);
                     role.addProperty("id", r.getId());
                     role.addProperty("name", r.name);
                 }
-                projectRoles=null; //reset array, so it can get new value
             }
         }
-        return res;
+        return res.toString();
     }
 
 }
