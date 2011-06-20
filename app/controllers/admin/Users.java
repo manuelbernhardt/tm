@@ -75,7 +75,7 @@ public class Users extends TMController {
     public static void getAccountRoles(Long userId) {
         TMUser user = null;
         if (userId != null) {
-            user = TMUser.findById(userId);
+            user = Lookups.getUser(userId);
         }
         String[] accounts = new String[3];
         Gson gson = new Gson();
