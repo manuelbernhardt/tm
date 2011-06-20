@@ -172,33 +172,7 @@ public class Users extends TMController {
 
     @Restrict(UnitRole.USEREDIT)
     public static void rolesData() {
-        List<ProjectCategory> projectCategories = ProjectCategory.findAll();
-        JsonObject res = new JsonObject();
-        JsonArray categories = new JsonArray();
-        res.add("categories", categories);
-        for(ProjectCategory pc : projectCategories) {
-           JsonObject category = new JsonObject();
-            categories.add(category);
-            category.addProperty("name", pc.name);
-            category.addProperty("id", pc.getId());
-            JsonArray projects = new JsonArray();
-            category.add("projects", projects);
-            for(Project p : pc.getProjects()) {
-                JsonObject project = new JsonObject();
-                projects.add(project);
-                project.addProperty("id", p.getId());
-                project.addProperty("name", p.name);
-                JsonArray roles = new JsonArray();
-                project.add("roles", roles);
-                for(ProjectRole r : ProjectRole.findByProject(p.getId())) {
-                    JsonObject role = new JsonObject();
-                    roles.add(role);
-                    role.addProperty("id", r.getId());
-                    role.addProperty("name", r.name);
-                }
-
-            }
-        }
+        JsonObject res = computeRolesData(null, null, null);
         renderJSON(res.toString());
     }
 
@@ -212,17 +186,17 @@ public class Users extends TMController {
         List<Project> projects = new ArrayList<Project>();
         List<ProjectCategory> projectCategories = new ArrayList<ProjectCategory>();
         if(roleId!=null){
-            projectRoles = ProjectRole.find("id=?", roleId).fetch();
+            projectRoles.add(Lookups.getRole(roleId));
         }
         if(projectId!=null){
-            projects = Project.find("id=?", projectId).fetch();
+            projects.add(Lookups.getProject(projectId));
             if(roleId==null){
                 projectRoles = ProjectRole.findByProject(projectId);
 
             }
         }
         if (projectCategories!=null){
-            projectCategories = ProjectCategory.find("id=?", categoryId).fetch();
+            projectCategories.add(Lookups.getProjectCategory(categoryId));
             if(projectId==null){
                 for(ProjectCategory pc: projectCategories){
                     for(Project p:pc.getProjects()){
@@ -239,10 +213,18 @@ public class Users extends TMController {
             }
         }
 
+        JsonObject res = computeRolesData(projectCategories,projects, projectRoles);
 
+        renderJSON(res.toString());
+    }
+
+    private static JsonObject computeRolesData(List<ProjectCategory> projectCategories, List<Project> projects, List<ProjectRole> projectRoles){
         JsonObject res = new JsonObject();
         JsonArray categories = new JsonArray();
         res.add("categories", categories);
+        if(projectCategories==null){
+            projectCategories = ProjectCategory.findAll();
+        }
         for(ProjectCategory pc : projectCategories) {
            JsonObject category = new JsonObject();
             categories.add(category);
@@ -250,6 +232,9 @@ public class Users extends TMController {
             category.addProperty("id", pc.getId());
             JsonArray projectsArray = new JsonArray();
             category.add("projects", projectsArray);
+            if(projects==null){
+                projects = pc.getProjects();
+            }
             for(Project p : projects) {
                 JsonObject project = new JsonObject();
                 projectsArray.add(project);
@@ -257,15 +242,19 @@ public class Users extends TMController {
                 project.addProperty("name", p.name);
                 JsonArray roles = new JsonArray();
                 project.add("roles", roles);
+                if(projectRoles ==null){
+                    projectRoles = ProjectRole.findByProject(p.getId());
+                }
                 for(ProjectRole r : projectRoles) {
                     JsonObject role = new JsonObject();
                     roles.add(role);
                     role.addProperty("id", r.getId());
                     role.addProperty("name", r.name);
                 }
+                projectRoles=null; //reset array, so it can get new value
             }
         }
-        renderJSON(res.toString());
+        return res;
     }
 
 }
