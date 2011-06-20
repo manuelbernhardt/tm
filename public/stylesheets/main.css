@@ -261,6 +261,40 @@ a.export{
 
 .comments-actions{
     float:right;
+    width:100%;
+    text-align:right;
+}
+
+.comments-entry{
+    padding:10px;
+    margin:5px;
+    background-color:#E2E4FF;
+    border:solid 1px;
+    border-radius:3px;
+}
+
+.comments-entry-edit-container{
+    padding:10px;
+    margin:5px;
+    background-color:#E2E4FF;
+    border:solid 1px;
+    border-radius:5px;
+}
+
+.comment-container{
+    overflow:auto;
+    width:80%;
+    float:left;
+    margin-bottom:5px;
+}
+
+label.comment{
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: right;
+    margin: 0px 8px 0px 0px;
+    font-weight:bold;
 }
 
 

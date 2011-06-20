@@ -250,15 +250,46 @@ public class Defects extends TMController {
     @Restrict(UnitRole.DEFECTVIEW)
     public static void getComments(Long defectId){
         List<DefectComment> defectComments = DefectComment.find("defect.id=?", defectId).fetch();
+        TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
         JsonArray jsonArray = new JsonArray();
         JsonObject result = new JsonObject();
         for(DefectComment defectComment: defectComments){
             JsonObject comment = new JsonObject();
+            comment.addProperty("id", defectComment.id);
             comment.addProperty("comment", defectComment.comment);
             comment.addProperty("submittedBy", defectComment.submittedBy.getFullName());
+
+            comment.addProperty("hiddenDivId", "hiddenDiv" + defectComment.id);
+            comment.addProperty("visibleDivId", "visibleDiv" + defectComment.id);
+            comment.addProperty("visibleActionsId", "visibleActions" + defectComment.id);
+            comment.addProperty("hiddenActionsId", "hiddenActions" + defectComment.id);
+            comment.addProperty("commentEditInputText", defectComment.comment);
+            comment.addProperty("canEdit", defectComment.submittedBy.equals(tmUser));
+            
             jsonArray.add(comment);
         }
         result.add("comments", jsonArray);
         renderJSON(result.toString());
+    }
+
+    @Restrict(UnitRole.DEFECTVIEW)
+    public static void editComment(Long commentId, String comment){
+        DefectComment defectComment = DefectComment.find("id=? and submittedBy.id=?", commentId, getConnectedUserId()).first();
+        if(defectComment==null){
+            error("You are not allowed to edit this comment, or comment doesn't exist!");
+        }
+        defectComment.comment=comment;
+        defectComment.save();
+        ok();
+    }
+
+    @Restrict(UnitRole.DEFECTVIEW)
+    public static void deleteComment(Long commentId){
+        DefectComment defectComment = DefectComment.find("id=? and submittedBy.id=?", commentId, getConnectedUserId()).first();
+        if(defectComment==null){
+            error("You are not allowed to delete this comment, or comment doesn't exist!");
+        }
+        defectComment.delete();
+        ok();
     }
 }

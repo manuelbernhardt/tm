@@ -60,42 +60,25 @@
     </div><br/><br/>
       
       #{box 'Comments'}
-        <div id='comments-binding' data-bind='template: "commentsTemplate"' > </div>
-        <div class="comments-container">
+        <div id="comments" class="comments-container">
            <div class="comments-list">
-            <div class="comments-actions">
-                <button class="button-edit">Edit</button>
-                <button class="button-delete">Remove</button>
-            </div>
-            <div class="comments-entry">
-                <div class="field">
-                    <label class="name">Comment</label>
-                    <div>doakdoakdoakodakodakdoakodwk doakdoakdoakodakodakdoakodwk doakdoakdoakodakodakdoakodwk
-                    doakdoakdoakodakodakdoakodwk
-                    doakdoakdoakodakodakdoakodwkdoakdoakdoakodakodakdoakodwk</div><br/>
-                    <label class="name">Submitted by</label>
-                    <div>doakdoakdoakodakodakdoakodwk</div><br/>
-                    <label class="name">Submitted On</label>
-                    <div>doakdoakdoakodakodakdoakodwk</div><br/>    
-                </div>
-            </div>
-            <div class="comments-entry-edit" style="display:none;">
-                some comment text to be edited
-            </div>
+            <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
            </div>
 
-
+            <br/>
             <div class="comments-add" id="comments-add">
                 #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
-                #{ox.field field:'comment.comment' /}
+                #{ox.field field:'comment.comment', label:'Comment' /}
                 #{ox.field field:'comment.id', hidden:true /}
                 #{ox.field field:'comment.account.id', hidden:true /}
                 #{/ox.form}
+
+                <label class="comment">&nbsp</label>
+                    <button id="addCommentButton">Add comment</button>
+                    <button id='addCommentAndDefectButton'>Add comment and save</button>
+
             </div>
-            <div class="comments-actions">
-                <button id="addCommentButton">Add comment</button><br/>
-                <button id='addCommentAndDefectButton'>Add comment and save</button>
-            </div>
+
         </div>
       #{/box}
   </div>
@@ -229,6 +212,8 @@ $(document).ready(function() {
   $('#updateDefectButton').click(function() {
 
       $('#updateDefectDialog').dialog('open');
+      applyButtonStyles();
+      commentScripts();
   });
 
     $('#updateDefectDialog').dialog({
@@ -289,19 +274,16 @@ $(document).ready(function() {
 
 // comments
 
-    var viewModelComments = [];
+    var viewModelComments = {};
 
     $('#addDefectCommentForm').oxForm({});
 
     handleRowSelection('#defectsTable', function(){
+
         $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
             if (!ko.mapping.isMapped(viewModelComments)) {
-              viewModelComments = $.extend({
-                        comment: ko.observable(),
-                        submittedBy: ko.observable(),
-                        comments: ko.observableArray()
-                      }, ko.mapping.fromJS(data));
-              ko.applyBindings(viewModelComments, document.getElementById('comments-binding'));
+              $.extend(viewModelComments, ko.mapping.fromJS(data));
+              ko.applyBindings(viewModelComments, document.getElementById("comments-binding"));
             } else {
               ko.mapping.updateFromJS(viewModelComments, data);
             }
@@ -320,7 +302,8 @@ $(document).ready(function() {
 
     $('#addCommentButton').button().click(function(){
         $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
-        $('#updateDefectDialog').dialog('close')
+        refreshCommentsList();
+        $('#updateDefectDialog').dialog('close');
     });
 
     $('#addCommentAndDefectButton').button().click(function(){
@@ -332,6 +315,51 @@ $(document).ready(function() {
         });
         $('#updateDefectDialog').dialog('close');
     })
+
+
+
+    //comments template scripts
+
+    function commentScripts(){
+        var id;
+        $('.button-edit-comment').click(function(){
+            id = $(this).attr('id');
+            $('#hiddenDiv'+id).show();
+            $('#visibleDiv'+id).hide();
+            $('#visibleActions'+id).hide();
+            $('#hiddenActions'+id).show();
+
+        });
+        $('.commentEditCancelButton').button().click(function(){
+            $('.comments-entry-edit-container').hide();
+            $('.comments-entry').show();
+            $('#visibleActions'+id).show();
+            $('#hiddenActions'+id).hide();
+        })
+        $('.commentEditConfirmButton').button().click(function(){
+            $.post("@{Defects.editComment()}", {commentId:id,comment:$('#editCommentInput').val()},function(){
+                $('#updateDefectDialog').dialog('close');
+            }).error(errorHandler);
+        })
+
+        $('.button-delete-comment').click(function(){
+            $.post('@{Defects.deleteComment()}', {commentId:$(this).attr('id')},function(){
+                refreshCommentsList();
+                $('#updateDefectDialog').dialog('close');
+            }).error(errorHandler);
+
+        })
+
+        
+    }
+
+    function refreshCommentsList(){
+        $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
+            ko.mapping.updateFromJS(viewModelComments, data);
+        });
+    }
+
+
 
 
 // filter functions
@@ -368,7 +396,31 @@ $(document).ready(function() {
 </script>
 
 <script id='commentsTemplate' type='text/html'>
-    {{each comments() }}
-    ${ comment } ${ submittedBy }
-    {{/each}}
+
+
+            <div class="comments-entry" data-bind="attr: {id: visibleDivId}" style="background-color:#E2E4FF">
+                <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
+                    <button class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
+                    <button class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
+                </div>
+                <div>
+                    <label class="comment">Comment</label>
+                    <div class="comment-container" data-bind="text: comment"> </div>
+                    <label class="comment">Submitted by</label>
+                    <div data-bind="text: submittedBy"> </div><br/>
+                </div>
+            </div>
+
+            <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
+                <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
+                    <button class="commentEditCancelButton">Cancel</button>
+                    <button class="commentEditConfirmButton">Save</button>
+                </div>
+                <label class="comment">Comment</label>
+                <div class="comments-entry-edit" id="comments-entry-edit">
+                    <textarea id='editCommentInput' data-bind="text: commentEditInputText" cols="60" rows="8" />
+
+
+                </div>
+            </div>
 </script>
