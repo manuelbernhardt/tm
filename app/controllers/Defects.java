@@ -1,5 +1,6 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -258,6 +259,8 @@ public class Defects extends TMController {
             comment.addProperty("id", defectComment.id);
             comment.addProperty("comment", defectComment.comment);
             comment.addProperty("submittedBy", defectComment.submittedBy.getFullName());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            comment.addProperty("submittedOn", sdf.format(defectComment.created));
 
             comment.addProperty("hiddenDivId", "hiddenDiv" + defectComment.id);
             comment.addProperty("visibleDivId", "visibleDiv" + defectComment.id);

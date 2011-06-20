@@ -210,7 +210,6 @@ $(document).ready(function() {
 
 
   $('#updateDefectButton').click(function() {
-
       $('#updateDefectDialog').dialog('open');
       applyButtonStyles();
       commentScripts();
@@ -220,6 +219,7 @@ $(document).ready(function() {
         autoOpen: false,
         width: 700,
         modal: true
+
     });
 
     $('#updateDefectButtonConfirm').button().click(function(){
@@ -303,7 +303,6 @@ $(document).ready(function() {
     $('#addCommentButton').button().click(function(){
         $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
         refreshCommentsList();
-        $('#updateDefectDialog').dialog('close');
     });
 
     $('#addCommentAndDefectButton').button().click(function(){
@@ -338,14 +337,13 @@ $(document).ready(function() {
         })
         $('.commentEditConfirmButton').button().click(function(){
             $.post("@{Defects.editComment()}", {commentId:id,comment:$('#editCommentInput').val()},function(){
-                $('#updateDefectDialog').dialog('close');
+                refreshCommentsList();
             }).error(errorHandler);
         })
 
         $('.button-delete-comment').click(function(){
             $.post('@{Defects.deleteComment()}', {commentId:$(this).attr('id')},function(){
                 refreshCommentsList();
-                $('#updateDefectDialog').dialog('close');
             }).error(errorHandler);
 
         })
@@ -356,6 +354,8 @@ $(document).ready(function() {
     function refreshCommentsList(){
         $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
             ko.mapping.updateFromJS(viewModelComments, data);
+            applyButtonStyles();
+            commentScripts();
         });
     }
 
@@ -407,7 +407,9 @@ $(document).ready(function() {
                     <label class="comment">Comment</label>
                     <div class="comment-container" data-bind="text: comment"> </div>
                     <label class="comment">Submitted by</label>
-                    <div data-bind="text: submittedBy"> </div><br/>
+                    <div data-bind="text: submittedBy"> </div>
+                    <label class="comment">Submitted On</label>
+                    <div data-bind="text: submittedOn"> </div><br/>
                 </div>
             </div>
 
@@ -419,8 +421,6 @@ $(document).ready(function() {
                 <label class="comment">Comment</label>
                 <div class="comments-entry-edit" id="comments-entry-edit">
                     <textarea id='editCommentInput' data-bind="text: commentEditInputText" cols="60" rows="8" />
-
-
                 </div>
             </div>
 </script>

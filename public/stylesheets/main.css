@@ -263,6 +263,7 @@ a.export{
     float:right;
     width:100%;
     text-align:right;
+    margin-bottom:5px;
 }
 
 .comments-entry{
