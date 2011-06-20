@@ -81,22 +81,20 @@ public class Users extends TMController {
         Gson gson = new Gson();
 
         boolean userAdmin = false, projectAdmin = false, accountAdmin = false;
-        if (user != null) {
-            List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
+        if (user == null) {
+            error("Could not find user "+ userId);
+        }
 
-            userAdmin = accountRoles.contains(AccountRole.USER_ADMIN);
-            if(userAdmin){
-                accounts[0] = "userAdmin";
-            }
-            projectAdmin = accountRoles.contains(AccountRole.PROJECT_ADMIN);
-            if(projectAdmin){
-                accounts[1] = "projectAdmin";
-            }
-            accountAdmin = accountRoles.contains(AccountRole.ACCOUNT_ADMIN);
-            if(accountAdmin){
-                accounts[2] = "accountAdmin";
-            }
+        List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
 
+        if(accountRoles.contains(AccountRole.USER_ADMIN)){
+            accounts[0] = "userAdmin";
+        }
+        if(accountRoles.contains(AccountRole.PROJECT_ADMIN)){
+            accounts[1] = "projectAdmin";
+        }
+        if(accountRoles.contains(AccountRole.ACCOUNT_ADMIN)){
+            accounts[2] = "accountAdmin";
         }
         renderJSON(gson.toJson(accounts));
     }
