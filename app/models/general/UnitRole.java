@@ -3,6 +3,7 @@ package models.general;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import controllers.Defects;
 import controllers.Execution;
@@ -89,6 +90,11 @@ public class UnitRole implements models.deadbolt.Role {
             Defects.class.getName(), UnitRole.DEFECTDELETE
     );
 
+    private final static ImmutableList<String> allAccountRoles = ImmutableList.of(UnitRole.USERCREATE, UnitRole.USERDELETE, UnitRole.USEREDIT, UnitRole.PROJECTCREATE, UnitRole.PROJECTEDIT, UnitRole.PROJECTDELETE, UnitRole.ACCOUNTADMIN);
+
+    public static ImmutableList<String> getAllRoles() {
+        return ImmutableList.<String>builder().addAll(viewRolesPerController.values()).addAll(createRolesPerController.values()).addAll(editRolesPerController.values()).addAll(deleteRolesPerController.values()).addAll(allAccountRoles).build();
+    }
 
     private String name;
 
@@ -125,7 +131,7 @@ public class UnitRole implements models.deadbolt.Role {
     }
 
     public static UnitRole getDeleteRole(Class controllerClass) {
-        return role(editRolesPerController.get(controllerClass.getName()));
+        return role(deleteRolesPerController.get(controllerClass.getName()));
     }
 
     @Override

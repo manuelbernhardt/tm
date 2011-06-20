@@ -13,6 +13,7 @@ import models.account.Account;
 import models.account.AccountModel;
 import models.account.AccountProduct;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Filter;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
 
@@ -22,6 +23,7 @@ import play.data.validation.Required;
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})})
 @BatchSize(size = 10)
+@Filter(name = "projectId")
 public class Project extends AccountModel {
 
     @Required

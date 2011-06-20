@@ -23,7 +23,7 @@ Alternatively simple tags can be used to organize the Test Execution.
   <div class="tree-container">
       <div class="left_tree" style="width:29%">
         #{box 'Releases and Cycles'}
-        <div id="approachTree" class="tree" style="border:none;"></div>
+        <div id="adminApproachTree" class="tree" style="border:none;"></div>
         #{/box}
       </div>
       <div class="right_table" style="width:70%">
@@ -37,7 +37,7 @@ Alternatively simple tags can be used to organize the Test Execution.
 
   $(document).ready(function () {
 
-    $('#approachTree').tree(
+    $('#adminApproachTree').tree(
             {
               "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"},
               types: approachTreeTypes,
@@ -48,7 +48,7 @@ Alternatively simple tags can be used to organize the Test Execution.
     );
 
     /** Selection listener **/
-    $("#approachTree").bind("select_node.jstree", function (e, data) {
+    $("#adminApproachTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ['default', 'testCycle'])) {
        $("#remove_cycleRelease").button('enable');
         $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
@@ -65,14 +65,14 @@ Alternatively simple tags can be used to organize the Test Execution.
 
     /** button initialisation **/
     $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: '${project.id}'}}});
+      $("#adminApproachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: '${project.id}'}}});
     });
     $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
+      $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
     });
     $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-        deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
-            $("#approachTree").jstree("remove", null);
+        deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('adminApproachTree') ,function(){
+            $("#adminApproachTree").jstree("remove", null);
         })
 
     });
