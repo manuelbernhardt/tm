@@ -30,7 +30,7 @@
   #{/deadbolt.restrict}
 
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
-  <button id="deleteDefectButton" class="button-delete">Delete defect</button>
+  <button id="cancelDefectButton" id="deleteDefectButton" class="button-delete">Delete defect</button>
   #{/deadbolt.restrict}
 
 
@@ -44,6 +44,7 @@
   </div>
 
   <div id="updateDefectDialog" title="Update a defect">
+      <br/>
     #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
     #{ox.field field:'defect.name', label:'Summary' /}
     #{ox.field field:'defect.description', label:'Description'/}
@@ -52,6 +53,51 @@
     *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
     #{ox.field field:'defect.id', hidden:true/}
     #{/ox.form}
+
+    <div class="comments-actions">
+        <button id="updateDefectButtonCancel">Cancel</button>
+        <button id='updateDefectButtonConfirm'>Save</button>
+    </div><br/><br/>
+      
+      #{box 'Comments'}
+        <div id='comments-binding' data-bind='template: "commentsTemplate"' > </div>
+        <div class="comments-container">
+           <div class="comments-list">
+            <div class="comments-actions">
+                <button class="button-edit">Edit</button>
+                <button class="button-delete">Remove</button>
+            </div>
+            <div class="comments-entry">
+                <div class="field">
+                    <label class="name">Comment</label>
+                    <div>doakdoakdoakodakodakdoakodwk doakdoakdoakodakodakdoakodwk doakdoakdoakodakodakdoakodwk
+                    doakdoakdoakodakodakdoakodwk
+                    doakdoakdoakodakodakdoakodwkdoakdoakdoakodakodakdoakodwk</div><br/>
+                    <label class="name">Submitted by</label>
+                    <div>doakdoakdoakodakodakdoakodwk</div><br/>
+                    <label class="name">Submitted On</label>
+                    <div>doakdoakdoakodakodakdoakodwk</div><br/>    
+                </div>
+            </div>
+            <div class="comments-entry-edit" style="display:none;">
+                some comment text to be edited
+            </div>
+           </div>
+
+
+            <div class="comments-add" id="comments-add">
+                #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
+                #{ox.field field:'comment.comment' /}
+                #{ox.field field:'comment.id', hidden:true /}
+                #{ox.field field:'comment.account.id', hidden:true /}
+                #{/ox.form}
+            </div>
+            <div class="comments-actions">
+                <button id="addCommentButton">Add comment</button><br/>
+                <button id='addCommentAndDefectButton'>Add comment and save</button>
+            </div>
+        </div>
+      #{/box}
   </div>
 
   <br/>
@@ -83,12 +129,6 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-
-
-  $('#createDefectConfirm').button();
-  $('#createDefectCancel').button();
-  $('#updateDefectConfirm').button();
-  $('#updateDefectCancel').button();
 
 
   #{tabularasa.init tableId:'defectsTable'}
@@ -194,20 +234,20 @@ $(document).ready(function() {
     $('#updateDefectDialog').dialog({
         autoOpen: false,
         width: 700,
-        modal: true,
-        buttons: {
-            "Confirm": function() {
-                $('#updateDefectForm').ajaxSubmit({
-                    success: function(){
-                        refreshTableContents('#defectsTable', false);
-                    }
-                });
-                $(this).dialog("close");
-            },
-            "Cancel": function() {
-                $(this).dialog("close");
+        modal: true
+    });
+
+    $('#updateDefectButtonConfirm').button().click(function(){
+        $('#updateDefectForm').ajaxSubmit({
+            success: function(){
+                refreshTableContents('#defectsTable', false);
             }
-        }
+        });
+        $('#updateDefectDialog').dialog('close');
+    });
+
+    $('#updateDefectButtonCancel').button().click(function(){
+        $('#updateDefectDialog').dialog('close')
     });
 
 
@@ -247,7 +287,51 @@ $(document).ready(function() {
       })
   });
 
+// comments
 
+    var viewModelComments = [];
+
+    $('#addDefectCommentForm').oxForm({});
+
+    handleRowSelection('#defectsTable', function(){
+        $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
+            if (!ko.mapping.isMapped(viewModelComments)) {
+              viewModelComments = $.extend({
+                        comment: ko.observable(),
+                        submittedBy: ko.observable(),
+                        comments: ko.observableArray()
+                      }, ko.mapping.fromJS(data));
+              ko.applyBindings(viewModelComments, document.getElementById('comments-binding'));
+            } else {
+              ko.mapping.updateFromJS(viewModelComments, data);
+            }
+        });
+
+    });
+
+
+//    $('#comment-add').button({disabled:true});
+//    $('#addDefectCommentForm_comment_comment').change(function(){
+//        alert($('#addDefectCommentForm_comment_comment').val());
+//        if($(this).val()!=''){
+//            $('#comment-add').button('enable');
+//        }
+//    })
+
+    $('#addCommentButton').button().click(function(){
+        $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
+        $('#updateDefectDialog').dialog('close')
+    });
+
+    $('#addCommentAndDefectButton').button().click(function(){
+        $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
+        $('#updateDefectForm').ajaxSubmit({
+            success: function(){
+                refreshTableContents('#defectsTable', false);
+            }
+        });
+        $('#updateDefectDialog').dialog('close');
+    })
 
 
 // filter functions
@@ -281,4 +365,10 @@ $(document).ready(function() {
 });
 
 
+</script>
+
+<script id='commentsTemplate' type='text/html'>
+    {{each comments() }}
+    ${ comment } ${ submittedBy }
+    {{/each}}
 </script>

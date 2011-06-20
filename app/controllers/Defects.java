@@ -5,14 +5,15 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
+import models.account.Account;
+import models.account.User;
 import models.general.UnitRole;
-import models.tm.Defect;
-import models.tm.DefectStatus;
-import models.tm.StringMatcherType;
-import models.tm.TMUser;
+import models.tabularasa.TableModel;
+import models.tm.*;
 import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunStep;
@@ -231,5 +232,33 @@ public class Defects extends TMController {
         jsonObject.addProperty("defectTags", defect.tags == null ? "" : defect.tags.toString());
         jsonObject.addProperty("defectDescription", defect.description == null ? "" : defect.description);
         renderJSON(jsonObject.toString());
+    }
+
+    @Restrict(UnitRole.DEFECTVIEW)
+    public static void addComment(DefectComment comment, Long defectId){
+        Defect defect = Defect.find("id=?", defectId).first();
+        TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
+        Project project = Project.find("id=?", getActiveProjectId()).first();
+        comment.submittedBy = tmUser;
+        comment.defect = defect;
+        comment.project = project;
+        comment.account = tmUser.account;
+        comment.save();
+        ok();
+    }
+
+    @Restrict(UnitRole.DEFECTVIEW)
+    public static void getComments(Long defectId){
+        List<DefectComment> defectComments = DefectComment.find("defect.id=?", defectId).fetch();
+        JsonArray jsonArray = new JsonArray();
+        JsonObject result = new JsonObject();
+        for(DefectComment defectComment: defectComments){
+            JsonObject comment = new JsonObject();
+            comment.addProperty("comment", defectComment.comment);
+            comment.addProperty("submittedBy", defectComment.submittedBy.getFullName());
+            jsonArray.add(comment);
+        }
+        result.add("comments", jsonArray);
+        renderJSON(result.toString());
     }
 }
