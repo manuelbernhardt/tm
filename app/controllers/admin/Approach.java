@@ -4,6 +4,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.approach.Release;
@@ -15,20 +16,20 @@ import play.mvc.With;
 @With(Deadbolt.class)
 public class Approach extends TMController {
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void cycleDetails(Long baseObjectId, String[] fields) {
         TestCycle cycle = Lookups.getCycle(baseObjectId);
         renderFields(cycle, fields);
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void releaseDetails(Long baseObjectId, String[] fields) {
         Release release = Lookups.getRelease(baseObjectId);
         renderFields(release, fields);
     }
 
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void editCycle(@Valid TestCycle cycle) {
         checkInAccount(cycle);
         if (Validation.hasErrors()) {
@@ -39,7 +40,7 @@ public class Approach extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void editRelease(@Valid Release release) {
         checkInAccount(release);
         if (Validation.hasErrors()) {

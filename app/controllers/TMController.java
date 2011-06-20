@@ -29,6 +29,7 @@ import models.account.AccountEntity;
 import models.account.User;
 import models.general.TemporalModel;
 import models.general.UnitRole;
+import models.tm.AccountRole;
 import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
@@ -101,15 +102,38 @@ public class TMController extends Controller {
             ((Session) JPA.em().getDelegate()).enableFilter("activeUser").setParameter("active", true);
             ((Session) JPA.em().getDelegate()).enableFilter("activeTMUser").setParameter("active", true);
 
+            // admin projects filter
+            setAdminProjectsFilter();
+
             // we need to do the lookup for an active project here first, otherwise we enable the filter before passing the parameter.
             if (controllerHasActiveProject()) {
                 Project p = getActiveProject();
                 if (p != null) {
-                    ((Session) JPA.em().getDelegate()).enableFilter("project").setParameter("project_id", p.getId());
+                    ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
                 } else {
                     getConnectedUser().initializeActiveProject();
                 }
             }
+        }
+    }
+
+
+    /**
+     * Apply project filters for the admin area
+     * This means that people who have admin rights on a subset of projects only get effectively access to those
+     * TODO cache the per-project admin rights!
+     */
+    @Util
+    public static void setAdminProjectsFilter() {
+        if (controllerHasAdminProjectsFilter() && !isAccountAdmin() && !isProjectSuperAdmin()) {
+            // lookup Projects where this guy has rights
+            List<Long> projectIds = TMDeadboltHandler.getAdminProjectIds(getConnectedUserId());
+            if (projectIds.isEmpty()) {
+                // add one ID that is not in the DB so that we get zero results
+                projectIds.add(-1l);
+            }
+            ((Session) JPA.em().getDelegate()).enableFilter("adminProjects").setParameterList("projectIds", projectIds.toArray());
+            ((Session) JPA.em().getDelegate()).enableFilter("projectId").setParameterList("projectIds", projectIds.toArray());
         }
     }
 
@@ -195,18 +219,32 @@ public class TMController extends Controller {
 
     // TODO replace by something automatic
     private final static String[] adminTrees = {"accountRolesAssignmentTree", "projectRolesAssignmentTree", "projectRolesTree", "projectTree", "userTree"};
+    private final static String[] sharedTrees = {"adminApproachTree"};
 
     /**
      * Does this controller have the concept of active project
      *
-     * @return <code>true</code> if this is not an admin controller
+     * @return <code>true</code> if this has an active project
      */
     @Util
     public static boolean controllerHasActiveProject() {
         if (request.controllerClass.equals(TMTreeController.class)) {
-            return Arrays.binarySearch(adminTrees, request.params.get("treeId")) < 0;
+            boolean hasAdminTree = Arrays.binarySearch(adminTrees, request.params.get("treeId")) < 0;
+            boolean hasSharedTree = Arrays.binarySearch(sharedTrees, request.params.get("treeId")) < 0;
+            return hasAdminTree && hasSharedTree;
         }
         return !request.controller.startsWith("admin");
+    }
+
+    /**
+     * Does the controller have the concept of project filter.
+     * We simply take the opposite of the user area for this.
+     *
+     * @return <code>true</code> if this controller accepts filtering by project subset
+     */
+    @Util
+    public static boolean controllerHasAdminProjectsFilter() {
+        return !controllerHasActiveProject();
     }
 
     /**
@@ -224,7 +262,7 @@ public class TMController extends Controller {
         checkAuthenticity();
 
         // deactivate the project filter for this request
-        ((Session) JPA.em().getDelegate()).disableFilter("project");
+        ((Session) JPA.em().getDelegate()).disableFilter("activeProject");
 
         Project project = Lookups.getProject(projectId);
         if (project == null) {
@@ -513,6 +551,26 @@ public class TMController extends Controller {
     @Util
     protected static boolean canCreate() {
         return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getCreateRole(request.controllerClass));
+    }
+
+    @Util
+    protected static boolean canEdit() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getEditRole(request.controllerClass));
+    }
+
+    @Util
+    protected static boolean canDelete() {
+        return TMDeadboltHandler.getUserRoles(getActiveProject()).getRoles().contains(UnitRole.getDeleteRole(request.controllerClass));
+    }
+
+    @Util
+    protected static boolean isProjectSuperAdmin() {
+        return AccountRole.getAccountRoles(getConnectedUser().accountRoles).contains(AccountRole.PROJECT_ADMIN);
+    }
+
+    @Util
+    protected static boolean isAccountAdmin() {
+        return AccountRole.getAccountRoles(getConnectedUser().accountRoles).contains(AccountRole.ACCOUNT_ADMIN);
     }
 
 

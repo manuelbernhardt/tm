@@ -3,6 +3,7 @@ package models.general;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import controllers.Defects;
 import controllers.Execution;
@@ -16,6 +17,7 @@ import controllers.Requirements;
  */
 public class UnitRole implements models.deadbolt.Role {
 
+    /* Account unit roles */
     public static final String ACCOUNTADMIN = "accountAdmin";
 
     public static final String USERCREATE = "userCreate";
@@ -25,6 +27,10 @@ public class UnitRole implements models.deadbolt.Role {
     public static final String PROJECTCREATE = "projectCreate";
     public static final String PROJECTEDIT = "projectEdit";
     public static final String PROJECTDELETE = "projectDelete";
+
+
+    /* Project unit roles */
+    public static final String PROJECTADMIN = "projectAdmin";
 
     public static final String REQVIEW = "reqView";
     public static final String REQCREATE = "reqCreate";
@@ -59,6 +65,7 @@ public class UnitRole implements models.deadbolt.Role {
             Execution.class.getName(), UnitRole.TESTEXECVIEW,
             Defects.class.getName(), UnitRole.DEFECTVIEW
     );
+
     private final static ImmutableMap<String, String> createRolesPerController = ImmutableMap.of(
             Requirements.class.getName(), UnitRole.REQCREATE,
             Repository.class.getName(), UnitRole.TESTREPOCREATE,
@@ -66,6 +73,28 @@ public class UnitRole implements models.deadbolt.Role {
             Execution.class.getName(), UnitRole.TESTEXECCREATE,
             Defects.class.getName(), UnitRole.DEFECTCREATE
     );
+
+    private final static ImmutableMap<String, String> editRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQEDIT,
+            Repository.class.getName(), UnitRole.TESTREPOEDIT,
+            Preparation.class.getName(), UnitRole.TESTPREPEDIT,
+            Execution.class.getName(), UnitRole.TESTEXECEDIT,
+            Defects.class.getName(), UnitRole.DEFECTEDIT
+    );
+
+    private final static ImmutableMap<String, String> deleteRolesPerController = ImmutableMap.of(
+            Requirements.class.getName(), UnitRole.REQDELETE,
+            Repository.class.getName(), UnitRole.TESTREPODELETE,
+            Preparation.class.getName(), UnitRole.TESTPREPDELETE,
+            Execution.class.getName(), UnitRole.TESTEXECDELETE,
+            Defects.class.getName(), UnitRole.DEFECTDELETE
+    );
+
+    private final static ImmutableList<String> allAccountRoles = ImmutableList.of(UnitRole.USERCREATE, UnitRole.USERDELETE, UnitRole.USEREDIT, UnitRole.PROJECTCREATE, UnitRole.PROJECTEDIT, UnitRole.PROJECTDELETE, UnitRole.ACCOUNTADMIN);
+
+    public static ImmutableList<String> getAllRoles() {
+        return ImmutableList.<String>builder().addAll(viewRolesPerController.values()).addAll(createRolesPerController.values()).addAll(editRolesPerController.values()).addAll(deleteRolesPerController.values()).addAll(allAccountRoles).build();
+    }
 
     private String name;
 
@@ -92,8 +121,17 @@ public class UnitRole implements models.deadbolt.Role {
     public static UnitRole getViewRole(Class controllerClass) {
         return role(createRolesPerController.get(controllerClass.getName()));
     }
+
     public static UnitRole getCreateRole(Class controllerClass) {
         return role(viewRolesPerController.get(controllerClass.getName()));
+    }
+
+    public static UnitRole getEditRole(Class controllerClass) {
+        return role(editRolesPerController.get(controllerClass.getName()));
+    }
+
+    public static UnitRole getDeleteRole(Class controllerClass) {
+        return role(deleteRolesPerController.get(controllerClass.getName()));
     }
 
     @Override

@@ -20,7 +20,7 @@ Alternatively simple tags can be used to organize the Test Execution.
   <div class="tree-container">
       <div class="left_tree" style="width:29%">
         #{box 'Releases and Cycles'}
-        <div id="approachTree" class="tree" style="border:none;"></div>
+        <div id="adminApproachTree" class="tree" style="border:none;"></div>
         #{/box}
       </div>
       <div class="right_table" style="width:70%">
@@ -133,7 +133,6 @@ Alternatively simple tags can be used to organize the Test Execution.
 
         });
 
-
     /** Selection listener **/
         $("#approachTree").bind("select_node.jstree", function (e, data) {
           if (isSelectedNodeType(data, ['default', 'testCycle'])) {
@@ -150,12 +149,8 @@ Alternatively simple tags can be used to organize the Test Execution.
               $('#shownOnLoad').hide();
 
           }
-
         });
-
-
      });
-
   });
 
 </script>
