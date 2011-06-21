@@ -12,6 +12,8 @@ import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.ProjectCategory;
 import models.tm.ProjectModel;
+import models.tm.ProjectWidget;
+import play.db.jpa.JPA;
 import play.db.jpa.Model;
 import play.libs.F;
 import tree.JSTreeNode;
@@ -112,6 +114,13 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
         if (type.equals(ProjectTreeDataHandler.PROJECT)) {
             Project project = Lookups.getProject(id);
             try {
+
+                // remove associated "default" entities
+                JPA.em().createQuery("delete from DefectStatus where project.id = :projectId").setParameter("projectId", project.getId()).executeUpdate();
+                for(ProjectWidget w : ProjectWidget.find("from ProjectWidget w where w.project.id = ?", project.getId()).<ProjectWidget>fetch()) {
+                    w.delete();
+                }
+
                 project.delete();
             } catch (Throwable t) {
                 return false;
