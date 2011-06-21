@@ -35,7 +35,7 @@
       <div data-bind="visible: params().length > 0">
 
 
-          <table id="instanceParamTable" class="display">
+          <table id="instanceParamTable" class="simple">
             <thead>
             <th>Parameter</th>
             <th>Value</th>
@@ -46,7 +46,7 @@
               #{/deadbolt.restrict}
                     <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
               #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-                    <tr><td></td><td><button type="submit" id="saveParamsButton">Save</button></div></td></tr>
+                    <tr><td></td><td><button  type="submit" id="saveParamsButton">Save</button></td></tr>
                 </form>
               #{/deadbolt.restrict}
             </table>
