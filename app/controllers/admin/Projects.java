@@ -109,7 +109,7 @@ public class Projects extends TMController {
             notFound("Could not find tag with ID " + firstTagId);
         } else if (secondTag == null) {
             notFound("Could not find tag with ID " + secondTagId);
-        } else if (!firstTag.equals(secondTag)) {
+        } else if (firstTag.id!=secondTag.id) {
             List<TagHolder> tagHolder = new ArrayList<TagHolder>();
 
             if (firstTag.type == Tag.TagType.REQUIREMENT) {
