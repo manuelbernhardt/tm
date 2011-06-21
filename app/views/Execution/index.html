@@ -209,7 +209,9 @@
     });
 
     $('#createRunButton').click(function() {
-      $('#createRunDialog').dialog('open')
+        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function(){
+            $('#createRunDialog').dialog('open');
+        });
     });
 
     $('#createRunDialog').dialog({
@@ -219,9 +221,6 @@
       draggable: true,
       resizable: false,
       modal: true,
-      open: function() {
-        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') });
-      },
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({
