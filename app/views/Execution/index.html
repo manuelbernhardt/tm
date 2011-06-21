@@ -246,7 +246,9 @@
     });
 
     $('#updateRunButton').click(function() {
-      $('#updateRunDialog').dialog('open')
+        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function(){
+            $('#updateRunDialog').dialog('open')
+        });
     });
 
     $('#updateRunDialog').dialog({
@@ -256,9 +258,6 @@
       draggable: true,
       resizable: false,
       modal: true,
-      open: function() {
-        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') });
-      },
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({
