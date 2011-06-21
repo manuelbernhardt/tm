@@ -117,11 +117,9 @@ Alternatively simple tags can be used to organize the Test Execution.
                 }
         );
 
-        refreshTree('adminApproachTree');
-
         /** button initialisation **/
         $("#create_release").click(function () {
-          $("#adminApproachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
         });
         $("#create_cycle").click(function () {
           $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
@@ -133,7 +131,7 @@ Alternatively simple tags can be used to organize the Test Execution.
 
         });
 
-    /** Selection listener **/
+        /** Selection listener **/
         $("#adminApproachTree").bind("select_node.jstree", function (e, data) {
           if (isSelectedNodeType(data, ['default', 'testCycle'])) {
              $("#remove_cycleRelease").button('enable');
