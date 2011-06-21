@@ -227,10 +227,12 @@ $(document).ready(function() {
 //            creationText: "Create new tag"
 //          });
 
-    handleRowSelection('#defectsTable', function() {
-        $('#updateDefectButton').button('enable');
-        $('#deleteDefectButton').button('enable');
-        $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+    handleRowSelection('#defectsTable', function(rowId) {
+        if(rowId!=''){
+            $('#updateDefectButton').button('enable');
+            $('#deleteDefectButton').button('enable');
+            $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+        }
     });
 
 // delete defect

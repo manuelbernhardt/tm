@@ -80,8 +80,10 @@
           refreshTableContents('#tab', false);
       });
 
-      handleRowSelection("#tab", function(){
-          $('#remove-role').button('enable');
+      handleRowSelection("#tab", function(rowId){
+          if(rowId!=''){
+            $('#remove-role').button('enable');
+          }
 
       });
 

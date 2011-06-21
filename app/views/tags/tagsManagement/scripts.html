@@ -40,10 +40,11 @@ $(document).ready(function() {
     });
 
     // row selection handler for tag table
-    handleRowSelection("#${_type}", function(data){
-        if(getSelectedRowId("#${_type}")!=null && getSelectedRowId("#${_type}")!='')
+    handleRowSelection("#${_type}", function(rowId){
+        if(rowId!=''){
             $("#${_type}RenameTag").button("enable");
             $("#${_type}DeleteTag").button("enable");
+        }
     });
 
     $('#${_type}MergeTagDialog').dialog({

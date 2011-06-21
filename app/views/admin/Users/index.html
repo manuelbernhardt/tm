@@ -161,12 +161,14 @@
     };
     #{/tabularasa.init}
 
-    handleRowSelection('#tab', function(){
-        $("#removeUserButton").button('enable');
-        $('.hiddenOnLoad').show();
-        $('.shownOnLoad').hide();
-        $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
-        updateCheckboxes();
+    handleRowSelection('#tab', function(rowId){
+        if(rowId!=''){
+            $("#removeUserButton").button('enable');
+            $('.hiddenOnLoad').show();
+            $('.shownOnLoad').hide();
+            $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
+            updateCheckboxes();
+        }
     });
 
       $("#innerTabs").tabs();
