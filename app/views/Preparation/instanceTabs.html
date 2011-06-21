@@ -33,21 +33,24 @@
     <div class="instanceShownOnLoad">No test instance selected</div>
     <div class="instanceHiddenOnLoad" style="display: none;">
       <div data-bind="visible: params().length > 0">
-        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
-        <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}"
-              data-bind="submit: submitForm">
-          #{/deadbolt.restrict}
+
+
           <table id="instanceParamTable" class="display">
             <thead>
             <th>Parameter</th>
             <th>Value</th>
             </thead>
-            <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
-          </table>
-          #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-          <button type="submit" id="saveParamsButton">Save</button>
-        </form>
-        #{/deadbolt.restrict}
+              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
+                  <form id="instanceParamForm" method="POST" action="@{Preparation.updateParameters()}"
+                      data-bind="submit: submitForm">
+              #{/deadbolt.restrict}
+                    <tbody data-bind="template: {name: 'paramRowTemplate', foreach: params }"></tbody>
+              #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
+                    <tr><td></td><td><button type="submit" id="saveParamsButton">Save</button></div></td></tr>
+                </form>
+              #{/deadbolt.restrict}
+            </table>
+
       </div>
       <div style="display: none;" data-bind="visible: params().length == 0">No test parameters defined for
         this test script instance
