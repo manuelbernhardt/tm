@@ -259,4 +259,9 @@ a.export{
     background-color:transparent;
 }
 
+/* overriding on hover style of datatable */
+table.display tr :hover{
+    cursor: pointer;
+}
+
 
