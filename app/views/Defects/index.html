@@ -335,8 +335,8 @@ $(document).ready(function() {
 
         });
         $('.commentEditCancelButton').button().click(function(){
-            $('.comments-entry-edit-container').hide();
-            $('.comments-entry').show();
+             $('#hiddenDiv'+id).hide();
+            $('#visibleDiv'+id).show();
             $('#visibleActions'+id).show();
             $('#hiddenActions'+id).hide();
         })
@@ -403,29 +403,29 @@ $(document).ready(function() {
 <script id='commentsTemplate' type='text/html'>
 
 
-            <div class="comments-entry" data-bind="attr: {id: visibleDivId}" style="background-color:#E2E4FF">
+            <div class="comments-entry" >
+                <div class="comments-caption">
+                    <span data-bind="text: submittedBy"> </span> commented <span style="float:right;" data-bind="text: submittedOn"> </span>
+                </div>
+
                 <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
                     <button class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
                     <button class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
                 </div>
-                <div>
-                    <label class="comment">Comment</label>
+
+                <div data-bind="attr: {id: visibleDivId}">
                     <div class="comment-container" data-bind="text: comment"> </div>
-                    <label class="comment">Submitted by</label>
-                    <div data-bind="text: submittedBy"> </div>
-                    <label class="comment">Submitted On</label>
-                    <div data-bind="text: submittedOn"> </div><br/>
+                </div>
+                <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
+                    <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
+                        <button class="commentEditCancelButton">Cancel</button>
+                        <button class="commentEditConfirmButton">Save</button>
+                    </div>
+                    <div class="comments-entry-edit" id="comments-entry-edit">
+                        <textarea id='editCommentInput' data-bind="text: commentEditInputText" cols="60" rows="8" />
+                    </div>
                 </div>
             </div>
 
-            <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
-                <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
-                    <button class="commentEditCancelButton">Cancel</button>
-                    <button class="commentEditConfirmButton">Save</button>
-                </div>
-                <label class="comment">Comment</label>
-                <div class="comments-entry-edit" id="comments-entry-edit">
-                    <textarea id='editCommentInput' data-bind="text: commentEditInputText" cols="60" rows="8" />
-                </div>
-            </div>
+
 </script>

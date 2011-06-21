@@ -266,26 +266,30 @@ a.export{
     margin-bottom:5px;
 }
 
+.comments-caption{
+    margin-bottom:5px;
+    background-color:#E2E4FF;
+    padding:4px;
+    border-radius:3px;
+}
+
 .comments-entry{
     padding:10px;
     margin:5px;
-    background-color:#E2E4FF;
     border:solid 1px;
     border-radius:3px;
 }
 
 .comments-entry-edit-container{
-    padding:10px;
-    margin:5px;
-    background-color:#E2E4FF;
-    border:solid 1px;
-    border-radius:5px;
+    /*padding:10px;*/
+    /*margin:5px;*/
+    /*border:solid 1px;*/
+    /*border-radius:5px;*/
 }
 
 .comment-container{
     overflow:auto;
     width:80%;
-    float:left;
     margin-bottom:5px;
 }
 
