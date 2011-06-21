@@ -23,14 +23,9 @@ import util.Logger;
 public class ProjectRoles extends TMController {
 
     @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
-    public static void create(ProjectRole role, Long projectId) {
-        Project project = Lookups.getProject(projectId);
-        if(project == null) {
-            Logger.error(Logger.LogType.SECURITY, "Unknown project %s", projectId);
-            notFound("Project was not found");
-        }
-        role.project = project;
-        role.account = project.account;
+    public static void create(String roleName, Long projectId) {
+        ProjectRole role = new ProjectRole(Lookups.getProject(projectId));
+        role.name = roleName;
         boolean created = role.create();
         if(!created) {
             Logger.error(Logger.LogType.DB, "Could not create ProjectRole");

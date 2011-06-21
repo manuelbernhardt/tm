@@ -103,7 +103,7 @@
       resizable: false,
       modal: true,
       buttons: {
-        "Create step": function() {
+        "Create role": function() {
           $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
                 refreshTableContents('#tab', false);
                 $('#roleInput').val('');
