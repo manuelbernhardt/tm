@@ -13,9 +13,7 @@ import models.general.UnitRole;
 import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
-import models.tm.ProjectRole;
 import models.tm.Requirement;
-import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.Script;
 import models.tm.test.Tag;
@@ -109,7 +107,7 @@ public class Projects extends TMController {
             notFound("Could not find tag with ID " + firstTagId);
         } else if (secondTag == null) {
             notFound("Could not find tag with ID " + secondTagId);
-        } else if (firstTag.id!=secondTag.id) {
+        } else if (!firstTag.getId().equals(secondTag.getId())) {
             List<TagHolder> tagHolder = new ArrayList<TagHolder>();
 
             if (firstTag.type == Tag.TagType.REQUIREMENT) {
