@@ -112,6 +112,7 @@
         fullDrawInstanceTable = true;
         $('#updateRunButton').button('disable');
         $('#deleteRunButton').button('disable');
+          handlePagination('#instanceTable', 10);
       }
     };
     #{/tabularasa.init}
@@ -142,6 +143,7 @@
       "fnDrawCallback": function() {
         refreshTableContents('#runStepTable', fullDrawRunTable);
         fullDrawRunTable = true;
+        handlePagination('#runTable', 10);
       }
     };
     #{/tabularasa.init}
@@ -168,6 +170,9 @@
       "bAutoWidth": false,
       "oLanguage": {
         "sZeroRecords": "No run steps defined"
+      },
+      "fnDrawCallback": function(){
+          handlePagination('#runStepTable', 10);
       }
     };
     #{/tabularasa.init}

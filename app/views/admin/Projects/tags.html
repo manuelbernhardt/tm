@@ -52,7 +52,10 @@
                   "bFilter":true,
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
-                  }
+                  },
+                    "fnDrawCallback": function(){
+                        handlePagination('#requirement',10);
+                    }
                 };
                 #{/tabularasa.init}
 
@@ -74,7 +77,10 @@
                   "bFilter":true,
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
-                  }
+                  },
+                    "fnDrawCallback": function(){
+                        handlePagination('#testScript',10);
+                    }
                 };
                 #{/tabularasa.init}
 
@@ -95,7 +101,10 @@
                   "bFilter":true,
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
-                  }
+                  },
+                    "fnDrawCallback": function(){
+                        handlePagination('#testInstance',10);
+                    }
                 };
                 #{/tabularasa.init}
 
@@ -116,7 +125,10 @@
                   "bFilter":true,
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
-                  }
+                  },
+                    "fnDrawCallback": function(){
+                        handlePagination('#defect',10);
+                    }
                 };
                 #{/tabularasa.init}
 
