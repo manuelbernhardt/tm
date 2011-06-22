@@ -125,9 +125,9 @@ $(document).ready(function() {
     "aoColumns":[
       {"sName": "id", "sClass": "sNone"},
       {"sName": "naturalId"},
-      {"sName": "name", "bSortable": false},
+      {"sName": "name"},
       // jquery data table bug, bSortable works as a switch here, turn it off before tagNames and switch it on after, thus tagName is not sortable
-      {"sName": "tagNames", "bSortable": true},
+      {"sName": "tagNames"},
       {"sName": "assignedTo"},
       {"sName": "submittedBy"},
       {"sName": "status.name"},
@@ -136,11 +136,10 @@ $(document).ready(function() {
       }}
     ],
     "bServerSide": true,
-    "bLengthChange": false,
-    "bSort": true,
+    "bScrollInfinite": true,
+    "bScrollCollapse": true,
+    "sScrollY": "100px",
     "bFilter": false,
-    "bAutoWidth": false,
-    "iDisplayLength": false,
     "bInfo": false,
     "sAjaxSource": "@{Defects.defects()}",
     "oLanguage": {
@@ -157,7 +156,6 @@ $(document).ready(function() {
           }
         });
       }
-      handlePagination("#defectsTable", 0)
     }
   };
   #{/tabularasa.init}
