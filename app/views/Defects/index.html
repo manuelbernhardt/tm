@@ -43,45 +43,7 @@
     #{/ox.form}
   </div>
 
-  <div id="updateDefectDialog" title="Update a defect">
-      <br/>
-    #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
-    #{ox.field field:'defect.name', label:'Summary' /}
-    #{ox.field field:'defect.description', label:'Description'/}
-    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.status', label:'Status' /}
-    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
-    #{ox.field field:'defect.id', hidden:true/}
-    #{/ox.form}
 
-    <div class="comments-actions">
-        <button id="updateDefectButtonCancel">Cancel</button>
-        <button id='updateDefectButtonConfirm'>Save</button>
-    </div><br/><br/>
-      
-      #{box 'Comments'}
-        <div id="comments" class="comments-container">
-           <div class="comments-list">
-            <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
-           </div>
-
-            <br/>
-            <div class="comments-add" id="comments-add">
-                #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
-                #{ox.field field:'comment.comment', label:'Comment' /}
-                #{ox.field field:'comment.id', hidden:true /}
-                #{ox.field field:'comment.account.id', hidden:true /}
-                #{/ox.form}
-
-                <label class="comment">&nbsp</label>
-                    <button id="addCommentButton">Add comment</button>
-                    <button id='addCommentAndDefectButton'>Add comment and save</button>
-
-            </div>
-
-        </div>
-      #{/box}
-  </div>
 
   <br/>
 
@@ -107,8 +69,51 @@
   <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
 
 
+<div id='defectDetails' style="display:none">
+
+  <div id="updateDefectDialog" title="Update a defect">
+      <br/>
+    #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
+    #{ox.field field:'defect.name', label:'Summary' /}
+    #{ox.field field:'defect.description', label:'Description'/}
+    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
+    #{ox.field field:'defect.status', label:'Status' /}
+    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
+    #{ox.field field:'defect.id', hidden:true/}
+    #{/ox.form}
 
 
+  </div>
+
+        <div class="comments-actions">
+        <button id="updateDefectButtonCancel">Cancel</button>
+        <button id='updateDefectButtonConfirm'>Save</button>
+    </div><br/><br/>
+
+      #{box 'Comments'}
+        <div id="comments" class="comments-container">
+           <div class="comments-list">
+            <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
+           </div>
+
+            <br/>
+            <div class="comments-add" id="comments-add">
+                #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
+                #{ox.field field:'comment.comment', label:'Comment' /}
+                #{ox.field field:'comment.id', hidden:true /}
+                #{ox.field field:'comment.account.id', hidden:true /}
+                #{/ox.form}
+
+                <label class="comment">&nbsp</label>
+                    <button id="addCommentButton">Add comment</button>
+                    <button id='addCommentAndDefectButton'>Add comment and save</button>
+
+            </div>
+
+        </div>
+      #{/box}
+
+</div>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -215,17 +220,7 @@ $(document).ready(function() {
       commentScripts();
   });
 
-    $('#updateDefectDialog').dialog({
-        autoOpen: false,
-        width: 700,
-        modal: true,
-        buttons: {
-            "Close": function(){
-                $(this).dialog('close');
-            }
-        }
-
-    });
+    
 
     $('#updateDefectButtonConfirm').button().click(function(){
         $('#updateDefectForm').ajaxSubmit({
