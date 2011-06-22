@@ -648,6 +648,11 @@ function applyButtonStyles() {
     $('.button-delete').button({icons: {primary: 'ui-icon-trash'}, text:false,  disabled:true});
     $('.button-add-folder').button({icons: {primary: 'ui-icon-plus', secondary: 'ui-icon-folder-open'}, text: false});
     $('.button-play').button({icons: {primary: 'ui-icon-play'}, disabled: true});
+    applyDefectCommentsButtonStyles();
+}
+
+function applyDefectCommentsButtonStyles() {
+
     $('.button-edit-comment').button({icons: {primary: 'ui-icon-pencil'}, disabled:false});
     $('.button-delete-comment').button({icons: {primary: 'ui-icon-trash'}, disabled:false});
 }

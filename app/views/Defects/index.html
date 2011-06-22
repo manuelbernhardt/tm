@@ -25,10 +25,6 @@
   <button id="createDefectButton" class="button-add">Defect</button>
   #{/deadbolt.restrict}
 
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTVIEW]]}
-  <button id="updateDefectButton" class="button-edit">Update defect</button>
-  #{/deadbolt.restrict}
-
   #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
   <button id="deleteDefectButton" class="button-delete">Delete defect</button>
   #{/deadbolt.restrict}
@@ -71,8 +67,9 @@
 
 <div id='defectDetails' style="display:none">
 
-  <div id="updateDefectDialog" title="Update a defect">
-      <br/>
+  <div id="updateDefectDialog" class="defect-detail-left" title="Update a defect">
+
+    #{box 'Defect details'}
     #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
     #{ox.field field:'defect.name', label:'Summary' /}
     #{ox.field field:'defect.description', label:'Description'/}
@@ -81,38 +78,36 @@
     *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
     #{ox.field field:'defect.id', hidden:true/}
     #{/ox.form}
+    <div class="comments-actions">
+      <button id='updateDefectButtonConfirm'>Save</button>
+    </div>
+    #{/box}
 
 
   </div>
 
-        <div class="comments-actions">
-        <button id="updateDefectButtonCancel">Cancel</button>
-        <button id='updateDefectButtonConfirm'>Save</button>
-    </div><br/><br/>
+  <div id="comments" class="defect-detail-right">
+        #{box 'Comments'}
+       <div class="comments-list">
+        <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
+       </div>
 
-      #{box 'Comments'}
-        <div id="comments" class="comments-container">
-           <div class="comments-list">
-            <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
-           </div>
+        <br/>
+        <div class="comments-add" id="comments-add">
+            #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
+            #{ox.field field:'comment.comment', label:'Comment' /}
+            #{ox.field field:'comment.id', hidden:true /}
+            #{ox.field field:'comment.account.id', hidden:true /}
+            #{/ox.form}
 
-<<<<<<< HEAD
-            <br/>
-            <div class="comments-add" id="comments-add">
-                #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
-                #{ox.field field:'comment.comment', label:'Comment' /}
-                #{ox.field field:'comment.id', hidden:true /}
-                #{ox.field field:'comment.account.id', hidden:true /}
-                #{/ox.form}
-
-                <label class="comment">&nbsp</label>
-                    <button id="addCommentButton">Add comment</button>
-                    <button id='addCommentAndDefectButton'>Add comment and save</button>
-
-            </div>
+            <label class="comment">&nbsp</label>
+                <button id="addCommentButton">Add comment</button>
+                <button id='addCommentAndDefectButton'>Add comment and save</button>
 
         </div>
-      #{/box}
+        #{/box}
+  </div>
+
 
 </div>
 <script type="text/javascript">
@@ -221,26 +216,17 @@ $(document).ready(function() {
           });
 
 
-  $('#updateDefectButton').click(function() {
-      $('#updateDefectDialog').dialog('open');
-      applyButtonStyles();
-      commentScripts();
-  });
-
-    
-
     $('#updateDefectButtonConfirm').button().click(function(){
         $('#updateDefectForm').ajaxSubmit({
             success: function(){
                 refreshTableContents('#defectsTable', false);
+                refreshCommentsList();
             }
         });
-        $('#updateDefectDialog').dialog('close');
+        
     });
 
-    $('#updateDefectButtonCancel').button().click(function(){
-        $('#updateDefectDialog').dialog('close')
-    });
+
 
 
 //  var tokens = $('#createDefectForm_defect_tags').tokenInput({
@@ -259,14 +245,6 @@ $(document).ready(function() {
 //            creationText: "Create new tag"
 //          });
 
-    handleRowSelection('#defectsTable', function(rowId) {
-        if(rowId!=''){
-            $('#updateDefectButton').button('enable');
-            $('#deleteDefectButton').button('enable');
-            $('#defectDetails').slideDown('slow');
-            $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
-        }
-    });
 
 // delete defect
   $('#deleteDefectButton').click(function() {
@@ -288,18 +266,7 @@ $(document).ready(function() {
 
     $('#addDefectCommentForm').oxForm({});
 
-    handleRowSelection('#defectsTable', function(){
 
-        $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
-            if (!ko.mapping.isMapped(viewModelComments)) {
-              $.extend(viewModelComments, ko.mapping.fromJS(data));
-              ko.applyBindings(viewModelComments, document.getElementById("comments-binding"));
-            } else {
-              ko.mapping.updateFromJS(viewModelComments, data);
-            }
-        });
-
-    });
 
 
 //    $('#comment-add').button({disabled:true});
@@ -322,9 +289,28 @@ $(document).ready(function() {
                 refreshTableContents('#defectsTable', false);
             }
         });
-        $('#updateDefectDialog').dialog('close');
-    })
+    });
 
+    
+    handleRowSelection('#defectsTable', function(rowId){
+        if(rowId!=''){
+            $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+            $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
+                if (!ko.mapping.isMapped(viewModelComments)) {
+                  $.extend(viewModelComments, ko.mapping.fromJS(data));
+                  ko.applyBindings(viewModelComments, document.getElementById("comments-binding"));
+                } else {
+                  ko.mapping.updateFromJS(viewModelComments, data);
+                }
+            });
+            $('#defectDetails').slideUp('fast');
+            refreshCommentsList();
+            $('#defectDetails').delay('100');
+            $('#defectDetails').slideDown('slow');
+            $('#deleteDefectButton').button('enable');
+        }
+
+    });
 
 
     //comments template scripts
@@ -364,7 +350,7 @@ $(document).ready(function() {
     function refreshCommentsList(){
         $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
             ko.mapping.updateFromJS(viewModelComments, data);
-            applyButtonStyles();
+            applyDefectCommentsButtonStyles();
             commentScripts();
         });
     }
