@@ -1,15 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Defects' /}
 
-#{if create}
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#createDefectDialog').slideToggle('slow');
-    $('#createDefectForm_defect_description').val('${defectDescription.raw()}');
-  });
-</script>
-#{/if}
-
 <div id="defectList">
 
   <div id="filterContainer">
@@ -389,6 +380,15 @@ $(document).ready(function() {
 
 </script>
 
+#{if createDefect}
+<script id="create" type="text/javascript">
+  $(document).ready(function() {
+    $('#createDefectDialog').dialog('open');
+    $('#createDefectForm_defect_description').val('${defectDescription.raw()}');
+  });
+</script>
+#{/if}
+
 <script id='commentsTemplate' type='text/html'>
 
 
@@ -418,4 +418,6 @@ $(document).ready(function() {
 
 
 </script>
+
+
 

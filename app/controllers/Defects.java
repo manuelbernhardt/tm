@@ -34,12 +34,12 @@ public class Defects extends TMController {
 
     @Restrict(UnitRole.DEFECTVIEW)
     public static void index() {
-        List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
+        List<TMUser> users = TMUser.listByProject(getActiveProjectId());
         render(users);
     }
 
     public static void create(Long runId) {
-        boolean create = true;
+        boolean createDefect = true;
 
         List<RunStep> runSteps = RunStep.find("from RunStep rs where rs.run.id=? and rs.status=3", runId).fetch();
         Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
@@ -51,7 +51,7 @@ public class Defects extends TMController {
                     + runStep.expectedResult + "\\nActual result: " + runStep.actualResult;
         }
 
-        render("Defects/index.html", create, runId, defectDescription);
+        render("Defects/index.html", createDefect, runId, defectDescription);
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
