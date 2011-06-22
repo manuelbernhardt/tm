@@ -184,6 +184,10 @@ table.display {
 	border-collapse: collapse;
 }
 
+table.simple td{
+    padding:1px 2px 1px 2px;
+}
+
 table.display tfoot th {
 	padding: 3px 0px 3px 10px;
 	font-weight: bold;

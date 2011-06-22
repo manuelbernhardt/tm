@@ -72,7 +72,7 @@ public class UserTree implements TreeDataHandler, TreeRoleHolder {
     }
 
     public List<UnitRole> getViewRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 
     public List<UnitRole> getCreateRoles() {

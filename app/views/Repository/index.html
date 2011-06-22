@@ -192,9 +192,13 @@
       parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
     }
 
-    handleRowSelection('#requirementTable', function() {
-        $("#removeRequirementButton").button('enable');
+    handleRowSelection('#requirementTable', function(rowId) {
+        if(rowId!=''){
+            $("#removeRequirementButton").button('enable');
+        }
     });
+
+
 
 
     $("#linkRequirementDialog").dialog({

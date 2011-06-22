@@ -112,6 +112,7 @@
         fullDrawInstanceTable = true;
         $('#updateRunButton').button('disable');
         $('#deleteRunButton').button('disable');
+          handlePagination('#instanceTable', 10);
       }
     };
     #{/tabularasa.init}
@@ -142,6 +143,7 @@
       "fnDrawCallback": function() {
         refreshTableContents('#runStepTable', fullDrawRunTable);
         fullDrawRunTable = true;
+        handlePagination('#runTable', 10);
       }
     };
     #{/tabularasa.init}
@@ -168,6 +170,9 @@
       "bAutoWidth": false,
       "oLanguage": {
         "sZeroRecords": "No run steps defined"
+      },
+      "fnDrawCallback": function(){
+          handlePagination('#runStepTable', 10);
       }
     };
     #{/tabularasa.init}
@@ -198,13 +203,17 @@
     });
 
     handleRowSelection('#runTable', function(selectedRowId) {
-      $('#updateRunButton').button('enable');
-      $('#deleteRunButton').button('enable');
+      if(selectedRowId!=''){
+        $('#updateRunButton').button('enable');
+        $('#deleteRunButton').button('enable');
+      }
       refreshTableContents('#runStepTable', true);
     });
 
     $('#createRunButton').click(function() {
-      $('#createRunDialog').dialog('open')
+        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function(){
+            $('#createRunDialog').dialog('open');
+        });
     });
 
     $('#createRunDialog').dialog({
@@ -214,9 +223,6 @@
       draggable: true,
       resizable: false,
       modal: true,
-      open: function() {
-        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') });
-      },
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({
@@ -242,7 +248,9 @@
     });
 
     $('#updateRunButton').click(function() {
-      $('#updateRunDialog').dialog('open')
+        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function(){
+            $('#updateRunDialog').dialog('open')
+        });
     });
 
     $('#updateRunDialog').dialog({
@@ -252,9 +260,6 @@
       draggable: true,
       resizable: false,
       modal: true,
-      open: function() {
-        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') });
-      },
       buttons: {
         "Save": function() {
           $('#runForm').ajaxSubmit({

@@ -96,6 +96,7 @@
             <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
            </div>
 
+<<<<<<< HEAD
             <br/>
             <div class="comments-add" id="comments-add">
                 #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
@@ -117,6 +118,11 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+
+  $('#createDefectConfirm').button();
+  $('#createDefectCancel').button();
+  $('#updateDefectConfirm').button();
+  $('#updateDefectCancel').button();
 
 
   #{tabularasa.init tableId:'defectsTable'}
@@ -156,6 +162,7 @@ $(document).ready(function() {
           }
         });
       }
+      handlePagination("#defectsTable", 0)
     }
   };
   #{/tabularasa.init}
@@ -252,10 +259,13 @@ $(document).ready(function() {
 //            creationText: "Create new tag"
 //          });
 
-    handleRowSelection('#defectsTable', function() {
-        $('#updateDefectButton').button('enable');
-        $('#deleteDefectButton').button('enable');
-        $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+    handleRowSelection('#defectsTable', function(rowId) {
+        if(rowId!=''){
+            $('#updateDefectButton').button('enable');
+            $('#deleteDefectButton').button('enable');
+            $('#defectDetails').slideDown('slow');
+            $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
+        }
     });
 
 // delete defect
@@ -424,3 +434,4 @@ $(document).ready(function() {
 
 
 </script>
+

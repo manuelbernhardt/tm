@@ -1,38 +1,41 @@
-#{if user == null}
-No user selected
-#{/if}
-#{else}
+
 
 
 <div id="deleteRoleConfirmationDialog" title="Role removal confirmation"></div>
 
 <div id="treeDiv">
-  <button id="assign-role">Role</button>
-  <button id="unassign-role">Remove</button>
+  <button class="button-add" id="assign-role">Role</button>
+  <button class="button-delete" id="unassign-role">Remove</button>
   <div id="projectRolesTree" class="tree"></div>
+
 </div>
 
 <div id="assign-dialog" title="Assign a new role" class="modalDialog">
-  <form id="assignForm">
-    <fieldset>
+    <div id="categoriesContainer">
+        <label for="categoriesSelect" class="name">Category</label>
+        <select id="categoriesSelect" data-bind="options:categories(),
+                       value:category,
+                       optionsText:'name',
+                       optionsCaption:'Select category...'">
 
-      <label for="categories">Project category</label>
-      #{select 'categories', items:projectCategories, valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all", id:'categories'}
-      #{option -1} No category #{/option}
-      #{/select}
-
-      <label for="projects">Project</label>
-      #{select 'projects', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all", id:'projects'}
-      #{option -1} Please select a project #{/option}
-      #{/select}
-
-      <label for="roles">Role</label>
-      #{select 'roles', valueProperty:'id', labelProperty:'name', class:"text ui-widget-content ui-corner-all", id:'roles'}
-      #{option -1} Please select a role #{/option}
-      #{/select}
-
-    </fieldset>
-  </form>
+        </select>
+    </div>
+    <div id="projectsContainer">
+        <label for="projectsSelect" class="name">Project</label>
+        <select id="projectsSelect" data-bind="options: category() ? category().projects : null,
+                       value:project,
+                       optionsText:'name',
+                       optionsCaption:'Select project...'">
+        </select>
+    </div>
+    <div id="rolesContainer">
+        <label for="rolesSelect" class="name">Role</label>
+        <select id="rolesSelect" data-bind="options: project() ? project().roles : null,
+                       value:role,
+                       optionsText:'name',
+                       optionsCaption:'Select role...'">
+        </select>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -40,153 +43,134 @@ No user selected
 
   $(document).ready(function () {
 
+      var viewModelRoles = {};
+
+    handleRowSelection("#tab", function() {
+      $.getJSON('@{admin.Users.rolesData()}', function(data) {
+        if (!ko.mapping.isMapped(viewModelRoles)) {
+          viewModelRoles = $.extend({
+                    category: ko.observable(),
+                    project: ko.observable(),
+                    role: ko.observable(),
+                    updates: function() {
+                      this.category.subscribe(function() {
+                        this.project({id: -1, name: "Test"});
+                      }.bind(this));
+                      this.project.subscribe(function() {
+                        this.role(undefined);
+                      }.bind(this));
+                    }.bind(this)
+                  }, ko.mapping.fromJS(data));
+          ko.applyBindings(viewModelRoles, document.getElementById('assign-dialog'));
+        } else {
+          ko.mapping.updateFromJS(viewModelRoles, data);
+        }
+      });
+
+        $("#projectRolesTree").tree({"args" : {"userId": getSelectedRowId("#tab")}, types: projectRoleTreeTypes, plugins: ["crrm"]});
+
+        $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
+
+            var categoryId = null;
+            var projectId = null;
+            var roleId = null;
+
+            if (data.inst._get_type(data.rslt.obj) == "category") {
+                categoryId = extractId(data.rslt.obj.attr("id"));
+                $("#unassign-role").button('disable');
+            }
+            else if (data.inst._get_type(data.rslt.obj) == "project") {
+                projectId = extractId(data.rslt.obj.attr("id"));
+                var parent = data.inst._get_parent(data.rslt.obj);
+                categoryId = extractId($(parent).attr("id"));
+                $("#unassign-role").button('disable');
+            }
+            else{
+
+                roleId = extractId(data.rslt.obj.attr("id"));
+                var roleParent = data.inst._get_parent(data.rslt.obj);
+                projectId = extractId($(roleParent).attr("id"));
+                var projectParent = data.inst._get_parent(roleParent);
+                categoryId = extractId($(projectParent).attr("id"));
+                $("#unassign-role").button('enable');
+            }
+
+            $.getJSON('@{admin.Users.rolesTreeData()}', {categoryId:categoryId, projectId: projectId, roleId:roleId}, function(data) {
+                   ko.mapping.updateFromJS(viewModelRoles, data);
+            });
+        });
+    });
+
     $("#assign-dialog").dialog({
               autoOpen: false,
               height: 300,
               width: 350,
               modal: true,
-              buttons: {
-                "Assign role": function() {
-                  registerSelectNoneValidator();
-
-                  var selectedProjectId = $('#projects option:selected').val();
-                  var selectedRoleId = $('#roles option:selected').val();
-
-                  var v = $("#assignForm").validate({
-                            rules: {
-                              projects: {selectNone: true},
-                              roles: {selectNone: true}
-                            },
-                            messages: {
-                              projects: "Please select a project",
-                              roles: "Please select a role"
-                            }
-                          });
-
-                  // programmatic validation
-                  var valid = v.form();
-
-                  if (valid) {
-                    var name = $('#roles option:selected').text();
-                    $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: "${user.id}"}}}, null, true);
+              buttons: [{
+                  id:"assignRole",
+                  text: "Assign Role",
+                  click: function() {
+                    var selectedRoleId = viewModelRoles.role().id();
+                    var name = $('#rolesSelect option:selected').text();
+                      //todo this is broken in BL level probably
+                    $("#projectRolesTree").jstree("create", -1, "last", {attr: {"rel": "default"}, data: name, metadata: {args: {roleId: selectedRoleId, userId: getSelectedRowId('#tab')}}}, null, true);
                     var treeContainer = $("#projectRolesTree");
                     jQuery.jstree._reference(treeContainer).refresh();
                     jQuery.jstree._reference(treeContainer).deselect_all();
                     $(this).dialog("close");
-                  } else {
-                    errorHandler("Not valid");
-                  }
-                },
-                Cancel: function() {
-                  $("#assignForm").validate().resetForm();
-                  $(this).dialog("close");
-                }
-              }
+                  }},
+                {
+                    text: "Cancel",
+                    click: function() {
+
+                      $(this).dialog("close");
+                    }
+              }]
             });
 
-    $("#assign-role").button({icons: {primary: 'ui-icon-plus'}}).click(function() {
+    $("#assign-role").click(function() {
       $("#assign-dialog").dialog("open");
+
+
     });
 
-    $("#unassign-role").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
+    $('#assignRole').attr('disabled', 'disabled');
+    $('#categoriesSelect').change(function(){
+        manageRoleSaveButton();
+    });
+    $('#projectsSelect').change(function(){
+        manageRoleSaveButton();
+    });
+    $('#rolesSelect').change(function(){
+        manageRoleSaveButton();
+    });
+
+
+
+    $("#unassign-role").click(function() {
 
       deletionConfirmation('deleteRoleConfirmationDialog', 'Project role for', getSelectedRowColumn($('#tab').dataTable(), 1) + " " + getSelectedRowColumn($('#tab').dataTable(), 2),  function(){
           var $tree = jQuery.jstree._reference('#projectRolesTree');
           var selectedNode = $tree.get_selected();
           if ($tree._get_type(selectedNode) == "default") {
-            selectedNode.data("args", {userId: "${user.id}"});
+            selectedNode.data("args", {userId: getSelectedRowId('#tab')});
             $tree.delete_node(selectedNode);
           }
       });
 
     });
 
-    $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});
-
-    $("#projectRolesTree").bind("select_node.jstree", function (e, data) {
-
-      // pre-select assignment form fields based on what we select in the tree
-
-      // category selected
-      if (data.inst._get_type(data.rslt.obj) == "category") {
-        $("#unassign-role").button('disable');
-
-        var categoryId = extractId(data.rslt.obj.attr("id"));
-        selectCategory(categoryId);
-        $('#categories').val(categoryId);
-        // project selected
-      } else if (data.inst._get_type(data.rslt.obj) == "project") {
-        $("#unassign-role").button('disable');
-
-        var parent = data.inst._get_parent(data.rslt.obj);
-        selectCategory(extractId($(parent).attr("id")));
-        setCategory(parent);
-        var projectId = extractId(data.rslt.obj.attr("id"));
-        selectProject(projectId, function() {
-          $('#projects').val(projectId);
-        });
-        // role selected
-      } else {
-
-        $("#unassign-role").button('enable');
-
-        var roleId = extractId(data.rslt.obj.attr("id"));
-        var roleParent = data.inst._get_parent(data.rslt.obj);
-        var pId = extractId($(roleParent).attr("id"));
-        var projectParent = data.inst._get_parent(roleParent);
-        var cId = -1;
-        if (typeof projectParent !== 'undefined') {
-          cId = extractId($(projectParent).attr("id"));
-        }
-        selectCategory(cId, function() {
-          setCategory($(projectParent));
-          selectProject(pId, function() {
-            $('#projects').val(pId);
-            $('#roles').val(roleId);
-          });
-        });
+   function manageRoleSaveButton(){
+      if($('#rolesSelect :selected').text()!='Select role...' && $('#rolesSelect :selected').text()!='' ){
+          $('#assignRole').removeAttr('disabled');
       }
-    });
+      else{
+          $('#assignRole').attr('disabled', 'disabled');
+      }
+   }
 
-    // run ajax callbacks to update the selects
-    $('#categories').change(function() {
-      var categoryId = $('#categories option:selected').val();
-      selectCategory(categoryId, function() {
-        setCategory(categoryId);
-      });
-    });
 
-    $('#projects').change(function() {
-      var project = $('#projects option:selected').val();
-      selectProject(project, null);
-    });
+
   });
-
-  function selectCategory(categoryId, callback) {
-    $('#projects').attr('disabled', false);
-    $('#projects').find('option').remove().end();
-    $('#projects').addOption('-1', 'Please select a project');
-    $('#roles').find('option').remove().end();
-    $('#roles').addOption('-1', 'Please select a role');
-    $('#roles').attr('disabled', true);
-    $('#projects').ajaxAddOption('@{admin.Users.projectOptions()}', {categoryId: categoryId, accountId: '${user.user.account.id}'}, false, callback);
-  }
-
-  function selectProject(projectId, callback) {
-    $('#roles').attr('disabled', false);
-    $('#roles').find('option').remove().end();
-    $('#roles').addOption('-1', 'Please select a role');
-    $('#roles').ajaxAddOption('@{admin.Users.rolesOptions()}', {projectId: projectId}, false, callback);
-  }
-
-  function setCategory(parent) {
-    if (typeof parent !== 'undefined') {
-      var categoryId = extractId(parent.attr("id"));
-      $('#categories').val(categoryId);
-    } else {
-      $('#categories').val(-1); // no category
-    }
-  }
 </script>
 
-#{/else}

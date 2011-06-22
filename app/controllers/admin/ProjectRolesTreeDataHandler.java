@@ -161,18 +161,18 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
     }
 
     public List<UnitRole> getViewRoles() {
-        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN, UnitRole.ACCOUNTADMIN);
     }
 
     public List<UnitRole> getCreateRoles() {
-        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN, UnitRole.ACCOUNTADMIN);
     }
 
     public List<UnitRole> getUpdateRoles() {
-        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN, UnitRole.ACCOUNTADMIN);
     }
 
     public List<UnitRole> getDeleteRoles() {
-        return roles(UnitRole.PROJECTEDIT, UnitRole.ACCOUNTADMIN);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN, UnitRole.ACCOUNTADMIN);
     }
 }

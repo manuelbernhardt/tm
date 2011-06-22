@@ -1,7 +1,4 @@
-#{if project == null}
-No project selected
-#{/if}
-#{else}
+
 
 <div id="cycleDeletionConfirmationDialog" title="Confirm deletion"></div>
 
@@ -15,19 +12,60 @@ Alternatively simple tags can be used to organize the Test Execution.
 <div class="container">
     <div id="actions" class="actions">
         <div class="actions buttons">
-          <button id="create_release">Release</button>
-          <button id="create_cycle">Cycle</button>
-          <button id="remove_cycleRelease">Remove</button>
+          <button class="button-add" id="create_release">Release</button>
+          <button class="button-add" id="create_cycle">Cycle</button>
+          <button class="button-delete" id="remove_cycleRelease">Remove</button>
         </div>
     </div>
   <div class="tree-container">
       <div class="left_tree" style="width:29%">
         #{box 'Releases and Cycles'}
-        <div id="approachTree" class="tree" style="border:none;"></div>
+        <div id="adminApproachTree" class="tree" style="border:none;"></div>
         #{/box}
       </div>
       <div class="right_table" style="width:70%">
-    <div id="details">No cycle selected</div>
+    <div id="details">
+        <div id="shownOnLoad">
+            #{box 'Details'}
+                No cycle or release chosen
+            #{/box}
+        </div>
+        <div id="releaseDetails">
+            #{box 'Release details'}
+            #{ox.form action:@admin.Approach.editRelease(), id:'releaseForm', edit:util.Require.roles([[models.general.UnitRole.PROJECTEDIT]]), baseClass:'models.tm.approach.Release'}
+
+                #{ox.field field:'release.name', label:'Name' /}
+                #{ox.field field:'release.id', hidden:true /}
+                #{ox.field field:'release.project.id', hidden:true /}
+                #{ox.field field:'release.account.id', hidden:true /}
+                #{ox.field field:'release.project.account.id', hidden:true /}
+                #{ox.field field:'release.project.projectCategory.id', hidden:true /}
+                #{ox.field field:'release.project.projectCategory.account.id', hidden:true /}
+
+                #{ox.submit /}
+            #{/ox.form}
+            #{/box}
+        </div>
+        <div id="cycleDetails">
+            #{box 'Cycle details'}
+            #{ox.form action:@admin.Approach.editCycle(), id:'cycleForm', edit:util.Require.roles([[models.general.UnitRole.PROJECTEDIT]]), baseClass:'models.tm.approach.TestCycle'}
+
+                #{ox.field field:'cycle.name', label:'Name' /}
+                #{ox.field field:'cycle.description', label:'Description' /}
+                #{ox.field field:'cycle.fromDate', label:'From' /}
+                #{ox.field field:'cycle.toDate', label:'To' /}
+                #{ox.field field:'cycle.id', hidden:true /}
+                #{ox.field field:'cycle.project.id', hidden:true /}
+                #{ox.field field:'cycle.account.id', hidden:true /}
+                #{ox.field field:'cycle.project.account.id', hidden:true /}
+                #{ox.field field:'cycle.project.projectCategory.id', hidden:true /}
+                #{ox.field field:'cycle.project.projectCategory.account.id', hidden:true /}
+
+                #{ox.submit /}
+            #{/ox.form}
+            #{/box}
+        </div>
+    </div>
   </div>
   </div>
 </div>
@@ -37,48 +75,83 @@ Alternatively simple tags can be used to organize the Test Execution.
 
   $(document).ready(function () {
 
-    $('#approachTree').tree(
-            {
-              "args" : {"projectId": "${project == null ? controllers.TMController.getActiveProjectId() : project.id}"},
-              types: approachTreeTypes,
-              onDeleteFailed: function() {
-                errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
-              }
-            }
-    );
+        $('#cycleForm').oxForm({
+          loadAction: '@{admin.Approach.cycleDetails()}',
+          submissionCallback:function() {
+                                refreshTree('adminApproachTree');
+                              }
+        });
+
+        $('#releaseForm').oxForm({
+          loadAction: '@{admin.Approach.releaseDetails()}',
+          submissionCallback:function() {
+                                refreshTree('adminApproachTree');
+                              }
+        });
+
+        $('#releaseDetails').hide();
+        $('#cycleDetails').hide();
+        $('#shownOnLoad').show();
+
+        $("#projectTree").bind("select_node.jstree", function (e, data) {
+            $('#releaseDetails').hide();
+            $('#cycleDetails').hide();
+            $('#shownOnLoad').show();
+
+        $('#adminApproachTree').tree(
+                {
+                  "args" : {"projectId": getSelectedNodeId('projectTree')},
+                  types: approachTreeTypes,
+                  onDeleteFailed: function() {
+                    errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
+                  },
+                  onRename: function(name, type) {
+
+                    if(type=='testCycle'){
+                        $('#cycleForm_cycle_name').val(name);
+                    }
+                    else if(type=='release'){
+                        $('#releaseForm_release_name').val(name);
+                    }
+                  }
+                }
+        );
+
+        refreshTree('adminApproachTree');
+
+        /** button initialisation **/
+        $("#create_release").click(function () {
+          $("#adminApproachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+        });
+        $("#create_cycle").click(function () {
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+        });
+        $("#remove_cycleRelease").click(function () {
+            deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('adminApproachTree') ,function(){
+                $("#adminApproachTree").jstree("remove", null);
+            })
+
+        });
 
     /** Selection listener **/
-    $("#approachTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ['default', 'testCycle'])) {
-       $("#remove_cycleRelease").button('enable');
-        $.get('@{admin.Approach.cycleDetails()}', { cycleId: getNodeIdFromData(data) }, function(data) {
-          $('#details').html(data);
-        }).error(errorHandler);
-      } else if (isSelectedNodeType(data, ['release'])) {
-        $("#remove_cycleRelease").button('enable');
-        $.get('@{admin.Approach.releaseDetails()}', { releaseId: getNodeIdFromData(data) }, function(data) {
-          $('#details').html(data);
-        }).error(errorHandler);
-      }
-    });
+        $("#adminApproachTree").bind("select_node.jstree", function (e, data) {
+          if (isSelectedNodeType(data, ['default', 'testCycle'])) {
+             $("#remove_cycleRelease").button('enable');
+             $('#releaseDetails').hide();
+             $('#cycleDetails').show();
+             $('#shownOnLoad').hide();
+             $('#cycleForm').oxForm('load', getSelectedNodeId('adminApproachTree'));
+          } else if (isSelectedNodeType(data, ['release'])) {
+             $("#remove_cycleRelease").button('enable');
+              $('#releaseForm').oxForm('load', getSelectedNodeId('adminApproachTree'));
+              $('#releaseDetails').show();
+              $('#cycleDetails').hide();
+              $('#shownOnLoad').hide();
 
-
-    /** button initialisation **/
-    $("#create_release").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: '${project.id}'}}});
-    });
-    $("#create_cycle").button({icons: {primary: 'ui-icon-plus'}}).click(function () {
-      $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: '${project.id}'}}});
-    });
-    $("#remove_cycleRelease").button({icons: {primary: 'ui-icon-trash'}, text: false, disabled: true}).click(function () {
-        deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
-            $("#approachTree").jstree("remove", null);
-        })
-
-    });
-
+          }
+        });
+     });
   });
 
 </script>
 
-#{/else}

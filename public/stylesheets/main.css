@@ -259,6 +259,7 @@ a.export{
     background-color:transparent;
 }
 
+<<<<<<< HEAD
 .comments-actions{
     float:right;
     width:100%;
@@ -300,6 +301,11 @@ label.comment{
     text-align: right;
     margin: 0px 8px 0px 0px;
     font-weight:bold;
+=======
+/* overriding on hover style of datatable */
+table.display tr :hover{
+    cursor: pointer;
+>>>>>>> master
 }
 
 

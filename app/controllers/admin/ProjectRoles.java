@@ -6,6 +6,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.tabularasa.TableController;
 import models.general.UnitRole;
 import models.tm.Project;
@@ -21,15 +22,10 @@ import util.Logger;
 @With(Deadbolt.class)
 public class ProjectRoles extends TMController {
 
-    @Restrict(UnitRole.PROJECTEDIT)
-    public static void create(ProjectRole role, Long projectId) {
-        Project project = Lookups.getProject(projectId);
-        if(project == null) {
-            Logger.error(Logger.LogType.SECURITY, "Unknown project %s", projectId);
-            notFound("Project was not found");
-        }
-        role.project = project;
-        role.account = project.account;
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
+    public static void create(String roleName, Long projectId) {
+        ProjectRole role = new ProjectRole(Lookups.getProject(projectId));
+        role.name = roleName;
         boolean created = role.create();
         if(!created) {
             Logger.error(Logger.LogType.DB, "Could not create ProjectRole");
@@ -39,7 +35,23 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
+    public static void renameRole(Long projectId, Long roleId, String roleName){
+        List<ProjectRole> projectRoles = ProjectRole.find("id!=? and name=? and project.id=?", roleId, roleName, projectId).fetch();
+        if(projectRoles.size()>0){
+            error("Project role with this name is already defined for this project. Role is not renamed!");
+        }
+        else{
+            ProjectRole projectRole = ProjectRole.find("id=?",roleId).first();
+            projectRole.name = roleName;
+            projectRole.save();
+            ok();
+        }
+    }
+
+
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void data(String tableId,
                             Integer iDisplayStart,
                             Integer iDisplayLength,
@@ -60,7 +72,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void roleDefinition(Long roleId) {
         if (roleId == null) {
             error("No roleId provided");
@@ -72,7 +84,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void edit(Long roleId, String[] unitRoles) {
         if (roleId == null) {
             error("No roleId provided");
@@ -91,7 +103,7 @@ public class ProjectRoles extends TMController {
         }
     }
 
-    @Restrict(UnitRole.PROJECTEDIT)
+    @Restrictions({@Restrict(UnitRole.PROJECTEDIT), @Restrict(UnitRole.PROJECTADMIN)})
     public static void roleDelete(Long roleId) {
         ProjectRole role = Lookups.getRole(roleId);
         if (role != null) {

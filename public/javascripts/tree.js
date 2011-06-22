@@ -134,7 +134,7 @@
                                     $.jstree.rollback(data.rlbk);
                                 } else {
                                     if(typeof options.onRename === 'function') {
-                                        options.onRename.call(data.rslt.new_name, data.rslt.new_name);
+                                        options.onRename.call(data.rslt.new_name, data.rslt.new_name, data.rslt.obj.attr("rel"));
                                     }
                                 }
                             }

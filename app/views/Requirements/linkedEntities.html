@@ -84,8 +84,10 @@
             parameters.push({"name": "requirementId", "value": getSelectedNodeId('requirementTree')});
         }
 
-        handleRowSelection('#scriptTable', function() {
-            $("#unlinkScript").button('enable');
+        handleRowSelection('#scriptTable', function(rowId) {
+            if(rowId!=''){
+              $("#unlinkScript").button('enable');
+            }
         });
 
 

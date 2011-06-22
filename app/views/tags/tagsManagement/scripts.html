@@ -4,7 +4,6 @@
 $(document).ready(function() {
     var ${_type}SecondTagId = null;
 
-    $('#${_type}RenameTag').button({icons: {primary: 'ui-icon-pencil'}, disabled:true});
     $("#${_type}RenameTag").click(function(){
         $('#${_type}RenameDialog').dialog("open");
         var ${_type}DataTable = $('#${_type}').dataTable();
@@ -19,7 +18,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:'${_projectId}'})
+                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
                             .success(
                                 function(data) {
                                     if(data!=null && data!=''){
@@ -41,10 +40,11 @@ $(document).ready(function() {
     });
 
     // row selection handler for tag table
-    handleRowSelection("#${_type}", function(data){
-        if(getSelectedRowId("#${_type}")!=null && getSelectedRowId("#${_type}")!='')
+    handleRowSelection("#${_type}", function(rowId){
+        if(rowId!=''){
             $("#${_type}RenameTag").button("enable");
             $("#${_type}DeleteTag").button("enable");
+        }
     });
 
     $('#${_type}MergeTagDialog').dialog({
@@ -55,7 +55,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:'${_projectId}'})
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
                             .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);
@@ -71,7 +71,6 @@ $(document).ready(function() {
             }
     });
 
-    $('#${_type}AddTag').button({icons: {primary: 'ui-icon-plus'}});
             $("#${_type}AddTag").click(function(){
                 $('#${_type}AddTagDialog').dialog("open");
             });
@@ -84,7 +83,7 @@ $(document).ready(function() {
             modal: true,
             buttons: {
                 "Confirm": function(){
-                    $.post('@{admin.Projects.addTag()}', {projectId:'${_projectId}', name: $('#${_type}AddTagInput').val(),type: "${_type}" })
+                    $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
                             .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);
@@ -101,7 +100,6 @@ $(document).ready(function() {
             }
     });
 
-    $('#${_type}DeleteTag').button({icons: {primary: 'ui-icon-trash'}, disabled: true});
             $("#${_type}DeleteTag").click(function(){
                 deletionConfirmation('${_type}TagDeletionConfirmationDialog','${_type} tag', getSelectedRowColumn($('#${_type}').dataTable(), 1), function(){
                     $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#${_type}'), type:'${_type}'}, function(){

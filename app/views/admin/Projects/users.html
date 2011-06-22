@@ -1,7 +1,4 @@
-#{if project == null}
-No project selected
-#{/if}
-#{else}
+
 
 <div id="userDeletionConfirmDialog" title="Confirm removal of user"></div>
 
@@ -9,7 +6,7 @@ No project selected
   #{infoBox}
   Assign project roles to users by dragging them into the desired role.
   #{/}
-  <button id="removeRoleButton">Remove</button>
+  <button class="button-delete" id="removeRoleButton">Remove</button>
   <div id="searchBox" style="float:right;">Search: <input id="userSearchInput" type="text"></div>
   <div class="container">
     <div class="left_column">
@@ -24,36 +21,36 @@ No project selected
   <script type="text/javascript">
 
     $(document).ready(function () {
+        $("#projectTree").bind("select_node.jstree", function (e, data) {
+            
+          $("#projectRolesAssignmentTree").tree({
+            args : {"projectId": getSelectedNodeId('projectTree')},
+            types: projectRolesAssignmentTreeTypes,
+            plugins: ["crrm","dnd"]
+          });
+          $("#userTree").tree({
+            types: userTreeTypes,
+            plugins: ["dnd"]
+          });
 
-      $("#projectRolesAssignmentTree").tree({
-        args : {"projectId": "${project.id}"},
-        types: projectRolesAssignmentTreeTypes,
-        plugins: ["dnd"]
-      });
-      $("#userTree").tree({
-        types: userTreeTypes,
-        plugins: ["dnd"]
-      });
+          $("#removeRoleButton").click(function() {
+            deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
+                $("#projectRolesAssignmentTree").jstree("remove", null);
+            });
+          });
 
-      $("#removeRoleButton").button({icons: {primary: 'ui-icon-trash'}, text:false, disabled: true}).click(function() {
-        deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
-            $("#projectRolesAssignmentTree").jstree("remove", null);
+          $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ["default", "user"])) {
+              $('#removeRoleButton').button('enable');
+            } else {
+              $('#removeRoleButton').button('disable');
+            }
+          });
+
+          $('#userSearchInput').keyup(function() {
+            $("#userTree").jstree("search", $(this).val());
+          });
+
         });
-      });
-
-      $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
-        if (isSelectedNodeType(data, ["default", "user"])) {
-          $('#removeRoleButton').button('enable');
-        } else {
-          $('#removeRoleButton').button('disable');
-        }
-      });
-
-      $('#userSearchInput').keyup(function() {
-        $("#userTree").jstree("search", $(this).val());
-      });
-
-
     });
   </script>
-  #{/else}

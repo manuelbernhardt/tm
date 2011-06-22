@@ -163,7 +163,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     }
 
     public List<UnitRole> getViewRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 
     public List<UnitRole> getCreateRoles() {
@@ -171,7 +171,7 @@ public class ProjectTreeDataHandler implements TreeDataHandler, TreeRoleHolder {
     }
 
     public List<UnitRole> getUpdateRoles() {
-        return roles(UnitRole.PROJECTEDIT);
+        return roles(UnitRole.PROJECTEDIT, UnitRole.PROJECTADMIN);
     }
 
     public List<UnitRole> getDeleteRoles() {

@@ -75,8 +75,10 @@
             parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
     }
 
-    handleRowSelection('#stepTable', function() {
-      $('#updateStepButton').button('enable');
+    handleRowSelection('#stepTable', function(rowId) {
+       if(rowId!=''){
+        $('#updateStepButton').button('enable');
+       }
     });
 
     $('#createStepButton').click(function() {
