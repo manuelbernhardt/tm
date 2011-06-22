@@ -160,7 +160,7 @@ var approachTreeTypes = {
             "remove" : true
         },
         "root": {
-            "valid_children" : ["default", "release"],
+            "valid_children" : ["release"],
             "icon" : {
                 "image" : "/public/images/jstree/folder.png"
             },

@@ -165,4 +165,9 @@ public class ProjectTreeNode extends Model implements GenericTreeNode, AccountEn
     public void doLoad() {
         this.nodeType = AbstractTree.getNodeType(this.type);
     }
+
+    public int compareTo(JSTreeNode o) {
+        return this.getName().compareTo(o.getName());
+    }
+
 }
