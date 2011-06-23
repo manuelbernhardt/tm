@@ -317,8 +317,10 @@ label.comment{
 }
 
 /* overriding on hover style of datatable */
-table.display tr :hover{
+table.display tr:hover{
     cursor: pointer;
+    background-color: #ECFFB3;
 }
+
 
 

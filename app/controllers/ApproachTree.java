@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import tree.JSTreeNode;
 import tree.persistent.GenericTreeNode;
 import tree.persistent.Node;
 import tree.persistent.NodeType;
+import tree.persistent.RootNode;
 
 import static models.general.UnitRole.roles;
 
@@ -46,20 +48,32 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
     }
 
     @Override
-    public List<? extends JSTreeNode> getChildren(Long parentId, String type, Map<String, String> args) {
-        Long projectId = Long.parseLong(args.get("projectId"));
+    protected String getRootName() {
+        return "Releases";
+    }
+
+    @Override
+    public List<? extends JSTreeNode> getChildren(final Long parentId, final String type, Map<String, String> args) {
+        final Long projectId = Long.parseLong(args.get("projectId"));
 
         if (projectId == null) {
             return null;
         }
 
-        TMJPATreeStorage storage = (TMJPATreeStorage) getStorage();
+        final TMJPATreeStorage storage = (TMJPATreeStorage) getStorage();
+
+        List<JSTreeNode> children = null;
         if (parentId == null || parentId == -1) {
-            return storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.threadRoot = n and n.project.id = ?", projectId);
+            children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.threadRoot = n and n.project.id = ?", projectId);
         } else {
             GenericTreeNode parent = storage.getTreeNode(parentId, type, getName());
-            return storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
+            children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
         }
+
+        RootNode rootNode = new RootNode(getRootName(), -1l, true, true, "root", children);
+        List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
+        nodes.add(rootNode);
+        return nodes;
     }
 
     @Override

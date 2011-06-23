@@ -98,33 +98,37 @@ Alternatively simple tags can be used to organize the Test Execution.
             $('#cycleDetails').hide();
             $('#shownOnLoad').show();
 
-        $('#adminApproachTree').tree(
-                {
-                  "args" : {"projectId": getSelectedNodeId('projectTree')},
-                  types: approachTreeTypes,
-                  onDeleteFailed: function() {
-                    errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
-                  },
-                  onRename: function(name, type) {
+            if($.jstree._reference('#adminApproachTree') == null && getProjectNodeId!=null){
 
-                    if(type=='testCycle'){
-                        $('#cycleForm_cycle_name').val(name);
-                    }
-                    else if(type=='release'){
-                        $('#releaseForm_release_name').val(name);
-                    }
-                  }
-                }
-        );
+                $('#adminApproachTree').tree(
+                    {
+                      "args" : {"projectId": getProjectNodeId},
+                      types: approachTreeTypes,
+                      onDeleteFailed: function() {
+                        errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
+                      },
+                      onRename: function(name, type) {
 
-        refreshTree('adminApproachTree');
+                        if(type=='testCycle'){
+                            $('#cycleForm_cycle_name').val(name);
+                        }
+                        else if(type=='release'){
+                            $('#releaseForm_release_name').val(name);
+                        }
+                      }
+                });
+            }
+            if(getProjectNodeId!=null){
+                refreshTree('adminApproachTree');
+            }
+        });
 
         /** button initialisation **/
         $("#create_release").click(function () {
-          $("#adminApproachTree").jstree("create", -1, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#create_cycle").click(function () {
-          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#remove_cycleRelease").click(function () {
             deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('adminApproachTree') ,function(){
@@ -133,7 +137,7 @@ Alternatively simple tags can be used to organize the Test Execution.
 
         });
 
-    /** Selection listener **/
+        /** Selection listener **/
         $("#adminApproachTree").bind("select_node.jstree", function (e, data) {
           if (isSelectedNodeType(data, ['default', 'testCycle'])) {
              $("#remove_cycleRelease").button('enable');
@@ -150,7 +154,10 @@ Alternatively simple tags can be used to organize the Test Execution.
 
           }
         });
-     });
+
+      function getProjectNodeId() {
+              return getSelectedNodeId('projectTree');
+      }
   });
 
 </script>

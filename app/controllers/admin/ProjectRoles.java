@@ -63,7 +63,7 @@ public class ProjectRoles extends TMController {
             error();
         } else {
             GenericModel.JPAQuery query;
-            query = ProjectRole.find("from ProjectRole r where r.project.id = ?", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = ProjectRole.find("from ProjectRole r where r.project.id = ? order by r.name", projectId).from(iDisplayStart == null ? 0 : iDisplayStart);
 
             List<ProjectRole> roles = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
             long totalRecords = ProjectRole.count();

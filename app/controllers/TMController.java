@@ -564,6 +564,11 @@ public class TMController extends Controller {
     }
 
     @Util
+    protected static boolean isUserSuperAdmin() {
+        return AccountRole.getAccountRoles(getConnectedUser().accountRoles).contains(AccountRole.USER_ADMIN);
+    }
+
+    @Util
     protected static boolean isProjectSuperAdmin() {
         return AccountRole.getAccountRoles(getConnectedUser().accountRoles).contains(AccountRole.PROJECT_ADMIN);
     }

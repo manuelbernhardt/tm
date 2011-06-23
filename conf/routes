@@ -37,8 +37,8 @@ POST    /profile/edit                                   profile.Profile.edit
 
 *       /admin/accounts                                 module:crud
 
+GET     /admin/?                                        admin.Admin.index
 GET     /admin/users                                    admin.Users.index
-GET     /admin/?                                        admin.Users.index
 GET     /admin/users/data                               admin.Users.data
 POST    /admin/users/edit                               admin.Users.edit
 GET     /admin/projects                                 admin.Projects.index

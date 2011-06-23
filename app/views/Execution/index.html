@@ -30,7 +30,12 @@
   </div>
 
     <div class="right_table">
-    <div id="content">
+    <div id="shownOnLoad">
+        #{box 'Runs for test instance'}
+            No test instance selected
+        #{/box}
+    </div>
+    <div id="content" style="display:none">
 
       #{box 'Runs for test instance'}
       #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
@@ -197,6 +202,8 @@
     handleRowSelection('#instanceTable', function(selectedRowId) {
       $('#createRunButton').button('enable');
       fullDrawRunTable = true;
+      $('#shownOnLoad').hide();
+      $('#content').show();
       refreshTableContents('#runTable', true);
       $('#updateRunButton').button('disable');
       $('#deleteRunButton').button('disable');
