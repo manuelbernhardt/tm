@@ -1,5 +1,3 @@
-
-
 <div id="userDeletionConfirmDialog" title="Confirm removal of user"></div>
 
 <div id="treeDiv">
@@ -18,51 +16,51 @@
   </div>
 </div>
 
-  <script type="text/javascript">
+<script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#projectTree").bind("select_node.jstree", function (e, data) {
-           refreshTree('projectRolesAssignmentTree');
+  $(document).ready(function () {
+    $("#projectTree").bind("select_node.jstree", function (e, data) {
+      refreshTree('projectRolesAssignmentTree');
 
-        if ($.jstree._reference('#adminApproachTree') == null && getProjectNodeId!=null) {
+      if ($.jstree._reference('#adminApproachTree') == null && getProjectNodeId != null) {
 
-          $("#projectRolesAssignmentTree").tree({
-            args : {"projectId": getProjectNodeId},
-            types: projectRolesAssignmentTreeTypes,
-            plugins: ["crrm","dnd"]
-          });
-          $("#userTree").tree({
-            types: userTreeTypes,
-            plugins: ["dnd"]
-          });
+        $("#projectRolesAssignmentTree").tree({
+                  args : {"projectId": getProjectNodeId},
+                  types: projectRolesAssignmentTreeTypes,
+                  plugins: ["crrm","dnd"]
+                });
+        $("#userTree").tree({
+                  types: userTreeTypes,
+                  plugins: ["dnd"]
+                });
 
-        }
-            if (getProjectNodeId!=null) {
-                refreshTree('projectRolesAssignmentTree');
-            }
-        });
-
-          $("#removeRoleButton").click(function() {
-            deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
-                $("#projectRolesAssignmentTree").jstree("remove", null);
-            });
-          });
-
-          $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
-            if (isSelectedNodeType(data, ["default", "user"])) {
-              $('#removeRoleButton').button('enable');
-            } else {
-              $('#removeRoleButton').button('disable');
-            }
-          });
-
-          $('#userSearchInput').keyup(function() {
-            $("#userTree").jstree("search", $(this).val());
-          });
-
-        function getProjectNodeId(){
-                return getSelectedNodeId('projectTree');
-        }
-
+      }
+      if (getProjectNodeId != null) {
+        refreshTree('projectRolesAssignmentTree');
+      }
     });
-  </script>
+
+    $("#removeRoleButton").click(function() {
+      deletionConfirmation('userDeletionConfirmDialog', 'Project role from', getSelectedNodeName('projectRolesAssignmentTree'), function() {
+        $("#projectRolesAssignmentTree").jstree("remove", null);
+      });
+    });
+
+    $("#projectRolesAssignmentTree").bind("select_node.jstree", function (e, data) {
+      if (isSelectedNodeType(data, ["default", "user"])) {
+        $('#removeRoleButton').button('enable');
+      } else {
+        $('#removeRoleButton').button('disable');
+      }
+    });
+
+    $('#userSearchInput').keyup(function() {
+      $("#userTree").jstree("search", $(this).val());
+    });
+
+    function getProjectNodeId() {
+      return getSelectedNodeId('projectTree');
+    }
+
+  });
+</script>
