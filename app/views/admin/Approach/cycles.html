@@ -97,10 +97,12 @@ Alternatively simple tags can be used to organize the Test Execution.
             $('#releaseDetails').hide();
             $('#cycleDetails').hide();
             $('#shownOnLoad').show();
+            refreshTree('adminApproachTree');
+        });
 
         $('#adminApproachTree').tree(
                 {
-                  "args" : {"projectId": getSelectedNodeId('projectTree')},
+                  "args" : {"projectId": getProjectNodeId},
                   types: approachTreeTypes,
                   onDeleteFailed: function() {
                     errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
@@ -116,14 +118,14 @@ Alternatively simple tags can be used to organize the Test Execution.
                   }
                 }
         );
-        });
+
 
         /** button initialisation **/
         $("#create_release").click(function () {
-          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#create_cycle").click(function () {
-          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getSelectedNodeId('projectTree')}}});
+          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#remove_cycleRelease").click(function () {
             deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('adminApproachTree') ,function(){
@@ -150,6 +152,14 @@ Alternatively simple tags can be used to organize the Test Execution.
           }
         });
 
+      function getProjectNodeId(){
+          if(getSelectedNodeId('projectTree')==null){
+              return 1;
+          }
+          else{
+              return getSelectedNodeId('projectTree');
+          }
+      }
   });
 
 </script>
