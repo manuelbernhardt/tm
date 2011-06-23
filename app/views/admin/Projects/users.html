@@ -20,9 +20,8 @@
 
   $(document).ready(function () {
     $("#projectTree").bind("select_node.jstree", function (e, data) {
-      refreshTree('projectRolesAssignmentTree');
 
-      if ($.jstree._reference('#adminApproachTree') == null && getProjectNodeId != null) {
+      if ($.jstree._reference('#projectRolesAssignmentTree') == null && getProjectNodeId() != null) {
 
         $("#projectRolesAssignmentTree").tree({
                   args : {"projectId": getProjectNodeId},
@@ -34,11 +33,14 @@
                   plugins: ["dnd"]
                 });
 
-      }
-      if (getProjectNodeId != null) {
+      } else if ($.jstree._reference('#projectRolesAssignmentTree') != null && getProjectNodeId() != null) {
         refreshTree('projectRolesAssignmentTree');
       }
     });
+
+    function getProjectNodeId() {
+      return getSelectedNodeId('projectTree');
+    }
 
     $("#removeRoleButton").click(function() {
       deletionConfirmation('userDeletionConfirmDialog', 'Project role from', getSelectedNodeName('projectRolesAssignmentTree'), function() {
@@ -57,10 +59,6 @@
     $('#userSearchInput').keyup(function() {
       $("#userTree").jstree("search", $(this).val());
     });
-
-    function getProjectNodeId() {
-      return getSelectedNodeId('projectTree');
-    }
 
   });
 </script>
