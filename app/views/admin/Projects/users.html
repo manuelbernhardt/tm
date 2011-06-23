@@ -23,8 +23,9 @@
     $(document).ready(function () {
         $("#projectTree").bind("select_node.jstree", function (e, data) {
            refreshTree('projectRolesAssignmentTree');
-        });
-            
+
+        if ($.jstree._reference('#adminApproachTree') == null && getProjectNodeId!=null) {
+
           $("#projectRolesAssignmentTree").tree({
             args : {"projectId": getProjectNodeId},
             types: projectRolesAssignmentTreeTypes,
@@ -34,6 +35,12 @@
             types: userTreeTypes,
             plugins: ["dnd"]
           });
+
+        }
+            if (getProjectNodeId!=null) {
+                refreshTree('projectRolesAssignmentTree');
+            }
+        });
 
           $("#removeRoleButton").click(function() {
             deletionConfirmation('userDeletionConfirmDialog', 'Project role from',getSelectedNodeName('projectRolesAssignmentTree') , function(){
@@ -54,12 +61,7 @@
           });
 
         function getProjectNodeId(){
-            if(getSelectedNodeId('projectTree')==null){
-                return 1;
-            }
-            else{
                 return getSelectedNodeId('projectTree');
-            }
         }
 
     });

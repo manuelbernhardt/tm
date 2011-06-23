@@ -97,28 +97,31 @@ Alternatively simple tags can be used to organize the Test Execution.
             $('#releaseDetails').hide();
             $('#cycleDetails').hide();
             $('#shownOnLoad').show();
-            refreshTree('adminApproachTree');
+
+            if($.jstree._reference('#adminApproachTree') == null && getProjectNodeId!=null){
+
+                $('#adminApproachTree').tree(
+                    {
+                      "args" : {"projectId": getProjectNodeId},
+                      types: approachTreeTypes,
+                      onDeleteFailed: function() {
+                        errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
+                      },
+                      onRename: function(name, type) {
+
+                        if(type=='testCycle'){
+                            $('#cycleForm_cycle_name').val(name);
+                        }
+                        else if(type=='release'){
+                            $('#releaseForm_release_name').val(name);
+                        }
+                      }
+                });
+            }
+            if(getProjectNodeId!=null){
+                refreshTree('adminApproachTree');
+            }
         });
-
-        $('#adminApproachTree').tree(
-                {
-                  "args" : {"projectId": getProjectNodeId},
-                  types: approachTreeTypes,
-                  onDeleteFailed: function() {
-                    errorMessage("Could not delete requirement/cycle - make sure there are no linked instances left.", "Error deleting requirement/cycle")
-                  },
-                  onRename: function(name, type) {
-
-                    if(type=='testCycle'){
-                        $('#cycleForm_cycle_name').val(name);
-                    }
-                    else if(type=='release'){
-                        $('#releaseForm_release_name').val(name);
-                    }
-                  }
-                }
-        );
-
 
         /** button initialisation **/
         $("#create_release").click(function () {
@@ -152,13 +155,8 @@ Alternatively simple tags can be used to organize the Test Execution.
           }
         });
 
-      function getProjectNodeId(){
-          if(getSelectedNodeId('projectTree')==null){
-              return 1;
-          }
-          else{
+      function getProjectNodeId() {
               return getSelectedNodeId('projectTree');
-          }
       }
   });
 
