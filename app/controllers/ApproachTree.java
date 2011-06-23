@@ -65,15 +65,16 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
         List<JSTreeNode> children = null;
         if (parentId == null || parentId == -1) {
             children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.threadRoot = n and n.project.id = ?", projectId);
+            RootNode rootNode = new RootNode(getRootName(), -1l, true, true, "root", children);
+            List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
+            nodes.add(rootNode);
+            return nodes;
         } else {
             GenericTreeNode parent = storage.getTreeNode(parentId, type, getName());
             children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
+            return children;
         }
 
-        RootNode rootNode = new RootNode(getRootName(), -1l, true, true, "root", children);
-        List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
-        nodes.add(rootNode);
-        return nodes;
     }
 
     @Override
