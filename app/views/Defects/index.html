@@ -168,7 +168,7 @@ $(document).ready(function() {
 
   $('#createDefectForm').oxForm({
             submissionCallback: function() {
-              refreshTableContents('#defectsTable', false);
+              refreshTableContents('#defectsTable', true, true);
             }
           });
 
