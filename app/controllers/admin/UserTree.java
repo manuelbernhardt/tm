@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class UserTree implements TreeDataHandler, TreeRoleHolder {
             SimpleNode root = new SimpleNode(1l, "Users", "root", true, true, rootChildProducer);
             List<JSTreeNode> results = new ArrayList<JSTreeNode>();
             results.add(root);
+            Collections.sort(results);
             return results;
         }
         return null;

@@ -157,9 +157,9 @@ public class Users extends TMController {
         GenericModel.JPAQuery query = null;
         if (sSearch != null && sSearch.length() > 0) {
             String sLike = "%" + sSearch + "%";
-            query = TMUser.find("from TMUser u where u.user.firstName like ? or u.user.lastName like ? order by u.user.firstName", sLike, sLike);
+            query = TMUser.find("from TMUser u where u.user.firstName like ? or u.user.lastName like ? order by u.user.lastName", sLike, sLike);
         } else {
-            query = TMUser.find("from TMUser u order by u.user.firstName").from(iDisplayStart == null ? 0 : iDisplayStart);
+            query = TMUser.find("from TMUser u order by u.user.lastName").from(iDisplayStart == null ? 0 : iDisplayStart);
         }
         List<TMUser> people = query.fetch(iDisplayLength == null ? 10 : iDisplayLength);
         long totalRecords = TMUser.count();

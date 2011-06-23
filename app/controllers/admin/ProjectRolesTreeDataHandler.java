@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
             rootNodes.addAll(categories.values());
             rootNodes.addAll(projects.values());
 
+            Collections.sort(rootNodes);
             return rootNodes;
         }
         return null;
@@ -109,6 +111,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
                     ps.add(new SimpleNode(p.id, p.name, PROJECT, true, true, projectChildProducer));
                 }
             }
+            Collections.sort(ps);
             return ps;
         }
 
@@ -128,6 +131,7 @@ public class ProjectRolesTreeDataHandler implements TreeDataHandler, TreeRoleHol
                     rs.add(new SimpleNode(r.id, r.name, ROLE, false, false, null));
                 }
             }
+            Collections.sort(rs);
             return rs;
         }
 
