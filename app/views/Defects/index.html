@@ -105,12 +105,6 @@
 
 $(document).ready(function() {
 
-  $('#createDefectConfirm').button();
-  $('#createDefectCancel').button();
-  $('#updateDefectConfirm').button();
-  $('#updateDefectCancel').button();
-
-
   #{tabularasa.init tableId:'defectsTable'}
   var defectsTableParameters = {
     "aoColumns":[
@@ -198,9 +192,7 @@ $(document).ready(function() {
 
 
   $('#updateDefectForm').oxForm({
-            submissionCallback: function() {
-              refreshTableContents('#defectsTable', false);
-            },
+            
             loadAction: '@{Defects.defectDetails()}'
           });
 
@@ -208,11 +200,10 @@ $(document).ready(function() {
     $('#updateDefectButtonConfirm').button().click(function(){
         $('#updateDefectForm').ajaxSubmit({
             success: function(){
-                refreshTableContents('#defectsTable', false);
-                refreshCommentsList();
+                refreshTableContents('#defectsTable', true, true);
             }
         });
-        
+        refreshCommentsList();
     });
 
 
@@ -275,9 +266,10 @@ $(document).ready(function() {
         $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
         $('#updateDefectForm').ajaxSubmit({
             success: function(){
-                refreshTableContents('#defectsTable', false);
+                refreshTableContents('#defectsTable', true, true);
             }
         });
+        refreshCommentsList();
     });
 
     
@@ -332,8 +324,6 @@ $(document).ready(function() {
             }).error(errorHandler);
 
         })
-
-        
     }
 
     function refreshCommentsList(){

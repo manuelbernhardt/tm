@@ -27,7 +27,7 @@ function handleRowSelection(tableSelector, handler) {
  * @param tableSelector the selector of the table
  * @param completeRefresh whether this should also re-draw pagination etc.
  */
-function refreshTableContents(tableSelector, completeRefresh) {
+function refreshTableContents(tableSelector, completeRefresh, selectRow) {
     var dataTable = $(tableSelector).dataTable();
     var selected = getSelectedRowId(tableSelector);
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
@@ -46,6 +46,16 @@ function refreshTableContents(tableSelector, completeRefresh) {
         });
     }
     dataTable.fnDraw(completeRefresh);
+    // select row after full refresh
+    if(selectRow && (selected != null || selected !== 'undefined')){
+        dataTable.fnSettings().aoDrawCallback.push({
+                    "fn": function () {
+                        // re-select the selected row
+                        fnSelectRow(dataTable, selected);
+                    },
+                    "sName": "user"
+                });
+    }
 }
 
 /**
