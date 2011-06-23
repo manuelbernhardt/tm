@@ -163,7 +163,7 @@ public class Defects extends TMController {
 
         // linking to test instance
         String runIdParam = params.get("runId");
-        if (runIdParam != null) {
+        if (StringUtils.isNotEmpty(runIdParam)) {
             try {
                 Long runId = Long.valueOf(runIdParam);
                 if (runId != null) {
@@ -187,10 +187,10 @@ public class Defects extends TMController {
 
     @Restrict(UnitRole.DEFECTEDIT)
     public static void updateDefect(Defect defect) {
-        Defect d = Lookups.getDefect(defect.id);
+        Defect d = Lookups.getDefect(defect.getId());
         if (d == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
-            notFound("Could not find defect " + defect.id);
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.getId());
+            notFound("Could not find defect " + defect.getId());
         }
         d.name = defect.name;
         d.description = defect.description;
