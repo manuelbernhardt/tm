@@ -293,6 +293,13 @@ $(document).ready(function() {
         }, function(){
             $('#'+id).slideUp('fast');
         })
+
+        // after editing comment list of comments is refreshed, we need to listen to mouse movement in order to display edit and remove button again
+        $('.comments-entry').mouseover(function(){
+            id = $(this).attr('id').replace("mainCommentId", "");
+           $('#'+id).slideDown('fast');
+        })
+
         $('.button-edit-comment').click(function(){
             id = $(this).attr('id');
             $('#hiddenDiv'+id).show();
