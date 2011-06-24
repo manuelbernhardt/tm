@@ -112,12 +112,12 @@
       "oLanguage": {
         "sZeroRecords": "No test instances found"
       },
-      "fnDrawCallback": function() {
+      "fnDrawCallback": function(data) {
         refreshTableContents('#runTable', fullDrawInstanceTable);
         fullDrawInstanceTable = true;
         $('#updateRunButton').button('disable');
         $('#deleteRunButton').button('disable');
-          handlePagination('#instanceTable', 10);
+          handlePagination('#instanceTable', data);
       }
     };
     #{/tabularasa.init}
@@ -145,10 +145,10 @@
       "oLanguage": {
         "sZeroRecords": "No runs performed yet"
       },
-      "fnDrawCallback": function() {
+      "fnDrawCallback": function(data) {
         refreshTableContents('#runStepTable', fullDrawRunTable);
         fullDrawRunTable = true;
-        handlePagination('#runTable', 10);
+        handlePagination('#runTable', data);
       }
     };
     #{/tabularasa.init}
@@ -176,8 +176,9 @@
       "oLanguage": {
         "sZeroRecords": "No run steps defined"
       },
-      "fnDrawCallback": function(){
-          handlePagination('#runStepTable', 10);
+      "fnDrawCallback": function(data){
+
+          handlePagination('#runStepTable', data);
       }
     };
     #{/tabularasa.init}

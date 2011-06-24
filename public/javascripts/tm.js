@@ -119,18 +119,13 @@ function reloadTables() {
 
 // hides pagination if all results fit one page
 
-function handlePagination(tableId, resultsPerPage){
-    if(resultsPerPage==0){
-        $(tableId + '_paginate')[0].style.display = "none";
-    }
-    else{
-       if($(tableId).find("tr:not(.ui-widget-header)").length<=resultsPerPage){
+function handlePagination(tableId, data){
+    
+       if($(tableId).find("tr:not(.ui-widget-header)").length <= data._iDisplayLength && data._iDisplayLength > data._iDisplayStart){
            $(tableId + '_paginate')[0].style.display = "none";
        } else {
           $(tableId + '_paginate')[0].style.display = "block";
        }
-    }
-
 }
 
 

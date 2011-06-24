@@ -53,8 +53,9 @@
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
                   },
-                    "fnDrawCallback": function(){
-                        handlePagination('#requirement',10);
+                    "fnDrawCallback": function(data){
+                        
+                        handlePagination('#requirement',data);
                     }
                 };
                 #{/tabularasa.init}
@@ -78,8 +79,8 @@
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
                   },
-                    "fnDrawCallback": function(){
-                        handlePagination('#testScript',10);
+                    "fnDrawCallback": function(data){
+                        handlePagination('#testScript',data);
                     }
                 };
                 #{/tabularasa.init}
@@ -102,8 +103,8 @@
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
                   },
-                    "fnDrawCallback": function(){
-                        handlePagination('#testInstance',10);
+                    "fnDrawCallback": function(data){
+                        handlePagination('#testInstance',data);
                     }
                 };
                 #{/tabularasa.init}
@@ -126,8 +127,8 @@
                   "oLanguage": {
                     "sZeroRecords": "No tags created yet"
                   },
-                    "fnDrawCallback": function(){
-                        handlePagination('#defect',10);
+                    "fnDrawCallback": function(data){
+                        handlePagination('#defect',data);
                     }
                 };
                 #{/tabularasa.init}

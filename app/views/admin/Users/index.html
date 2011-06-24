@@ -155,12 +155,12 @@
       "oLanguage": {
         "sZeroRecords": "No users defined yet"
       },
-      "fnDrawCallback": function(){
-          handlePagination('#tab', 10);
+      "fnDrawCallback": function(data){
+          
+          handlePagination('#tab',  data);
       }
     };
     #{/tabularasa.init}
-
     handleRowSelection('#tab', function(rowId){
         if(rowId!=''){
             $("#removeUserButton").button('enable');
