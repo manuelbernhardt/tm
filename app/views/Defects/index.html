@@ -68,10 +68,8 @@
     #{ox.field field:'defect.status', label:'Status' /}
     *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
     #{ox.field field:'defect.id', hidden:true/}
+    #{ox.submit/}
     #{/ox.form}
-    <div class="comments-actions">
-      <button id='updateDefectButtonConfirm'>Save</button>
-    </div>
     #{/box}
 
 
@@ -92,8 +90,7 @@
             #{/ox.form}
 
             <label class="comment">&nbsp</label>
-                <button id="addCommentButton">Add comment</button>
-                <button id='addCommentAndDefectButton'>Add comment and save</button>
+                <button id='addCommentAndDefectButton'>Add comment & save</button>
 
         </div>
         #{/box}
@@ -192,9 +189,15 @@ $(document).ready(function() {
 
 
   $('#updateDefectForm').oxForm({
-            
-            loadAction: '@{Defects.defectDetails()}'
-          });
+    submissionCallback: function () {
+        refreshTableContents('#defectsTable', true, true);
+    },
+    loadAction: '@{Defects.defectDetails()}'
+
+  });
+
+
+
 
 
     $('#updateDefectButtonConfirm').button().click(function(){
@@ -205,6 +208,7 @@ $(document).ready(function() {
         });
         refreshCommentsList();
     });
+    $('#updateDefectButtonConfirm').button('disable');
 
 
 
@@ -257,20 +261,20 @@ $(document).ready(function() {
 //        }
 //    })
 
-    $('#addCommentButton').button().click(function(){
-        $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
-        refreshCommentsList();
+    $('#addDefectCommentForm_comment_comment').focus(function(){
+         $('#addCommentAndDefectButton').button('enable')
     });
-
+    
     $('#addCommentAndDefectButton').button().click(function(){
-        $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
-        $('#updateDefectForm').ajaxSubmit({
-            success: function(){
-                refreshTableContents('#defectsTable', true, true);
-            }
-        });
-        refreshCommentsList();
+            $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
+            $('#updateDefectForm').ajaxSubmit({
+                success: function(){
+                    refreshTableContents('#defectsTable', true, true);
+                }
+            });
+            refreshCommentsList();
     });
+    $('#addCommentAndDefectButton').button('disable');
 
     
     handleRowSelection('#defectsTable', function(rowId){
