@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import play.data.validation.Required;
 import play.data.validation.MaxSize;
 
 /**
@@ -22,6 +23,7 @@ public class DefectComment extends ProjectModel {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public TMUser submittedBy;
 
+    @Required
     @MaxSize(2000)
     @Column(length = 2000)
     public String comment;
