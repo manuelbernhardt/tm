@@ -286,6 +286,10 @@ a.export{
     margin-bottom:5px;
 }
 
+.comments-actions-inner{
+    height:0px;
+}
+
 .comments-caption{
     margin-bottom:5px;
     background-color:#E2E4FF;
