@@ -285,6 +285,7 @@ public class Defects extends TMController {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             comment.addProperty("submittedOn", sdf.format(defectComment.created));
 
+            comment.addProperty("mainCommentId", "mainCommentId" + defectComment.id);
             comment.addProperty("hiddenDivId", "hiddenDiv" + defectComment.id);
             comment.addProperty("visibleDivId", "visibleDiv" + defectComment.id);
             comment.addProperty("visibleActionsId", "visibleActions" + defectComment.id);

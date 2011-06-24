@@ -287,6 +287,12 @@ $(document).ready(function() {
 
     function commentScripts(){
         var id;
+        $('.comments-entry').hover(function(){
+            id = $(this).attr('id').replace("mainCommentId", "");
+           $('#'+id).slideDown('fast');
+        }, function(){
+            $('#'+id).slideUp('fast');
+        })
         $('.button-edit-comment').click(function(){
             id = $(this).attr('id');
             $('#hiddenDiv'+id).show();
@@ -371,17 +377,19 @@ $(document).ready(function() {
 <script id='commentsTemplate' type='text/html'>
 
 
-            <div class="comments-entry" >
+            <div class="comments-entry" data-bind="attr: {id: mainCommentId}">
                 <div class="comments-caption">
                     <span data-bind="text: submittedBy"> </span> commented <span style="float:right;" data-bind="text: submittedOn"> </span>
                 </div>
 
                 <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
-                    <button class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
-                    <button class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
+                   <div style="display:none;" class="hiddenOnLoad" data-bind="attr: {id: id}">
+                    <button  class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
+                    <button  class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
+                   </div>
                 </div>
 
-                <div data-bind="attr: {id: visibleDivId}">
+                <div class="comment-display-container" data-bind="attr: {id: visibleDivId}">
                     <div class="comment-container" data-bind="text: comment"> </div>
                 </div>
                 <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
