@@ -314,10 +314,11 @@ $(document).ready(function() {
         })
 
         $('.button-delete-comment').click(function(){
-            $.post('@{Defects.deleteComment()}', {commentId:$(this).attr('id')},function(){
-                refreshCommentsList();
-            }).error(errorHandler);
-
+            deletionConfirmation('deleteDefectDialog', 'Comment', $('#commentEditInputId'+id).val()), function(){
+                $.post('@{Defects.deleteComment()}', {commentId:$(this).attr('id')},function(){
+                    refreshCommentsList();
+                }).error(errorHandler);
+            }
         })
     }
 

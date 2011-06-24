@@ -659,7 +659,7 @@ function applyButtonStyles() {
 function applyDefectCommentsButtonStyles() {
 
     $('.button-edit-comment').button({icons: {primary: 'ui-icon-pencil'}, disabled:false});
-    $('.button-delete-comment').button({icons: {primary: 'ui-icon-trash'}, disabled:false});
+    $('.button-delete-comment').button({icons: {primary: 'ui-icon-trash'}, disabled:false, text: false});
 }
 
 /**
