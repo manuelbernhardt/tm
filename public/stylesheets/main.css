@@ -302,11 +302,9 @@ a.export{
     border-radius:3px;
 }
 
-.comments-entry-edit-container{
-    /*padding:10px;*/
-    /*margin:5px;*/
-    /*border:solid 1px;*/
-    /*border-radius:5px;*/
+textarea.comments-entry-edit{
+    width:75%;
+    height:80px;
 }
 
 .comment-container{
