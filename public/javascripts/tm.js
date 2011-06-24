@@ -120,8 +120,8 @@ function reloadTables() {
 // hides pagination if all results fit one page
 
 function handlePagination(tableId, data){
-    
-       if($(tableId).find("tr:not(.ui-widget-header)").length <= data._iDisplayLength && data._iDisplayLength > data._iDisplayStart){
+
+       if($(tableId).find("tr:not(.ui-widget-header)").length <= data._iDisplayLength && data._iDisplayLength > data._iDisplayStart ||  data._iDisplayLength==false){
            $(tableId + '_paginate')[0].style.display = "none";
        } else {
           $(tableId + '_paginate')[0].style.display = "block";
