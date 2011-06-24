@@ -157,42 +157,61 @@ public class Defects extends TMController {
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
 //        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
-        defect.create();
-
-        try{
-            Long runId = Long.valueOf(params.get("runId"));
-            if (runId != null) {
-                Instance instance = Run.find("select r.instance from Run r where r.id=?", runId).first();
-                instance.defects.add(defect);
-                instance.save();
-            }
-        }catch(Exception e){
-            // do nothing if run id is not passed it means that we create defect not connected to any run instance
+        boolean created = defect.create();
+        if (!created) {
+            Logger.error(Logger.LogType.DB, "Error while creating defect");
+            error("Error saving Defect, please try again");
         }
+
+        // linking to test instance
+        String runIdParam = params.get("runId");
+        if (StringUtils.isNotEmpty(runIdParam)) {
+            try {
+                Long runId = Long.valueOf(runIdParam);
+                if (runId != null) {
+                    Instance instance = Run.find("select r.instance from Run r where r.id = ?", runId).first();
+                    instance.defects.add(defect);
+                    try {
+                        instance.save();
+                    } catch (Throwable t) {
+                        Logger.error(Logger.LogType.DB, "Error while updating defect instance during linking to defefct %s", defect.getId());
+                        error(String.format("Error linking the newly created defect %s to test instance %s. Please try again.", defect.naturalId, instance.naturalId));
+                    }
+                }
+            } catch (NumberFormatException nfe) {
+                Logger.error(Logger.LogType.SECURITY, "Invalid value '%s' for runId parameter passed during defect creation", runIdParam);
+                error();
+            }
+        }
+
         ok();
     }
 
     @Restrict(UnitRole.DEFECTEDIT)
     public static void updateDefect(Defect defect) {
-        Defect d = Lookups.getDefect(defect.id);
+        Defect d = Lookups.getDefect(defect.getId());
         if (d == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
-            notFound("Could not find defect " + defect.id);
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.getId());
+            notFound("Could not find defect " + defect.getId());
         }
         d.name = defect.name;
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
 //        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
-        // TODO try...catch and log db error
-        d.save();
+        try {
+            d.save();
+        } catch (Throwable t) {
+            Logger.error(Logger.LogType.DB, "Error updating defect");
+            error("Error while saving defect, please try again.");
+        }
         ok();
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
     public static void defectDetails(Long baseObjectId, String[] fields) {
         Defect defect = Lookups.getDefect(baseObjectId);
-        if(defect == null) {
+        if (defect == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
             notFound("Could not find defect " + defect.id);
         }
@@ -207,14 +226,18 @@ public class Defects extends TMController {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect for deletion %s", defectId);
             notFound("Could not find defect with ID " + defectId);
         }
-        // TODO try...catch and log db error
-        defect.delete();
+        try {
+            defect.delete();
+        } catch (Throwable t) {
+            Logger.error(Logger.LogType.DB, "Error deleting defect %s", defectId);
+            error(String.format("Error deleting defect %s, please try again", defect.naturalId));
+        }
         ok();
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
     public static void allTags(String q) {
-        Lookups.allTags(getActiveProject().getId(), Tag.TagType.DEFECT, q);
+        Lookups.allTags(getActiveProjectId(), Tag.TagType.DEFECT, q);
     }
 
     @Restrict(UnitRole.DEFECTVIEW)

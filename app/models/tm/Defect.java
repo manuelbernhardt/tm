@@ -19,8 +19,8 @@ import play.templates.JavaExtensions;
  * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
-public class Defect extends ProjectModel implements TagHolder{
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
+public class Defect extends ProjectModel implements TagHolder {
 
     @Required
     @Column(nullable = false)
@@ -54,7 +54,7 @@ public class Defect extends ProjectModel implements TagHolder{
         return tags;
     }
 
-    public String toString(){
+    public String toString() {
         return this.name;
     }
 }

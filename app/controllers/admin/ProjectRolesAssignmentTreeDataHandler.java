@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         if (parentId == -1) {
             List<JSTreeNode> results = new ArrayList<JSTreeNode>();
             results.add(new SimpleNode(1l, "Project roles", "root", true, true, projectRoleChildProducer));
+            Collections.sort(results);
             return results;
         }
         return null;
@@ -62,12 +64,13 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         }
 
         public List<JSTreeNode> produce(Long id) {
-            List<JSTreeNode> result = new ArrayList<JSTreeNode>();
+            List<JSTreeNode> results = new ArrayList<JSTreeNode>();
             List<ProjectRole> roles = ProjectRole.findByProject(projectId);
             for (ProjectRole r : roles) {
-                result.add(new SimpleNode(r.getId(), r.name, PROJECT_ROLE, true, true, roleChildProducer));
+                results.add(new SimpleNode(r.getId(), r.name, PROJECT_ROLE, true, true, roleChildProducer));
             }
-            return result;
+            Collections.sort(results);
+            return results;
         }
     }
 
@@ -80,6 +83,7 @@ public class ProjectRolesAssignmentTreeDataHandler implements TreeDataHandler, T
                 JSTreeNode n = new SimpleNode(u.id, u.getFullName(), "default", false, false, null);
                 res.add(n);
             }
+            Collections.sort(res);
             return res;
         }
     }

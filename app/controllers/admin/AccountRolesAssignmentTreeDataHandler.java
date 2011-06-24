@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,12 +48,14 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
                 results.add(userAdmin);
                 results.add(projectAdmin);
                 results.add(accountAdmin);
+                Collections.sort(results);
                 return results;
             }
         };
         if (parentId == -1) {
             List<JSTreeNode> results = new ArrayList<JSTreeNode>();
             results.add(new SimpleNode(1l, "Administrative roles", "root", true, true, rootProducer));
+            Collections.sort(results);
             return results;
         }
         return null;
@@ -67,12 +70,13 @@ public class AccountRolesAssignmentTreeDataHandler implements TreeDataHandler, T
         }
 
         public List<JSTreeNode> produce(Long id) {
-            List<JSTreeNode> result = new ArrayList<JSTreeNode>();
+            List<JSTreeNode> results = new ArrayList<JSTreeNode>();
             List<TMUser> users = TMUser.listUsersInAccountRole(accountRole);
             for (TMUser u : users) {
-                result.add(new SimpleNode(u.getId(), u.getFullName(), USER, false, false, null));
+                results.add(new SimpleNode(u.getId(), u.getFullName(), USER, false, false, null));
             }
-            return result;
+            Collections.sort(results);
+            return results;
         }
     }
 

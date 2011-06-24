@@ -28,7 +28,7 @@ public class SchemaCreation {
                     "BEFORE INSERT ON %1$s FOR EACH ROW\n" +
                     "BEGIN\n" +
                     "  DECLARE row_count BIGINT;\n" +
-                    "  SELECT CASE WHEN MAX(id) IS NULL THEN 0 ELSE MAX(id) END\n" +
+                    "  SELECT CASE WHEN MAX(naturalId) IS NULL THEN 0 ELSE MAX(naturalId) END\n" +
                     "  INTO row_count\n" +
                     "  FROM %1$s\n" +
                     "  WHERE %2$s=NEW.%2$s;\n" +
@@ -40,7 +40,7 @@ public class SchemaCreation {
                     "BEFORE INSERT ON %1$s FOR EACH ROW\n" +
                     "BEGIN\n" +
                     "  DECLARE row_count BIGINT;\n" +
-                    "  SELECT CASE WHEN MAX(id) IS NULL THEN 0 ELSE MAX(id) END\n" +
+                    "  SELECT CASE WHEN MAX(naturalId) IS NULL THEN 0 ELSE MAX(naturalId) END\n" +
                     "  INTO row_count\n" +
                     "  FROM %1$s\n" +
                     "  WHERE %2$s=NEW.%2$s AND %3$s=NEW.%3$s;\n" +
@@ -78,7 +78,7 @@ public class SchemaCreation {
 
         for (Class<CompositeModel> c : models) {
             if (isSubclass(ProjectModel.class, c)) {
-                triggerStatements.add(String.format(CREATE_ACCOUNTMODEL_TRIGGER_SYNTAX, getTableName(c), "project_id"));
+                triggerStatements.add(String.format(CREATE_PROJECTMODEL_TRIGGER_SYNTAX, getTableName(c), "project_id", "account_id"));
             } else if (isSubclass(AccountModel.class, c)) {
                 triggerStatements.add(String.format(CREATE_ACCOUNTMODEL_TRIGGER_SYNTAX, getTableName(c), "account_id"));
             } else if (!c.equals(ProjectModel.class) && !c.equals(AccountModel.class)) {

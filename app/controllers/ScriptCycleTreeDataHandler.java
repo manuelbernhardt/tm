@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                 result.add(new SimpleNode(i.getId(), i.name, INSTANCE, false, false, null));
             }
 
+            Collections.sort(result);
             return result;
         } else {
             return null;
@@ -242,6 +244,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
                     }
                 }
             }
+            Collections.sort(children);
             return children;
         }
     }
@@ -259,6 +262,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             for (Instance instance : instances) {
                 children.add(new SimpleNode(instance.getId(), instance.name, INSTANCE, false, false, null));
             }
+            Collections.sort(children);
             return children;
         }
     }
