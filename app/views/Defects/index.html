@@ -384,7 +384,7 @@ $(document).ready(function() {
                 </div>
 
                 <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
-                   <div style="display:none;" class="hiddenOnLoad comments-actions-inner" data-bind="attr: {id: id}">
+                   <div style="display:none;" class="hiddenOnLoad" data-bind="attr: {id: id}">
                     <button  class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
                     <button  class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
                    </div>
@@ -399,7 +399,7 @@ $(document).ready(function() {
                         <button id="commentEditConfirmButton" class="commentEditConfirmButton">Save</button>
                     </div>
                     <div class="comments-entry-edit" id="comments-entry-edit">
-                        <textarea data-bind="attr: {id: commentEditInputId}, text: commentEditInputText" cols="60" rows="8" />
+                        <textarea data-bind="attr: {id: commentEditInputId}, text: commentEditInputText" cols="50" rows="8" />
                     </div>
                 </div>
             </div>
