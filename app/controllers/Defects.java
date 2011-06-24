@@ -198,7 +198,12 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
-        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+        try{
+            defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+        }
+        catch (Throwable t){
+            Logger.error(Logger.LogType.DB, "No tags passed");
+        }
         try {
             d.save();
         } catch (Throwable t) {
