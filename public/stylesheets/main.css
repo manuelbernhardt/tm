@@ -262,12 +262,12 @@ a.export{
 /*defect details styles */
 
 .defect-detail-left{
-    width: 44%;
+    width: 45%;
     float: left;
 }
 
 .defect-detail-right{
-    width:55%;
+    width:54%;
     float: right;
 }
 

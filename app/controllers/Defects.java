@@ -156,7 +156,7 @@ public class Defects extends TMController {
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
-//        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         boolean created = defect.create();
         if (!created) {
             Logger.error(Logger.LogType.DB, "Error while creating defect");
@@ -198,7 +198,7 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
-//        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
+        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         try {
             d.save();
         } catch (Throwable t) {

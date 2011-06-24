@@ -26,7 +26,7 @@
     #{ox.field field:'defect.name', label:'Summary' /}
     #{ox.field field:'defect.description', label:'Description'/}
     #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
+    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
     #{/ox.form}
   </div>
 
@@ -66,7 +66,7 @@
     #{ox.field field:'defect.description', label:'Description'/}
     #{ox.field field:'defect.assignedTo', label:'Assign to' /}
     #{ox.field field:'defect.status', label:'Status' /}
-    *{ #{ox.field field:'defect.tags', label:'Tags', type:'tags' /} }*
+    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
     #{ox.field field:'defect.id', hidden:true/}
     #{ox.submit/}
     #{/ox.form}
@@ -196,10 +196,6 @@ $(document).ready(function() {
 
   });
 
-
-
-
-
     $('#updateDefectButtonConfirm').button().click(function(){
         $('#updateDefectForm').ajaxSubmit({
             success: function(){
@@ -213,21 +209,21 @@ $(document).ready(function() {
 
 
 
-//  var tokens = $('#createDefectForm_defect_tags').tokenInput({
-//            url: '@{Defects.allTags()}',
-//            preventDuplicates: true,
-//            tokenValue: 'name',
-//            allowCreation: true,
-//            creationText: "Create new tag"
-//          });
-//
-//  $('#updateDefectForm_defect_tags').tokenInput({
-//            url: '@{Defects.allTags()}',
-//            preventDuplicates: true,
-//            tokenValue: 'name',
-//            allowCreation: true,
-//            creationText: "Create new tag"
-//          });
+  var tokens = $('#createDefectForm_defect_tags').tokenInput({
+            url: '@{Defects.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+          });
+
+  $('#updateDefectForm_defect_tags').tokenInput({
+            url: '@{Defects.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+          });
 
 
 // delete defect
@@ -249,17 +245,6 @@ $(document).ready(function() {
     var viewModelComments = {};
 
     $('#addDefectCommentForm').oxForm({});
-
-
-
-
-//    $('#comment-add').button({disabled:true});
-//    $('#addDefectCommentForm_comment_comment').change(function(){
-//        alert($('#addDefectCommentForm_comment_comment').val());
-//        if($(this).val()!=''){
-//            $('#comment-add').button('enable');
-//        }
-//    })
 
     $('#addDefectCommentForm_comment_comment').focus(function(){
          $('#addCommentAndDefectButton').button('enable')
