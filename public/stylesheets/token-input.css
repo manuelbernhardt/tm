@@ -12,6 +12,9 @@ ul.token-input-list {
   padding: 0;
   background-color: #fff;
   list-style-type: none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 ul.token-input-list li {
@@ -24,6 +27,9 @@ ul.token-input-list li input {
   padding: 3px 8px;
   background-color: white;
   -webkit-appearance: caret;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 li.token-input-token {
@@ -37,6 +43,9 @@ li.token-input-token {
   font-weight: bold;
   cursor: default;
   display: block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 li.token-input-token p {

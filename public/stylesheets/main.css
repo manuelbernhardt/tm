@@ -8,11 +8,17 @@ body {
 input {
     margin: 0;
     padding: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 textarea{
     margin: 0;
     padding: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 div.tree {
