@@ -290,6 +290,7 @@ public class Defects extends TMController {
             comment.addProperty("visibleDivId", "visibleDiv" + defectComment.id);
             comment.addProperty("visibleActionsId", "visibleActions" + defectComment.id);
             comment.addProperty("hiddenActionsId", "hiddenActions" + defectComment.id);
+            comment.addProperty("commentEditInputId", "commentEditInputId" + defectComment.id);
             comment.addProperty("commentEditInputText", defectComment.comment);
             comment.addProperty("canEdit", defectComment.submittedBy.equals(tmUser));
             

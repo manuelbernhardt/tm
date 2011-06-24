@@ -302,13 +302,13 @@ $(document).ready(function() {
 
         });
         $('.commentEditCancelButton').button().click(function(){
-             $('#hiddenDiv'+id).hide();
+            $('#hiddenDiv'+id).hide();
             $('#visibleDiv'+id).show();
             $('#visibleActions'+id).show();
             $('#hiddenActions'+id).hide();
         })
         $('.commentEditConfirmButton').button().click(function(){
-            $.post("@{Defects.editComment()}", {commentId:id,comment:$('#editCommentInput').val()},function(){
+            $.post("@{Defects.editComment()}", {commentId:id,comment:$('#commentEditInputId'+id).val()},function(){
                 refreshCommentsList();
             }).error(errorHandler);
         })
@@ -395,10 +395,10 @@ $(document).ready(function() {
                 <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
                     <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
                         <button class="commentEditCancelButton">Cancel</button>
-                        <button class="commentEditConfirmButton">Save</button>
+                        <button id="commentEditConfirmButton" class="commentEditConfirmButton">Save</button>
                     </div>
                     <div class="comments-entry-edit" id="comments-entry-edit">
-                        <textarea id='editCommentInput' data-bind="text: commentEditInputText" cols="60" rows="8" />
+                        <textarea data-bind="attr: {id: commentEditInputId}, text: commentEditInputText" cols="60" rows="8" />
                     </div>
                 </div>
             </div>
