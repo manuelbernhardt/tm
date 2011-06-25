@@ -373,6 +373,7 @@ function removeDialogs() {
                         });
 
                     }
+
                 }
                 return $this;
             });
@@ -399,6 +400,7 @@ function removeDialogs() {
                     }
                     $this.find('input[type="submit"]').button('disable')
                 });
+                $('.error').html('');
             });
         },
         submitCreateForm : function(submissionParameters) {
