@@ -323,7 +323,12 @@ label.comment{
 }
 
 /* overriding on hover style of datatable */
-table.display tr:hover{
+table.display tr.odd:hover{
+    cursor: pointer;
+    background-color: #ECFFB3;
+}
+
+table.display tr.even:hover{
     cursor: pointer;
     background-color: #ECFFB3;
 }
