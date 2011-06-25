@@ -141,7 +141,7 @@ public class Defects extends TMController {
             TableController.renderJSON(defects, Defect.class, Defect.count(), sColumns, sEcho);
         } catch (Throwable t) {
             t.printStackTrace();
-            error();
+            error("An error occurred while listing the defects, please reload the page");
         }
 
     }
@@ -162,7 +162,7 @@ public class Defects extends TMController {
         boolean created = defect.create();
         if (!created) {
             Logger.error(Logger.LogType.DB, "Error while creating defect");
-            error("Error saving Defect, please try again");
+            error("An error occurred while saving the defect, please try again");
         }
 
         // linking to test instance
@@ -177,7 +177,7 @@ public class Defects extends TMController {
                         instance.save();
                     } catch (Throwable t) {
                         Logger.error(Logger.LogType.DB, "Error while updating defect instance during linking to defefct %s", defect.getId());
-                        error(String.format("Error linking the newly created defect %s to test instance %s. Please try again.", defect.naturalId, instance.naturalId));
+                        error(String.format("An error occurred while linking the newly created defect %s to test instance %s. Please try again.", defect.naturalId, instance.naturalId));
                     }
                 }
             } catch (NumberFormatException nfe) {
@@ -194,7 +194,7 @@ public class Defects extends TMController {
         Defect d = Lookups.getDefect(defect.getId());
         if (d == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.getId());
-            notFound("Could not find defect " + defect.getId());
+            notFound("Sorry, the selected defect could not be found. Please refresh the page");
         }
         d.name = defect.name;
         d.description = defect.description;
@@ -204,7 +204,7 @@ public class Defects extends TMController {
             d.save();
         } catch (Throwable t) {
             Logger.error(Logger.LogType.DB, "Error updating defect");
-            error("Error while saving defect, please try again.");
+            error("An error occurred while saving the defect, please try again.");
         }
         ok();
     }
@@ -214,7 +214,7 @@ public class Defects extends TMController {
         Defect defect = Lookups.getDefect(baseObjectId);
         if (defect == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
-            notFound("Could not find defect " + defect.id);
+            notFound("Sorry, the selected defect could not be found. Please refresh the page");
         }
 
         renderFields(defect, fields);
@@ -225,13 +225,13 @@ public class Defects extends TMController {
         Defect defect = Lookups.getDefect(defectId);
         if (defect == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect for deletion %s", defectId);
-            notFound("Could not find defect with ID " + defectId);
+            notFound("Sorry, the selected defect could not be found. Please refresh the page");
         }
         try {
             defect.delete();
         } catch (Throwable t) {
             Logger.error(Logger.LogType.DB, "Error deleting defect %s", defectId);
-            error(String.format("Error deleting defect %s, please try again", defect.naturalId));
+            error(String.format("An error occurred while deleting defect %s, please try again", defect.naturalId));
         }
         ok();
     }
@@ -245,8 +245,8 @@ public class Defects extends TMController {
     public static void defectDescription(Long defectId) {
         Defect defect = Lookups.getDefect(defectId);
         if (defect == null) {
-            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.id);
-            notFound("Could not find defect " + defect.id);
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defectId);
+            notFound("Sorry, the selected defect could not be found. Please refresh the page");
         }
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("defectTitle", defect.name);
@@ -257,19 +257,6 @@ public class Defects extends TMController {
         jsonObject.addProperty("defectTags", defect.tags == null ? "" : defect.tags.toString());
         jsonObject.addProperty("defectDescription", defect.description == null ? "" : defect.description);
         renderJSON(jsonObject.toString());
-    }
-
-    @Restrict(UnitRole.DEFECTVIEW)
-    public static void addComment(DefectComment comment, Long defectId){
-        Defect defect = Defect.find("id=?", defectId).first();
-        TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
-        Project project = Project.find("id=?", getActiveProjectId()).first();
-        comment.submittedBy = tmUser;
-        comment.defect = defect;
-        comment.project = project;
-        comment.account = tmUser.account;
-        comment.save();
-        ok();
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
@@ -300,24 +287,48 @@ public class Defects extends TMController {
         renderJSON(result.toString());
     }
 
-    @Restrict(UnitRole.DEFECTVIEW)
+    @Restrict(UnitRole.DEFECTEDIT)
+    public static void addComment(DefectComment comment, Long defectId){
+        Defect defect = Defect.find("id=?", defectId).first();
+        TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
+        Project project = Project.find("id=?", getActiveProjectId()).first();
+        comment.submittedBy = tmUser;
+        comment.defect = defect;
+        comment.project = project;
+        comment.account = tmUser.account;
+        comment.save();
+        ok();
+    }
+    @Restrict(UnitRole.DEFECTEDIT)
     public static void editComment(Long commentId, String comment){
-        DefectComment defectComment = DefectComment.find("id=? and submittedBy.id=?", commentId, getConnectedUserId()).first();
+        DefectComment defectComment = DefectComment.find("id=?", commentId).first();
         if(defectComment==null){
-            error("You are not allowed to edit this comment, or comment doesn't exist!");
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find comment %s for edition", commentId);
+            notFound("Sorry, the selected comment could not be found. Please refresh the page");
         }
         defectComment.comment=comment;
-        defectComment.save();
+        try {
+            defectComment.save();
+        } catch (Throwable t) {
+            Logger.error(Logger.LogType.DB, "Error saving comment %s", commentId);
+            error("An error occurred while saving your comment, please try again");
+        }
         ok();
     }
 
-    @Restrict(UnitRole.DEFECTVIEW)
+    @Restrict(UnitRole.DEFECTEDIT)
     public static void deleteComment(Long commentId){
-        DefectComment defectComment = DefectComment.find("id=? and submittedBy.id=?", commentId, getConnectedUserId()).first();
+        DefectComment defectComment = DefectComment.find("id=?", commentId).first();
         if(defectComment==null){
-            error("You are not allowed to delete this comment, or comment doesn't exist!");
+            Logger.error(Logger.LogType.TECHNICAL, "Could not find comment %s for deletion", commentId);
+            notFound("Sorry, the selected comment could not be found. Please refresh the page");
         }
-        defectComment.delete();
+        try {
+            defectComment.delete();
+        } catch (Throwable t) {
+            Logger.error(Logger.LogType.DB, "Error deleting comment %s", commentId);
+            error("An error occurred while deleting the comment, please try again");
+        }
         ok();
     }
 }
