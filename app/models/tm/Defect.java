@@ -36,6 +36,7 @@ public class Defect extends ProjectModel implements TagHolder {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     public TMUser submittedBy;
 
+    @Required
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public DefectStatus status;
 

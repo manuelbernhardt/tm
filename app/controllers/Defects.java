@@ -10,16 +10,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import controllers.deadbolt.Restrict;
 import controllers.tabularasa.TableController;
-import models.account.Account;
-import models.account.User;
 import models.general.UnitRole;
-import models.tabularasa.TableModel;
-import models.tm.*;
+import models.tm.Defect;
+import models.tm.DefectComment;
+import models.tm.DefectStatus;
+import models.tm.Project;
+import models.tm.StringMatcherType;
+import models.tm.TMUser;
 import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.RunStep;
 import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
+import play.data.validation.Valid;
 import play.mvc.Before;
 import util.FilterQuery;
 import util.Logger;
@@ -151,12 +154,11 @@ public class Defects extends TMController {
     }
 
     @Restrict(UnitRole.DEFECTCREATE)
-    public static void createDefect(Defect defect) {
+    public static void createDefect(@Valid Defect defect) {
         defect.submittedBy = getConnectedUser();
         defect.account = getConnectedUserAccount();
         defect.project = getActiveProject();
         defect.status = DefectStatus.getDefaultDefectStatus();
-        defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
         boolean created = defect.create();
         if (!created) {
             Logger.error(Logger.LogType.DB, "Error while creating defect");
@@ -188,7 +190,7 @@ public class Defects extends TMController {
     }
 
     @Restrict(UnitRole.DEFECTEDIT)
-    public static void updateDefect(Defect defect) {
+    public static void updateDefect(@Valid Defect defect) {
         Defect d = Lookups.getDefect(defect.getId());
         if (d == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find defect with ID %s", defect.getId());
@@ -198,12 +200,6 @@ public class Defects extends TMController {
         d.description = defect.description;
         d.assignedTo = defect.assignedTo;
         d.status = defect.status;
-        try{
-            defect.tags = getTags(params.get("defect.tags"), Tag.TagType.DEFECT);
-        }
-        catch (Throwable t){
-            Logger.error(Logger.LogType.DB, "No tags passed");
-        }
         try {
             d.save();
         } catch (Throwable t) {
