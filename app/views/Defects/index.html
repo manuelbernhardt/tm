@@ -398,7 +398,7 @@ $(document).ready(function() {
                 </div>
 
                 <div class="comment-display-container" data-bind="attr: {id: visibleDivId}">
-                    <div class="comment-container" data-bind="text: comment"> </div>
+                    <div class="comment-container" data-bind="text: comment"></div>
                 </div>
                 <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
                     <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
@@ -406,7 +406,7 @@ $(document).ready(function() {
                         <button id="commentEditConfirmButton" class="commentEditConfirmButton">Save</button>
                     </div>
                     <div class="comments-entry-edit" id="comments-entry-edit">
-                        <textarea class="comments-entry-edit" data-bind="attr: {id: commentEditInputId}, text: commentEditInputText" />
+                        <textarea class="comments-entry-edit" data-bind="attr: {id: commentEditInputId}, value: comment" />
                     </div>
                 </div>
             </div>
