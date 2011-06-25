@@ -47,7 +47,7 @@ function refreshTableContents(tableSelector, completeRefresh, selectRow) {
     }
     dataTable.fnDraw(completeRefresh);
     // select row after full refresh
-    if(selectRow && (selected != null || selected !== 'undefined')){
+    if (selectRow && (selected != null || selected !== 'undefined')) {
         dataTable.fnSettings().aoDrawCallback.push({
                     "fn": function () {
                         // re-select the selected row
@@ -119,13 +119,13 @@ function reloadTables() {
 
 // hides pagination if all results fit one page
 
-function handlePagination(tableId, data){
+function handlePagination(tableId, data) {
 
-       if($(tableId).find("tr:not(.ui-widget-header)").length <= data._iDisplayLength && data._iDisplayLength > data._iDisplayStart ||  data._iDisplayLength==false){
-           $(tableId + '_paginate')[0].style.display = "none";
-       } else {
-          $(tableId + '_paginate')[0].style.display = "block";
-       }
+    if ($(tableId).find("tr:not(.ui-widget-header)").length <= data._iDisplayLength && data._iDisplayLength > data._iDisplayStart || data._iDisplayLength == false) {
+        $(tableId + '_paginate')[0].style.display = "none";
+    } else {
+        $(tableId + '_paginate')[0].style.display = "block";
+    }
 }
 
 
@@ -354,6 +354,24 @@ function removeDialogs() {
                                     'submissionCallback': options.submissionCallback,
                                     'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
                                 });
+                    }
+
+                    $.metadata.setType('html5');
+
+                    // change listeners for submit
+                    var submitButton = $this.find(':input[type="submit"]');
+                    if (submitButton) {
+                        $this.find(':input[type!="submit"][type!="hidden"].oxfield').each(function(index, item) {
+                            $(item).focus(function() {
+                                submitButton.button('enable');
+                            });
+                            if ($(item).prev().hasClass('token-input-list')) {
+                                $(item).change(function() {
+                                    submitButton.button('enable');
+                                });
+                            }
+                        });
+
                     }
                 }
                 return $this;
@@ -840,9 +858,9 @@ function loadFilters(url, filterSelectionViewModel) {
                                 at: "right bottom",
                                 of: this
                             });
-                    
-                    if($(this).width()>menu.width()){
-                        menu.width($(this).width()-5);
+
+                    if ($(this).width() > menu.width()) {
+                        menu.width($(this).width() - 5);
                     }
                     $(this).attr('style', 'text-align:center');
                     $(document).one("click", function() {

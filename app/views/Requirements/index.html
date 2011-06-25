@@ -110,13 +110,6 @@
               }
             });
 
-    $('#requirementForm').oxForm({
-              loadAction: '@{Requirements.requirementsDetailsData()}',
-              submissionCallback: function() {
-                refreshTree('requirementTree');
-              }
-            });
-
     #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
     var tokens = $('#requirementForm_requirement_tags').tokenInput({
               url: '@{Requirements.allTags()}',
@@ -126,6 +119,13 @@
               creationText: "Create new tag"
             });
     #{/deadbolt.restrict}
+
+    $('#requirementForm').oxForm({
+              loadAction: '@{Requirements.requirementsDetailsData()}',
+              submissionCallback: function() {
+                refreshTree('requirementTree');
+              }
+            });
 
     $("#requirementTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["requirement", "default"])) {

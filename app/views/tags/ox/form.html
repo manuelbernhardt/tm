@@ -33,33 +33,6 @@
   #{doBody /}
 #{/form}
 
-<script type="text/javascript">
-    $.metadata.setType('html5');
-    $(document).ready(function() {
-      $('#${_id}').find(':input[type!="submit"][type!="hidden"].oxfield').each(function(index, item) {
-        $(item).focus(function() {
-          var b = $('#${_id}_submit');
-          if(b) {
-            if(b.button('option', 'disabled')) {
-              b.button('enable');
-            }
-          }
-        });
-
-        if($(item).prev().hasClass('token-input-list')) {
-          $(item).change(function() {
-          var b = $('#${_id}_submit');
-          if(b) {
-            if(b.button('option', 'disabled')) {
-              b.button('enable');
-            }
-          }
-        });
-        }
-      });
-  });
-</script>
-
 #{/if}
 #{elseif _edit != null && !_edit}
 <div class="oxForm" id="${_id}">

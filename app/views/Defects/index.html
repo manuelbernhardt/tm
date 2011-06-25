@@ -158,6 +158,23 @@ $(document).ready(function() {
 
   }
 
+  $('#createDefectForm_defect_tags').tokenInput({
+            url: '@{Defects.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+          });
+
+  $('#updateDefectForm_defect_tags').tokenInput({
+            url: '@{Defects.allTags()}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+          });
+
+
 // creating a defect
   $('#createDefectButton').click(function() {
     $('#createDefectDialog').dialog('open');
@@ -192,7 +209,6 @@ $(document).ready(function() {
         refreshTableContents('#defectsTable', true, true);
     },
     loadAction: '@{Defects.defectDetails()}'
-
   });
 
     $('#updateDefectButtonConfirm').button().click(function(){
@@ -204,26 +220,6 @@ $(document).ready(function() {
         refreshCommentsList();
     });
     $('#updateDefectButtonConfirm').button('disable');
-
-
-
-
-  var tokens = $('#createDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
-  $('#updateDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
 
 // delete defect
   $('#deleteDefectButton').click(function() {
