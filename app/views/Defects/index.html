@@ -166,6 +166,7 @@ $(document).ready(function() {
   $('#createDefectForm').oxForm({
             submissionCallback: function() {
               refreshTableContents('#defectsTable', true, true);
+              $('#createDefectDialog').dialog('close');
             }
           });
 
@@ -176,11 +177,9 @@ $(document).ready(function() {
         buttons: {
             "Confirm": function() {
                 $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
-
-                $(this).dialog("close");
             },
             "Cancel": function() {
-                $(this).dialog("close");
+                $(this).dialog('close');
             }
         }
     });
