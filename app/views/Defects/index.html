@@ -54,6 +54,7 @@
 
 </div>
   <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
+  <div id="deleteCommentDialog" title="Confirm deletion of comment"></div>
 
 <br/>
 <div id='defectDetails' style="display:none">
@@ -226,7 +227,7 @@ $(document).ready(function() {
       deletionConfirmation('deleteDefectDialog', 'Defect', getSelectedRowColumn($('#defectsTable').dataTable(), 2), function(){
           $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
                 function(data) {
-                    refreshTableContents('#defectsTable', false);
+                    refreshTableContents('#defectsTable', true, false);
                     $('#updateDefectButton').button('disable');
                     $('#deleteDefectButton').button('disable');
                     $('#defectDetails').hide();
@@ -316,11 +317,12 @@ $(document).ready(function() {
         });
 
         $('.button-delete-comment').click(function(){
-            deletionConfirmation('deleteDefectDialog', 'Comment', $('#commentEditInputId'+id).val()), function(){
-                $.post('@{Defects.deleteComment()}', {commentId:$(this).attr('id')},function(){
+            var commentId = $(this).attr('id');
+            deletionConfirmation('deleteCommentDialog', 'Comment', $('#commentEditInputId'+id).val(), function(){
+                $.post('@{Defects.deleteComment()}', {commentId:commentId},function(){
                     refreshCommentsList();
                 }).error(errorHandler);
-            }
+            })
         })
     }
 
