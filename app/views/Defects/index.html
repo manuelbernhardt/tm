@@ -222,7 +222,7 @@ $(document).ready(function() {
             preventDuplicates: true,
             tokenValue: 'name',
             allowCreation: true,
-            creationText: "Create new tag"
+            creationText: "Update new tag"
           });
 
 
@@ -292,13 +292,13 @@ $(document).ready(function() {
            $('#'+id).slideDown('fast');
         }, function(){
             $('#'+id).slideUp('fast');
-        })
+        });
 
         // after editing comment list of comments is refreshed, we need to listen to mouse movement in order to display edit and remove button again
         $('.comments-entry').mouseover(function(){
             id = $(this).attr('id').replace("mainCommentId", "");
            $('#'+id).slideDown('fast');
-        })
+        });
 
         $('.button-edit-comment').click(function(){
             id = $(this).attr('id');
@@ -313,12 +313,12 @@ $(document).ready(function() {
             $('#visibleDiv'+id).show();
             $('#visibleActions'+id).show();
             $('#hiddenActions'+id).hide();
-        })
+        });
         $('.commentEditConfirmButton').button().click(function(){
             $.post("@{Defects.editComment()}", {commentId:id,comment:$('#commentEditInputId'+id).val()},function(){
                 refreshCommentsList();
             }).error(errorHandler);
-        })
+        });
 
         $('.button-delete-comment').click(function(){
             deletionConfirmation('deleteDefectDialog', 'Comment', $('#commentEditInputId'+id).val()), function(){
