@@ -108,13 +108,6 @@
               }
             });
 
-    $('#scriptDetailsForm').oxForm({
-              loadAction: '@{Repository.scriptDetailsData()}',
-              submissionCallback: function() {
-                refreshTree('repositoryTree');
-              }
-            });
-
     #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
     var tokens = $('#scriptDetailsForm_script_tags').tokenInput({
               url: '@{Repository.allTags()}',
@@ -124,6 +117,13 @@
               creationText: "Create new tag"
             });
     #{/deadbolt.restrict}
+
+    $('#scriptDetailsForm').oxForm({
+              loadAction: '@{Repository.scriptDetailsData()}',
+              submissionCallback: function() {
+                refreshTree('repositoryTree');
+              }
+            });
 
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
       if (isSelectedNodeType(data, ["script", "default"])) {

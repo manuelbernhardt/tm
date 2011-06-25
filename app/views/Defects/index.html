@@ -158,58 +158,7 @@ $(document).ready(function() {
 
   }
 
-// creating a defect
-  $('#createDefectButton').click(function() {
-    $('#createDefectDialog').dialog('open');
-  });
-
-  $('#createDefectForm').oxForm({
-            submissionCallback: function() {
-              refreshTableContents('#defectsTable', true, true);
-            }
-          });
-
-    $('#createDefectDialog').dialog({
-        autoOpen: false,
-        width: 700,
-        modal: true,
-        buttons: {
-            "Confirm": function() {
-                $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
-
-                $(this).dialog("close");
-            },
-            "Cancel": function() {
-                $(this).dialog("close");
-            }
-        }
-    });
-
-//updating a defect
-
-
-  $('#updateDefectForm').oxForm({
-    submissionCallback: function () {
-        refreshTableContents('#defectsTable', true, true);
-    },
-    loadAction: '@{Defects.defectDetails()}'
-
-  });
-
-    $('#updateDefectButtonConfirm').button().click(function(){
-        $('#updateDefectForm').ajaxSubmit({
-            success: function(){
-                refreshTableContents('#defectsTable', true, true);
-            }
-        });
-        refreshCommentsList();
-    });
-    $('#updateDefectButtonConfirm').button('disable');
-
-
-
-
-  var tokens = $('#createDefectForm_defect_tags').tokenInput({
+  $('#createDefectForm_defect_tags').tokenInput({
             url: '@{Defects.allTags()}',
             preventDuplicates: true,
             tokenValue: 'name',
@@ -225,6 +174,52 @@ $(document).ready(function() {
             creationText: "Create new tag"
           });
 
+
+// creating a defect
+  $('#createDefectButton').click(function() {
+    $('#createDefectDialog').dialog('open');
+  });
+
+  $('#createDefectForm').oxForm({
+            submissionCallback: function() {
+              refreshTableContents('#defectsTable', true, true);
+              $('#createDefectDialog').dialog('close');
+            }
+          });
+
+    $('#createDefectDialog').dialog({
+        autoOpen: false,
+        width: 700,
+        modal: true,
+        buttons: {
+            "Confirm": function() {
+                $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+            },
+            "Cancel": function() {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+//updating a defect
+
+
+  $('#updateDefectForm').oxForm({
+    submissionCallback: function () {
+        refreshTableContents('#defectsTable', true, true);
+    },
+    loadAction: '@{Defects.defectDetails()}'
+  });
+
+    $('#updateDefectButtonConfirm').button().click(function(){
+        $('#updateDefectForm').ajaxSubmit({
+            success: function(){
+                refreshTableContents('#defectsTable', true, true);
+            }
+        });
+        refreshCommentsList();
+    });
+    $('#updateDefectButtonConfirm').button('disable');
 
 // delete defect
   $('#deleteDefectButton').click(function() {
@@ -292,13 +287,13 @@ $(document).ready(function() {
            $('#'+id).slideDown('fast');
         }, function(){
             $('#'+id).slideUp('fast');
-        })
+        });
 
         // after editing comment list of comments is refreshed, we need to listen to mouse movement in order to display edit and remove button again
         $('.comments-entry').mouseover(function(){
             id = $(this).attr('id').replace("mainCommentId", "");
            $('#'+id).slideDown('fast');
-        })
+        });
 
         $('.button-edit-comment').click(function(){
             id = $(this).attr('id');
@@ -313,12 +308,12 @@ $(document).ready(function() {
             $('#visibleDiv'+id).show();
             $('#visibleActions'+id).show();
             $('#hiddenActions'+id).hide();
-        })
+        });
         $('.commentEditConfirmButton').button().click(function(){
             $.post("@{Defects.editComment()}", {commentId:id,comment:$('#commentEditInputId'+id).val()},function(){
                 refreshCommentsList();
             }).error(errorHandler);
-        })
+        });
 
         $('.button-delete-comment').click(function(){
             deletionConfirmation('deleteDefectDialog', 'Comment', $('#commentEditInputId'+id).val()), function(){

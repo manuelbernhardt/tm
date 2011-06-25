@@ -4,7 +4,7 @@
 
 #{if !_autoComplete}
 
-  <select id="${_field}" name="${_field}.id" data-bind="${_create == null ? 'value: value_'+field.id+'_id' : ''}" class="oxfield">
+  <select id="${_field}" name="${_field}.id" data-validate="${field.validationData}" data-bind="${_create == null ? 'value: value_'+field.id+'_id' : ''}" class="oxfield">
       #{ifnot _objectField.required}
           <option value="">(None)</option>
       #{/ifnot}
