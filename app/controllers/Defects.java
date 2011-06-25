@@ -24,6 +24,7 @@ import models.tm.test.Tag;
 import org.apache.commons.lang.StringUtils;
 import play.data.validation.Valid;
 import play.mvc.Before;
+import play.templates.JavaExtensions;
 import util.FilterQuery;
 import util.Logger;
 
@@ -268,11 +269,12 @@ public class Defects extends TMController {
         for(DefectComment defectComment: defectComments){
             JsonObject comment = new JsonObject();
             comment.addProperty("id", defectComment.id);
-            comment.addProperty("comment", defectComment.comment);
+            comment.addProperty("comment", JavaExtensions.nl2br(defectComment.comment).toString());
             comment.addProperty("submittedBy", defectComment.submittedBy.getFullName());
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             comment.addProperty("submittedOn", sdf.format(defectComment.created));
 
+            comment.addProperty("commentText", defectComment.comment);
             comment.addProperty("mainCommentId", "mainCommentId" + defectComment.id);
             comment.addProperty("hiddenDivId", "hiddenDiv" + defectComment.id);
             comment.addProperty("visibleDivId", "visibleDiv" + defectComment.id);
