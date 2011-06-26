@@ -6,6 +6,16 @@ tm.DefectStatus(defectStatusNew):
     defaultOnCreation: true
     position: 0
 
+tm.DefectStatus(defectStatusOpen):
+    name: Open
+    defaultOnCreation: true
+    position: 1
+
+tm.DefectStatus(defectStatusClosed):
+    name: Closed
+    defaultOnCreation: true
+    position: 2
+
 tm.ProjectWidget(templateWidgetDefectByDay):
     title: Number of defects by day
     description: Displays the total number of defects created each day
