@@ -61,12 +61,14 @@
       "bSort": false,
       "bLengthChange": false,
       "iDisplayLength": 10,
-      "bScrollCollapse": true,
       "bAutoWidth": false,
       "bInfo": false,
       "oLanguage": {
         "sZeroRecords": "No steps defined yet"
-      }
+      },
+        "fnDrawCallback": function(data){
+            handlePagination("#stepTable",data)
+        }
     };
     #{/tabularasa.init}
 
