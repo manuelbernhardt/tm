@@ -2,6 +2,7 @@ body {
     margin: 0;
     font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
     background-color:#E2E4FF;
+    overflow-y: scroll;
 }
 
 /* setting margin and padding to 0px to reset browser's default settings */
