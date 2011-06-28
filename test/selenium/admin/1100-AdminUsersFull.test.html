@@ -11,82 +11,90 @@
     clickAndWait('signin')
 
     // Try to access the user administration area and check that it contains the expected tabs
-    clickAndWait('//ul[@id='tabs_header']/li[1]/a/span')
-    verifyElementPresent('//a[@id='userDetailsLink']/span')
-    verifyElementPresent('//a[@id='projectsLink']/span')
-    verifyElementPresent('accountLink')
+    clickAndWait('css=a > span')
+    click('//table[@id='tab']/tbody/tr[5]/td[2]')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[2]/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[3]/a/span')
 
     // USER DETAILS
     // Verify content of a random row of user table
-    verifyElementPresent('//table[@id='tab']/tbody/tr[4]/td[2]')
-    verifyText('//table[@id='tab']/tbody/tr[4]/td[2]','Vroni')
+    verifyElementPresent('//table[@id='tab']/tbody/tr[5]/td[2]')
+    verifyTextPresent('Tamara')
 
     // Attempt new user creation
     click('newUserDialogSubmitButton')
     type('user_user_firstName','John')
     type('user_user_lastName','Doe')
     type('user_user_email','email@newUser.com')
+    type('user_user_password')
     type('user_user_password','test')
-    click('//div[8]/div[3]/div/button[1]')
+    click('//div[8]/div[3]/div/button')
 
     // Verify new user listed in user table
-    type('//input[@type='text']','Doe')
-    fireEvent('//input[@type='text']','keyup')
-    waitForText('//table[@id='tab']/tbody/tr/td[2]','John')
-    waitForText('//table[@id='tab']/tbody/tr/td[3]','Doe')
+    type('css=input[type=text]','Doe')
+    fireEvent('css=input[type=text]','keyup')
+    waitForTextPresent('John')
+    verifyTextPresent('Doe')
 
     // Check content of user details edit form
     click('//table[@id='tab']/tbody/tr/td[3]')
-    waitForValue('user_user_firstName','John')
-    waitForValue('user_user_lastName','Doe')
-    waitForValue('user_user_email','email@newUser.com')
-    waitForValue('user_user_phone')
-    waitForElementPresent('profileForm_submit')
-
+    waitForValue('userDetailsForm_tmUser_user_firstName','John')
+    waitForValue('userDetailsForm_tmUser_user_lastName','Doe')
+    waitForValue('userDetailsForm_tmUser_user_email','email@newUser.com')
+    waitForValue('userDetailsForm_tmUser_user_phone')
+    verifyElementPresent('userDetailsForm_submit')
+        
     // Perform user details change
-    type('user_user_lastName','Smith')
-    type('user_user_email','john@smith.com')
-    click('profileForm_submit')
+    type('userDetailsForm_tmUser_user_lastName','Smith')
+    type('userDetailsForm_tmUser_user_email','john@smith.com')
+    click('userDetailsForm_submit')
 
     // Check values are saved after form submition both in user table and user details tab
-    type('//input[@type='text']','Smith')
-    fireEvent('//input[@type='text']','keyup')
-    waitForText('//table[@id='tab']/tbody/tr/td[3]','Smith')
-    waitForValue('user_user_lastName','Smith')
+    type('css=input[type=text]','Smi')
+    fireEvent('css=input[type=text]','keyup')
+    click('//table[@id='tab']/tbody/tr/td[2]')
+    waitForTextPresent('Smith')
+    waitForValue('userDetailsForm_tmUser_user_lastName','Smith')
 
 
     // PROJECT ROLES ASSIGNMENT
-    click('//a[@id='projectsLink']/span')
+    click('//div[@id='innerTabs']/ul/li[2]/a/span')
     waitForElementPresent('assign-role')
     waitForElementPresent('unassign-role')
+    click('assign-role')
+    waitForElementPresent('categoriesSelect')
+    waitForElementPresent('projectsSelect')
+    verifyElementPresent('rolesSelect')
 
     // Assign role
     click('assign-role')
-    waitForElementPresent('//select[@id='categories']/option[2]')
-    select('categories','label=2011')
-    waitForElementPresent('//select[@id='projects']/option[3]')
-    select('projects', 'label=Test Management Application')
-    waitForElementPresent('//select[@id='roles']/option[2]')
-    select('roles','label=Test Lead')
-    click('//div[11]/div/button[1]')
+    waitForElementPresent('categoriesSelect')
+    waitForElementPresent('projectsSelect')
+    verifyElementPresent('rolesSelect')
+    select('categoriesSelect','label=2011')
+    select('projectsSelect','label=TM Application - test project 1')
+    select('rolesSelect','label=View only')
+    click('assignRole')
 
     // Verify role assignment before and after tab reload
+     waitForTextPresent('2011')
+    waitForTextPresent('TM Application - test project 1')
+    waitForTextPresent('View only')
+    click('//div[@id='innerTabs']/ul/li/a/span')
+    click('//div[@id='innerTabs']/ul/li[2]/a/span')
     waitForTextPresent('2011')
-    waitForTextPresent('Test Management Application')
-    waitForTextPresent('Test Lead')
-    click('//a[@id='userDetailsLink']/span')
-    click('//a[@id='projectsLink']/span')
-    waitForTextPresent('2011')
-    waitForTextPresent('Test Management Application')
-    waitForTextPresent('Test Lead')
+    waitForTextPresent('TM Application - test project 1')
+    waitForTextPresent('View only')
 
     // Remove role
-    waitForElementPresent('link=Test Lead')
-    click('link=Test Lead')
+    waitForElementPresent('link=View only')
+    click('link=View only')
     click('unassign-role')
+    click('//div[10]/div[11]/div/button')
 
     // Verify role removal
-    verifyTextNotPresent('Test Lead')
+    verifyTextNotPresent('View only')
 
     // ACCOUNT ROLES
     // To be added when functionality is available
