@@ -238,7 +238,7 @@
     });
 
     $('#removeRequirementButton').click(function () {
-      deletionConfirmation('requirementDeletionConfirmationDialog', "Requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function(){
+      deletionConfirmation('requirementDeletionConfirmationDialog', "Link to requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function(){
           $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
         function(data) {
             $('#requirementTable').dataTable().fnDraw();
