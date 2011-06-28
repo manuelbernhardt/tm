@@ -78,7 +78,7 @@
     click('assignRole')
 
     // Verify role assignment before and after tab reload
-     waitForTextPresent('2011')
+    waitForTextPresent('2011')
     waitForTextPresent('TM Application - test project 1')
     waitForTextPresent('View only')
     click('//div[@id='innerTabs']/ul/li/a/span')
@@ -92,7 +92,8 @@
     click('link=View only')
     verifyElementPresent('unassign-role')
     click('unassign-role')
-    verifyElementPresent('//div[10]/div[11]/div/button')
+    waitForTextPresent('Role removal confirmation')
+    waitForElementPresent('//div[10]/div[11]/div/button')
     click('//div[10]/div[11]/div/button')
 
     // Verify role removal
