@@ -92,8 +92,8 @@
     click('link=View only')
     verifyElementPresent('unassign-role')
     click('unassign-role')
+    waitForTextPresent('Role removal confirmation')
     waitForElementPresent('//div[10]/div[11]/div/button')
-    verifyElementPresent('//div[10]/div[11]/div/button')
     click('//div[10]/div[11]/div/button')
 
     // Verify role removal
