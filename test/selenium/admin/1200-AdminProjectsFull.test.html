@@ -16,37 +16,42 @@
     verifyElementPresent('create_category')
     verifyElementPresent('create_project')
     verifyElementPresent('remove')
-    verifyElementPresent('//a[@id='projectDetailsLink']/span')
-    verifyElementPresent('//a[@id='rolesLink']/span')
-    verifyElementPresent('//a[@id='usersLink']/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[2]/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[3]/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[4]/a/span')
+    verifyElementPresent('//div[@id='innerTabs']/ul/li[5]/a/span')
 
     // PROJECT DETAILS
     // Verify presence of a random project
-    verifyTextPresent('Test Management Application')
+    verifyTextPresent('TM Application - test project 2')
 
     // Attempt new project category creation
     click('//li[@id='node_root_0']/a')
     click('create_category')
-    type('//li[@id='node_root_0']/ul/li[3]/input','Test category')
-    fireEvent('//li[@id='node_root_0']/ul/li[3]/input','blur')
-    waitForElementPresent('//li[@id='node_category_3']')
+    type('css=input.jstree-rename-input','Test category')
+    fireEvent('css=input.jstree-rename-input','blur')
+    waitForElementPresent('//li/ul/li[3]/a')
     // Verify new project category available in tree at expected location
-    verifyText('//li[@id='node_category_3']','Test category')
+    verifyText('//li/ul/li[3]/a','Test category')
 
     // Attempt new project creation
     click('//li[@id='node_category_3']/a')
     click('create_project')
     type('//li[@id='node_category_3']/ul/li/input','Test project')
     fireEvent('//li[@id='node_category_3']/ul/li/input','blur')
-    waitForElementPresent('//li[@id='node_default_4']')
+    waitForElementPresent('//li[@id='node_default_5']')
     // Verify new project available in tree at expected location
-    verifyText('//li[@id='node_default_4']','Test project')
+    verifyText('//li[@id='node_default_5']','Test project')
 
-    // Check content of project details edit form
-    click('//li[@id='node_default_4']/a')
-    waitForElementPresent('project_name')
-    waitForValue('project_name','Test project')
-    waitForElementPresent('projectForm_submit')
+     Check content of project details edit form
+    click('//li[@id='node_default_5']/a')
+    verifyElementPresent('projectForm_project_name')
+    waitForElementPresent('projectForm_project_description')
+    verifyElementPresent('projectForm_submit')
+    type('projectForm_project_description','desc')
+    click('projectForm_submit')
+    waitForValue('projectForm_project_description','desc')
 
 
 #{/selenium}
