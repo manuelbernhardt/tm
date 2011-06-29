@@ -97,6 +97,22 @@
 
   $(document).ready(function () {
 
+    var isRequirement = function(event, data) { return isSelectedNodeType(data, ["requirement", "default"])};
+    var isNotRequirement = function(event, data) { return !isSelectedNodeType(data, ["requirement", "default"])};
+
+    iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement);
+    iGroupRule("requirementSelected", '.shownOnLoad', function(targets) { targets.hide() } );
+    iGroupRule("requirementSelected", '.hiddenOnLoad', function(targets) { targets.show() } );
+    iGroupRule("requirementSelected", '#remove', function(targets) { targets.button('enable') } );
+    iGroupRule("requirementSelected", '#requirementForm', function(targets, data) { targets.oxForm('load', getNodeIdFromData(data)) });
+    iGroupRule("requirementSelected", '', function() { reloadTables() });
+
+    iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement);
+    iGroupRule("requirementFolderSelected", '.shownOnLoad', function(targets) { targets.show() });
+    iGroupRule("requirementFolderSelected", '.hiddenOnLoad', function(targets) { targets.hide() });
+    iGroupRule("requirementFolderSelected", '#remove', function(targets) { targets.button('enable') });
+
+
     $("#innerTabs").tabs();
 
     $("#requirementTree").tree({
@@ -126,22 +142,6 @@
                 refreshTree('requirementTree');
               }
             });
-
-    $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["requirement", "default"])) {
-        $('.shownOnLoad').hide();
-        $('.hiddenOnLoad').show();
-        $('#remove').button('enable');
-        var requirementId = getSelectedNodeId('requirementTree');
-        $('#requirementForm').oxForm('load', requirementId);
-
-        reloadTables();
-      } else {
-        $('.shownOnLoad').show();
-        $('.hiddenOnLoad').hide();
-        $('#remove').button('enable');
-      }
-    });
 
     $('#create_folder').click(function () {
       $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
