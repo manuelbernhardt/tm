@@ -102,7 +102,7 @@ public class Defects extends TMController {
                     break;
             }
         }
-        if (StringUtils.isNotEmpty(tags)) {
+        if (tags != null && StringUtils.isNotEmpty(tags)) {
             fq.addJoin("tags", "o", "t");
             fq.setDistinct(true);
             fq.addWhere("t.name in (:tags)", "tags", Arrays.asList(tags.split(",")));
@@ -123,10 +123,6 @@ public class Defects extends TMController {
         if (dateTo != null) {
             fq.addWhere("o.created <= :dateTo", "dateTo", dateTo);
         }
-
-        if (iSortCol_0 != null && iSortCol_0 > -1)
-            fq.addAfterWhere("order by " + sortBy[iSortCol_0] + " " + sSortDir_0);
-
 
         Query query = fq.build();
 
