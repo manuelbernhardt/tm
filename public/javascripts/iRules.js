@@ -7,8 +7,15 @@ if (typeof data === 'undefined') {
     $(document).data('iRules', data);
 }
 
-function iRule(eventSourceSelector, eventType, conditionClosure, targetSelector, actionClosure) {
+var iRuleGroupClass = {
+    rule: function(targetSelector, actionClosure) {
+        iGroupRule(this.groupName, targetSelector, actionClosure);
+        return this;
+    }
+};
 
+
+function iRule(eventSourceSelector, eventType, conditionClosure, targetSelector, actionClosure) {
     $(eventSourceSelector).bind(eventType, function(event, data) {
 
         var call = (typeof conditionClosure === 'function' && conditionClosure(event, data)) || (typeof conditionClosure === 'boolean' && conditionClosure) || conditionClosure == null
@@ -30,6 +37,16 @@ function iGroup(groupName, eventSourceSelector, eventType, conditionClosure) {
         eventSourceSelector: eventSourceSelector,
         eventType: eventType,
         conditionClosure: conditionClosure
-    }
+    };
+    iRuleGroupClass.groupName = groupName;
+    return iRuleGroupClass;
 }
+
+// common functions
+var $hide = function(targets) { targets.hide() };
+var $show = function(targets) { targets.show() };
+var $enableButton = function(targets) { targets.button('enable') };
+var $openDialog = function(targets) { targets.dialog('open') };
+
+
 
