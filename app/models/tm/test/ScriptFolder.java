@@ -13,7 +13,7 @@ import tree.persistent.NodeName;
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})}, name = "tm_test_ScriptFolder")
 public class ScriptFolder extends ProjectModel implements Node {
 
     @NodeName

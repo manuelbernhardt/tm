@@ -3,6 +3,7 @@ package models.account;
 import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
 import models.general.CompositeModel;
 
