@@ -410,13 +410,6 @@ function removeDialogs() {
                 if (typeof submissionParameters !== 'undefined') {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
-                var data = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
-                $.each($this.find(".tags"),function(index, el) {
-                    $.each($(el).tokenInput('get'),function(i, e) {
-                        data[$(el).attr("name") + "[" + index + "][id]"] = e.id;
-                        data[$(el).attr("name") + "[" + index + "][name]"] = e.name;
-                    });
-                });
                 $this.ajaxSubmit({
                             success: function() {
                                 if (typeof oxFormData.submissionCallback == 'function') {
@@ -425,7 +418,30 @@ function removeDialogs() {
                                 $('#' + $this.attr('id') + '_submit').button('disable');
                                 $this.resetForm();
                             },
-                            data: data
+                            data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters,
+                            // need to process the form data and format the tags info in the recognizable way by the controller
+                            beforeSubmit: function(data, $form, options){
+                                $.each($form.find(".tags"),function(index, el) {
+                                    var toBeDeleted = -1;
+                                    $.grep(data, function(element, index) {
+                                        if(element.name == $(el).attr("name")) {
+                                            toBeDeleted = index;
+                                        }
+                                        return true;
+                                    });
+                                    delete data[toBeDeleted];
+                                    $.each($(el).tokenInput('get'),function(i, e) {
+                                        var tagId = {};
+                                        tagId.name = $(el).attr("name") + "[" + i + "][id]";
+                                        tagId.value = e.id;
+                                        var tagName = {};
+                                        tagName.name = $(el).attr("name") + "[" + i + "][name]";
+                                        tagName.value = e.name;
+                                        data.push(tagId);
+                                        data.push(tagName);
+                                    });
+                                });
+                            }
                         });
                 return true;
             } else {
