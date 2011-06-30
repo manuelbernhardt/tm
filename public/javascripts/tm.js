@@ -410,6 +410,13 @@ function removeDialogs() {
                 if (typeof submissionParameters !== 'undefined') {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
+                var data = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
+                $.each($this.find(".tags"),function(index, el) {
+                    $.each($(el).tokenInput('get'),function(i, e) {
+                        data[$(el).attr("name") + "[" + index + "][id]"] = e.id;
+                        data[$(el).attr("name") + "[" + index + "][name]"] = e.name;
+                    });
+                });
                 $this.ajaxSubmit({
                             success: function() {
                                 if (typeof oxFormData.submissionCallback == 'function') {
@@ -418,7 +425,7 @@ function removeDialogs() {
                                 $('#' + $this.attr('id') + '_submit').button('disable');
                                 $this.resetForm();
                             },
-                            data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters
+                            data: data
                         });
                 return true;
             } else {
