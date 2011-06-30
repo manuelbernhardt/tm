@@ -1156,6 +1156,7 @@ tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminPro
     testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
     responsible: testTMuserManu
     plannedExecution: 2011-03-18
+    status: 0
     tags:
       - testTMtestProject2InstanceTagAdministration
       - testTMtestProject2InstanceTagProjects
@@ -1168,6 +1169,7 @@ tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminPro
     testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
     responsible: testTMuserChristian
     plannedExecution: 2011-03-18
+    status: 3
     tags:
       - testTMtestProject2InstanceTagAdministration
       - testTMtestProject2InstanceTagProjects
@@ -1180,6 +1182,7 @@ tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptAdminPro
     testCycle: testTMtestProject2ReleaseProtoTestCycleSystemTest
     responsible: testTMuserGwen
     plannedExecution: 2011-03-19
+    status: 0
     tags:
       - testTMtestProject2InstanceTagAdministration
       - testTMtestProject2InstanceTagProjects
@@ -1220,6 +1223,7 @@ tm.test.Instance(testTMtestProject2ReleaseProtoTestCycleSystemTestScriptReqCreat
     testCycle: testTMtestProject2ReleaseProtoTestCycleUserAcceptanceTest
     responsible: testTMuserChristian
     plannedExecution: 2011-03-19
+    status: 0
     tags:
       - testTMtestProject2InstanceTagRequirements
 
