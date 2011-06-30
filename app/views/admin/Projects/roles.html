@@ -112,6 +112,7 @@
         "Create role": function() {
           $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
                 refreshTableContents('#tab', false);
+                refreshTree('projectRolesAssignmentTree');
                 $('#roleInput').val('');
                 $('#newRoleDialog').dialog("close");
           }).error(errorHandler);

@@ -78,20 +78,20 @@
 
       $('#filter').button().click(function(event) {
           event.preventDefault();
-          refreshTableContents("#defectsTable", false);
+          refreshTableContents("#defectsTable", true);
       });
 
 
         // auto-filter
         $.each($('#defectsFilterForm').find('input, select'), function(index, el) {
           $(el).change(function() {
-            refreshTableContents('#defectsTable', false);
+            refreshTableContents('#defectsTable', true);
           });
         });
         $('#defectFilterForm ul.token-input-list').focus(function() {
-          refreshTableContents('#defectsTable', false);
+          refreshTableContents('#defectsTable', true);
         }).blur(function() {
-          refreshTableContents('#defectsTable', false);
+          refreshTableContents('#defectsTable', true);
         });
   });
 </script>
