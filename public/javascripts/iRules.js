@@ -1,3 +1,8 @@
+// next steps:
+// registration of named rules
+// usage of named rules in groups or standalone
+
+
 var data = $(document).data('iRules');
 
 if (typeof data === 'undefined') {
