@@ -9,10 +9,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import models.tm.test.Instance;
 import models.tm.test.Tag;
 import models.tm.test.TagHolder;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
+import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 import play.templates.JavaExtensions;
 
 /**
@@ -45,6 +48,22 @@ public class Defect extends ProjectModel implements TagHolder {
 
     public Defect(Project project) {
         super(project);
+    }
+
+    @Override
+    public JPABase delete() {
+
+        // remove comments
+        JPA.em().createQuery("delete from DefectComment dc where dc.defect = :defect").setParameter("defect", this).executeUpdate();
+
+        // unlink test instances
+        List<Instance> instances = Instance.find("from Instance i where ? in elements(i.defects)", this).<Instance>fetch();
+        for(Instance i : instances) {
+            i.defects.remove(this);
+            i.save();
+        }
+
+        return super.delete();
     }
 
     public String getTagNames() {
