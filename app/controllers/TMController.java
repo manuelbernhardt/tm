@@ -111,7 +111,10 @@ public class TMController extends Controller {
                 if (p != null) {
                     ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
                 } else {
-                    getConnectedUser().initializeActiveProject();
+                    if(getConnectedUser().initializeActiveProject()) {
+                        p = getActiveProject();
+                        ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
+                    }
                 }
             }
         }
