@@ -32,7 +32,7 @@ import play.db.jpa.JPA;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Filters({@Filter(name = "account"), @Filter(name = "activeTMUser")})
+@Filters({@Filter(name = "account"), @Filter(name = "activeTMUser"), @Filter(name = "activeProjectUsers")})
 public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)

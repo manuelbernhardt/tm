@@ -108,13 +108,12 @@ public class TMController extends Controller {
             // we need to do the lookup for an active project here first, otherwise we enable the filter before passing the parameter.
             if (controllerHasActiveProject()) {
                 Project p = getActiveProject();
+                if (p == null && getConnectedUser().initializeActiveProject()) {
+                    p = getActiveProject();
+                }
                 if (p != null) {
                     ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
-                } else {
-                    if(getConnectedUser().initializeActiveProject()) {
-                        p = getActiveProject();
-                        ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
-                    }
+                    ((Session) JPA.em().getDelegate()).enableFilter("activeProjectUsers").setParameter("projectId", p.getId());
                 }
             }
         }
