@@ -270,7 +270,7 @@
       modal: true,
       buttons: {
         "Save": function() {
-          $('#runForm').ajaxSubmit({
+          $('#updateForm').ajaxSubmit({
             success: function(data) {
               fullDrawInstanceTable = false;
               refreshTableContents('#instanceTable', false);

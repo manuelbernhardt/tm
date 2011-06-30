@@ -2,7 +2,7 @@
 No test run selected
 #{/if}
 #{else}
-<form id="runForm" name="runForm" action="@{Execution.updateRun('runId': run.id)}" method="post">
+<form id="${formName}" name="${formName}" action="@{Execution.updateRun('runId': run.id)}" method="post">
   <table id="runTable">
     <thead>
     <th>Nr</th>
