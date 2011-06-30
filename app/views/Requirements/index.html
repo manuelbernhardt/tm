@@ -97,6 +97,33 @@
 
   $(document).ready(function () {
 
+    var isRequirement = function(event, data) { return isSelectedNodeType(data, ["requirement", "default"])};
+    var isNotRequirement = function(event, data) { return !isSelectedNodeType(data, ["requirement", "default"])};
+
+    iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement)
+            .rule('.shownOnLoad', $hide )
+            .rule('.hiddenOnLoad', $show )
+            .rule('#remove', $enableButton)
+            .rule('#requirementForm', function(targets, data) { targets.oxForm('load', getNodeIdFromData(data)) })
+            .rule(null, function() { reloadTables() });
+
+    iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement)
+            .rule('.shownOnLoad', $show)
+            .rule('.hiddenOnLoad', $hide)
+            .rule('#remove', $enableButton);
+
+    iRule('#create_folder', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"}) } );
+    iRule('#create_requirement', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"}) } );
+    iRule('#create_actions', 'click.button', null, '#create_actions', function(targets) { targets.attr("style", "margin-left:-0.3em") } );
+    iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', $openDialog );
+    iRule('#remove', 'click.button', null, null, function() {
+      var node = getSelectedNode('requirementTree');
+      deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion) {
+        $("#requirementTree").jstree("remove", null);
+      });
+    });
+    iRule('#searchInput', 'keyup', null, '#requirementTree', function(targets) { targets.jstree("search", $('#searchInput').val()) });
+
     $("#innerTabs").tabs();
 
     $("#requirementTree").tree({
@@ -127,46 +154,12 @@
               }
             });
 
-    $("#requirementTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["requirement", "default"])) {
-        $('.shownOnLoad').hide();
-        $('.hiddenOnLoad').show();
-        $('#remove').button('enable');
-        var requirementId = getSelectedNodeId('requirementTree');
-        $('#requirementForm').oxForm('load', requirementId);
-
-        reloadTables();
-      } else {
-        $('.shownOnLoad').show();
-        $('.hiddenOnLoad').hide();
-        $('#remove').button('enable');
-      }
-    });
-
-    $('#create_folder').click(function () {
-      $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"});
-    });
     $('#create_requirement')
-            .click(function () {
-              $("#requirementTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"});
-            })
             .next()
             .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }}).attr("style", "margin-left:-0.3em")
             .oxMenu()
             .parent()
             .buttonset();
-    $('#create_actions').click(function(){
-        $(this).attr("style", "margin-left:-0.3em");
-    })
-    $('#import_requirements').click(function() {
-      $('#importRequirementsDialog').dialog('open');
-    });
-    $('#remove').click(function () {
-        var node = getSelectedNode('requirementTree');
-      deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion){
-        $("#requirementTree").jstree("remove", null);
-      });
-    });
 
     $('#importRequirementsDialog').dialog({
               autoOpen: false,
@@ -180,10 +173,6 @@
                 }
               }
             });
-
-    $('#searchInput').keyup(function() {
-      $("#requirementTree").jstree("search", $(this).val());
-    });
 
     $('#fileupload').fileupload({autoUpload: true});
 

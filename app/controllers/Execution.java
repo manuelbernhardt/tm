@@ -192,13 +192,15 @@ public class Execution extends TMController {
 
             runParam.create();
         }
-        render("Execution/runExecution.html", run);
+        String formName = "runForm";
+        render("Execution/runExecution.html", run, formName);
     }
 
     @Restrict(UnitRole.TESTEXECEDIT)
     public static void updateRunDialog(Long runId) {
         Run run = Lookups.getRun(runId);
-        render("Execution/runExecution.html", run);
+        String formName = "updateForm";
+        render("Execution/runExecution.html", run, formName);
     }
 
     @Restrict(UnitRole.TESTEXECEDIT)
