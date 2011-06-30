@@ -780,18 +780,14 @@ function applyDefectCommentsButtonStyles() {
                                 }).error(errorHandler);
                     }
 
-                    if ($(this).val() == '') {
-                        $this.slideUp('slow');
-                    }
-
                     //clear the form in case a filter was previously applied
                     if ($(this).val() == 'customFilter') {
                         $(':input', '#' + settings.filterFormId)
-                                .not(':button, :submit, :reset, :hidden')
+                                .not(':button, :submit, :reset')
                                 .val('')
                                 .removeAttr('checked')
                                 .removeAttr('selected');
-                        $this.slideDown('slow');
+                        $('#tags').tokenInput('clearAll');
                     }
                 });
 
@@ -826,7 +822,7 @@ function loadFilters(url, filterSelectionViewModel) {
                 else {
                     ko.mapping.updateFromJS(filterSelectionViewModel, json);
                 }
-                $('#filterSelect').append("<option value='customFilter'>Create new filter</option>");
+                $('#filterSelect').append("<option value='customFilter'>Clear filter</option>");
             }).error(errorHandler);
 
 }

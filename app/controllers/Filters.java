@@ -1,9 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 
 import com.google.gson.JsonArray;
@@ -13,6 +10,8 @@ import models.tm.Filter;
 import models.tm.FilterConstraint;
 import models.tm.Project;
 import models.tm.StringMatcherType;
+import models.tm.test.Tag;
+import play.db.jpa.JPA;
 import play.mvc.Util;
 import util.Logger;
 
@@ -99,18 +98,40 @@ public class Filters extends TMController {
     public static void loadFilterById(Long id) {
         Filter filter = Filter.find("from Filter f where f.id = ? and f.owner.id = ?", id, getConnectedUserId()).<Filter>first();
         Map<String, JsonObject> constraints = new HashMap<String, JsonObject>();
+        JsonArray jsonArray = new JsonArray();
         for (FilterConstraint fc : filter.filterConstraints) {
-            JsonObject c = constraints.get(fc.property);
-            if (c == null) {
-                c = new JsonObject();
-                constraints.put(fc.property, c);
+            if(fc.property.equals("tags")){
+
+                System.out.println(" fc.value: " + fc.value);
+                List<Tag> tags = JPA.em().createQuery("select t from Tag t where t.name in (:tagNames) and project.id= :projectId and account.id= :accountId")
+                        .setParameter("tagNames", Arrays.asList(fc.value.split(",")))
+                        .setParameter("projectId", getActiveProjectId())
+                        .setParameter("accountId", getConnectedUserAccountId())
+                        .getResultList();
+                for(Tag tag: tags){
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("id", tag.id);
+                    jsonObject.addProperty("name", tag.name);
+                    System.out.println("tag name: "+ tag.name);
+                    jsonObject.addProperty("value", tag.name);
+                    jsonObject.addProperty("label", tag.name);
+                    jsonArray.add(jsonObject);
+                }
             }
-            c.addProperty(fc.constraintType.getKey(), fc.value);
+            else{
+                JsonObject c = constraints.get(fc.property);
+                if (c == null) {
+                    c = new JsonObject();
+                    constraints.put(fc.property, c);
+                }
+                c.addProperty(fc.constraintType.getKey(), fc.value);
+            }
         }
         JsonObject result = new JsonObject();
         for(String key : constraints.keySet()) {
             result.add(key, constraints.get(key));
         }
+        result.add("tags", jsonArray);
         renderJSON(result.toString());
     }
 }

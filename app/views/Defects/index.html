@@ -365,6 +365,10 @@ $(document).ready(function() {
             }
           });
 
+        // this covers the case when user clicks on clear filter as that doesn't call onSelect method of filter plugin
+        $('#filterSelect').change(function(){
+            refreshTableContents('#defectsTable', true);
+        });
 });
 
 
