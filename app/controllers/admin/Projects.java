@@ -184,7 +184,7 @@ public class Projects extends TMController {
             if (usageCount == 0l) {
                 tag.delete();
             } else {
-                error("This tag is still in use in a " + tagType.getName() + ". Tag not deleted.");
+                error("This tag is still in use in a " + tagType.getName().toLowerCase() + ". Tag not deleted.");
                 Logger.error(Logger.LogType.USER, "Attempt to delete used tag " + tag.id + " type: " + tag.type);
             }
         }
