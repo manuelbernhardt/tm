@@ -23,7 +23,7 @@
         </div>
         <div class="field">
             <label class='name extended' for="tags" class="tag-inlining-label">Tags</label>
-            <input id="tags" class="tag-inlining-input" name="tags" data-bind="tags: tags.value"/>
+            <input id="tags" class="tag-inlining-input" name="tags" data-bind="tags: tags"/>
         </div>
     </div>
     <div class="right_column">
@@ -81,11 +81,10 @@
           refreshTableContents("#defectsTable", true);
       });
 
-
         // auto-filter
         $.each($('#defectsFilterForm').find('input, select'), function(index, el) {
           $(el).change(function() {
-            refreshTableContents('#defectsTable', true);
+            refreshTableContents('#defectsTable', true, false);
           });
         });
         $('#defectFilterForm ul.token-input-list').focus(function() {
@@ -93,5 +92,7 @@
         }).blur(function() {
           refreshTableContents('#defectsTable', true);
         });
+
+
   });
 </script>
