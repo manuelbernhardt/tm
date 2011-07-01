@@ -193,11 +193,19 @@ $(document).ready(function() {
         width: 700,
         modal: true,
         buttons: {
-            "Confirm": function() {
+            "Confirm": {
+                click: function() {
                 $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+                },
+                id: "createDefectDialogConfirmButton",
+                text:"Confirm"
             },
-            "Cancel": function() {
-                $(this).dialog('close');
+            "Cancel": {
+                click: function(){
+                    $(this).dialog('close');
+                },
+                id:"createDefectDialogCancelButton",
+                text: "Cancel"
             }
         }
     });
