@@ -37,7 +37,7 @@ public class Execution extends TMController {
     @Restrict(UnitRole.TESTEXECVIEW)
     public static void index() {
         List<Release> releases = Release.find("from Release r where r.project = ?", getActiveProject()).fetch();
-        List<TMUser> users = TMUser.listByProject(getActiveProject().getId());
+        List<TMUser> users = TMUser.listByProject(getActiveProjectId());
         render(releases, users);
     }
 
