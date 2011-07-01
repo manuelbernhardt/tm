@@ -25,22 +25,26 @@
 
   $(document).ready(function() {
 
-    // selection listener for the instance tree
-    $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
-    $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["instance", "default"])) {
-        var instanceId = getNodeIdFromData(data);
-        handleTabsPopulation(instanceId);
-      } else {
-        $('.instanceHiddenOnLoad').hide();
-        $('.instanceShownOnLoad').show();
-        $("#removeFromCycle").button('disable');
-      }
-    });
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
 
-    $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-      $('.instanceHiddenOnLoad').hide();
-      $('.instanceShownOnLoad').show();
+        // selection listener for the instance tree
+        $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+        $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+          if (isSelectedNodeType(data, ["instance", "default"])) {
+            var instanceId = getNodeIdFromData(data);
+            handleTabsPopulation(instanceId);
+          } else {
+            $('.instanceHiddenOnLoad').hide();
+            $('.instanceShownOnLoad').show();
+            $("#removeFromCycle").button('disable');
+          }
+        });
+
+        $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
+          $('.instanceHiddenOnLoad').hide();
+          $('.instanceShownOnLoad').show();
+        });
+
     });
 
   });
