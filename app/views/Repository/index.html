@@ -207,27 +207,36 @@
               width: 300,
               modal: true,
               buttons: {
-                "Link": function() {
-                  var treeContainer = $("#requirementTree");
-                  var $tree = jQuery.jstree._reference(treeContainer);
-                  var selectedNode = $tree.get_selected();
-                  if (isSelectedNodeOfType($tree, selectedNode, ["default", "requirement"])) {
-                    $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
-                            function(data) {
-                              $('#requirementTable').dataTable().fnDraw();
-                            }).error(function (jqhr, text) {
-                              errorMessage(text);
-                            });
+                "Link": {
 
-                    refreshTableContents('#requirementTable', false);
-                    $(this).dialog('close');
-                  } else {
-                    errorMessage('You need to select a requirement');
-                    $(this).dialog('close');
-                  }
+                    click: function() {
+                              var treeContainer = $("#requirementTree");
+                              var $tree = jQuery.jstree._reference(treeContainer);
+                              var selectedNode = $tree.get_selected();
+                              if (isSelectedNodeOfType($tree, selectedNode, ["default", "requirement"])) {
+                                $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
+                                        function(data) {
+                                          $('#requirementTable').dataTable().fnDraw();
+                                        }).error(function (jqhr, text) {
+                                          errorMessage(text);
+                                        });
+
+                                refreshTableContents('#requirementTable', false);
+                                $(this).dialog('close');
+                              } else {
+                                errorMessage('You need to select a requirement');
+                                $(this).dialog('close');
+                              }
+                            },
+                    id: "linkRequirementDialogConfirmButton",
+                    text: "Link"
                 },
-                Cancel: function() {
-                  $(this).dialog("close");
+                Cancel: {
+                    click: function() {
+                                $(this).dialog("close");
+                            },
+                    id: "linkRequirementDialogCancelButton",
+                    text: "Cancel"
                 }
               }
 

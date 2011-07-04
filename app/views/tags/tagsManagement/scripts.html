@@ -17,9 +17,10 @@ $(document).ready(function() {
             width: 300,
             modal: true,
             buttons: {
-                "Confirm": function(){
-                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
-                            .success(
+                "Confirm": {
+                    click: function(){
+                        $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
+                                .success(
                                 function(data) {
                                     if(data!=null && data!=''){
                                         ${_type}SecondTagId = data;
@@ -29,12 +30,19 @@ $(document).ready(function() {
                                     disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
-                            .error(errorHandler);
+                                .error(errorHandler);
 
-                    $(this).dialog("close");
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}RenameDialogConfirmButton",
+                    text: "Confirm"
                 },
-                "Cancel": function(){
-                    $(this).dialog("close");
+                "Cancel": {
+                    click: function(){
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}RenameDialogCancelButton",
+                    text: "Cancel"
                 }
             }
     });
@@ -54,19 +62,27 @@ $(document).ready(function() {
             width: 300,
             modal: true,
             buttons: {
-                "Confirm": function(){
-                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
-                            .success(
+                "Confirm": {
+                    click: function(){
+                        $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
+                                .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);
                                     $(this).dialog("close");
                                 })
-                            .error(errorHandler);
+                                .error(errorHandler);
 
-                    $(this).dialog("close");
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}MergeTagDialogConfirmButton",
+                    text: "Confirm"
                 },
-                "Cancel": function(){
-                    $(this).dialog("close");
+                "Cancel": {
+                    click: function(){
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}MergeTagDialogCancelButton",
+                    text: "Cancel"
                 }
             }
     });
@@ -82,20 +98,28 @@ $(document).ready(function() {
             width: 300,
             modal: true,
             buttons: {
-                "Confirm": function(){
-                    $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
-                            .success(
+                "Confirm": {
+                    click: function(){
+                        $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
+                                .success(
                                 function(data) {
                                     refreshTableContents('#${_type}', false);
                                     disableRenameAndDeleteButtons();
                                     $(this).dialog("close");
                                 })
-                            .error(errorHandler);
+                                .error(errorHandler);
 
-                    $(this).dialog("close");
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}AddTagDialogConfirmButton",
+                    text: "Confirm"
                 },
-                "Cancel": function(){
-                    $(this).dialog("close");
+                "Cancel": {
+                    click: function(){
+                        $(this).dialog("close");
+                    },
+                    id: "${_type}AddTagDialogCancelButton",
+                    text: "Cancel"
                 }
             }
     });

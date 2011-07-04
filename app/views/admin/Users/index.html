@@ -118,15 +118,23 @@
             $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
           },
           buttons: {
-            "Remove the user": function() {
-              $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
-                refreshTableContents('#tab', false);
-                $("#removeUserButton").button('disable');
-              }).error(errorHandler);
-              $(this).dialog("close");
+            "Remove the user": {
+                click:function() {
+                    $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
+                        refreshTableContents('#tab', false);
+                        $("#removeUserButton").button('disable');
+                    }).error(errorHandler);
+                    $(this).dialog("close");
+                },
+                id: "dialogConfirmConfirmButton",
+                text: "Remove the user"
             },
-            Cancel: function() {
-              $(this).dialog("close");
+            Cancel: {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "dialogConfirmCancelButton",
+                text: "Cancel"
             }
           }
     });

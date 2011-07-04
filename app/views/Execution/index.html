@@ -232,25 +232,33 @@
       resizable: false,
       modal: true,
       buttons: {
-        "Save": function() {
-          $('#runForm').ajaxSubmit({
-             success: function(data) {
-               fullDrawInstanceTable = false;
-               refreshTableContents('#instanceTable', false);
-               $('#createRunDialog').dialog("close");
-               if(data!=null && data!=''){
-                 createdRunId = data;
-                 $('#createDefectDialog').dialog("open");
-               }
-              },
-             error: function(xhr, textStatus, errorThrown) {
-               errorHandler(xhr, textStatus, errorThrown);
-               $('#createRunDialog').dialog("close");
-             }
-           });
+        "Save": {
+            click: function() {
+                      $('#runForm').ajaxSubmit({
+                         success: function(data) {
+                           fullDrawInstanceTable = false;
+                           refreshTableContents('#instanceTable', false);
+                           $('#createRunDialog').dialog("close");
+                           if(data!=null && data!=''){
+                             createdRunId = data;
+                             $('#createDefectDialog').dialog("open");
+                           }
+                          },
+                         error: function(xhr, textStatus, errorThrown) {
+                           errorHandler(xhr, textStatus, errorThrown);
+                           $('#createRunDialog').dialog("close");
+                         }
+                       });
+                    },
+            id: "createRunDialogConfirmButton",
+            text: "Save"
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "createRunDialogCancelButton",
+            text: "Cancel"
         }
       }
     });
@@ -269,25 +277,33 @@
       resizable: false,
       modal: true,
       buttons: {
-        "Save": function() {
-          $('#updateForm').ajaxSubmit({
-            success: function(data) {
-              fullDrawInstanceTable = false;
-              refreshTableContents('#instanceTable', false);
-              $('#updateRunDialog').dialog("close");
-              if(data != null && data!= '') {
-                createdRunId = data;
-                $('#createDefectDialog').dialog("open");
-              }
+        "Save": {
+            click: function() {
+                $('#updateForm').ajaxSubmit({
+                    success: function(data) {
+                        fullDrawInstanceTable = false;
+                        refreshTableContents('#instanceTable', false);
+                        $('#updateRunDialog').dialog("close");
+                        if(data != null && data!= '') {
+                            createdRunId = data;
+                            $('#createDefectDialog').dialog("open");
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        errorHandler(xhr, textStatus, errorThrown);
+                        $('#updateRunDialog').dialog("close");
+                    }
+                });
             },
-            error: function(xhr, textStatus, errorThrown) {
-               errorHandler(xhr, textStatus, errorThrown);
-              $('#updateRunDialog').dialog("close");
-            }
-          });
+            id: "updateRunDialogConfirmButton",
+            text: "Save"
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "updateRunDialogCancelButton",
+            text: "Cancel"
         }
       }
     });
@@ -310,13 +326,21 @@
       resizable: false,
       modal: true,
       buttons: {
-          "Yes": function(){
-                $(this).dialog("close");
-                window.location="/defects/create/" + createdRunId;
-                 
+          "Yes": {
+              click: function(){
+                  $(this).dialog("close");
+                  window.location="/defects/create/" + createdRunId;
+
+              },
+              id: "createDefectDialogConfirmButton",
+              text: "Yes"
           },
-          "No": function(){
-              $(this).dialog("close");
+          "No": {
+              click: function(){
+                  $(this).dialog("close");
+              },
+              id: "createDefectDialogCancelButton",
+              text: "No"
           }
       }
   });

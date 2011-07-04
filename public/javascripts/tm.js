@@ -671,17 +671,25 @@ function deletionConfirmation(dialogId, type, name, callback) {
                 width: 400,
                 modal: true,
                 buttons: {
-                    "Confirm": function() {
-                        if (typeof callback == 'function') {
-                            callback.call();
-                        }
-                        $(this).dialog("close");
+                    "Confirm": {
+                        click: function() {
+                            if (typeof callback == 'function') {
+                                callback.call();
+                            }
+                            $(this).dialog("close");
+                        },
+                        id: dialogId+"DeleteConfirmationButtonConfirm",
+                        text: "Confirm"
                     },
-                    "Cancel": function() {
+                    "Cancel": {
 
-                        $(this).dialog("close");
+                        click: function() {
+                                    $(this).dialog("close");
+                            },
+
+                        id: dialogId+"DeleteConfirmationButtonCancel",
+                        text: "Cancel"
                     }
-
                 }
             });
     $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
@@ -736,7 +744,7 @@ function applyDefectCommentsButtonStyles() {
                 }
 
                 // initialize filter template
-                $.tmpl(settings.filterTemplate).insertBefore($this);
+                $.tmpl(settings.filterTemplate);
                 $this.hide();
 
                 // filter loading

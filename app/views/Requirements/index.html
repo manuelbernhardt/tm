@@ -168,8 +168,12 @@
               modal: true,
               title: 'Import Requirements from Excel file',
               buttons: {
-                "Close": function() {
-                  $(this).dialog('close');
+                "Close": {
+                    click: function() {
+                      $(this).dialog('close');
+                    },
+                    id: "importRequirementsDialogCancelButton",
+                    text: "Close"
                 }
               }
             });

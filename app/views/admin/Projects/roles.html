@@ -109,16 +109,24 @@
       resizable: false,
       modal: true,
       buttons: {
-        "Create role": function() {
-          $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
-                refreshTableContents('#tab', false);
-                refreshTree('projectRolesAssignmentTree');
-                $('#roleInput').val('');
-                $('#newRoleDialog').dialog("close");
-          }).error(errorHandler);
+        "Create role": {
+            click: function() {
+                $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
+                    refreshTableContents('#tab', false);
+                    refreshTree('projectRolesAssignmentTree');
+                    $('#roleInput').val('');
+                    $('#newRoleDialog').dialog("close");
+                }).error(errorHandler);
+            },
+            id: "newRoleDialogConfirmButton",
+            text: "Create role"
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "newRoleDialogCancelButton",
+            text: "Cancel"
         }
       }
     });
