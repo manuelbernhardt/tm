@@ -42,7 +42,7 @@
             #{ox.form action:@Repository.editScript(), edit:util.Require.roles([[models.general.UnitRole.TESTREPOEDIT]]), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
               #{ox.field field:'script.name', label:'Name' /}
               #{ox.field field:'script.description', label:'Description' /}
-              #{ox.field field:'script.tags', label:'Tags', type:'tags' /}
+              #{ox.field field:'script.tags', label:'Tags', type:'tags', tagsUrl:@Repository.allTags() /}
               *{the following fields are necessary because play can't bind stuff automatically yet}*
               #{ox.field field:'script.id', hidden:true /}
               #{ox.field field:'script.account.id', hidden:true /}
@@ -107,16 +107,6 @@
                 errorMessage("Could not delete test script - make sure there are no linked entities left.", "Error deleting test script")
               }
             });
-
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE], [models.general.UnitRole.TESTREPOEDIT]]}
-    var tokens = $('#scriptDetailsForm_script_tags').tokenInput({
-              url: '@{Repository.allTags()}',
-              preventDuplicates: true,
-              tokenValue: 'name',
-              allowCreation: true,
-              creationText: "Create new tag"
-            });
-    #{/deadbolt.restrict}
 
     $('#scriptDetailsForm').oxForm({
               loadAction: '@{Repository.scriptDetailsData()}',
