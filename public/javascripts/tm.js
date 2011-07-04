@@ -265,6 +265,23 @@ function extractId(id) {
     return id.substring(id.lastIndexOf("_") + 1);
 }
 
+/**
+ * Checks if the parent already has another node with the
+ * same name as the passed node
+ * @param treeInstance the jsTree instance
+ * @param parent which children are checked
+ * @param node to compare to
+ */
+function hasNodeWithSameName(treeInstance, parent, node) {
+    var children =treeInstance._get_children(parent);
+    var result = false;
+    $.each(children, function(i,e){
+        if(treeInstance.get_text(e) == treeInstance.get_text(node) && treeInstance._get_node(e).attr("id") != node.attr("id")){
+            result = true;
+        }
+    })
+    return result;
+}
 /********************/
 /* Form validation  */
 /********************/
