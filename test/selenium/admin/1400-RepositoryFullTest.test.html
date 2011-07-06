@@ -19,7 +19,7 @@
         click('create_script')
         type('css=input.jstree-rename-input','newer script')
         fireEvent('css=input.jstree-rename-input','blur')
-        waitForElementPresent('link=newer script')
+        waitForElementPresent('//li[@id='node_script_5']/a')
         click('//li[@id='node_script_5']/a')
         waitForValue('scriptDetailsForm_script_name','newer script')
         type('scriptDetailsForm_script_description','desc of newer script')
