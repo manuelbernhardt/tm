@@ -12,8 +12,8 @@
 
         // check if elements are present
         waitForTextPresent('Requirements')
-        click('link=Display entities linked to requirement')
         waitForElementPresent('link=Display entities linked to requirement')
+        click('link=Display entities linked to requirement')
         verifyElementPresent('create_folder')
         verifyElementPresent('create_requirement')
         verifyElementPresent('create_actions')
@@ -28,8 +28,8 @@
         waitForText('link=Changed node','Changed node')
 
         //check elements in linked entities adding new script and checking elements in modal window, unlinking script
-        click('//div[@id='innerTabs']/ul/li[2]/a/span')
         verifyElementPresent('//div[@id='innerTabs']/ul/li[2]/a/span')
+        click('//div[@id='innerTabs']/ul/li[2]/a/span')
         waitForElementPresent('linkScript')
         click('link=Create requirement')
         waitForElementPresent('//table[@id='scriptTable']/tbody/tr/td[2]')
