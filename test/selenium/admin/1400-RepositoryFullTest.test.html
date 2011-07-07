@@ -10,20 +10,35 @@
         type('password', 'gwen')
         clickAndWait('signin')
 
+        // check for elements on the page
         waitForTextPresent('Test Scripts repository')
         waitForText('create_folder','Folder')
         verifyElementPresent('create_script')
+
+        //create folder and script
+        click('link=Test Scripts')
         click('create_folder')
         fireEvent('css=input.jstree-rename-input','blur')
+        waitForElementPresent('link=New folder')
         click('link=New folder')
         click('create_script')
         type('css=input.jstree-rename-input','newer script')
         fireEvent('css=input.jstree-rename-input','blur')
         waitForElementPresent('//li[@id='node_script_5']/a')
+
+        // click on newly created node and check if details present
         click('//li[@id='node_script_5']/a')
         waitForValue('scriptDetailsForm_script_name','newer script')
         type('scriptDetailsForm_script_description','desc of newer script')
         click('scriptDetailsForm_submit')
+
+        // remove folder and script
+        click('link=New folder')
+        click('remove')
+        click('testScriptDeletionConfirmationDialogDeleteConfirmationButtonConfirm')
+
+        // click on random script, check for details and elements present
+        waitForElementPresent('link=Create new project')
         click('link=Create new project')
         waitForValue('scriptDetailsForm_script_name','Create new project')
         click('//div[@id='innerTabs']/ul/li[2]/a/span')
@@ -32,6 +47,8 @@
         verifyElementPresent('createStepButton')
         click('//table[@id='stepTable']/tbody/tr/td[4]')
         verifyElementPresent('updateStepButton')
+
+        // create new step and check if elements present
         click('createStepButton')
         type('createStepForm_step_name','creating new step')
         type('createStepForm_step_position','5')
