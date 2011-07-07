@@ -1,0 +1,58 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1500-Test Preparation Full Test'}
+
+        // login to test preparation part of system
+        clearSession()
+        open('/preparation')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        //check for tree and tabs presence
+        waitForText('//ul[@id='tabs_header']/li[4]/a/span','Test preparation')
+        waitForElementPresent('css=div.ui-widget-header.box-header')
+        waitForElementPresent('//li[@id='node_root_-1']/a')
+        click('link=Create new project')
+        waitForElementPresent('assignToCycle')
+        waitForElementPresent('//div[@id='innerTabs']/ul/li/a/span')
+        waitForElementPresent('link=Schedule')
+        waitForElementPresent('link=Test data')
+
+        //assign instance and edit its details
+        click('assignToCycle')
+        waitForElementPresent('ui-dialog-title-assign_dialog')
+        click('//div[6]/div[2]/div/ul/li/ul/li/ul/li/a')
+        click('assignDialogConfirmButton')
+        click('assignToCycle')
+        click('link=User Acceptance test')
+        click('assignDialogConfirmButton')
+        waitForElementPresent('//div[2]/ul/li/ul/li[2]/ul/li/a')
+        click('//div[2]/ul/li/ul/li[2]/ul/li/a')
+        waitForElementPresent('removeFromCycle')
+        type('//form[@id='tagsForm']/ul/li/input', 'instance tag')
+        fireEvent('//form[@id='tagsForm']/ul/li/input', 'blur')
+        click('tagsSaveButton')
+        click('link=Schedule')
+        select('instance.responsible','label=Lenny Linux')
+        click('scheduleForm_instance_plannedExecution')
+        click('//div[2]/table/tbody/tr/td[3]/a')
+        fireEvent('//div[2]/table/tbody/tr/td[3]/a', 'blur')
+        click('scheduleForm_submit')
+        click('//div[@id='innerTabs']/ul/li[3]/a/span')
+        type('paramValue','instance category')
+        type('//table[@id='instanceParamTable']/tbody/tr[2]/td[2]/input','TM Application - test project 2')
+        click('saveParamsButton')
+
+        // remove instance, check presence of dialog and check if instance is still present after removal
+        click('removeFromCycle')
+        waitForElementPresent('ui-dialog-title-cycleDeleteConfirmationDialog')
+        waitForText('cycleDeleteConfirmationDialog','exact:Instance \'Create new project 1\' will be removed. Are you sure?')
+        waitForElementPresent('cycleDeleteConfirmationDialogDeleteConfirmationButtonConfirm')
+        waitForElementPresent('cycleDeleteConfirmationDialogDeleteConfirmationButtonCancel')
+        click('cycleDeleteConfirmationDialogDeleteConfirmationButtonConfirm')
+        verifyElementNotPresent('//div[2]/ul/li/ul/li[2]/ul/li/a')
+
+
+#{/selenium}
