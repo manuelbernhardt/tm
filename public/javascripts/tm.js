@@ -761,7 +761,7 @@ function applyDefectCommentsButtonStyles() {
                 }
 
                 // initialize filter template
-                $.tmpl(settings.filterTemplate);
+                $.tmpl(settings.filterTemplate).insertBefore($this);
                 $this.hide();
 
                 // filter loading
