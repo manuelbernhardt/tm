@@ -24,7 +24,7 @@ import play.templates.JavaExtensions;
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Instance extends ProjectModel implements TagHolder{
+public class Instance extends ProjectModel implements TagHolder {
 
     public Instance(Project project) {
         super(project);
@@ -59,7 +59,9 @@ public class Instance extends ProjectModel implements TagHolder{
         return JavaExtensions.join(tags, ", ");
     }
 
-    /** for export, clumsy but works **/
+    /**
+     * for export, clumsy but works *
+     */
     public String getExecutionDate() {
         return getNiceDate(plannedExecution);
     }
@@ -84,10 +86,10 @@ public class Instance extends ProjectModel implements TagHolder{
     @Override
     public JPABase delete() {
         // remove associated entities
-        for(InstanceParam p : getParams()) {
+        for (InstanceParam p : getParams()) {
             p.delete();
         }
-        for(Run r : getRuns()) {
+        for (Run r : getRuns()) {
             r.delete();
         }
 
@@ -96,7 +98,7 @@ public class Instance extends ProjectModel implements TagHolder{
 
     @Override
     public boolean create() {
-        if(executionStatus != null) {
+        if (executionStatus != null) {
             this.status = executionStatus.getPosition();
         }
         return super.create();
@@ -104,7 +106,7 @@ public class Instance extends ProjectModel implements TagHolder{
 
     @Override
     public JPABase save() {
-        if(executionStatus != null) {
+        if (executionStatus != null) {
             this.status = executionStatus.getPosition();
         }
         return super.save();
