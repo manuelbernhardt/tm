@@ -67,7 +67,7 @@ public class TMTreeController extends TMController {
 
     @After
     public static void cleanup() {
-        projectThreadLocal.set(null);
+        projectThreadLocal.remove();
     }
 
     public static void create(String treeId, Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
