@@ -1,0 +1,73 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1500-Execution Full Test'}
+
+        // login to execution part of system
+        clearSession()
+        open('/execution')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        // checking for elements present
+        waitForElementPresent('//ul[@id='tabs_header']/li[5]/a/span')
+        verifyText('//table[@id='instanceTable']/tbody/tr/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[2]/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[3]/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[4]/td[2]','Requirements')
+        verifyElementPresent('filterExpand')
+        verifyElementPresent('filterSelect')
+
+        // filtering
+        click('filterExpand')
+        waitForElementPresent('css=input[type=text]')
+
+        // typeKeys doesn't work for chrome, so we can't test tags
+        //click('css=input[type=text]')
+        //typeKeys('css=input[type=text]', 'admini')
+        //waitForElementPresent('css=li.token-input-dropdown-item2.token-input-selected-dropdown-item')
+        //keyDown('css=input[type=text]', '\9')
+        //waitForText('//table[@id='instanceTable']/tbody/tr/td[2]','Administration, Projects')
+        //waitForText('//table[@id='instanceTable']/tbody/tr[2]/td[3]','Create new project (2)')
+        //waitForText('//table[@id='instanceTable']/tbody/tr[3]/td[3]','Edit project details')
+        //waitForTextNotPresent('//table[@id='instanceTable']/tbody/tr[4]/td[3]','Register new requirement')
+
+        select('responsible','label=Scala Johansson')
+        waitForText('css=td.dataTables_empty','No test instances found')
+        select('filterSelect','label=Clear filter')
+        click('css=option[value=customFilter]')
+        waitForText('//table[@id='instanceTable']/tbody/tr[4]/td[3]','Register new requirement')
+        select('status','label=Failed')
+        waitForText('//table[@id='instanceTable']/tbody/tr/td[3]','Create new project (2)')
+        select('status','label=Select a status')
+        click('css=#status > option')
+        select('cycle','label=System Test')
+        click('css=option[value=5]')
+        waitForText('//table[@id='instanceTable']/tbody/tr/td[3]','Create new project')
+        waitForText('//table[@id='instanceTable']/tbody/tr[2]/td[3]','Create new project (2)')
+        waitForText('//table[@id='instanceTable']/tbody/tr[3]/td[3]','Edit project details')
+        select('cycle','label=Select a cycle')
+
+        // save and load filter
+
+        select('cycle','label=System Test')
+        click('css=option[value=5]')
+        select('status','label=Not run')
+        click('css=option[value=0]')
+        click('saveFilter')
+        waitForElementPresent('ui-dialog-title-filterSaveDialog')
+        waitForElementPresent('//div[11]/div[3]/div/button')
+        waitForElementPresent('//div[11]/div[3]/div/button[2]')
+        type('filterName','selenium filter')
+        click('//div[11]/div[3]/div/button')
+        waitForElementPresent('css=option[value=1]')
+        select('filterSelect','label=Clear filter')
+        waitForElementPresent('css=option[value=1]')
+        click('css=option[value=1]')
+        waitForElementPresent('//table[@id='instanceTable']/tbody/tr/td[3]')
+        waitForElementPresent('//table[@id='instanceTable']/tbody/tr[2]/td[3]')
+        select('filterSelect','label=Clear filter')
+
+
+#{/selenium}

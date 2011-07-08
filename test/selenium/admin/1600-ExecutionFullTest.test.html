@@ -1,0 +1,82 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1500-Execution Full Test'}
+
+        // login to execution part of system
+        clearSession()
+        open('/execution')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        // checking for elements present
+        waitForElementPresent('//ul[@id='tabs_header']/li[5]/a/span')
+        verifyText('//table[@id='instanceTable']/tbody/tr/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[2]/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[3]/td[2]','Administration, Projects')
+        verifyText('//table[@id='instanceTable']/tbody/tr[4]/td[2]','Requirements')
+        verifyElementPresent('filterExpand')
+        verifyElementPresent('filterSelect')
+
+        // create instance
+        waitForText('//table[@id='instanceTable']/tbody/tr/td[3]','Create new project')
+        click('//table[@id='instanceTable']/tbody/tr/td[3]')
+        waitForElementPresent('css=#createRunButton > span.ui-button-text')
+        click('css=#createRunButton > span.ui-button-text')
+        waitForText('ui-dialog-title-createRunDialog','Run Test Instance')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr/td[5]/textarea')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr[2]/td[5]/textarea')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr[3]/td[5]/textarea')
+        type('//table[@id='runTable']/tbody/tr/td[5]/textarea','passed')
+        select('status_4','label=Passed')
+        type('//table[@id='runTable']/tbody/tr[2]/td[5]/textarea','passed')
+        select('status_5','label=Passed')
+        type('//table[@id='runTable']/tbody/tr[3]/td[5]/textarea','passed')
+        select('status_6','label=Passed')
+        click('createRunDialogConfirmButton')
+
+        // delete instance just created and check if it is deleted
+        waitForText('//table[@id='instanceTable']/tbody/tr/td[3]','Create new project')
+        click('//table[@id='instanceTable']/tbody/tr/td[3]')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr/td[3]')
+        click('//table[@id='runTable']/tbody/tr/td[3]')
+        waitForElementPresent('css=#updateRunButton > span.ui-button-text')
+        waitForElementPresent('css=#deleteRunButton > span.ui-button-text')
+        click('css=#deleteRunButton > span.ui-button-text')
+        waitForText('ui-dialog-title-deleteRunDialog','Delete Test Run')
+        waitForTextPresent('exact:Test run for 'Create new project' will be removed. Are you sure?')
+        click('deleteRunDialogDeleteConfirmationButtonConfirm')
+        waitForText('css=td.dataTables_empty','No runs performed yet')
+
+        // update test
+        click('//table[@id='instanceTable']/tbody/tr[2]/td[3]')
+        waitForText('//table[@id='runTable']/tbody/tr/td[3]','Gwenael Alizon')
+        click('//table[@id='runTable']/tbody/tr/td[3]')
+        waitForText('css=#updateRunButton > span.ui-button-text','Edit Test Run')
+        waitForElementPresent('css=#updateRunButton > span.ui-button-text')
+        waitForElementPresent('//div[@id='deleteRunButton']/span')
+        waitForElementPresent('//table[@id='runStepTable']/tbody/tr/td[5]')
+        click('css=#updateRunButton > span.ui-button-text')
+        waitForText('ui-dialog-title-updateRunDialog','Update Test Run')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr/td[5]/textarea')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr[2]/td[5]/textarea')
+        waitForElementPresent('//table[@id='runTable']/tbody/tr[3]/td[5]/textarea')
+        type('//table[@id='runTable']/tbody/tr/td[5]/textarea','failed')
+        select('status_1','label=Failed')
+        type('//table[@id='runTable']/tbody/tr[2]/td[5]/textarea','passed')
+        select('status_2','label=Passed')
+        type('//table[@id='runTable']/tbody/tr[3]/td[5]/textarea','failed')
+        select('status_3','label=Failed')
+        click('updateRunDialogConfirmButton')
+
+        // create defect on failed test
+        waitForText('ui-dialog-title-createDefectDialog','exact:Create a defect ?')
+        waitForText('createDefectDialog','exact:This test run failed, do you want to create a defect ?')
+        clickAndWait('createDefectDialogConfirmButton')
+        waitForText('ui-dialog-title-createDefectDialog','Create a defect')
+        type('createDefectForm_defect_name','defect created after test run')
+        click('createDefectDialogConfirmButton')
+        waitForText('//table[@id='defectsTable']/tbody/tr[4]/td[3]','defect created after test run')
+        
+#{/selenium}
