@@ -493,7 +493,7 @@ public class TMController extends Controller {
 
         for (String s : toResolve) {
             if (!values.containsKey(s)) {
-                if (s.indexOf(".") == -1) {
+                if (!s.contains(".")) {
                     values.put(s, getValue(base, s));
                 } else {
                     // since we did resolve the required field paths beforehand, we can safely rely on our parent being already resolved
