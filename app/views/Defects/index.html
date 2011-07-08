@@ -26,7 +26,7 @@
     #{ox.field field:'defect.name', label:'Summary' /}
     #{ox.field field:'defect.description', label:'Description'/}
     #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
+    #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
     #{/ox.form}
   </div>
 
@@ -67,7 +67,7 @@
     #{ox.field field:'defect.description', label:'Description'/}
     #{ox.field field:'defect.assignedTo', label:'Assign to' /}
     #{ox.field field:'defect.status', label:'Status' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags' /}
+    #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
     #{ox.field field:'defect.id', hidden:true/}
     #{ox.submit/}
     #{/ox.form}
@@ -159,23 +159,6 @@ $(document).ready(function() {
 
   }
 
-  $('#createDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
-  $('#updateDefectForm_defect_tags').tokenInput({
-            url: '@{Defects.allTags()}',
-            preventDuplicates: true,
-            tokenValue: 'name',
-            allowCreation: true,
-            creationText: "Create new tag"
-          });
-
-
 // creating a defect
   $('#createDefectButton').click(function() {
     $('#createDefectDialog').dialog('open');
@@ -193,11 +176,19 @@ $(document).ready(function() {
         width: 700,
         modal: true,
         buttons: {
-            "Confirm": function() {
+            "Confirm": {
+                click: function() {
                 $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+                },
+                id: "createDefectDialogConfirmButton",
+                text:"Confirm"
             },
-            "Cancel": function() {
-                $(this).dialog('close');
+            "Cancel": {
+                click: function(){
+                    $(this).dialog('close');
+                },
+                id:"createDefectDialogCancelButton",
+                text: "Cancel"
             }
         }
     });

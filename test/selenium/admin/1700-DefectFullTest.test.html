@@ -1,0 +1,49 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1700-Defect Full Test'}
+
+        // login to defect part of system
+        clearSession()
+        open('/defects')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        // create defect and check if created
+        waitForElementPresent('createDefectButton')
+        click('createDefectButton')
+        waitForText('ui-dialog-title-createDefectDialog','Create a defect')
+        type('createDefectForm_defect_name','Test defect')
+        type('createDefectForm_defect_description','selenium test')
+        select('//form[@id='createDefectForm']/div[3]/select','label=Lenny Linux')
+        click('createDefectDialogConfirmButton')
+        waitForText('//table[@id='defectsTable']/tbody/tr[4]/td[3]','Test defect')
+
+        // check if defect detals and comments are present
+        click('//table[@id='defectsTable']/tbody/tr[4]/td[5]')
+        waitForElementPresent('css=#updateDefectDialog > div.ui-widget.ui-corner-all > div.ui-widget-header.box-header')
+        waitForElementPresent('css=#comments > div.ui-widget.ui-corner-all > div.ui-widget-header.box-header')
+        waitForValue('updateDefectForm_defect_name','Test defect')
+
+        // update defect and check if updated
+        select('defect.status','label=Open')
+        click('updateDefectForm_submit')
+        waitForText('//table[@id='defectsTable']/tbody/tr[4]/td[7]','Open')
+
+        // add comment and check if present
+        type('addDefectCommentForm_comment_comment','defect comment')
+        click('addCommentAndDefectButton')
+        waitForText('css=div.comment-container','defect comment')
+
+        // delete defect and check if really deleted
+        click('//table[@id='defectsTable']/tbody/tr[4]/td[4]')
+        waitForElementPresent('deleteDefectButton')
+        click('deleteDefectButton')
+        waitForText('ui-dialog-title-deleteDefectDialog','Confirm deletion of defect')
+        waitForText('deleteDefectDialog','exact:Defect \'Test defect\' will be removed. Are you sure?')
+        click('deleteDefectDialogDeleteConfirmationButtonConfirm')
+        waitForTextNotPresent('//table[@id='defectsTable']/tbody/tr[4]/td[3]','Test defect')
+
+        
+#{/selenium}

@@ -101,15 +101,25 @@
       resizable: false,
       modal: true,
       buttons: {
-        "Create step": function() {
-          if($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
-            $(this).dialog("close");
-          }
+        "Create step": {
+
+            click: function() {
+              if($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
+                $(this).dialog("close");
+              }
+            },
+            id: "createStepDialogConfirmButton",
+            text: "Create step"
         },
-        "Cancel": function() {
-          $('#createStepForm').validate({meta: 'validate'}).resetForm();
-          $(this).dialog("close");
-        }
+        "Cancel": {
+            click: function() {
+                      $('#createStepForm').validate({meta: 'validate'}).resetForm();
+                      $(this).dialog("close");
+                    },
+
+            id: "createStepDialogCancelButton",
+            text: "Cancel"
+            }
       }
     });
 
@@ -135,15 +145,23 @@
         $('#updateStepForm').oxForm('load', getSelectedRowId('#stepTable'), {scriptId: getSelectedNodeId('repositoryTree')});
       },
       buttons: {
-        "Update step": function() {
-          var valid = $('#updateStepForm').validate({meta: 'validate'}).form();
-          if(valid) {
-            $('#updateStepForm').submit();
-            $(this).dialog("close");
-          }
+        "Update step": {
+            click: function() {
+                      var valid = $('#updateStepForm').validate({meta: 'validate'}).form();
+                      if(valid) {
+                        $('#updateStepForm').submit();
+                        $(this).dialog("close");
+                      }
+            },
+            id: "updateStepDialogConfirmButton",
+            text: "Update step"
         },
-        "Cancel": function() {
-          $(this).dialog("close");
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "updateStepDialogCancelButton",
+            text: "Cancel"
         }
       }
     });

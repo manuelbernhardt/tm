@@ -7,7 +7,7 @@
 }%
 #{forms.objectField baseClass:baseClass, formId:formId, field:_field}
 #{if edit && _type != null && _type == 'tags'}
-  #{ox.tagsField field:_field, label:_label, baseClass:baseClass, formId:formId, name:_name, create:create /}
+  #{ox.tagsField field:_field, label:_label, baseClass:baseClass, formId:formId, name:_name, create:create, tagsUrl:_tagsUrl /}
 #{/if}
 #{elseif edit && _hidden != null && _hidden}
   #{ox.hiddenField field:_field, baseObject:baseObject, baseClass:baseClass, formId:formId, name:_name, create:create /}

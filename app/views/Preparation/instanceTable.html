@@ -85,21 +85,29 @@
             modal: true,
             resizable: false,
             buttons: {
-              "Create": function() {
-                var dialog = $(this);
-                $('#createInstanceForm').ajaxSubmit({
-                          data: {scriptId: getSelectedNodeId('repositoryTree')},
-                          success: function() {
-                            refreshTableContents('#instancesTable', false);
-                            dialog.dialog("close");
-                            $('#createInstanceForm').resetForm();
+              "Create": {
+                  click: function() {
+                            var dialog = $(this);
+                            $('#createInstanceForm').ajaxSubmit({
+                                      data: {scriptId: getSelectedNodeId('repositoryTree')},
+                                      success: function() {
+                                        refreshTableContents('#instancesTable', false);
+                                        dialog.dialog("close");
+                                        $('#createInstanceForm').resetForm();
+                                      },
+                                      error: errorHandler
+                                    });
                           },
-                          error: errorHandler
-                        });
+                  id: "createInstanceDialogConfirmButton",
+                  text: "Create"
               },
-              Cancel: function() {
-                $('#createInstanceForm').resetForm();
-                $(this).dialog("close");
+              Cancel: {
+                  click: function() {
+                      $('#createInstanceForm').resetForm();
+                      $(this).dialog("close");
+                  },
+                  id: "createInstanceDialogCancelButton",
+                  text: "Cancel"
               }
             }
 

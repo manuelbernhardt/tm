@@ -4,4 +4,13 @@
   <input name="${field.name}" data-bind="${_create == null ? 'tags: value_'+field.id : ''}" id="${field.id}" class="oxfield tags" type="text"/>
   <span class="error">${field.error}</span>
 </div>
+<script>
+      $('#${field.id}').tokenInput({
+            url: '${_tagsUrl}',
+            preventDuplicates: true,
+            tokenValue: 'name',
+            allowCreation: true,
+            creationText: "Create new tag"
+          });
+</script>
 #{/}

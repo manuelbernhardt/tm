@@ -62,7 +62,7 @@
                         id:'requirementForm', baseClass:'models.tm.Requirement'}
                         #{ox.field field:'requirement.name', label:'Name' /}
                         #{ox.field field:'requirement.description', label:'Description' /}
-                        #{ox.field field:'requirement.tags', label:'Tags', type:'tags' /}
+                        #{ox.field field:'requirement.tags', label:'Tags', type:'tags', tagsUrl:@Requirements.allTags() /}
                         *{the following fields are necessary because play can't bind stuff automatically yet}*
                         #{ox.field field:'requirement.id', hidden:true /}
                         #{ox.field field:'requirement.account.id', hidden:true /}
@@ -137,16 +137,6 @@
               }
             });
 
-    #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE], [models.general.UnitRole.REQEDIT]]}
-    var tokens = $('#requirementForm_requirement_tags').tokenInput({
-              url: '@{Requirements.allTags()}',
-              preventDuplicates: true,
-              tokenValue: 'name',
-              allowCreation: true,
-              creationText: "Create new tag"
-            });
-    #{/deadbolt.restrict}
-
     $('#requirementForm').oxForm({
               loadAction: '@{Requirements.requirementsDetailsData()}',
               submissionCallback: function() {
@@ -168,8 +158,12 @@
               modal: true,
               title: 'Import Requirements from Excel file',
               buttons: {
-                "Close": function() {
-                  $(this).dialog('close');
+                "Close": {
+                    click: function() {
+                      $(this).dialog('close');
+                    },
+                    id: "importRequirementsDialogCancelButton",
+                    text: "Close"
                 }
               }
             });

@@ -44,7 +44,14 @@
         var multiPurpose = {
             "crrm": {
                 "move": {
-                    "always_copy": "multitree"
+                    "always_copy": "multitree",
+                    "check_move" : function(m) {
+                        var canMove = !hasNodeWithSameName(m.rt,m.np,m.o);
+                        if(!canMove) {
+                            errorMessage("The object with the same name already exists in the folder. Rename the object before moving.");
+                        }
+                        return canMove;
+                    }
                 }
             },
             "hotkeys": {
@@ -122,23 +129,29 @@
                     });
                 }).bind("rename.jstree",
                 function (e, data) {
-                    $.post(treeRenameRouteAction(),
-                    {
-                        "treeId" : treeId,
-                        "id" : extractId(data.rslt.obj.attr("id")),
-                        "name" : data.rslt.new_name,
-                        "type" : data.rslt.obj.attr("rel")
-                    },
-                            function (r) {
-                                if (!r.status) {
-                                    $.jstree.rollback(data.rlbk);
-                                } else {
-                                    if(typeof options.onRename === 'function') {
-                                        options.onRename.call(data.rslt.new_name, data.rslt.new_name, data.rslt.obj.attr("rel"));
+                    var canRename = !hasNodeWithSameName(data.inst,data.inst._get_parent(data.rslt.obj),data.rslt.obj);
+                    if(canRename){
+                        $.post(treeRenameRouteAction(),
+                        {
+                            "treeId" : treeId,
+                            "id" : extractId(data.rslt.obj.attr("id")),
+                            "name" : data.rslt.new_name,
+                            "type" : data.rslt.obj.attr("rel")
+                        },
+                                function (r) {
+                                    if (!r.status) {
+                                        $.jstree.rollback(data.rlbk);
+                                    } else {
+                                        if(typeof options.onRename === 'function') {
+                                            options.onRename.call(data.rslt.new_name, data.rslt.new_name, data.rslt.obj.attr("rel"));
+                                        }
                                     }
                                 }
-                            }
-                            );
+                                );
+                    }else{
+                        errorMessage("Another object with the same name already exists in the folder. Rename one of the objects first.");
+                        $.jstree.rollback(data.rlbk);
+                    }
                 }).bind("move_node.jstree", function (e, data) {
             data.rslt.o.each(function (i) {
                 $.ajax({

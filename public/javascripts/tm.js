@@ -265,6 +265,23 @@ function extractId(id) {
     return id.substring(id.lastIndexOf("_") + 1);
 }
 
+/**
+ * Checks if the parent already has another node with the
+ * same name as the passed node
+ * @param treeInstance the jsTree instance
+ * @param parent which children are checked
+ * @param node to compare to
+ */
+function hasNodeWithSameName(treeInstance, parent, node) {
+    var children =treeInstance._get_children(parent);
+    var result = false;
+    $.each(children, function(i,e){
+        if(treeInstance.get_text(e) == treeInstance.get_text(node) && treeInstance._get_node(e).attr("id") != node.attr("id")){
+            result = true;
+        }
+    })
+    return result;
+}
 /********************/
 /* Form validation  */
 /********************/
@@ -410,13 +427,6 @@ function removeDialogs() {
                 if (typeof submissionParameters !== 'undefined') {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
-                var data = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
-                $.each($this.find(".tags"),function(index, el) {
-                    $.each($(el).tokenInput('get'),function(i, e) {
-                        data[$(el).attr("name") + "[" + index + "][id]"] = e.id;
-                        data[$(el).attr("name") + "[" + index + "][name]"] = e.name;
-                    });
-                });
                 $this.ajaxSubmit({
                             success: function() {
                                 if (typeof oxFormData.submissionCallback == 'function') {
@@ -425,7 +435,30 @@ function removeDialogs() {
                                 $('#' + $this.attr('id') + '_submit').button('disable');
                                 $this.resetForm();
                             },
-                            data: data
+                            data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters,
+                            // need to process the form data and format the tags info in the recognizable way by the controller
+                            beforeSubmit: function(data, $form, options){
+                                $.each($form.find(".tags"),function(index, el) {
+                                    var toBeDeleted = -1;
+                                    $.grep(data, function(element, index) {
+                                        if(element.name == $(el).attr("name")) {
+                                            toBeDeleted = index;
+                                        }
+                                        return true;
+                                    });
+                                    delete data[toBeDeleted];
+                                    $.each($(el).tokenInput('get'),function(i, e) {
+                                        var tagId = {};
+                                        tagId.name = $(el).attr("name") + "[" + i + "][id]";
+                                        tagId.value = e.id;
+                                        var tagName = {};
+                                        tagName.name = $(el).attr("name") + "[" + i + "][name]";
+                                        tagName.value = e.name;
+                                        data.push(tagId);
+                                        data.push(tagName);
+                                    });
+                                });
+                            }
                         });
                 return true;
             } else {
@@ -655,17 +688,25 @@ function deletionConfirmation(dialogId, type, name, callback) {
                 width: 400,
                 modal: true,
                 buttons: {
-                    "Confirm": function() {
-                        if (typeof callback == 'function') {
-                            callback.call();
-                        }
-                        $(this).dialog("close");
+                    "Confirm": {
+                        click: function() {
+                            if (typeof callback == 'function') {
+                                callback.call();
+                            }
+                            $(this).dialog("close");
+                        },
+                        id: dialogId+"DeleteConfirmationButtonConfirm",
+                        text: "Confirm"
                     },
-                    "Cancel": function() {
+                    "Cancel": {
 
-                        $(this).dialog("close");
+                        click: function() {
+                                    $(this).dialog("close");
+                            },
+
+                        id: dialogId+"DeleteConfirmationButtonCancel",
+                        text: "Cancel"
                     }
-
                 }
             });
     $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");

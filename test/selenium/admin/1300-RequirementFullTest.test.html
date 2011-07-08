@@ -1,0 +1,66 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1400-Requirement Full Test'}
+
+        // login to requirements part of system
+        clearSession()
+        open('/requirements')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        // check if elements are present
+        waitForTextPresent('Requirements')
+        waitForElementPresent('link=Display entities linked to requirement')
+        click('link=Display entities linked to requirement')
+        verifyElementPresent('create_folder')
+        verifyElementPresent('create_requirement')
+        verifyElementPresent('create_actions')
+        verifyElementPresent('remove')
+        verifyElementPresent('searchInput')
+        waitForValue('requirementForm_requirement_name','Display entities linked to requirement')
+        waitForElementPresent('requirementForm_submit')
+
+        //change node name and check if really changed
+        type('requirementForm_requirement_name','Changed node')
+        click('requirementForm_submit')
+        waitForText('link=Changed node','Changed node')
+
+        //check elements in linked entities adding new script and checking elements in modal window, unlinking script
+        verifyElementPresent('//div[@id='innerTabs']/ul/li[2]/a/span')
+        click('//div[@id='innerTabs']/ul/li[2]/a/span')
+        waitForElementPresent('linkScript')
+        click('link=Create requirement')
+        waitForElementPresent('//table[@id='scriptTable']/tbody/tr/td[2]')
+        click('//table[@id='scriptTable']/tbody/tr/td[2]')
+        waitForElementPresent('unlinkScript')
+        click('linkScript')
+        waitForText('ui-dialog-title-linkScriptDialog','Assign Test Script to Requirement')
+        click('link=Edit project details')
+        waitForElementPresent('linkScriptDialogConfirmButton')
+        waitForElementPresent('linkScriptDialogCancelButton')
+        click('linkScriptDialogConfirmButton')
+        click('//table[@id='scriptTable']/tbody/tr/td[2]')
+        waitForElementPresent('//table[@id='scriptTable']/tbody/tr/td[2]')
+        waitForText('//table[@id='scriptTable']/tbody/tr/td[2]','Edit project details')
+        click('//table[@id='scriptTable']/tbody/tr[2]/td[2]')
+        click('unlinkScript')
+        verifyTextPresent('exact:Script 'Register new requirement' will be removed. Are you sure?')
+        waitForElementPresent('unlinkScriptConfirmationDialogDeleteConfirmationButtonConfirm')
+        waitForElementPresent('unlinkScriptConfirmationDialogDeleteConfirmationButtonCancel')
+        click('unlinkScriptConfirmationDialogDeleteConfirmationButtonConfirm')
+        waitForTextNotPresent('Register new requirement')
+
+        // create new requirement and check if created
+        click('link=Requirement management')
+        click('create_requirement')
+        click('link=Create requirement')
+        type('css=input.jstree-rename-input','newer requirement')
+        fireEvent('css=input.jstree-rename-input','blur')
+        waitForElementPresent('//li[@id='node_requirement_7']/a')
+        click('//li[@id='node_requirement_7']/a')
+        click('details')
+        waitForValue('requirementForm_requirement_name','newer requirement')
+        
+#{/selenium}

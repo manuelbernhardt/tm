@@ -1,0 +1,71 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1400-Repository Full Test'}
+
+        // login to repository part of system
+        clearSession()
+        open('/repository')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        // check for elements on the page
+        waitForTextPresent('Test Scripts repository')
+        waitForText('create_folder','Folder')
+        verifyElementPresent('create_script')
+
+        //create folder and script
+        click('link=Test Scripts')
+        click('create_folder')
+        fireEvent('css=input.jstree-rename-input','blur')
+        waitForElementPresent('link=New folder')
+        click('link=New folder')
+        click('create_script')
+        type('css=input.jstree-rename-input','newer script')
+        fireEvent('css=input.jstree-rename-input','blur')
+        waitForElementPresent('//li[@id='node_script_5']/a')
+
+        // click on newly created node and check if details present
+        click('//li[@id='node_script_5']/a')
+        waitForValue('scriptDetailsForm_script_name','newer script')
+        type('scriptDetailsForm_script_description','desc of newer script')
+        click('scriptDetailsForm_submit')
+
+        // remove folder and script
+        click('link=New folder')
+        click('remove')
+        click('testScriptDeletionConfirmationDialogDeleteConfirmationButtonConfirm')
+
+        // click on random script, check for details and elements present
+        waitForElementPresent('link=Create new project')
+        click('link=Create new project')
+        waitForValue('scriptDetailsForm_script_name','Create new project')
+        click('//div[@id='innerTabs']/ul/li[2]/a/span')
+        waitForText('//table[@id='stepTable']/tbody/tr/td[4]','Enter the URL /admin/projects')
+        verifyElementPresent('remove')
+        verifyElementPresent('createStepButton')
+        click('//table[@id='stepTable']/tbody/tr/td[4]')
+        verifyElementPresent('updateStepButton')
+
+        // create new step and check if elements present
+        click('createStepButton')
+        type('createStepForm_step_name','creating new step')
+        type('createStepForm_step_position','5')
+        type('createStepForm_step_description','description')
+        type('createStepForm_step_expectedResult','expected result')
+        verifyElementPresent('createStepDialogConfirmButton')
+        verifyElementPresent('createStepDialogCancelButton')
+        click('createStepDialogConfirmButton')
+        waitForText('//table[@id='stepTable']/tbody/tr[4]/td[3]','creating new step')
+        click('//div[@id='innerTabs']/ul/li[3]/a/span')
+        waitForText('requirementScriptDialogOpen','Requirement')
+        click('requirementScriptDialogOpen')
+        click('link=List requirements (tree)')
+        waitForElementPresent('linkRequirementDialogConfirmButton')
+        waitForElementPresent('linkRequirementDialogCancelButton')
+        click('linkRequirementDialogConfirmButton')
+        waitForText('//table[@id='requirementTable']/tbody/tr/td[3]', 'List requirements (tree)')
+        waitForElementPresent('removeRequirementButton')
+
+#{/selenium}

@@ -31,28 +31,39 @@
               width: 300,
               modal: true,
               buttons: {
-                "Assign": function() {
+                "Assign": {
 
-                  var valid = false;
-                  var treeContainer = $("#approachTree");
-                  var $tree = jQuery.jstree._reference(treeContainer);
-                  var selectedNode = $tree.get_selected();
-                  if ($tree._get_type(selectedNode) == 'testCycle') {
-                    valid = true;
-                  } else {
-                    // TODO FIXME this won't work, we're not in an AJAX call
-                    errorHandler
-                  }
+                    click: function() {
 
-                  if (valid) {
-                    var name = selectedNode.text();
-                    $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: getSelectedNodeId('repositoryTree')}}}, null, true);
-                    refreshCycleTree();
-                    $(this).dialog("close");
-                  }
+                      var valid = false;
+                      var treeContainer = $("#approachTree");
+                      var $tree = jQuery.jstree._reference(treeContainer);
+                      var selectedNode = $tree.get_selected();
+                      if ($tree._get_type(selectedNode) == 'testCycle') {
+                        valid = true;
+                      } else {
+                        // TODO FIXME this won't work, we're not in an AJAX call
+                        errorHandler
+                      }
+
+                      if (valid) {
+                        var name = selectedNode.text();
+                        $("#scriptCycleTree").jstree("create", -1, "last", {attr: {"rel": "testCycle"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedNode.attr('id')), scriptId: getSelectedNodeId('repositoryTree')}}}, null, true);
+                        refreshCycleTree();
+                        $(this).dialog("close");
+                      }
+                    },
+
+                    id: "assignDialogConfirmButton",
+                    text: "Assign"
                 },
-                Cancel: function() {
-                  $(this).dialog("close");
+                Cancel: {
+
+                    click: function() {
+                              $(this).dialog("close");
+                            },
+                    id:"assignDialogCancelButton",
+                    text: "Cancel"
                 }
               }
             });
