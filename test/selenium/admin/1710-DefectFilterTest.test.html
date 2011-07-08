@@ -1,0 +1,37 @@
+#{fixture 'util.TestDataLoader' /}
+
+#{selenium 'Test 1710-Defect Filter Test'}
+
+        // login to defect part of system
+        clearSession()
+        open('/defects')
+        verifyTextPresent('Oxiras Test Management Suite')
+        type('username', 'gwenael.alizon@oxiras.com')
+        type('password', 'gwen')
+        clickAndWait('signin')
+
+        waitForElementPresent('filterExpand')
+        waitForElementPresent('filterSelect')
+        click('filterExpand')
+        type('title','naturalID')
+        fireEvent('title','blur')
+        waitForText('//table[@id='defectsTable']/tbody/tr/td[3]','Test for naturalID')
+        waitForTextNotPresent('//table[@id='defectsTable']/tbody/tr[3]/td[3]','Issue with tabularasa')
+        select('filterSelect','label=Clear filter')
+        click('css=option[value=customFilter]')
+        waitForText('//table[@id='defectsTable']/tbody/tr[3]/td[3]','Issue with tabularasa')
+        select('submittedById','label=Gwenael Alizon')
+        waitForText('//table[@id='defectsTable']/tbody/tr/td[3]','The application does not start')
+        waitForTextNotPresent('//table[@id='defectsTable']/tbody/tr[3]/td[3]','Issue with tabularasa')
+        click('css=option[value=customFilter]')
+        select('submittedById','label=Gwenael Alizon')
+        click('saveFilter')
+        type('filterName','Raised by Gwen')
+        click('//div[3]/div/button')
+        select('submittedById','label=Select a person')
+        waitForText('css=option[value=1]','Raised by Gwen')
+        select('filterSelect','label=Raised by Gwen')
+        click('css=option[value=1]')
+        waitForText('//table[@id='defectsTable']/tbody/tr/td[3]','The application does not start')
+        waitForTextNotPresent('//table[@id='defectsTable']/tbody/tr[3]/td[3]','Issue with tabularasa')
+#{/selenium}
