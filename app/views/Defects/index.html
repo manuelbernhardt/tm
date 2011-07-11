@@ -241,7 +241,7 @@ $(document).ready(function() {
             $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
             $('#updateDefectForm').ajaxSubmit({
                 success: function(){
-//                    refreshTableContents('#defectsTable', true, true);
+                    refreshTableContents('#defectsTable', true, true);
                 }
             });
             refreshCommentsList();
