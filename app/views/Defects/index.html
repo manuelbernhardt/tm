@@ -241,7 +241,7 @@ $(document).ready(function() {
             $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
             $('#updateDefectForm').ajaxSubmit({
                 success: function(){
-                    refreshTableContents('#defectsTable', true, true);
+//                    refreshTableContents('#defectsTable', true, true);
                 }
             });
             refreshCommentsList();
@@ -260,10 +260,9 @@ $(document).ready(function() {
                   ko.mapping.updateFromJS(viewModelComments, data);
                 }
             });
-            $('#defectDetails').slideUp('fast');
             refreshCommentsList();
-            $('#defectDetails').delay('100');
-            $('#defectDetails').slideDown('slow');
+            if($('#defectDetails').is(':hidden'))
+                $('#defectDetails').slideDown('slow');
             $('#deleteDefectButton').button('enable');
         }
 
