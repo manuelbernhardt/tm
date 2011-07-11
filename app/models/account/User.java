@@ -23,7 +23,7 @@ import play.libs.Crypto;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})}, name = "account_User")
 @Filter(name = "activeUser")
 public class User extends AccountModel implements RoleHolder {
 

@@ -23,7 +23,7 @@ import tree.persistent.NodeName;
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})}, name = "tm_approach_TestCycle")
 public class TestCycle extends ProjectModel implements Node {
 
     @NodeName

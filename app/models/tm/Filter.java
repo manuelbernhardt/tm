@@ -17,7 +17,7 @@ import play.data.validation.Required;
  * Time: 5:34 PM
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})}, name = "tm_Filter")
 public class Filter extends ProjectModel{
 
     @Required

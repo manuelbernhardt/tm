@@ -13,7 +13,7 @@ import tree.persistent.NodeName;
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})}, name = "tm_RequirementFolder")
 public class RequirementFolder extends ProjectModel implements Node {
 
     @Column(nullable = false)
