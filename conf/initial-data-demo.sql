@@ -142,7 +142,7 @@ INSERT INTO `account_Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `ApproachRelease` DISABLE KEYS */;
-INSERT INTO `tm_approach_Release` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
+INSERT INTO `tm_approach_ApproachRelease` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
 /*!40000 ALTER TABLE `ApproachRelease` ENABLE KEYS */;
 
 --

@@ -9,7 +9,7 @@ mysqldump -u root tm $GENERAL_OPTS account_Account --where="id = $ACCOUNT_ID" > 
 mysqldump -u root tm $GENERAL_OPTS account_AccountProduct account_AccountProductPeriod account_PurchaseOrder --where="account_id = $ACCOUNT_ID" > general.sql
 
 # dump main AccountEntities without relation tables
-mysqldump -u root tm $GENERAL_OPTS tm_approach_Release tm_Defect tm_DefectStatus tm_Filter tm_FilterConstraint tm_Instance tm_InstanceParam tm_Project tm_ProjectCategory tm_ProjectRole tm_ProjectTreeNode tm_ProjectWidget tm_Requirement tm_RequirementFolder tm_test_Run tm_test_RunParam tm_test_RunStep tm_test_Script tm_test_ScriptFolder tm_test_ScriptParam tm_test_ScriptStep tm_TMUser tm_test_Tag tm_approach_TestCycle account_User tm_UserWidget --where="account_id = $ACCOUNT_ID" > accountEntities.sql
+mysqldump -u root tm $GENERAL_OPTS tm_approach_ApproachRelease tm_Defect tm_DefectStatus tm_Filter tm_FilterConstraint tm_Instance tm_InstanceParam tm_Project tm_ProjectCategory tm_ProjectRole tm_ProjectTreeNode tm_ProjectWidget tm_Requirement tm_RequirementFolder tm_test_Run tm_test_RunParam tm_test_RunStep tm_test_Script tm_test_ScriptFolder tm_test_ScriptParam tm_test_ScriptStep tm_TMUser tm_test_Tag tm_approach_TestCycle account_User tm_UserWidget --where="account_id = $ACCOUNT_ID" > accountEntities.sql
 
 # dump association tables, one by one
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_Defect_tm_test_Tag --where="Defect_id in (select id from Defect where account_id = $ACCOUNT_ID)" > defect_tag.sql

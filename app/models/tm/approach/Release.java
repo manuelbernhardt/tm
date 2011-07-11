@@ -21,7 +21,7 @@ import tree.persistent.NodeName;
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(name = "tm_approach_Release", uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
+@Table(name = "tm_approach_ApproachRelease", uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
 public class Release extends ProjectModel implements Node {
 
     @NodeName
