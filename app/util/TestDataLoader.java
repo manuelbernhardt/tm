@@ -37,6 +37,7 @@ public class TestDataLoader {
 
         Fixtures.deleteDatabase();
 
+        if (play.Play.id.equals("demo")) {
         VirtualFile sqlFile = null;
         for (VirtualFile vf : Play.javaPath) {
             sqlFile = vf.child(INITIAL_DATA_DEMO_SQL);
@@ -45,6 +46,7 @@ public class TestDataLoader {
             }
         }
         Fixtures.executeSQL(sqlFile.getRealFile());
+        } else if (play.Play.id.equals("test")) {
         YamlModelLoader.loadModels(INITIAL_DATA_YML, new YamlModelLoader.Callback<Model>() {
                     public Model invoke(Model result) {
                         if (result instanceof Defect) {
@@ -114,6 +116,7 @@ public class TestDataLoader {
                     }
                 }
         );
+        }
 
         Play.pluginCollection.afterFixtureLoad();
 
