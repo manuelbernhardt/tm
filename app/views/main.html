@@ -1,4 +1,8 @@
 #{extends 'header.html' /}
+        
+#{if play.Play.id.equals("demo")}
+    #{feedbackBar /}
+#{/if}
 
 <div id="screen" style="display:none;">
   #{topMenu space:'application' /}
@@ -28,9 +32,7 @@
   #{/tabLayout}
 </div>
 
-#{if play.Play.id.equals("demo")}
-    #{feedbackBar /}
-#{/if}
+
 
 <script type="text/javascript">
   $(document).ready(function() {
