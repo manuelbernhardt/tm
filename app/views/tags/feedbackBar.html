@@ -21,7 +21,7 @@ $(document).ready(function(){
       <!-- address of page that is feedbacked -->
 
     $('#sendFeedback').button().click(function(){
-        $.post("@{TMController.sendFeedbackEmail()}", {message:$('#messageFeedback').val(), location: window.location.href}, function(){
+        $.post("@{TMController.sendFeedbackEmail()}", {message:$('#messageFeedback').val(), location: window.location.pathname}, function(){
             $('#feedbackContainer').html("<p><bold>Thank you for the feedback!</bold></p>");
             $('#feedbackContainer').delay(1000);
             $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');

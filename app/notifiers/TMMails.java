@@ -11,7 +11,7 @@ import java.util.*;
 public class TMMails extends Mailer{
 
     public static void feedbackEmail(String message, String location){
-        setSubject("[Oxiras][Feedback %s] Page: %s", new Date(), location);
+        setSubject("[Oxiras][Feedback] Page: %s", location);
         addRecipient("feedback@oxiras.com");
         setFrom("info@oxiras.com");
         send(message, location);
