@@ -67,12 +67,12 @@ application.log=DEBUG
 
 # Database configuration
 # ~~~~~ 
-db.url=jdbc:mysql://localhost/tm?zeroDateTimeBehavior=convertToNull
+db.url=jdbc:mysql://localhost/tm?useUnicode=yes&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
 db.driver=org.gjt.mm.mysql.Driver
 db.user=root
 db.pass=
 
-prod.db.url=jdbc:mysql://localhost/testManagement?zeroDateTimeBehavior=convertToNull
+prod.db.url=jdbc:mysql://localhost/testManagement?useUnicode=yes&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
 prod.db.driver=org.gjt.mm.mysql.Driver
 prod.db.user=root
 prod.db.pass=
