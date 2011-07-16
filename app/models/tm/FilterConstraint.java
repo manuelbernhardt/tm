@@ -10,19 +10,24 @@ import javax.persistence.UniqueConstraint;
 import play.db.jpa.JPABase;
 
 /**
- * nikola
- * Date: 5/19/11
- * Time: 5:37 PM
+ * @author Nikola
+ * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})}, name = "tm_FilterConstraint")
 public class FilterConstraint extends ProjectModel {
 
     @Column(nullable = false)
+    public String entity;
+
+    @Column(nullable = false)
     public String property;
 
     @Column(nullable = false)
     public String type;
+
+    @Column
+    public String groupId;
 
     @Transient
     public ConstraintType constraintType;

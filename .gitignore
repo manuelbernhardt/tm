@@ -1,9 +1,10 @@
 tmp/
 modules/
 .DS_Store
+*.iws
 application.log
 application.log.*
-tm.iml
 test-result/
 lib/
+logs/
 conf/application.conf
