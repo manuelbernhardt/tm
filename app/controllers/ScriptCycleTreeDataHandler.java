@@ -1,11 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.approach.Release;
@@ -20,6 +14,12 @@ import tree.TreeDataHandler;
 import tree.simple.ChildProducer;
 import tree.simple.SimpleNode;
 import util.Logger;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static models.general.UnitRole.roles;
 
@@ -47,24 +47,17 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
         if (parentId == -1) {
 
-            // releases
-            List<Instance> instances = Instance.find("from Instance i where i.script = ? and i.testCycle is not null", script).fetch();
-            List<TestCycle> cycles = new ArrayList<TestCycle>();
-            for (Instance instance : instances) {
-                cycles.add(instance.testCycle);
-            }
             final Map<Release, List<TestCycle>> releases = new HashMap<Release, List<TestCycle>>();
-            for (TestCycle c : cycles) {
-                Release r = c.getRelease();
-                List<TestCycle> cycleList = releases.get(r);
-                if (cycleList == null) {
-                    cycleList = new ArrayList<TestCycle>();
-                    releases.put(r, cycleList);
-                }
-                if (!cycleList.contains(c)) {
-                    cycleList.add(c);
+
+            // releases and cycles
+            List<Release> releaseList = Release.find("from Release r").fetch();
+            for(Release r : releaseList) {
+                List<TestCycle> testCycles = r.getTestCycles();
+                if(testCycles.size() > 0) {
+                    releases.put(r, testCycles);
                 }
             }
+
             ChildProducer releaseChildProducer = new ReleaseChildProducer(releases, cycleChildProducer);
 
             List<JSTreeNode> result = new ArrayList<JSTreeNode>();
