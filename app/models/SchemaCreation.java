@@ -20,7 +20,6 @@ import org.hibernate.persister.entity.Joinable;
 import play.Play;
 import play.classloading.ApplicationClasses;
 import play.db.DB;
-import play.templates.JavaExtensions;
 
 /**
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
@@ -87,7 +86,7 @@ public class SchemaCreation {
     private List<String> getAllSortsOfStatements() {
         List<String> statements = new ArrayList<String>();
 
-        statements.add(CREATE_ACCOUNT_ID_FUNCTION_SYNTAX);
+        //statements.add(CREATE_ACCOUNT_ID_FUNCTION_SYNTAX);
 
         List<Class<CompositeModel>> models = getCompositeModels();
 
@@ -117,7 +116,7 @@ public class SchemaCreation {
                 t.printStackTrace();
                 throw new RuntimeException(t);
             }
-            statements.add(String.format(CREATE_VIEW, getTableName(c) + "View", JavaExtensions.join(columnNames, ", "), getTableName(c)));
+            //statements.add(String.format(CREATE_VIEW, getTableName(c) + "View", JavaExtensions.join(columnNames, ", "), getTableName(c)));
         }
         return statements;
     }
