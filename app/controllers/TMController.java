@@ -3,6 +3,8 @@ package controllers;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ import notifiers.TMMails;
 import org.hibernate.Session;
 import play.cache.Cache;
 import play.data.validation.Required;
+import play.db.DB;
 import play.db.jpa.JPA;
 import play.libs.MimeTypes;
 import play.mvc.Before;
@@ -95,8 +98,18 @@ public class TMController extends Controller {
     @Util
     public static void setFilters() {
         if (Security.isConnected()) {
-            // account filter
+
+            // set user variable in mysql
             Long accountId = getConnectedUser().account.getId();
+            try {
+                Statement s = DB.getConnection().createStatement();
+                s.executeUpdate("SET @current_account_id=" + accountId);
+            } catch (SQLException e) {
+                Logger.error(Logger.LogType.DB, "DB connection error while setting active user");
+                error("Error connecting to the database");
+            }
+
+            // account filter
             ((Session) JPA.em().getDelegate()).enableFilter("account").setParameter("account_id", accountId);
 
             // active users filter
@@ -433,8 +446,8 @@ public class TMController extends Controller {
         return Pattern.compile("^" + prefix + "\\[([^\\]]+)\\](.*)$");
     }
 
-    public  static void sendFeedbackEmail(String message, String location){
-        if(play.Play.id.equals("demo"))
+    public static void sendFeedbackEmail(String message, String location) {
+        if (play.Play.id.equals("demo"))
             TMMails.feedbackEmail(message, location);
     }
 

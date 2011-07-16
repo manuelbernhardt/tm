@@ -44,7 +44,7 @@ public class Bootstrap extends Job<F.None> {
                 // for development: create triggers && validate model
                 SchemaCreation schemaCreation = new SchemaCreation(((Session) JPA.em().getDelegate()).getSessionFactory());
                 schemaCreation.validateCompositeModels();
-                schemaCreation.createTriggers();
+                schemaCreation.createStuff();
             }
             c.close();
 
