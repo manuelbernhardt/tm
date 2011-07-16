@@ -1,68 +1,99 @@
 <div id="actions" class="actions">
-  <div class="actions buttons">
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
-    <button id="assignToCycle" class="button-add">Instance</button>
-    #{/deadbolt.restrict}
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
-    <button id="removeFromCycle" class="button-delete">Remove</button>
-    #{/deadbolt.restrict}
-  </div>
+    <div class="actions buttons">
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
+        <button id="assignToCycle" class="button-add">Instance</button>
+        #{/deadbolt.restrict}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
+        <button id="removeFromCycle" class="button-delete">Remove</button>
+        #{/deadbolt.restrict}
+    </div>
 </div>
 
 <div class="tree-container">
-  <div class="left_tree">
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
-    #{include 'Preparation/instanceCreateDialog.html' /}
-    #{/deadbolt.restrict}
-    <div id="scriptCycleTree" class="tree"></div>
-  </div>
-  <div class="right_tree inner">
-    #{include 'Preparation/instanceTabs.html' /}
-  </div>
+    <div class="left_tree">
+        <div id="scriptCycleTree" class="tree"></div>
+    </div>
+    <div class="right_tree inner">
+        #{include 'Preparation/instanceTabs.html' /}
+    </div>
 </div>
 
 <script type="text/javascript">
 
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+        $("#repositoryTree").bind("select_node.jstree", function (e, data) {
 
-        // selection listener for the instance tree
-        $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
-        $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
-          if (isSelectedNodeType(data, ["instance", "default"])) {
-            var instanceId = getNodeIdFromData(data);
-            handleTabsPopulation(instanceId);
-          } else {
-            $('.instanceHiddenOnLoad').hide();
-            $('.instanceShownOnLoad').show();
-            $("#removeFromCycle").button('disable');
-          }
+            // selection listener for the instance tree
+            $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+            $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
+                if (isSelectedNodeType(data, ["instance", "default"])) {
+                    var instanceId = getNodeIdFromData(data);
+                    handleTabsPopulation(instanceId);
+                    $("#assignToCycle").button('disable');
+                } else if(isSelectedNodeType(data, ["testCycle"])) {
+                    $("#assignToCycle").button('enable');
+                    $('.instanceHiddenOnLoad').hide();
+                    $('.instanceShownOnLoad').show();
+                    $("#removeFromCycle").button('disable');
+                } else {
+                    $('.instanceHiddenOnLoad').hide();
+                    $('.instanceShownOnLoad').show();
+                    $("#assignToCycle").button('disable');
+                    $("#removeFromCycle").button('disable');
+                }
+            });
+
+            $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
+                $('.instanceHiddenOnLoad').hide();
+                $('.instanceShownOnLoad').show();
+            });
         });
 
-        $("#scriptCycleTree").bind("delete_node.jstree", function (e, data) {
-          $('.instanceHiddenOnLoad').hide();
-          $('.instanceShownOnLoad').show();
+        $("#assignToCycle").button({disabled: true}).click(function() {
+            var $repositoryTree = jQuery.jstree._reference($("#repositoryTree"));
+            var $scriptCycleTree = jQuery.jstree._reference($("#scriptCycleTree"));
+            var selectedScript = $repositoryTree.get_selected();
+            var selectedCycle = $scriptCycleTree.get_selected();
+            var siblings = $scriptCycleTree._get_children(selectedCycle);
+            var name = $repositoryTree.get_text(selectedScript) + " " + (siblings.length + 1);
+            $("#scriptCycleTree").jstree("create", $(selectedCycle), "last", {attr: {"rel": "default"}, data: name, metadata: {args: {cycleNodeId: extractId(selectedCycle.attr('id')), scriptId: extractId(selectedScript.attr('id'))}}}, null, true);
+
         });
 
+        $("#removeFromCycle").click(function () {
+            deletionConfirmation('cycleDeleteConfirmationDialog', 'Instance', getSelectedNodeName('scriptCycleTree'), function() {
+                var $tree = jQuery.jstree._reference('#scriptCycleTree');
+                var selectedNode = $tree.get_selected();
+                if (isSelectedNodeOfType($tree, selectedNode, ['default', 'instance'])) {
+                    selectedNode.data("args", {scriptId: getSelectedNodeId('repositoryTree')});
+                    $tree.delete_node(selectedNode);
+                    refreshCycleTree();
+                }
+            });
+        });
     });
 
-  });
+    function refreshCycleTree() {
+        var cycleTreeContainer = $("#scriptCycleTree");
+        jQuery.jstree._reference(cycleTreeContainer).refresh();
+        jQuery.jstree._reference(cycleTreeContainer).deselect_all();
+    }
 
-  function getSelectedId() {
-    return getSelectedNodeId('scriptCycleTree');
-  }
+    function getSelectedId() {
+        return getSelectedNodeId('scriptCycleTree');
+    }
 
-  function getInstanceQuery() {
-    return {'instanceId': getSelectedNodeId('scriptCycleTree')};
-  }
+    function getInstanceQuery() {
+        return {'instanceId': getSelectedNodeId('scriptCycleTree')};
+    }
 
-  function getScriptQuery() {
-    return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
-  }
+    function getScriptQuery() {
+        return {'scriptId': getSelectedNodeId('repositoryTree') ? getSelectedNodeId('repositoryTree') : -1}
+    }
 
-  function loadInnerData() {
-    jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
-  }
+    function loadInnerData() {
+        jQuery.jstree._reference("#scriptCycleTree").load_node_json(-1, false, false);
+    }
 
 </script>

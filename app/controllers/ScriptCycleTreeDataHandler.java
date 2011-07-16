@@ -95,7 +95,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
     public F.Tuple<Long, String> create(Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
 
-        if (type.equals(ScriptCycleTreeDataHandler.TEST_CYCLE)) {
+        if (type.equals(ScriptCycleTreeDataHandler.INSTANCE)) {
             String cycleNodeId = args.get("cycleNodeId");
             String scriptId = args.get("scriptId");
             if (cycleNodeId == null || scriptId == null) {
