@@ -335,4 +335,14 @@ table.display tr.even:hover{
 }
 
 
+/* feedback bar style*/
+.slide-out-div {
+    padding: 20px;
+    width: 350px;
+    background: #e8e8e8;
+    border: 1px solid #29216d;
+    z-index:10000;
+}
+
+
 

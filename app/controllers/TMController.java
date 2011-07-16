@@ -39,6 +39,7 @@ import models.tm.test.Instance;
 import models.tm.test.Run;
 import models.tm.test.Script;
 import models.tm.test.Tag;
+import notifiers.TMMails;
 import org.hibernate.Session;
 import play.cache.Cache;
 import play.data.validation.Required;
@@ -430,6 +431,11 @@ public class TMController extends Controller {
     @Util
     public static Pattern tagParameterPattern(String prefix) {
         return Pattern.compile("^" + prefix + "\\[([^\\]]+)\\](.*)$");
+    }
+
+    public  static void sendFeedbackEmail(String message, String location){
+        if(play.Play.id.equals("demo"))
+            TMMails.feedbackEmail(message, location);
     }
 
     /////////////////////////////////////////////////////////////
