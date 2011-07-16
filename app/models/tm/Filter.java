@@ -31,7 +31,8 @@ public class Filter extends ProjectModel{
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
     public TMUser owner;
 
-    @Column(nullable = false)
+    /** for per-entity filters, may be nullable in case of multi-entity filters **/
+    @Column(nullable = true)
     public String entity;
 
     public Filter(Project project) {

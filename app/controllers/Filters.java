@@ -52,6 +52,7 @@ public class Filters extends TMController {
                 String property = m.group(1);
                 String type = m.group(2).replace("[", "").replace("]", "");
                 String value = params.get(fp);
+                filterConstraint.entity = entity;
                 filterConstraint.property = property;
                 filterConstraint.constraintType = ConstraintType.fromKey(type);
                 if (filterConstraint.constraintType == ConstraintType.STRINGMATCH) {
@@ -102,7 +103,6 @@ public class Filters extends TMController {
         for (FilterConstraint fc : filter.filterConstraints) {
             if(fc.property.equals("tags")){
 
-                System.out.println(" fc.value: " + fc.value);
                 List<Tag> tags = JPA.em().createQuery("select t from Tag t where t.name in (:tagNames) and project.id= :projectId and account.id= :accountId")
                         .setParameter("tagNames", Arrays.asList(fc.value.split(",")))
                         .setParameter("projectId", getActiveProjectId())
@@ -112,7 +112,6 @@ public class Filters extends TMController {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("id", tag.id);
                     jsonObject.addProperty("name", tag.name);
-                    System.out.println("tag name: "+ tag.name);
                     jsonObject.addProperty("value", tag.name);
                     jsonObject.addProperty("label", tag.name);
                     jsonArray.add(jsonObject);
