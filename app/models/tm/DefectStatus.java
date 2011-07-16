@@ -9,7 +9,7 @@ import javax.persistence.UniqueConstraint;
  * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})}, name = "tm_DefectStatus")
 public class DefectStatus extends ProjectModel {
 
     public Integer position;

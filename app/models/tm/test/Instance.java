@@ -23,8 +23,8 @@ import play.templates.JavaExtensions;
  * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})})
-public class Instance extends ProjectModel implements TagHolder {
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})}, name = "tm_test_Instance")
+public class Instance extends ProjectModel implements TagHolder{
 
     public Instance(Project project) {
         super(project);

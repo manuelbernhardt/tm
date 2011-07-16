@@ -14,7 +14,7 @@ import play.data.validation.MaxSize;
  * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})}, name = "tm_DefectComment")
 public class DefectComment extends ProjectModel {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)

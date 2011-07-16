@@ -14,7 +14,7 @@ import play.db.jpa.JPABase;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})}, name = "tm_FilterConstraint")
 public class FilterConstraint extends ProjectModel {
 
     @Column(nullable = false)
