@@ -21,7 +21,7 @@ import play.data.validation.Required;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "account_id"})}, name = "tm_Project")
 @BatchSize(size = 10)
 @Filter(name = "projectId")
 public class Project extends AccountModel {

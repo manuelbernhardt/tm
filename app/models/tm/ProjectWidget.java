@@ -20,7 +20,7 @@ import play.db.jpa.JPABase;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})}, name = "tm_ProjectWidget")
 public class ProjectWidget extends ProjectModel {
 
     public String title;

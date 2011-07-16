@@ -3,6 +3,7 @@ package models.account;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import models.general.Address;
 import models.general.TemporalModel;
@@ -12,6 +13,7 @@ import play.data.validation.Email;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
+@Table(name="account_Account")
 public class Account extends TemporalModel {
 
     @Column(nullable = false)

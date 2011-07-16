@@ -17,7 +17,7 @@ import play.data.validation.Required;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})}, name = "tm_ProjectRole")
 @BatchSize(size = 10)
 public class ProjectRole extends ProjectModel {
 

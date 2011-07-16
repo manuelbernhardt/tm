@@ -3,15 +3,7 @@ package models.tm;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OrderColumn;
-import javax.persistence.Query;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import controllers.Lookups;
 import controllers.TMController;
@@ -33,6 +25,7 @@ import play.db.jpa.JPA;
  */
 @Entity
 @Filters({@Filter(name = "account"), @Filter(name = "activeTMUser"), @Filter(name = "activeProjectUsers")})
+@Table(name = "tm_TMUser")
 public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
