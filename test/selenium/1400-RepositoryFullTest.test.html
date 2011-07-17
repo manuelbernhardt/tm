@@ -24,10 +24,10 @@
         click('create_script')
         type('css=input.jstree-rename-input','newer script')
         fireEvent('css=input.jstree-rename-input','blur')
-        waitForElementPresent('//li[@id='node_script_5']/a')
+        waitForElementPresent('//li[@id='node_script_4']/a')
 
         // click on newly created node and check if details present
-        click('//li[@id='node_script_5']/a')
+        click('//li[@id='node_script_4']/a')
         waitForValue('scriptDetailsForm_script_name','newer script')
         type('scriptDetailsForm_script_description','desc of newer script')
         click('scriptDetailsForm_submit')
