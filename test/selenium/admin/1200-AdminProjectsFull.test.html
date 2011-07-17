@@ -40,12 +40,12 @@
     click('create_project')
     type('//li[@id='node_category_3']/ul/li/input','Test project')
     fireEvent('//li[@id='node_category_3']/ul/li/input','blur')
-    waitForElementPresent('//li[@id='node_default_5']')
+    waitForElementPresent('//li[@id='node_default_4']')
     // Verify new project available in tree at expected location
-    verifyText('//li[@id='node_default_5']','Test project')
+    verifyText('//li[@id='node_default_4']','Test project')
 
      Check content of project details edit form
-    click('//li[@id='node_default_5']/a')
+    click('//li[@id='node_default_4']/a')
     verifyElementPresent('projectForm_project_name')
     waitForElementPresent('projectForm_project_description')
     verifyElementPresent('projectForm_submit')
