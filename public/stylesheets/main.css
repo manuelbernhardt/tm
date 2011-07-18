@@ -341,6 +341,7 @@ table.display tr.even:hover{
     width: 350px;
     background: #e8e8e8;
     border: 1px solid #29216d;
+    height:260px;
     z-index:10000;
 }
 

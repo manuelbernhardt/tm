@@ -10,10 +10,10 @@ import java.util.*;
 
 public class TMMails extends Mailer{
 
-    public static void feedbackEmail(String message, String location){
+    public static void feedbackEmail(String name, String message, String location, String headers){
         setSubject("[Oxiras][Feedback] Page: %s", location);
         addRecipient("feedback@oxiras.com");
         setFrom("info@oxiras.com");
-        send(message, location);
+        send(name, message, location, headers);
     }
 }

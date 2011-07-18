@@ -1,31 +1,14 @@
 <div id="feedbackContainer" class="slide-out-div">
+    <div id="thanksNote" style="display:none">
+        <h2>Thank you for the feedback!</h2>
+    </div>
     <a class="handle" href="">Feedback</a>
-    <textarea id="messageFeedback" rows="10" cols="40"></textarea><br/><br/>
-    <button id="sendFeedback">Send</button>
+    <div id="feedbackElementsWrapper">
+        Your name: <br/>
+        <input id="personName"/><br/><br/>
+        Feedback:<br/>
+        <textarea id="messageFeedback" rows="10" cols="40"></textarea><br/><br/>
+        <button id="sendFeedback">Send</button>
+        <button id="cancelFeedback">Cancel</button>
+    </div>
 </div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-        <!--feedback bar initialization -->
-    $('.slide-out-div').tabSlideOut({
-        tabHandle: '.handle',                              //class of the element that will be your tab
-        pathToTabImage: '/public/images/feedback.png',          //path to the image for the tab *required*
-        imageHeight: '40px',                               //height of tab image *required*
-        imageWidth: '122px',                               //width of tab image *required*
-        tabLocation: 'bottom',                               //side of screen where tab lives, top, right, bottom, or left
-        speed: 300,                                        //speed of animation
-        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
-        topPos: '0px',                                   //position from the top
-        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
-    });
-      <!-- address of page that is feedbacked -->
-
-    $('#sendFeedback').button().click(function(){
-        $.post("@{TMController.sendFeedbackEmail()}", {message:$('#messageFeedback').val(), location: window.location.pathname}, function(){
-            $('#feedbackContainer').html("<p><bold>Thank you for the feedback!</bold></p>");
-            $('#feedbackContainer').delay(1000);
-            $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
-        }).error(errorHandler);
-    })
-})
-</script>

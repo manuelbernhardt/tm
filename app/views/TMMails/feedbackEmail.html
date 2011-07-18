@@ -1,11 +1,18 @@
 <html>
 <body>
 
-    #this is automatic notification from oxiras TM
+#this is an automatic notification from oxiras TM
 
-    Following feedback has been provided for page ${location}:
+Following feedback has been provided for page ${location}:
 
-    ${message}
+${message}
+
+#{if name}
+Feedback provided by ${name}
+#{/if}
+
+Client info:
+${headers}
 
 </body>
 </html>

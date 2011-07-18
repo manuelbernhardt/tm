@@ -1,10 +1,12 @@
 #{extends 'header.html' /}
-        
+
+<div id="screen" style="display:none;">
+    
 #{if play.Play.id.equals("demo")}
     #{feedbackBar /}
 #{/if}
 
-<div id="screen" style="display:none;">
+
   #{topMenu space:'application' /}
 
   #{tabLayout id:'main-wrapper'}
@@ -39,5 +41,34 @@
     $('#screen').show();
     $('.searchInput').watermark('Search');
     applyButtonStyles();
+       <!--feedback bar initialization -->
+    $('.slide-out-div').tabSlideOut({
+        tabHandle: '.handle',                              //class of the element that will be your tab
+        pathToTabImage: '/public/images/feedback.png',          //path to the image for the tab *required*
+        imageHeight: '40px',                               //height of tab image *required*
+        imageWidth: '122px',                               //width of tab image *required*
+        tabLocation: 'bottom',                               //side of screen where tab lives, top, right, bottom, or left
+        speed: 300,                                        //speed of animation
+        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
+        topPos: '0px',                                   //position from the top
+        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
+    });
+      <!-- address of page that is feedbacked -->
+
+    $('#sendFeedback').button().click(function(){
+
+        $.post("@{TMController.sendFeedbackEmail()}", {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname}, function(){
+            $('#thanksNote').show().delay(1700).slideUp();
+            $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
+            $('#feedbackContainer').animate({bottom: '-'  + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
+            $('#messageFeedback').val('');
+        }).error(errorHandler);
+//        $('#feedbackElementsWrapper').html("<textarea id='messageFeedback' rows='10' cols='40'></textarea><br/><br/><button id='sendFeedback'>Send</button><button id='cancelFeedback'>Cancel</button>");
+    })
+
+    $('#cancelFeedback').button().click(function(){
+            $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
+            $('#messageFeedback').val('');
+    })
   });
 </script>

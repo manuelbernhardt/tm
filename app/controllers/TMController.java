@@ -446,9 +446,9 @@ public class TMController extends Controller {
         return Pattern.compile("^" + prefix + "\\[([^\\]]+)\\](.*)$");
     }
 
-    public static void sendFeedbackEmail(String message, String location) {
+    public static void sendFeedbackEmail(String name, String message, String location) {
         if (play.Play.id.equals("demo"))
-            TMMails.feedbackEmail(message, location);
+            TMMails.feedbackEmail(name, message, location, request.headers.toString());
     }
 
     /////////////////////////////////////////////////////////////
