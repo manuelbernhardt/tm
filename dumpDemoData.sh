@@ -16,13 +16,13 @@ mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_Defect_tm_test_Tag --whe
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_Filter_tm_FilterConstraint --where="Filter_id in (select id from Filter where account_id = $ACCOUNT_ID)" > filter_filterConstraint.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_test_Instance_tm_Defect --where="Instance_id in (select id from Instance where account_id = $ACCOUNT_ID)" > instance_defect.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_test_Instance_tm_test_Tag --where="Instance_id in (select id from Instance where account_id = $ACCOUNT_ID)" > instance_tag.sql
-mysqldump -u root --lock-all-tables tm $GENERAL_OPTS ProjectRole_unitRoles --where="ProjectRole_id in (select id from ProjectRole where account_id = $ACCOUNT_ID)" > projectrole_unitRoles.sql
-mysqldump -u root --lock-all-tables tm $GENERAL_OPTS ProjectWidget_parameters --where="ProjectWidget_id in (select id from ProjectWidget where account_id = $ACCOUNT_ID)" > projectwidget_parameters.sql
+mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_ProjectRole_unitRoles --where="ProjectRole_id in (select id from ProjectRole where account_id = $ACCOUNT_ID)" > projectrole_unitRoles.sql
+mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_ProjectWidget_parameters --where="ProjectWidget_id in (select id from ProjectWidget where account_id = $ACCOUNT_ID)" > projectwidget_parameters.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_Requirement_tm_test_Script --where="Requirement_id in (select id from Requirement where account_id = $ACCOUNT_ID)" > requirement_script.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_Requirement_tm_test_Tag --where="Requirement_id in (select id from Requirement where account_id = $ACCOUNT_ID)" > requirement_tag.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_test_Script_tm_test_Tag --where="Script_id in (select id from Script where account_id = $ACCOUNT_ID)" > script_tag.sql
 mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_TMUser_tm_ProjectRole --where="TMUser_id in (select id from TMUser where account_id = $ACCOUNT_ID)" > tmuser_projectRole.sql
-mysqldump -u root --lock-all-tables tm $GENERAL_OPTS TMUser_accountRoles --where="TMUser_id in (select id from TMUser where account_id = $ACCOUNT_ID)" > tmuser_accountRoles.sql
+mysqldump -u root --lock-all-tables tm $GENERAL_OPTS tm_TMUser_accountRoles --where="TMUser_id in (select id from TMUser where account_id = $ACCOUNT_ID)" > tmuser_accountRoles.sql
 
 rm conf/initial-data-demo.sql
 cat products.sql account.sql general.sql accountEntities.sql defect_tag.sql filter_filterConstraint.sql instance_defect.sql instance_tag.sql projectrole_unitRoles.sql projectwidget_parameters.sql requirement_script.sql requirement_tag.sql script_tag.sql tmuser_projectRole.sql tmuser_accountRoles.sql > conf/initial-data-demo.sql
