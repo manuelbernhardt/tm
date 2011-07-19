@@ -38,84 +38,84 @@ public class TestDataLoader {
         Fixtures.deleteDatabase();
 
         if (play.Play.id.equals("demo")) {
-        VirtualFile sqlFile = null;
-        for (VirtualFile vf : Play.javaPath) {
-            sqlFile = vf.child(INITIAL_DATA_DEMO_SQL);
-            if (sqlFile != null && sqlFile.exists()) {
-                break;
-            }
-        }
-        Fixtures.executeSQL(sqlFile.getRealFile());
-        } else if (play.Play.id.equals("test")) {
-        YamlModelLoader.loadModels(INITIAL_DATA_YML, new YamlModelLoader.Callback<Model>() {
-                    public Model invoke(Model result) {
-                        if (result instanceof Defect) {
-                            // fetch the new defect status of the current project
-                            Defect defect = (Defect) result;
-                            DefectStatus status = (DefectStatus) templateDataCache.get(DefectStatus.class.getName()).get(defect.project);
-                            status = JPA.em().merge(status);
-                            defect.status = status;
-                            return defect;
-                        }
-                        return result;
-                    }
-                }, new YamlModelLoader.Callback<Model>() {
-                    public Model invoke(Model result) {
-                        // we have a project, load project template data
-                        if (result instanceof Project) {
-                            final Project project = (Project) result;
-                            YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
-                                        public Model invoke(Model result) {
-                                            ProjectModel projectModel = (ProjectModel) result;
-                                            projectModel.project = project;
-                                            projectModel.account = project.account;
-                                            return projectModel;
-                                        }
-                                    }, new YamlModelLoader.Callback<Model>() {
-                                public Model invoke(Model result) {
-                                    // put template DefectStatus entities in the cache so we can use them later on
-                                    if (result instanceof DefectStatus) {
-                                        addCacheEntry(result.getClass().getName(), ((ProjectModel) result).project, result, templateDataCache);
-                                    }
-                                    return result;
-                                }
-                            }
-                            );
-
-                            return project;
-                        }
-                        return result;
-                    }
-
-                },
-                new YamlModelLoader.CustomLoadBinder() {
-                    public String getPropertyName() {
-                        return "nodeId";
-                    }
-
-                    public Class<?> getEntityType() {
-                        return ProjectTreeNode.class;
-                    }
-
-                    public Object bindValue(String[] value, Map<String, String[]> params, Map<String, Object> idCache) {
-                        if (value[0] == null) return null;
-                        if (value[0] instanceof String) {
-                            // is this really a string?
-                            try {
-                                Long.parseLong(value[0]);
-                            } catch (Throwable t) {
-                                String type = params.get("object.type")[0];
-                                String key = TMTree.getNodeType(type).getNodeClass().getName() + "-" + value[0];
-                                if (!idCache.containsKey(key)) {
-                                    throw new RuntimeException("No previous reference found for object of type " + getPropertyName() + " with key " + key);
-                                }
-                                return idCache.get(key);
-                            }
-                        }
-                        return Long.parseLong(value[0]);
-                    }
+            VirtualFile sqlFile = null;
+            for (VirtualFile vf : Play.javaPath) {
+                sqlFile = vf.child(INITIAL_DATA_DEMO_SQL);
+                if (sqlFile != null && sqlFile.exists()) {
+                    break;
                 }
-        );
+            }
+            Fixtures.executeSQL(sqlFile.getRealFile());
+        } else {
+            YamlModelLoader.loadModels(INITIAL_DATA_YML, new YamlModelLoader.Callback<Model>() {
+                        public Model invoke(Model result) {
+                            if (result instanceof Defect) {
+                                // fetch the new defect status of the current project
+                                Defect defect = (Defect) result;
+                                DefectStatus status = (DefectStatus) templateDataCache.get(DefectStatus.class.getName()).get(defect.project);
+                                status = JPA.em().merge(status);
+                                defect.status = status;
+                                return defect;
+                            }
+                            return result;
+                        }
+                    }, new YamlModelLoader.Callback<Model>() {
+                        public Model invoke(Model result) {
+                            // we have a project, load project template data
+                            if (result instanceof Project) {
+                                final Project project = (Project) result;
+                                YamlModelLoader.loadModels("project-data.yml", new YamlModelLoader.Callback<Model>() {
+                                            public Model invoke(Model result) {
+                                                ProjectModel projectModel = (ProjectModel) result;
+                                                projectModel.project = project;
+                                                projectModel.account = project.account;
+                                                return projectModel;
+                                            }
+                                        }, new YamlModelLoader.Callback<Model>() {
+                                    public Model invoke(Model result) {
+                                        // put template DefectStatus entities in the cache so we can use them later on
+                                        if (result instanceof DefectStatus) {
+                                            addCacheEntry(result.getClass().getName(), ((ProjectModel) result).project, result, templateDataCache);
+                                        }
+                                        return result;
+                                    }
+                                }
+                                );
+
+                                return project;
+                            }
+                            return result;
+                        }
+
+                    },
+                    new YamlModelLoader.CustomLoadBinder() {
+                        public String getPropertyName() {
+                            return "nodeId";
+                        }
+
+                        public Class<?> getEntityType() {
+                            return ProjectTreeNode.class;
+                        }
+
+                        public Object bindValue(String[] value, Map<String, String[]> params, Map<String, Object> idCache) {
+                            if (value[0] == null) return null;
+                            if (value[0] instanceof String) {
+                                // is this really a string?
+                                try {
+                                    Long.parseLong(value[0]);
+                                } catch (Throwable t) {
+                                    String type = params.get("object.type")[0];
+                                    String key = TMTree.getNodeType(type).getNodeClass().getName() + "-" + value[0];
+                                    if (!idCache.containsKey(key)) {
+                                        throw new RuntimeException("No previous reference found for object of type " + getPropertyName() + " with key " + key);
+                                    }
+                                    return idCache.get(key);
+                                }
+                            }
+                            return Long.parseLong(value[0]);
+                        }
+                    }
+            );
         }
 
         Play.pluginCollection.afterFixtureLoad();
