@@ -39,8 +39,8 @@
         // delete instance just created and check if it is deleted
         waitForText('//table[@id='instanceTable']/tbody/tr/td[3]','Create new project')
         click('//table[@id='instanceTable']/tbody/tr/td[3]')
-        waitForElementPresent('//table[@id='runTable']/tbody/tr/td[3]')
-        click('//table[@id='runTable']/tbody/tr/td[3]')
+        waitForText('//div[4]/table/tbody/tr/td[3]', 'Gwenael Alizon')
+        click('//div[4]/table/tbody/tr/td[3]')
         waitForElementPresent('css=#updateRunButton > span.ui-button-text')
         waitForElementPresent('css=#deleteRunButton > span.ui-button-text')
         click('css=#deleteRunButton > span.ui-button-text')
