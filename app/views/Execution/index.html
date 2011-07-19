@@ -1,378 +1,358 @@
 #{extends 'main.html' /}
 #{set title:'Test execution' /}
-   
+
 <div id="filterContainer">
-  #{box 'Filters'}
-  #{include 'Execution/filter.html'/}
-  #{/box}
-<br/>
+    #{box 'Filters'}
+    #{include 'Execution/filter.html'/}
+    #{/box}
+    <br/>
 </div>
 
 <!--<div class="container ui-widget-content">-->
 <div class="tree-container">
 
     <div class="left_table">
-      #{box 'Test Instances'}
+        #{box 'Test Instances'}
         #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECCREATE]]}
-            <div id="createRunButton" class="button-play">Run Test Instance</div>
+        <div id="createRunButton" class="button-play">Run Test Instance</div>
         #{/deadbolt.restrict}
         <table class="display" id="instanceTable">
-          <thead>
-          <tr>
-            <th>Tags</th>
-            <th>Test instance</th>
-            <th>Status</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
+            <thead>
+            <tr>
+                <th>Tags</th>
+                <th>Test instance</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-      #{/box}
-  </div>
-
-    <div class="right_table">
-    <div id="shownOnLoad">
-        #{box 'Runs for test instance'}
-            No test instance selected
         #{/box}
     </div>
-    <div id="content" style="display:none">
 
-      #{box 'Runs for test instance'}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
-        <div id="updateRunButton" class="button-edit">Edit Test Run</div>
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECDELETE]]}
-      <div id="deleteRunButton" class="button-delete">Delete Test Run</div>
-      #{/deadbolt.restrict}
+    <div class="right_table">
+        <div id="shownOnLoad">
+            #{box 'Runs for test instance'}
+            No test instance selected
+            #{/box}
+        </div>
+        <div id="content" style="display:none">
 
-      <div id="createRunDialog" title="Run Test Instance"></div>
-      <div id="updateRunDialog" title="Update Test Run"></div>
-      <div id="deleteRunDialog" title="Delete Test Run"></div>
-      <div id="createDefectDialog" title="Create a defect ?">
-          This test run failed, do you want to create a defect ?
-      </div>
+            #{box 'Runs for test instance'}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECEDIT]]}
+            <div id="updateRunButton" class="button-edit">Edit Test Run</div>
+            #{/deadbolt.restrict}
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECDELETE]]}
+            <div id="deleteRunButton" class="button-delete">Delete Test Run</div>
+            #{/deadbolt.restrict}
 
-      <table class="display" id="runTable">
-        <thead>
-        <tr>
-          <th>Execution date</th>
-          <th>Tester</th>
-          <th>Status</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+            <div id="createRunDialog" class="form-dialog" title="Run Test Instance"></div>
+            <div id="updateRunDialog" class="form-dialog" title="Update Test Run"></div>
+            <div id="deleteRunDialog" class="form-dialog" title="Delete Test Run"></div>
+            <div id="createDefectDialog" class="confirm-dialog" title="Create a defect ?">
+                This test run failed, do you want to create a defect ?
+            </div>
 
-      <div id="runContent">
-        <table class="display" id="runStepTable">
-          <thead>
-          <tr>
-            <th>Nr</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Expected results</th>
-            <th>Actual results</th>
-            <th>Status</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      #{/box}
+            <table class="display" id="runTable">
+                <thead>
+                <tr>
+                    <th>Execution date</th>
+                    <th>Tester</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
+            <div id="runContent">
+                <table class="display" id="runStepTable">
+                    <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Expected results</th>
+                        <th>Actual results</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            #{/box}
+
+        </div>
     </div>
-  </div>
 </div>
 <!--</div>-->
 
 
 <script type="text/javascript">
-  $(document).ready(function() {
+$(document).ready(function() {
 
     var fullDrawInstanceTable = true;
     var fullDrawRunTable = true;
 
     #{tabularasa.init tableId:'instanceTable'}
     var instanceTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "tagNames"},
-        {"sName": "name"},
-        {"sName": "executionStatus"}
-      ],
-      "sAjaxSource": "@{Execution.instances()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No test instances found"
-      },
-      "fnDrawCallback": function(data) {
-        refreshTableContents('#runTable', fullDrawInstanceTable);
-        fullDrawInstanceTable = true;
-        $('#updateRunButton').button('disable');
-        $('#deleteRunButton').button('disable');
-          handlePagination('#instanceTable', data);
-      }
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "tagNames"},
+            {"sName": "name"},
+            {"sName": "executionStatus"}
+        ],
+        "sAjaxSource": "@{Execution.instances()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bAutoWidth": false,
+        "bInfo": false,
+        "oLanguage": {
+            "sZeroRecords": "No test instances found"
+        },
+        "fnDrawCallback": function(data) {
+            refreshTableContents('#runTable', fullDrawInstanceTable);
+            fullDrawInstanceTable = true;
+            $('#updateRunButton').button('disable');
+            $('#deleteRunButton').button('disable');
+            handlePagination('#instanceTable', data);
+        }
     };
     #{/tabularasa.init}
 
     #{tabularasa.init tableId:'runTable'}
     var runTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "executionDate", "fnRender": function ( oObj ) { return $.format.date(oObj.aData[1], "${play.Play.configuration.getProperty('datetime.format')}"); }},
-        {"sName": "tester.fullName"},
-        {"sName": "executionStatus"}
-      ],
-      "aoSorting": [
-        [0, "desc"]
-      ],
-      "sAjaxSource": "@{Execution.runs()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No runs performed yet"
-      },
-      "fnDrawCallback": function(data) {
-        refreshTableContents('#runStepTable', fullDrawRunTable);
-        fullDrawRunTable = true;
-        handlePagination('#runTable', data);
-      }
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "executionDate", "fnRender": function (oObj) {
+                return $.format.date(oObj.aData[1], "${play.Play.configuration.getProperty('datetime.format')}");
+            }},
+            {"sName": "tester.fullName"},
+            {"sName": "executionStatus"}
+        ],
+        "aoSorting": [
+            [0, "desc"]
+        ],
+        "sAjaxSource": "@{Execution.runs()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bAutoWidth": false,
+        "bInfo": false,
+        "oLanguage": {
+            "sZeroRecords": "No runs performed yet"
+        },
+        "fnDrawCallback": function(data) {
+            refreshTableContents('#runStepTable', fullDrawRunTable);
+            fullDrawRunTable = true;
+            handlePagination('#runTable', data);
+        }
     };
     #{/tabularasa.init}
 
     #{tabularasa.init tableId:'runStepTable'}
     var runStepTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "position"},
-        {"sName": "name"},
-        {"sName": "descriptionHTML"},
-        {"sName": "expectedResultHTML"},
-        {"sName": "actualResult"},
-        {"sName": "executionStatus"}
-      ],
-      "sAjaxSource": "@{Execution.runSteps()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "bAutoWidth": false,
-      "oLanguage": {
-        "sZeroRecords": "No run steps defined"
-      },
-      "fnDrawCallback": function(data){
+        "aoColumns": [
+            {"sName": "id", "sClass": "sNone" },
+            {"sName": "position"},
+            {"sName": "name"},
+            {"sName": "descriptionHTML"},
+            {"sName": "expectedResultHTML"},
+            {"sName": "actualResult"},
+            {"sName": "executionStatus"}
+        ],
+        "sAjaxSource": "@{Execution.runSteps()}",
+        "bProcessing": false,
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "iDisplayLength": 10,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "oLanguage": {
+            "sZeroRecords": "No run steps defined"
+        },
+        "fnDrawCallback": function(data) {
 
-          handlePagination('#runStepTable', data);
-      }
+            handlePagination('#runStepTable', data);
+        }
     };
     #{/tabularasa.init}
 
     function addRequestParameters(parameters, tableId) {
-      if (tableId == 'instanceTable') {
-        parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
-        parameters.push({"name": "status", "value": $('#status option:selected').val() });
-        parameters.push({"name": "tags", "value": $('#tags').val() });
-        parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
-        parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
-        parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
-      }
-      if (tableId == 'runTable') {
-        parameters.push({"name": "instanceId", "value": getSelectedRowId('#instanceTable')});
-      }
-      if (tableId == 'runStepTable') {
-        parameters.push({"name": "runId", "value": getSelectedRowId('#runTable')});
-      }
+        if (tableId == 'instanceTable') {
+            parameters.push({"name": "cycle", "value": $('#cycle option:selected').val() });
+            parameters.push({"name": "status", "value": $('#status option:selected').val() });
+            parameters.push({"name": "tags", "value": $('#tags').val() });
+            parameters.push({"name": "responsible", "value": $('#responsible option:selected').val() });
+            parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
+            parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+        }
+        if (tableId == 'runTable') {
+            parameters.push({"name": "instanceId", "value": getSelectedRowId('#instanceTable')});
+        }
+        if (tableId == 'runStepTable') {
+            parameters.push({"name": "runId", "value": getSelectedRowId('#runTable')});
+        }
     }
 
     handleRowSelection('#instanceTable', function(selectedRowId) {
-      $('#createRunButton').button('enable');
-      fullDrawRunTable = true;
-      $('#shownOnLoad').hide();
-      $('#content').show();
-      refreshTableContents('#runTable', true);
-      $('#updateRunButton').button('disable');
-      $('#deleteRunButton').button('disable');
+        $('#createRunButton').button('enable');
+        fullDrawRunTable = true;
+        $('#shownOnLoad').hide();
+        $('#content').show();
+        refreshTableContents('#runTable', true);
+        $('#updateRunButton').button('disable');
+        $('#deleteRunButton').button('disable');
     });
 
     handleRowSelection('#runTable', function(selectedRowId) {
-      if(selectedRowId!=''){
-        $('#updateRunButton').button('enable');
-        $('#deleteRunButton').button('enable');
-      }
-      refreshTableContents('#runStepTable', true);
+        if (selectedRowId != '') {
+            $('#updateRunButton').button('enable');
+            $('#deleteRunButton').button('enable');
+        }
+        refreshTableContents('#runStepTable', true);
     });
 
     $('#createRunButton').click(function() {
-        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function(){
+        $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function() {
             $('#createRunDialog').dialog('open');
         });
-    });
-
-    $('#createRunDialog').dialog({
-      autoOpen: false,
-      width: 800,
-      height: 'auto',
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Save": {
-            click: function() {
-                      $('#runForm').ajaxSubmit({
-                         success: function(data) {
-                           fullDrawInstanceTable = false;
-                           refreshTableContents('#instanceTable', false);
-                           $('#createRunDialog').dialog("close");
-                           if(data!=null && data!=''){
-                             createdRunId = data;
-                             $('#createDefectDialog').dialog("open");
-                           }
-                          },
-                         error: function(xhr, textStatus, errorThrown) {
-                           errorHandler(xhr, textStatus, errorThrown);
-                           $('#createRunDialog').dialog("close");
-                         }
-                       });
-                    },
-            id: "createRunDialogConfirmButton",
-            text: "Save"
-        },
-        "Cancel": {
-            click: function() {
-                $(this).dialog("close");
+        $('#createRunDialog').dialog("option", "buttons", {
+            "Save": {
+                click: function() {
+                    $('#runForm').ajaxSubmit({
+                        success: function(data) {
+                            fullDrawInstanceTable = false;
+                            refreshTableContents('#instanceTable', false);
+                            $('#createRunDialog').dialog("close");
+                            if (data != null && data != '') {
+                                createdRunId = data;
+                                $('#createDefectDialog').dialog("open");
+                                addButtonsToCreateDefectDialog();
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            errorHandler(xhr, textStatus, errorThrown);
+                            $('#createRunDialog').dialog("close");
+                        }
+                    });
+                },
+                id: "createRunDialogConfirmButton",
+                text: "Save"
             },
-            id: "createRunDialogCancelButton",
-            text: "Cancel"
-        }
-      }
-    });
-
-    $('#updateRunButton').click(function() {
-        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function(){
-            $('#updateRunDialog').dialog('open')
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "createRunDialogCancelButton",
+                text: "Cancel"
+            }
         });
     });
 
-    $('#updateRunDialog').dialog({
-      autoOpen: false,
-      width: 800,
-      height: 'auto',
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Save": {
-            click: function() {
-                $('#updateForm').ajaxSubmit({
-                    success: function(data) {
-                        fullDrawInstanceTable = false;
-                        refreshTableContents('#instanceTable', false);
-                        $('#updateRunDialog').dialog("close");
-                        if(data != null && data!= '') {
-                            createdRunId = data;
-                            $('#createDefectDialog').dialog("open");
+
+    $('#updateRunButton').click(function() {
+        $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function() {
+            $('#updateRunDialog').dialog('open')
+        });
+        $('#updateRunDialog').dialog("option", "buttons", {
+            "Save": {
+                click: function() {
+                    $('#updateForm').ajaxSubmit({
+                        success: function(data) {
+                            fullDrawInstanceTable = false;
+                            refreshTableContents('#instanceTable', false);
+                            $('#updateRunDialog').dialog("close");
+                            if (data != null && data != '') {
+                                createdRunId = data;
+                                $('#createDefectDialog').dialog("open");
+                                addButtonsToCreateDefectDialog();
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            errorHandler(xhr, textStatus, errorThrown);
+                            $('#updateRunDialog').dialog("close");
                         }
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        errorHandler(xhr, textStatus, errorThrown);
-                        $('#updateRunDialog').dialog("close");
-                    }
-                });
+                    });
+                },
+                id: "updateRunDialogConfirmButton",
+                text: "Save"
             },
-            id: "updateRunDialogConfirmButton",
-            text: "Save"
-        },
-        "Cancel": {
-            click: function() {
-                $(this).dialog("close");
-            },
-            id: "updateRunDialogCancelButton",
-            text: "Cancel"
-        }
-      }
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "updateRunDialogCancelButton",
+                text: "Cancel"
+            }
+        });
     });
 
     $('#deleteRunButton').click(function() {
-        deletionConfirmation('deleteRunDialog','Test run for', getSelectedRowColumn($('#instanceTable').dataTable(), 2), function(){
-             $.post('@{Execution.deleteRun()}', {runId: getSelectedRowId('#runTable')}).success(
-                function(data) {
-                    refreshTableContents('#instanceTable', false);
-                }).error(errorHandler);
+        deletionConfirmation('deleteRunDialog', 'Test run for', getSelectedRowColumn($('#instanceTable').dataTable(), 2), function() {
+            $.post('@{Execution.deleteRun()}', {runId: getSelectedRowId('#runTable')}).success(
+                    function(data) {
+                        refreshTableContents('#instanceTable', false);
+                    }).error(errorHandler);
         })
     });
 
+    function addButtonsToCreateDefectDialog() {
+        $('#createDefectDialog').dialog("option", "buttons", {
+            "Yes": {
+                click: function() {
+                    $(this).dialog("close");
+                    window.location = "/defects/create/" + createdRunId;
 
-  $('#createDefectDialog').dialog({
-      autoOpen: false,
-      width: 300,
-      height: 200,
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-          "Yes": {
-              click: function(){
-                  $(this).dialog("close");
-                  window.location="/defects/create/" + createdRunId;
+                },
+                id: "createDefectDialogConfirmButton",
+                text: "Yes"
+            },
+            "No": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "createDefectDialogCancelButton",
+                text: "No"
+            }
+        });
+    }
 
-              },
-              id: "createDefectDialogConfirmButton",
-              text: "Yes"
-          },
-          "No": {
-              click: function(){
-                  $(this).dialog("close");
-              },
-              id: "createDefectDialogCancelButton",
-              text: "No"
-          }
-      }
-  });
+    //hack for creating defect
+    var createdRunId = null;
 
-  //hack for creating defect
-  var createdRunId = null;
+    // filter functions
 
-  // filter functions
+    var filterSaveAction = #{jsAction @Execution.saveFilter() /};
+    var filterLoadAction = #{jsAction @Execution.loadFilters() /};
+    var filterLoadByIdAction = #{jsAction @Execution.loadFilterById() /};
 
-  var filterSaveAction = #{jsAction @Execution.saveFilter() /};
-  var filterLoadAction = #{jsAction @Execution.loadFilters() /};
-  var filterLoadByIdAction = #{jsAction @Execution.loadFilterById() /};
-
-  $('#filterContainer').oxFilter({
-            filterFormId: 'instanceFilterForm',
-            filterParameters: function() {
-              return {
+    $('#filterContainer').oxFilter({
+        filterFormId: 'instanceFilterForm',
+        filterParameters: function() {
+            return {
                 "constraint[cycle][value]" : $('#cycle').val(),
                 "constraint[status][value]" : $('#status').val(),
                 "constraint[tags][value]" : $('#tags').val(),
                 "constraint[responsible][value]" : $('#responsible').val(),
                 "constraint[created][dateFrom]" : $('#dateFrom').val(),
                 "constraint[created][dateTo]" : $('#dateTo').val()
-              }
-            },
-            filterSaveAction: filterSaveAction,
-            filterLoadAction: filterLoadAction,
-            filterLoadByIdAction: filterLoadByIdAction,
-            onSelect: function() {
-              refreshTableContents('#instanceTable', true);
             }
-        });
+        },
+        filterSaveAction: filterSaveAction,
+        filterLoadAction: filterLoadAction,
+        filterLoadByIdAction: filterLoadByIdAction,
+        onSelect: function() {
+            refreshTableContents('#instanceTable', true);
+        }
+    });
 
 
 });

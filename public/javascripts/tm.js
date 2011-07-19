@@ -33,12 +33,12 @@ function refreshTableContents(tableSelector, completeRefresh, selectRow) {
     if (!completeRefresh && (selected != null || selected !== 'undefined')) {
         // this is the internal API, let's hope it won't change
         dataTable.fnSettings().aoDrawCallback.push({
-                    "fn": function () {
-                        // re-select the selected row
-                        fnSelectRow(dataTable, selected);
-                    },
-                    "sName": "user"
-                });
+            "fn": function () {
+                // re-select the selected row
+                fnSelectRow(dataTable, selected);
+            },
+            "sName": "user"
+        });
     }
     if (completeRefresh) {
         $(dataTable.fnSettings().aoData).each(function () {
@@ -49,12 +49,12 @@ function refreshTableContents(tableSelector, completeRefresh, selectRow) {
     // select row after full refresh
     if (selectRow && (selected != null || selected !== 'undefined')) {
         dataTable.fnSettings().aoDrawCallback.push({
-                    "fn": function () {
-                        // re-select the selected row
-                        fnSelectRow(dataTable, selected);
-                    },
-                    "sName": "user"
-                });
+            "fn": function () {
+                // re-select the selected row
+                fnSelectRow(dataTable, selected);
+            },
+            "sName": "user"
+        });
     }
 }
 
@@ -273,10 +273,10 @@ function extractId(id) {
  * @param node to compare to
  */
 function hasNodeWithSameName(treeInstance, parent, node) {
-    var children =treeInstance._get_children(parent);
+    var children = treeInstance._get_children(parent);
     var result = false;
-    $.each(children, function(i,e){
-        if(treeInstance.get_text(e) == treeInstance.get_text(node) && treeInstance._get_node(e).attr("id") != node.attr("id")){
+    $.each(children, function(i, e) {
+        if (treeInstance.get_text(e) == treeInstance.get_text(node) && treeInstance._get_node(e).attr("id") != node.attr("id")) {
             result = true;
         }
     })
@@ -342,35 +342,35 @@ function removeDialogs() {
                 if (!data) {
                     if (options.loadAction) {
                         $this.data('oxForm', {
-                                    'loadAction': options.loadAction,
-                                    'submissionCallback': options.submissionCallback,
-                                    'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
-                                    'fields': getFields($this),
-                                    'viewModel': {
-                                        'authenticityToken': (typeof authToken !== 'undefined' ? authToken.val() : ''),
-                                        'submitForm': function(formElement) {
-                                            if ($(formElement).validate({meta: 'validate'}).form()) {
-                                                var oxFormData = $(formElement).data('oxForm');
-                                                var additionalData = null;
-                                                if (typeof oxFormData.submissionParameters !== 'undefined') {
-                                                    additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
-                                                }
-                                                $.postKnockoutJSJson($(formElement).attr('action'), $(formElement).attr('id'), this, additionalData, function(submitData) {
-                                                    var sCallback = oxFormData.submissionCallback;
-                                                    if (typeof sCallback == 'function') {
-                                                        sCallback.call();
-                                                    }
-                                                    $('#' + $(formElement).attr('id') + '_submit').button('disable');
-                                                });
-                                            }
+                            'loadAction': options.loadAction,
+                            'submissionCallback': options.submissionCallback,
+                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {},
+                            'fields': getFields($this),
+                            'viewModel': {
+                                'authenticityToken': (typeof authToken !== 'undefined' ? authToken.val() : ''),
+                                'submitForm': function(formElement) {
+                                    if ($(formElement).validate({meta: 'validate'}).form()) {
+                                        var oxFormData = $(formElement).data('oxForm');
+                                        var additionalData = null;
+                                        if (typeof oxFormData.submissionParameters !== 'undefined') {
+                                            additionalData = $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters;
                                         }
+                                        $.postKnockoutJSJson($(formElement).attr('action'), $(formElement).attr('id'), this, additionalData, function(submitData) {
+                                            var sCallback = oxFormData.submissionCallback;
+                                            if (typeof sCallback == 'function') {
+                                                sCallback.call();
+                                            }
+                                            $('#' + $(formElement).attr('id') + '_submit').button('disable');
+                                        });
                                     }
-                                });
+                                }
+                            }
+                        });
                     } else {
                         $this.data('oxForm', {
-                                    'submissionCallback': options.submissionCallback,
-                                    'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
-                                });
+                            'submissionCallback': options.submissionCallback,
+                            'submissionParameters': options.submissionParameters ? options.submissionParameters : {}
+                        });
                     }
 
                     $.metadata.setType('html5');
@@ -428,38 +428,38 @@ function removeDialogs() {
                     $.extend(oxFormData.submissionParameters, submissionParameters);
                 }
                 $this.ajaxSubmit({
-                            success: function() {
-                                if (typeof oxFormData.submissionCallback == 'function') {
-                                    oxFormData.submissionCallback.call();
+                    success: function() {
+                        if (typeof oxFormData.submissionCallback == 'function') {
+                            oxFormData.submissionCallback.call();
+                        }
+                        $('#' + $this.attr('id') + '_submit').button('disable');
+                        $this.resetForm();
+                    },
+                    data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters,
+                    // need to process the form data and format the tags info in the recognizable way by the controller
+                    beforeSubmit: function(data, $form, options) {
+                        $.each($form.find(".tags"), function(index, el) {
+                            var toBeDeleted = -1;
+                            $.grep(data, function(element, index) {
+                                if (element.name == $(el).attr("name")) {
+                                    toBeDeleted = index;
                                 }
-                                $('#' + $this.attr('id') + '_submit').button('disable');
-                                $this.resetForm();
-                            },
-                            data: $.type(oxFormData.submissionParameters) === 'function' ? oxFormData.submissionParameters.call() : oxFormData.submissionParameters,
-                            // need to process the form data and format the tags info in the recognizable way by the controller
-                            beforeSubmit: function(data, $form, options){
-                                $.each($form.find(".tags"),function(index, el) {
-                                    var toBeDeleted = -1;
-                                    $.grep(data, function(element, index) {
-                                        if(element.name == $(el).attr("name")) {
-                                            toBeDeleted = index;
-                                        }
-                                        return true;
-                                    });
-                                    delete data[toBeDeleted];
-                                    $.each($(el).tokenInput('get'),function(i, e) {
-                                        var tagId = {};
-                                        tagId.name = $(el).attr("name") + "[" + i + "][id]";
-                                        tagId.value = e.id;
-                                        var tagName = {};
-                                        tagName.name = $(el).attr("name") + "[" + i + "][name]";
-                                        tagName.value = e.name;
-                                        data.push(tagId);
-                                        data.push(tagName);
-                                    });
-                                });
-                            }
+                                return true;
+                            });
+                            delete data[toBeDeleted];
+                            $.each($(el).tokenInput('get'), function(i, e) {
+                                var tagId = {};
+                                tagId.name = $(el).attr("name") + "[" + i + "][id]";
+                                tagId.value = e.id;
+                                var tagName = {};
+                                tagName.name = $(el).attr("name") + "[" + i + "][name]";
+                                tagName.value = e.name;
+                                data.push(tagId);
+                                data.push(tagName);
+                            });
                         });
+                    }
+                });
                 return true;
             } else {
                 return false;
@@ -538,14 +538,14 @@ $.postKnockoutJSJson = function (url, formId, viewModelData, additionalData, cal
         }
     });
     return jQuery.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-                dataType: 'json'
-            })
-            .success(callback)
-            .error(errorHandler);
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+        dataType: 'json'
+    })
+        .success(callback)
+        .error(errorHandler);
 };
 
 /**
@@ -595,17 +595,17 @@ ko.bindingHandlers.tags = {
 
     },
     update:
-            function(element, valueAccessor, allBindingsAccessor, viewModel) {
-                viewModel.lock = true;
-                $(element).tokenInput('clearAll');
-                var value = valueAccessor();
-                var tokens = ko.utils.unwrapObservable(value);
-                $(tokens).each(function() {
-                    var token = ko.utils.unwrapObservable(this);
-                    $(element).tokenInput('add', typeof token.id == 'function' ? token.id() : token.id, typeof token.name == 'function' ? token.name() : token.name);
-                });
-                viewModel.lock = false;
-            }
+        function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            viewModel.lock = true;
+            $(element).tokenInput('clearAll');
+            var value = valueAccessor();
+            var tokens = ko.utils.unwrapObservable(value);
+            $(tokens).each(function() {
+                var token = ko.utils.unwrapObservable(this);
+                $(element).tokenInput('add', typeof token.id == 'function' ? token.id() : token.id, typeof token.name == 'function' ? token.name() : token.name);
+            });
+            viewModel.lock = false;
+        }
 };
 
 
@@ -636,18 +636,18 @@ function errorMessage(text, title) {
 
     $('#errorDialog').html(errorHtml);
     $('#errorDialog').dialog({
-                autoOpen: true,
-                height: 200,
-                width: 300,
-                modal: true,
-                title: title,
-                resizable: false,
-                buttons:{
-                    "Close": function() {
-                        $(this).dialog('close');
-                    }
-                }
-            });
+        autoOpen: true,
+        height: 200,
+        width: 300,
+        modal: true,
+        title: title,
+        resizable: false,
+        buttons:{
+            "Close": function() {
+                $(this).dialog('close');
+            }
+        }
+    });
 }
 
 /**
@@ -684,32 +684,38 @@ function errorHandler(xhr, textStatus, errorThrown) {
  */
 function deletionConfirmation(dialogId, type, name, callback) {
     $('#' + dialogId).dialog({
-                autoOpen: true,
-                width: 400,
-                modal: true,
-                buttons: {
-                    "Confirm": {
-                        click: function() {
-                            if (typeof callback == 'function') {
-                                callback.call();
-                            }
-                            $(this).dialog("close");
-                        },
-                        id: dialogId+"DeleteConfirmationButtonConfirm",
-                        text: "Confirm"
-                    },
-                    "Cancel": {
-
-                        click: function() {
-                                    $(this).dialog("close");
-                            },
-
-                        id: dialogId+"DeleteConfirmationButtonCancel",
-                        text: "Cancel"
+        autoOpen: true,
+        width: 400,
+        modal: true,
+        closeOnEscape: false,
+        open: function() {
+            $(".ui-dialog-titlebar-close").hide();
+        },
+        draggable: true,
+        resizable: false,
+        buttons: {
+            "Confirm": {
+                click: function() {
+                    if (typeof callback == 'function') {
+                        callback.call();
                     }
-                }
-            });
-    $('#' + dialogId).html(type + " '" + name + "' will be removed. Are you sure?");
+                    $(this).dialog("close");
+                },
+                id: dialogId + "DeleteConfirmationButtonConfirm",
+                text: "Confirm"
+            },
+            "Cancel": {
+
+                click: function() {
+                    $(this).dialog("close");
+                },
+
+                id: dialogId + "DeleteConfirmationButtonCancel",
+                text: "Cancel"
+            }
+        }
+    });
+    $('#' + dialogId).html("<p><span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>" + type + " '" + name + "' will be removed. Are you sure?");
 }
 
 /**
@@ -730,6 +736,47 @@ function applyDefectCommentsButtonStyles() {
     $('.button-delete-comment').button({icons: {primary: 'ui-icon-trash'}, disabled:false, text: false});
 }
 
+function applyDialogStyles() {
+    $('.info-dialog').dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        resizable: false,
+        draggable: false,
+        closeOnEscape: false,
+        open: function() {
+            $(".ui-dialog-titlebar-close").hide();
+        }
+
+    })
+    $('.confirm-dialog').dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        resizable: false,
+        draggable: true,
+        closeOnEscape: false,
+        open: function() {
+            $(".ui-dialog-titlebar-close").hide();
+        }
+    })
+    $('.form-dialog').dialog({
+        autoOpen: false,
+        width: 800,
+        modal: true,
+        resizable: true,
+        draggable: true
+    })
+    $('.tree-dialog').dialog({
+        autoOpen: false,
+        width: 300,
+        height: 550,
+        modal: true,
+        resizable: true,
+        draggable: true
+    })
+}
+
 /**
  * jQuery plugin for filters
  */
@@ -744,14 +791,14 @@ function applyDefectCommentsButtonStyles() {
 
                 var settings = {
                     filterTemplate:
-                            '<div style="width:100%; text-align:right;">' +
-                                    '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
-                                    '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
-                                    '</div>' +
-                                    '<div id="filterSaveDialog" title="Save filter">' +
-                                    '<label for="filterName" class="name">Name</label>' +
-                                    '<input id="filterName" name="name"/>' +
-                                    '</div>'
+                        '<div style="width:100%; text-align:right;">' +
+                            '<button id="filterExpand" data-bind="enable: filterId != null">Expand filter</button>' +
+                            '<select title="Select a filter" id="filterSelect" data-bind="options:availableFilters, optionsValue: \'filterId\', optionsText: \'name\', optionsCaption: \'Select filter\' "></select>' +
+                            '</div>' +
+                            '<div id="filterSaveDialog" title="Save filter">' +
+                            '<label for="filterName" class="name">Name</label>' +
+                            '<input id="filterName" name="name"/>' +
+                            '</div>'
                 };
 
                 $.extend(settings, options);
@@ -772,29 +819,29 @@ function applyDefectCommentsButtonStyles() {
 
                 // initialize filter saving dialog
                 $('#filterSaveDialog').dialog({
-                            autoOpen: false,
-                            modal: true,
-                            resizable: false,
-                            draggable: false,
-                            buttons: {
-                                "Confirm": function() {
-                                    var dialog = $(this);
-                                    var filterParams = settings.filterParameters.call();
-                                    $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, filterParams))
-                                            .success(function() {
-                                                loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
-                                                dialog.dialog("close");
-                                            })
-                                            .error(errorHandler, function() {
-                                                dialog.dialog("close");
-                                            });
-                                },
-                                "Cancel": function() {
-                                    $(this).dialog("close");
-                                }
+                    autoOpen: false,
+                    modal: true,
+                    resizable: false,
+                    draggable: false,
+                    buttons: {
+                        "Confirm": function() {
+                            var dialog = $(this);
+                            var filterParams = settings.filterParameters.call();
+                            $.post(settings.filterSaveAction(), $.extend({"name": $('#filterName').val()}, filterParams))
+                                .success(function() {
+                                loadFilters(settings.filterLoadAction(), filterSelectionViewModel);
+                                dialog.dialog("close");
+                            })
+                                .error(errorHandler, function() {
+                                dialog.dialog("close");
+                            });
+                        },
+                        "Cancel": function() {
+                            $(this).dialog("close");
+                        }
 
-                            }
-                        });
+                    }
+                });
 
                 // initialize buttons
                 $('#saveFilter').button().click(function() {
@@ -814,27 +861,27 @@ function applyDefectCommentsButtonStyles() {
                 $('#filterSelect').button().change(function(data) {
                     if ($(this).val() != null && $(this).val() != '' && $(this).val() != 'customFilter') {
                         $.getJSON(settings.filterLoadByIdAction(), {id: $(this).val()},
-                                function(jsonFilter) {
-                                    var form = document.getElementById(settings.filterFormId);
-                                    if (!ko.mapping.isMapped(filterViewModel)) {
-                                        filterViewModel = ko.mapping.fromJS(jsonFilter);
-                                        ko.applyBindings(filterViewModel, form);
-                                    } else {
-                                        ko.mapping.updateFromJS(filterViewModel, jsonFilter);
-                                    }
-                                    if (typeof settings.onSelect == 'function') {
-                                        settings.onSelect.call();
-                                    }
-                                }).error(errorHandler);
+                            function(jsonFilter) {
+                                var form = document.getElementById(settings.filterFormId);
+                                if (!ko.mapping.isMapped(filterViewModel)) {
+                                    filterViewModel = ko.mapping.fromJS(jsonFilter);
+                                    ko.applyBindings(filterViewModel, form);
+                                } else {
+                                    ko.mapping.updateFromJS(filterViewModel, jsonFilter);
+                                }
+                                if (typeof settings.onSelect == 'function') {
+                                    settings.onSelect.call();
+                                }
+                            }).error(errorHandler);
                     }
 
                     //clear the form in case a filter was previously applied
                     if ($(this).val() == 'customFilter') {
                         $(':input', '#' + settings.filterFormId)
-                                .not(':button, :submit, :reset')
-                                .val('')
-                                .removeAttr('checked')
-                                .removeAttr('selected');
+                            .not(':button, :submit, :reset')
+                            .val('')
+                            .removeAttr('checked')
+                            .removeAttr('selected');
                         $('#tags').tokenInput('clearAll');
                     }
                 });
@@ -861,17 +908,17 @@ function applyDefectCommentsButtonStyles() {
 
 function loadFilters(url, filterSelectionViewModel) {
     $.getJSON(url,
-            function(json) {
-                var form = document.getElementById('filterSelect');
-                if (!ko.mapping.isMapped(filterSelectionViewModel)) {
-                    filterSelectionViewModel = ko.mapping.fromJS(json);
-                    ko.applyBindings(filterSelectionViewModel, form);
-                }
-                else {
-                    ko.mapping.updateFromJS(filterSelectionViewModel, json);
-                }
-                $('#filterSelect').append("<option value='customFilter'>Clear filter</option>");
-            }).error(errorHandler);
+        function(json) {
+            var form = document.getElementById('filterSelect');
+            if (!ko.mapping.isMapped(filterSelectionViewModel)) {
+                filterSelectionViewModel = ko.mapping.fromJS(json);
+                ko.applyBindings(filterSelectionViewModel, form);
+            }
+            else {
+                ko.mapping.updateFromJS(filterSelectionViewModel, json);
+            }
+            $('#filterSelect').append("<option value='customFilter'>Clear filter</option>");
+        }).error(errorHandler);
 
 }
 
@@ -881,11 +928,11 @@ function loadFilters(url, filterSelectionViewModel) {
         init : function(options) {
             return this.each(function() {
                 var menu = $(this).next().menu({
-                            select: function(event, ui) {
-                                $(this).hide();
-                                document.location = ui.item.children()[0].href;
-                            }
-                        });
+                    select: function(event, ui) {
+                        $(this).hide();
+                        document.location = ui.item.children()[0].href;
+                    }
+                });
                 menu.hide();
                 $(this).click(function(event) {
                     var menu = $(this).next();
@@ -900,10 +947,10 @@ function loadFilters(url, filterSelectionViewModel) {
                     }
 
                     menu.menu("blur").show().position({
-                                my: "right top",
-                                at: "right bottom",
-                                of: this
-                            });
+                        my: "right top",
+                        at: "right bottom",
+                        of: this
+                    });
 
                     if ($(this).width() > menu.width()) {
                         menu.width($(this).width() - 5);

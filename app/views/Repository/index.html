@@ -5,252 +5,242 @@
 <div id="requirementDeletionConfirmationDialog" title="Confirm deletion of requirement"></div>
 
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-<div id="linkRequirementDialog" title="Assign Requirement to Test Script">
-  <div id="requirementTree" class="tree"></div>
+<div id="linkRequirementDialog" class="tree-dialog" title="Assign Requirement to Test Script">
+    <div id="requirementTree" class="tree"></div>
 </div>
 #{/deadbolt.restrict}
 
 
 <div class="container">
     <div class="actions">
-      <div id="actions" class="actions buttons">
-        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
-        <button id="create_folder" class="button-add-folder">Folder</button>
-        <button id="create_script" class="button-add">Test Script</button>
-        #{/deadbolt.restrict}
-        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
-        <button id="remove" class="button-delete">Remove</button>
-        #{/deadbolt.restrict}
-        <input id="searchInput" class="searchInput" type="text">
-      </div>
-    </div>
-  <div class="tree-container">
-    <div class="left_tree">
-      #{box 'Test Script Repository'}
-      <div id="repositoryTree" class="tree" style="border-style:none;"></div>
-      #{/box}
-    </div>
-    <div class="right_tree">
-      <div id="innerTabs">
-        <ul>
-          <li><a href="#scriptDetails"><span>Description</span></a></li>
-          <li><a href="#scriptSteps"><span>Steps</span></a></li>
-          <li><a href="#linkedRequirements"><span>Linked requirements</span></a></li>
-        </ul>
-        <div id="scriptDetails">
-          <div class="hiddenOnLoad">
-            #{ox.form action:@Repository.editScript(), edit:util.Require.roles([[models.general.UnitRole.TESTREPOEDIT]]), id:'scriptDetailsForm', baseClass:'models.tm.test.Script'}
-              #{ox.field field:'script.name', label:'Name' /}
-              #{ox.field field:'script.description', label:'Description' /}
-              #{ox.field field:'script.tags', label:'Tags', type:'tags', tagsUrl:@Repository.allTags() /}
-              *{the following fields are necessary because play can't bind stuff automatically yet}*
-              #{ox.field field:'script.id', hidden:true /}
-              #{ox.field field:'script.account.id', hidden:true /}
-              #{ox.field field:'script.project.id', hidden:true /}
-              #{ox.field field:'script.project.account.id', hidden:true /}
-              #{ox.field field:'script.project.projectCategory.id', hidden:true /}
-              #{ox.field field:'script.project.projectCategory.account.id', hidden:true /}
-              #{ox.submit /}
-            #{/ox.form}
-          </div>
-          <div class="shownOnLoad">
-            No script selected.
-          </div>
-        </div>
-        <div id="scriptSteps">
-          #{include 'Repository/steps.html' /}
-        </div>
-        <div id="linkedRequirements">
-          <div class="hiddenOnLoad">
-            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
-            <button id="requirementScriptDialogOpen" class="button-add">Requirement</button>
-            <button id="removeRequirementButton" class="button-delete">Remove requirement</button>
+        <div id="actions" class="actions buttons">
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
+            <button id="create_folder" class="button-add-folder">Folder</button>
+            <button id="create_script" class="button-add">Test Script</button>
             #{/deadbolt.restrict}
-            <table class="display" id="requirementTable">
-              <thead>
-              <tr>
-                <th>Requirement ID</th>
-                <th>Requirement title</th>
-                <th>Tags</th>
-              </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="shownOnLoad">
-            No script selected.
-          </div>
+            #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
+            <button id="remove" class="button-delete">Remove</button>
+            #{/deadbolt.restrict}
+            <input id="searchInput" class="searchInput" type="text">
         </div>
-
-
-      </div>
-
-
     </div>
-  </div>
+    <div class="tree-container">
+        <div class="left_tree">
+            #{box 'Test Script Repository'}
+            <div id="repositoryTree" class="tree" style="border-style:none;"></div>
+            #{/box}
+        </div>
+        <div class="right_tree">
+            <div id="innerTabs">
+                <ul>
+                    <li><a href="#scriptDetails"><span>Description</span></a></li>
+                    <li><a href="#scriptSteps"><span>Steps</span></a></li>
+                    <li><a href="#linkedRequirements"><span>Linked requirements</span></a></li>
+                </ul>
+                <div id="scriptDetails">
+                    <div class="hiddenOnLoad">
+                        #{ox.form action:@Repository.editScript(),
+                        edit:util.Require.roles([[models.general.UnitRole.TESTREPOEDIT]]), id:'scriptDetailsForm',
+                        baseClass:'models.tm.test.Script'}
+                        #{ox.field field:'script.name', label:'Name' /}
+                        #{ox.field field:'script.description', label:'Description' /}
+                        #{ox.field field:'script.tags', label:'Tags', type:'tags', tagsUrl:@Repository.allTags() /}
+                        *{the following fields are necessary because play can't bind stuff automatically yet}*
+                        #{ox.field field:'script.id', hidden:true /}
+                        #{ox.field field:'script.account.id', hidden:true /}
+                        #{ox.field field:'script.project.id', hidden:true /}
+                        #{ox.field field:'script.project.account.id', hidden:true /}
+                        #{ox.field field:'script.project.projectCategory.id', hidden:true /}
+                        #{ox.field field:'script.project.projectCategory.account.id', hidden:true /}
+                        #{ox.submit /}
+                        #{/ox.form}
+                    </div>
+                    <div class="shownOnLoad">
+                        No script selected.
+                    </div>
+                </div>
+                <div id="scriptSteps">
+                    #{include 'Repository/steps.html' /}
+                </div>
+                <div id="linkedRequirements">
+                    <div class="hiddenOnLoad">
+                        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
+                        <button id="requirementScriptDialogOpen" class="button-add">Requirement</button>
+                        <button id="removeRequirementButton" class="button-delete">Remove requirement</button>
+                        #{/deadbolt.restrict}
+                        <table class="display" id="requirementTable">
+                            <thead>
+                            <tr>
+                                <th>Requirement ID</th>
+                                <th>Requirement title</th>
+                                <th>Tags</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="shownOnLoad">
+                        No script selected.
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
 </div>
 
 
 #{set 'moreScripts'}
 <script type="text/javascript">
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    $("#innerTabs").tabs();
+        $("#innerTabs").tabs();
 
-    $('#repositoryTree').tree({types: repositoryTreeTypes,
-              onRename: function(name) {
+        $('#repositoryTree').tree({types: repositoryTreeTypes,
+            onRename: function(name) {
                 var fieldName = '#' + $('#scriptDetailsForm').oxForm('getFieldId', 'script.name');
                 $(fieldName).val(name);
-              },
-              onDeleteFailed: function() {
+            },
+            onDeleteFailed: function() {
                 errorMessage("Could not delete test script - make sure there are no linked entities left.", "Error deleting test script")
-              }
-            });
-
-    $('#scriptDetailsForm').oxForm({
-              loadAction: '@{Repository.scriptDetailsData()}',
-              submissionCallback: function() {
-                refreshTree('repositoryTree');
-              }
-            });
-
-    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
-      if (isSelectedNodeType(data, ["script", "default"])) {
-        $('.shownOnLoad').hide();
-        $('.hiddenOnLoad').show();
-        $('#remove').button('enable');
-        $('#requirementScriptDialogOpen').button('enable');
-
-        var scriptId = getSelectedNodeId('repositoryTree');
-        $('#scriptDetailsForm').oxForm('load', scriptId);
-
-        reloadTables();
-      } else {
-        $('.shownOnLoad').show();
-        $('.hiddenOnLoad').hide();
-        $('#remove').button('enable');
-        $('#requirementScriptDialogOpen').button('disable');
-      }
-    });
-
-    $("#create_folder").click(function () {
-      $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}, data:"New folder"});
-    });
-    $("#create_script").click(function () {
-      $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
-    });
-    $("#remove").click(function () {
-        var node = getSelectedNodeName('repositoryTree');
-        deletionConfirmation('testScriptDeletionConfirmationDialog', 'Test script', getSelectedNodeName('repositoryTree'), function(){
-
-            $("#repositoryTree").jstree("remove", null);
+            }
         });
 
-    });
+        $('#scriptDetailsForm').oxForm({
+            loadAction: '@{Repository.scriptDetailsData()}',
+            submissionCallback: function() {
+                refreshTree('repositoryTree');
+            }
+        });
 
-    $("#requirementTree").tree({types: requirementTreeTypes});
+        $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ["script", "default"])) {
+                $('.shownOnLoad').hide();
+                $('.hiddenOnLoad').show();
+                $('#remove').button('enable');
+                $('#requirementScriptDialogOpen').button('enable');
 
-    #{tabularasa.init tableId:'requirementTable'}
-    var requirementTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
-        {"sName": "naturalId"},
-        {"sName": "name"},
-        {"sName": "tagNames"}
-      ],
-      "aoSorting": [
-        [1, "desc"]
-      ],
-      "sAjaxSource": "@{Repository.linkedRequirements()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bLengthChange": false,
-      "bSort": false,
-      "bFilter": false,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No linked requirements"
-      }
-    };
-    #{/tabularasa.init}
+                var scriptId = getSelectedNodeId('repositoryTree');
+                $('#scriptDetailsForm').oxForm('load', scriptId);
 
-    function addRequestParameters(parameters, tableId) {
-      parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
-    }
+                reloadTables();
+            } else {
+                $('.shownOnLoad').show();
+                $('.hiddenOnLoad').hide();
+                $('#remove').button('enable');
+                $('#requirementScriptDialogOpen').button('disable');
+            }
+        });
 
-    handleRowSelection('#requirementTable', function(rowId) {
-        if(rowId!=''){
-            $("#removeRequirementButton").button('enable');
+        $("#create_folder").click(function () {
+            $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"scriptFolder"}, data:"New folder"});
+        });
+        $("#create_script").click(function () {
+            $("#repositoryTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New script"});
+        });
+        $("#remove").click(function () {
+            var node = getSelectedNodeName('repositoryTree');
+            deletionConfirmation('testScriptDeletionConfirmationDialog', 'Test script', getSelectedNodeName('repositoryTree'), function() {
+
+                $("#repositoryTree").jstree("remove", null);
+            });
+
+        });
+
+        $("#requirementTree").tree({types: requirementTreeTypes});
+
+        #{tabularasa.init tableId:'requirementTable'}
+        var requirementTableParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone", "sWidth": "0%" },
+                {"sName": "naturalId"},
+                {"sName": "name"},
+                {"sName": "tagNames"}
+            ],
+            "aoSorting": [
+                [1, "desc"]
+            ],
+            "sAjaxSource": "@{Repository.linkedRequirements()}",
+            "bProcessing": false,
+            "bServerSide": true,
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bSort": false,
+            "bFilter": false,
+            "bAutoWidth": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No linked requirements"
+            }
+        };
+        #{/tabularasa.init}
+
+        function addRequestParameters(parameters, tableId) {
+            parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
         }
-    });
 
+        handleRowSelection('#requirementTable', function(rowId) {
+            if (rowId != '') {
+                $("#removeRequirementButton").button('enable');
+            }
+        });
 
-
-
-    $("#linkRequirementDialog").dialog({
-              autoOpen: false,
-              height: 550,
-              width: 300,
-              modal: true,
-              buttons: {
+        $('#requirementScriptDialogOpen').click(function () {
+            $("#linkRequirementDialog").dialog("option", "buttons", {
                 "Link": {
-
                     click: function() {
-                              var treeContainer = $("#requirementTree");
-                              var $tree = jQuery.jstree._reference(treeContainer);
-                              var selectedNode = $tree.get_selected();
-                              if (isSelectedNodeOfType($tree, selectedNode, ["default", "requirement"])) {
-                                $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
-                                        function(data) {
-                                          $('#requirementTable').dataTable().fnDraw();
-                                        }).error(function (jqhr, text) {
-                                          errorMessage(text);
-                                        });
+                        var treeContainer = $("#requirementTree");
+                        var $tree = jQuery.jstree._reference(treeContainer);
+                        var selectedNode = $tree.get_selected();
+                        if (isSelectedNodeOfType($tree, selectedNode, ["default", "requirement"])) {
+                            $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: getSelectedNodeId("repositoryTree")}).success(
+                                    function(data) {
+                                        $('#requirementTable').dataTable().fnDraw();
+                                    }).error(function (jqhr, text) {
+                                errorMessage(text);
+                            });
 
-                                refreshTableContents('#requirementTable', false);
-                                $(this).dialog('close');
-                              } else {
-                                errorMessage('You need to select a requirement');
-                                $(this).dialog('close');
-                              }
-                            },
+                            refreshTableContents('#requirementTable', false);
+                            $(this).dialog('close');
+                        } else {
+                            errorMessage('You need to select a requirement');
+                            $(this).dialog('close');
+                        }
+                    },
                     id: "linkRequirementDialogConfirmButton",
                     text: "Link"
                 },
                 Cancel: {
                     click: function() {
-                                $(this).dialog("close");
-                            },
+                        $(this).dialog("close");
+                    },
                     id: "linkRequirementDialogCancelButton",
                     text: "Cancel"
                 }
-              }
+            });
+            $('#linkRequirementDialog').dialog('open');
+        });
 
+        $('#removeRequirementButton').click(function () {
+            deletionConfirmation('requirementDeletionConfirmationDialog', "Link to requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function() {
+                $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
+                        function(data) {
+                            $('#requirementTable').dataTable().fnDraw();
+                        }).error(errorHandler);
             });
 
-    $('#requirementScriptDialogOpen').click(function () {
-      $('#linkRequirementDialog').dialog('open');
-    });
+        });
 
-    $('#removeRequirementButton').click(function () {
-      deletionConfirmation('requirementDeletionConfirmationDialog', "Link to requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function(){
-          $.post('@{Requirements.unlinkScript()}', {scriptId: getSelectedNodeId('repositoryTree'), requirementId: getSelectedRowId('#requirementTable')}).success(
-        function(data) {
-            $('#requirementTable').dataTable().fnDraw();
-        }).error(errorHandler);
-      });
+        $('#searchInput').keyup(function() {
+            $("#repositoryTree").jstree("search", $(this).val());
+        });
 
     });
-
-    $('#searchInput').keyup(function() {
-      $("#repositoryTree").jstree("search", $(this).val());
-    });
-
-  });
 
 
 </script>

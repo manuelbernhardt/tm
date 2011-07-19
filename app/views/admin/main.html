@@ -3,25 +3,26 @@
 #{topMenu space:'admin' /}
 
 #{tabLayout id:'main-wrapper'}
-  #{tabs id:'tabs'}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
-    #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
-  #{/}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTEDIT], [models.general.UnitRole.PROJECTADMIN]]}
-    #{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
-  #{/}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
-    #{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
-  #{/}
-  #{/tabs}
-  #{tabContent}
-    #{doLayout /}
-  #{/tabContent}
+#{tabs id:'tabs'}
+#{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
+#{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
+#{/}
+#{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTEDIT], [models.general.UnitRole.PROJECTADMIN]]}
+#{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
+#{/}
+#{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
+#{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
+#{/}
+#{/tabs}
+#{tabContent}
+#{doLayout /}
+#{/tabContent}
 #{/tabLayout}
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('.searchInput').watermark('Search');
         applyButtonStyles();
+        applyDialogStyles();
     })
 </script>

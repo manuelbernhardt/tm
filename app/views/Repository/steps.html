@@ -1,169 +1,154 @@
 <div class="shownOnLoad">
-  No script selected.
+    No script selected.
 </div>
 <div class="hiddenOnLoad">
-  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
     <button id="createStepButton" class="button-add">Step</button>
     <button id="updateStepButton" class="button-edit">Update step</button>
-  #{/deadbolt.restrict}
+    #{/deadbolt.restrict}
 
-  <table class="display" id="stepTable">
-    <thead>
-    <tr>
-      <th>Nr</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Expected results</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <table class="display" id="stepTable">
+        <thead>
+        <tr>
+            <th>Nr</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Expected results</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
 
-<div id="createStepDialog" title="Create a step">
-  #{ox.form id:'createStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep', create:true}
+<div id="createStepDialog" class="form-dialog" title="Create a step">
+    #{ox.form id:'createStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep',
+    create:true}
     #{ox.field field:'step.name', label:'Name' /}
     #{ox.field field:'step.position', label:'Position' /}
     #{ox.field field:'step.description', label:'Description' /}
     #{ox.field field:'step.expectedResult', label:'Expected result' /}
     #{ox.field field:'step.id', hidden:true /}
-  #{/ox.form}
+    #{/ox.form}
 </div>
 
-<div id="updateStepDialog" title="Update a step">
-  #{ox.form id:'updateStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep'}
+<div id="updateStepDialog" class="form-dialog" title="Update a step">
+    #{ox.form id:'updateStepForm', action:@Repository.createOrUpdateStep(), baseClass:'models.tm.test.ScriptStep'}
     #{ox.field field:'step.name', label:'Name' /}
     #{ox.field field:'step.position', label:'Position' /}
     #{ox.field field:'step.description', label:'Description' /}
     #{ox.field field:'step.expectedResult', label:'Expected result' /}
     #{ox.field field:'step.id', hidden:true /}
-  #{/ox.form}
+    #{/ox.form}
 </div>
 
 
 <script type="text/javascript">
 
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-    #{tabularasa.init tableId:'stepTable'}
-    var stepTableParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "position"},
-        {"sName": "name"},
-        {"sName": "descriptionHTML"},
-        {"sName": "expectedResultHTML"}
-      ],
-      "sAjaxSource": "@{Repository.steps()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bFilter": false,
-      "bSort": false,
-      "bLengthChange": false,
-      "iDisplayLength": 10,
-      "bAutoWidth": false,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No steps defined yet"
-      },
-        "fnDrawCallback": function(data){
-            handlePagination("#stepTable",data)
-        }
-    };
-    #{/tabularasa.init}
-
-    function addRequestParameters(parameters, tableId) {
-        if(tableId=='stepTable')
-            parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
-    }
-
-    handleRowSelection('#stepTable', function(rowId) {
-       if(rowId!=''){
-        $('#updateStepButton').button('enable');
-       }
-    });
-
-    $('#createStepButton').click(function() {
-      $('#createStepDialog').dialog('open');
-    });
-
-    $('#createStepForm').oxForm({
-      submissionCallback: function() {
-        refreshTableContents('#stepTable', false);
-      }
-    });
-
-    $('#createStepDialog').dialog({
-      autoOpen: false,
-      width: 500,
-      height: 400,
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Create step": {
-
-            click: function() {
-              if($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
-                $(this).dialog("close");
-              }
+        #{tabularasa.init tableId:'stepTable'}
+        var stepTableParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone" },
+                {"sName": "position"},
+                {"sName": "name"},
+                {"sName": "descriptionHTML"},
+                {"sName": "expectedResultHTML"}
+            ],
+            "sAjaxSource": "@{Repository.steps()}",
+            "bProcessing": false,
+            "bServerSide": true,
+            "bFilter": false,
+            "bSort": false,
+            "bLengthChange": false,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No steps defined yet"
             },
-            id: "createStepDialogConfirmButton",
-            text: "Create step"
-        },
-        "Cancel": {
-            click: function() {
-                      $('#createStepForm').validate({meta: 'validate'}).resetForm();
-                      $(this).dialog("close");
+            "fnDrawCallback": function(data) {
+                handlePagination("#stepTable", data)
+            }
+        };
+        #{/tabularasa.init}
+
+        function addRequestParameters(parameters, tableId) {
+            if (tableId == 'stepTable')
+                parameters.push({"name": "scriptId", "value": getSelectedNodeId('repositoryTree') });
+        }
+
+        handleRowSelection('#stepTable', function(rowId) {
+            if (rowId != '') {
+                $('#updateStepButton').button('enable');
+            }
+        });
+
+        $('#createStepForm').oxForm({
+            submissionCallback: function() {
+                refreshTableContents('#stepTable', false);
+            }
+        });
+
+        $('#createStepButton').click(function() {
+            $('#createStepDialog').dialog("option", "buttons", {
+
+                "Create step": {
+
+                    click: function() {
+                        if ($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
+                            $(this).dialog("close");
+                        }
+                    },
+                    id: "createStepDialogConfirmButton",
+                    text: "Create step"
+                },
+                "Cancel": {
+                    click: function() {
+                        $('#createStepForm').validate({meta: 'validate'}).resetForm();
+                        $(this).dialog("close");
                     },
 
-            id: "createStepDialogCancelButton",
-            text: "Cancel"
-            }
-      }
-    });
+                    id: "createStepDialogCancelButton",
+                    text: "Cancel"
+                }
+            });
+            $('#createStepDialog').dialog('open');
+        });
 
-    $('#updateStepButton').click(function() {
-      $('#updateStepDialog').dialog('open');
-    });
+        $('#updateStepForm').oxForm({
+            submissionCallback: function() {
+                refreshTableContents('#stepTable', false);
+            },
+            loadAction: '@{Repository.stepDetailsData()}'
+        });
 
-    $('#updateStepForm').oxForm({
-      submissionCallback: function() {
-        refreshTableContents('#stepTable', false);
-      },
-      loadAction: '@{Repository.stepDetailsData()}'
-    });
-
-    $('#updateStepDialog').dialog({
-      autoOpen: false,
-      width: 500,
-      height: 400,
-      draggable: true,
-      resizable: false,
-      modal: true,
-      open: function() {
-        $('#updateStepForm').oxForm('load', getSelectedRowId('#stepTable'), {scriptId: getSelectedNodeId('repositoryTree')});
-      },
-      buttons: {
-        "Update step": {
-            click: function() {
-                      var valid = $('#updateStepForm').validate({meta: 'validate'}).form();
-                      if(valid) {
-                        $('#updateStepForm').submit();
+        $('#updateStepButton').click(function() {
+            $('#updateStepDialog').dialog("option", "buttons", {
+                "Update step": {
+                    click: function() {
+                        var valid = $('#updateStepForm').validate({meta: 'validate'}).form();
+                        if (valid) {
+                            $('#updateStepForm').submit();
+                            $(this).dialog("close");
+                        }
+                    },
+                    id: "updateStepDialogConfirmButton",
+                    text: "Update step"
+                },
+                "Cancel": {
+                    click: function() {
                         $(this).dialog("close");
-                      }
-            },
-            id: "updateStepDialogConfirmButton",
-            text: "Update step"
-        },
-        "Cancel": {
-            click: function() {
-                $(this).dialog("close");
-            },
-            id: "updateStepDialogCancelButton",
-            text: "Cancel"
-        }
-      }
+                    },
+                    id: "updateStepDialogCancelButton",
+                    text: "Cancel"
+                }
+            });
+            $('#updateStepDialog').dialog("option", "open", function() {
+                $('#updateStepForm').oxForm('load', getSelectedRowId('#stepTable'), {scriptId: getSelectedNodeId('repositoryTree')});
+            });
+            $('#updateStepDialog').dialog('open');
+        });
+
     });
-  });
 </script>

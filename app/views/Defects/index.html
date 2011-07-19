@@ -3,99 +3,101 @@
 
 <div id="defectList">
 
-  <div id="filterContainer">
-    #{box 'Filters'}
-    #{include 'Defects/filter.html'/}
+    <div id="filterContainer">
+        #{box 'Filters'}
+        #{include 'Defects/filter.html'/}
+        #{/box}
+        <br/>
+        <br/>
+    </div>
+
+
+    #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTCREATE]]}
+    <button id="createDefectButton" class="button-add">Defect</button>
+    #{/deadbolt.restrict}
+
+    #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
+    <button id="deleteDefectButton" class="button-delete">Delete defect</button>
+    #{/deadbolt.restrict}
+
+
+    <div id="createDefectDialog" class="form-dialog" title="Create a defect">
+        #{ox.form id:'createDefectForm', action:@Defects.createDefect(), baseClass:'models.tm.Defect', create:true}
+        #{ox.field field:'defect.name', label:'Summary' /}
+        #{ox.field field:'defect.description', label:'Description'/}
+        #{ox.field field:'defect.assignedTo', label:'Assign to' /}
+        #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
+        #{/ox.form}
+    </div>
+
+
+    <br/>
+
+    #{box 'Defects'}
+    <table class="display" id="defectsTable">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Summary</th>
+            <th>Tags</th>
+            <th>Assigned To</th>
+            <th>Raised By</th>
+            <th>Status</th>
+            <th>Submitted at</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
     #{/box}
-    <br/>
-    <br/>
-  </div>
-
-
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTCREATE]]}
-  <button id="createDefectButton" class="button-add">Defect</button>
-  #{/deadbolt.restrict}
-
-  #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTDELETE]]}
-  <button id="deleteDefectButton" class="button-delete">Delete defect</button>
-  #{/deadbolt.restrict}
-
-
-  <div id="createDefectDialog" title="Create a defect">
-    #{ox.form id:'createDefectForm', action:@Defects.createDefect(), baseClass:'models.tm.Defect', create:true}
-    #{ox.field field:'defect.name', label:'Summary' /}
-    #{ox.field field:'defect.description', label:'Description'/}
-    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
-    #{/ox.form}
-  </div>
-
-
-
-  <br/>
-
-  #{box 'Defects'}
-  <table class="display" id="defectsTable">
-
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Summary</th>
-      <th>Tags</th>
-      <th>Assigned To</th>
-      <th>Raised By</th>
-      <th>Status</th>
-      <th>Submitted at</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  #{/box}
 
 </div>
-  <div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
-  <div id="deleteCommentDialog" title="Confirm deletion of comment"></div>
+<div id="deleteDefectDialog" title="Confirm deletion of defect"></div>
+<div id="deleteCommentDialog" title="Confirm deletion of comment"></div>
 
 <br/>
 <div id='defectDetails' style="display:none">
 
-  <div id="updateDefectDialog" class="defect-detail-left" title="Update a defect">
+    <div id="updateDefectDialog" class="defect-detail-left" title="Update a defect">
 
-    #{box 'Defect details'}
-    #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]), action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
-    #{ox.field field:'defect.name', label:'Summary' /}
-    #{ox.field field:'defect.description', label:'Description'/}
-    #{ox.field field:'defect.assignedTo', label:'Assign to' /}
-    #{ox.field field:'defect.status', label:'Status' /}
-    #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
-    #{ox.field field:'defect.id', hidden:true/}
-    #{ox.submit/}
-    #{/ox.form}
-    #{/box}
+        #{box 'Defect details'}
+        #{ox.form id:'updateDefectForm', edit:util.Require.roles([[models.general.UnitRole.DEFECTEDIT]]),
+        action:@Defects.updateDefect(), baseClass:'models.tm.Defect'}
+        #{ox.field field:'defect.name', label:'Summary' /}
+        #{ox.field field:'defect.description', label:'Description'/}
+        #{ox.field field:'defect.assignedTo', label:'Assign to' /}
+        #{ox.field field:'defect.status', label:'Status' /}
+        #{ox.field field:'defect.tags', label:'Tags', type:'tags', tagsUrl:@Defects.allTags() /}
+        #{ox.field field:'defect.id', hidden:true/}
+        #{ox.submit/}
+        #{/ox.form}
+        #{/box}
 
 
-  </div>
+    </div>
 
-  <div id="comments" class="defect-detail-right">
+    <div id="comments" class="defect-detail-right">
         #{box 'Comments'}
-       <div class="comments-list">
-        <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}" > </div>
-       </div>
+        <div class="comments-list">
+            <div id='comments-binding' data-bind="template: {name:'commentsTemplate', foreach:comments}"></div>
+        </div>
 
         <br/>
+
         <div class="comments-add" id="comments-add">
-            #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment', create:true}
+            #{ox.form id:'addDefectCommentForm', action:@Defects.addComment(), baseClass:'models.tm.DefectComment',
+            create:true}
             #{ox.field field:'comment.comment', label:'Comment' /}
             #{ox.field field:'comment.id', hidden:true /}
             #{ox.field field:'comment.account.id', hidden:true /}
             #{/ox.form}
 
             <label class="comment">&nbsp</label>
-                <button id='addCommentAndDefectButton'>Add comment & save</button>
+            <button id='addCommentAndDefectButton'>Add comment & save</button>
 
         </div>
         #{/box}
-  </div>
+    </div>
 
 
 </div>
@@ -103,88 +105,102 @@
 
 $(document).ready(function() {
 
-  #{tabularasa.init tableId:'defectsTable'}
-  var defectsTableParameters = {
-    "aoColumns":[
-      {"sName": "id", "sClass": "sNone"},
-      {"sName": "naturalId"},
-      {"sName": "name"},
-      // jquery data table bug, bSortable works as a switch here, turn it off before tagNames and switch it on after, thus tagName is not sortable
-      {"sName": "tagNames"},
-      {"sName": "assignedTo"},
-      {"sName": "submittedBy"},
-      {"sName": "status.name"},
-      {"sName": "created", "fnRender": function (oObj) {
-        return $.format.date(oObj.aData[7], "${play.Play.configuration.getProperty('datetime.format')}");
-      }}
-    ],
-    "bServerSide": true,
-    "bScrollInfinite": true,
-    "bScrollCollapse": true,
-    "sScrollY": "175px",
-    "bFilter": false,
-    "bInfo": false,
-    "sAjaxSource": "@{Defects.defects()}",
-    "oLanguage": {
-      "sZeroRecords": "No defects reported"
-    },
-    "fnDrawCallback": function() {
-      var da;
-      if ('${id}' > 0) {
-        $(defectsTableDataTable.fnSettings().aoData).each(function () {
-          var nTr = $(this.nTr)[0];
-          if ($($(nTr).children('td')[0]).text() == '${id}') {
-            $(this.nTr).addClass('row_selected');
-            da = $(this.nTr);
-          }
-        });
-      }
-    }
-  };
-  #{/tabularasa.init}
+    #{tabularasa.init tableId:'defectsTable'}
+    var defectsTableParameters = {
+        "aoColumns":[
+            {"sName": "id", "sClass": "sNone"},
+            {"sName": "naturalId"},
+            {"sName": "name"},
+            // jquery data table bug, bSortable works as a switch here, turn it off before tagNames and switch it on after, thus tagName is not sortable
+            {"sName": "tagNames"},
+            {"sName": "assignedTo"},
+            {"sName": "submittedBy"},
+            {"sName": "status.name"},
+            {"sName": "created", "fnRender": function (oObj) {
+                return $.format.date(oObj.aData[7], "${play.Play.configuration.getProperty('datetime.format')}");
+            }}
+        ],
+        "bServerSide": true,
+        "bScrollInfinite": true,
+        "bScrollCollapse": true,
+        "sScrollY": "175px",
+        "bFilter": false,
+        "bInfo": false,
+        "sAjaxSource": "@{Defects.defects()}",
+        "oLanguage": {
+            "sZeroRecords": "No defects reported"
+        },
+        "fnDrawCallback": function() {
+            var da;
+            if ('${id}' > 0) {
+                $(defectsTableDataTable.fnSettings().aoData).each(function () {
+                    var nTr = $(this.nTr)[0];
+                    if ($($(nTr).children('td')[0]).text() == '${id}') {
+                        $(this.nTr).addClass('row_selected');
+                        da = $(this.nTr);
+                    }
+                });
+            }
+        }
+    };
+    #{/tabularasa.init}
 
 //adding request parameters for a given table
 
-  function addRequestParameters(parameters, tableId) {
-    if (tableId == 'defectsTable') {
-      parameters.push({"name": "title", "value": $('#title').val() });
-      parameters.push({"name": "titleCase", "value": $('#titleCase option:selected').val() });
-      parameters.push({"name": "tags", "value": $('#tags').val() });
-      parameters.push({"name": "status", "value": $('#status option:selected').val() });
-      parameters.push({"name": "assignedToId", "value": $('#assignedToId option:selected').val() });
-      parameters.push({"name": "submittedById", "value": $('#submittedById option:selected').val() });
-      parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
-      parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+    function addRequestParameters(parameters, tableId) {
+        if (tableId == 'defectsTable') {
+            parameters.push({"name": "title", "value": $('#title').val() });
+            parameters.push({"name": "titleCase", "value": $('#titleCase option:selected').val() });
+            parameters.push({"name": "tags", "value": $('#tags').val() });
+            parameters.push({"name": "status", "value": $('#status option:selected').val() });
+            parameters.push({"name": "assignedToId", "value": $('#assignedToId option:selected').val() });
+            parameters.push({"name": "submittedById", "value": $('#submittedById option:selected').val() });
+            parameters.push({"name": "dateFrom", "value": $('#dateFrom').val() });
+            parameters.push({"name": "dateTo", "value": $('#dateTo').val() });
+        }
+
     }
 
-  }
-
 // creating a defect
-  $('#createDefectButton').click(function() {
-    $('#createDefectDialog').dialog('open');
-  });
-
-  $('#createDefectForm').oxForm({
-            submissionCallback: function() {
-              refreshTableContents('#defectsTable', true, true);
-              $('#createDefectDialog').dialog('close');
-            }
-          });
-
-    $('#createDefectDialog').dialog({
-        autoOpen: false,
-        width: 700,
-        modal: true,
-        buttons: {
+    $('#createDefectButton').click(function() {
+        $('#createDefectDialog').dialog("option", "buttons",
+        {
             "Confirm": {
                 click: function() {
-                $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+                    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
                 },
                 id: "createDefectDialogConfirmButton",
                 text:"Confirm"
             },
             "Cancel": {
-                click: function(){
+                click: function() {
+                    $(this).dialog('close');
+                },
+                id:"createDefectDialogCancelButton",
+                text: "Cancel"
+            }
+        });
+        $('#createDefectDialog').dialog('open');
+    });
+
+    $('#createDefectForm').oxForm({
+        submissionCallback: function() {
+            refreshTableContents('#defectsTable', true, true);
+            $('#createDefectDialog').dialog('close');
+        }
+    });
+
+    $('#createDefectDialog').dialog("option", "buttons", {
+        buttons: {
+            "Confirm": {
+                click: function() {
+                    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+                },
+                id: "createDefectDialogConfirmButton",
+                text:"Confirm"
+            },
+            "Cancel": {
+                click: function() {
                     $(this).dialog('close');
                 },
                 id:"createDefectDialogCancelButton",
@@ -196,16 +212,16 @@ $(document).ready(function() {
 //updating a defect
 
 
-  $('#updateDefectForm').oxForm({
-    submissionCallback: function () {
-        refreshTableContents('#defectsTable', true, true);
-    },
-    loadAction: '@{Defects.defectDetails()}'
-  });
+    $('#updateDefectForm').oxForm({
+        submissionCallback: function () {
+            refreshTableContents('#defectsTable', true, true);
+        },
+        loadAction: '@{Defects.defectDetails()}'
+    });
 
-    $('#updateDefectButtonConfirm').button().click(function(){
+    $('#updateDefectButtonConfirm').button().click(function() {
         $('#updateDefectForm').ajaxSubmit({
-            success: function(){
+            success: function() {
                 refreshTableContents('#defectsTable', true, true);
             }
         });
@@ -214,18 +230,18 @@ $(document).ready(function() {
     $('#updateDefectButtonConfirm').button('disable');
 
 // delete defect
-  $('#deleteDefectButton').click(function() {
-      deletionConfirmation('deleteDefectDialog', 'Defect', getSelectedRowColumn($('#defectsTable').dataTable(), 2), function(){
-          $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
-                function(data) {
-                    refreshTableContents('#defectsTable', true, false);
-                    $('#updateDefectButton').button('disable');
-                    $('#deleteDefectButton').button('disable');
-                    $('#defectDetails').hide();
-                    $('#defectList').show();
-                }).error(errorHandler);
-      })
-  });
+    $('#deleteDefectButton').click(function() {
+        deletionConfirmation('deleteDefectDialog', 'Defect', getSelectedRowColumn($('#defectsTable').dataTable(), 2), function() {
+            $.post('@{Defects.deleteDefect()}', {defectId: getSelectedRowId('#defectsTable')}).success(
+                    function(data) {
+                        refreshTableContents('#defectsTable', true, false);
+                        $('#updateDefectButton').button('disable');
+                        $('#deleteDefectButton').button('disable');
+                        $('#defectDetails').hide();
+                        $('#defectList').show();
+                    }).error(errorHandler);
+        })
+    });
 
 // comments
 
@@ -233,35 +249,35 @@ $(document).ready(function() {
 
     $('#addDefectCommentForm').oxForm({});
 
-    $('#addDefectCommentForm_comment_comment').focus(function(){
-         $('#addCommentAndDefectButton').button('enable')
+    $('#addDefectCommentForm_comment_comment').focus(function() {
+        $('#addCommentAndDefectButton').button('enable')
     });
-    
-    $('#addCommentAndDefectButton').button().click(function(){
-            $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
-            $('#updateDefectForm').ajaxSubmit({
-                success: function(){
-                    refreshTableContents('#defectsTable', true, true);
-                }
-            });
-            refreshCommentsList();
+
+    $('#addCommentAndDefectButton').button().click(function() {
+        $('#addDefectCommentForm').oxForm('submitCreateForm', {defectId: getSelectedRowId('#defectsTable')});
+        $('#updateDefectForm').ajaxSubmit({
+            success: function() {
+                refreshTableContents('#defectsTable', true, true);
+            }
+        });
+        refreshCommentsList();
     });
     $('#addCommentAndDefectButton').button('disable');
 
-    
-    handleRowSelection('#defectsTable', function(rowId){
-        if(rowId!=''){
+
+    handleRowSelection('#defectsTable', function(rowId) {
+        if (rowId != '') {
             $('#updateDefectForm').oxForm('load', getSelectedRowId('#defectsTable'));
             $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
                 if (!ko.mapping.isMapped(viewModelComments)) {
-                  $.extend(viewModelComments, ko.mapping.fromJS(data));
-                  ko.applyBindings(viewModelComments, document.getElementById("comments-binding"));
+                    $.extend(viewModelComments, ko.mapping.fromJS(data));
+                    ko.applyBindings(viewModelComments, document.getElementById("comments-binding"));
                 } else {
-                  ko.mapping.updateFromJS(viewModelComments, data);
+                    ko.mapping.updateFromJS(viewModelComments, data);
                 }
             });
             refreshCommentsList();
-            if($('#defectDetails').is(':hidden'))
+            if ($('#defectDetails').is(':hidden'))
                 $('#defectDetails').slideDown('slow');
             $('#deleteDefectButton').button('enable');
         }
@@ -271,52 +287,54 @@ $(document).ready(function() {
 
     //comments template scripts
 
-    function commentScripts(){
+    function commentScripts() {
         var id;
-        $('.comments-entry').hover(function(){
+        $('.comments-entry').hover(function() {
             id = $(this).attr('id').replace("mainCommentId", "");
-           $('#'+id).slideDown('fast');
-        }, function(){
-            $('#'+id).slideUp('fast');
+            $('#' + id).slideDown('fast');
+        }, function() {
+            $('#' + id).slideUp('fast');
         });
 
         // after editing comment list of comments is refreshed, we need to listen to mouse movement in order to display edit and remove button again
-        $('.comments-entry').mouseover(function(){
+        $('.comments-entry').mouseover(function() {
             id = $(this).attr('id').replace("mainCommentId", "");
-           $('#'+id).slideDown('fast');
+            $('#' + id).slideDown('fast');
         });
 
-        $('.button-edit-comment').click(function(){
+        $('.button-edit-comment').click(function() {
             id = $(this).attr('id');
-            $('#hiddenDiv'+id).show();
-            $('#visibleDiv'+id).hide();
-            $('#visibleActions'+id).hide();
-            $('#hiddenActions'+id).show();
+            $('#hiddenDiv' + id).show();
+            $('#visibleDiv' + id).hide();
+            $('#visibleActions' + id).hide();
+            $('#hiddenActions' + id).show();
 
         });
-        $('.commentEditCancelButton').button().click(function(){
-            $('#hiddenDiv'+id).hide();
-            $('#visibleDiv'+id).show();
-            $('#visibleActions'+id).show();
-            $('#hiddenActions'+id).hide();
+        $('.commentEditCancelButton').button().click(function() {
+            $('#hiddenDiv' + id).hide();
+            $('#visibleDiv' + id).show();
+            $('#visibleActions' + id).show();
+            $('#hiddenActions' + id).hide();
         });
-        $('.commentEditConfirmButton').button().click(function(){
-            $.post("@{Defects.editComment()}", {commentId:id,comment:$('#commentEditInputId'+id).val()},function(){
-                refreshCommentsList();
-            }).error(errorHandler);
+        $('.commentEditConfirmButton').button().click(function() {
+            $.post("@{Defects.editComment()}", {commentId:id,comment:$('#commentEditInputId' + id).val()},
+                    function() {
+                        refreshCommentsList();
+                    }).error(errorHandler);
         });
 
-        $('.button-delete-comment').click(function(){
+        $('.button-delete-comment').click(function() {
             var commentId = $(this).attr('id');
-            deletionConfirmation('deleteCommentDialog', 'Comment', $('#commentEditInputId'+id).val(), function(){
-                $.post('@{Defects.deleteComment()}', {commentId:commentId},function(){
-                    refreshCommentsList();
-                }).error(errorHandler);
+            deletionConfirmation('deleteCommentDialog', 'Comment', $('#commentEditInputId' + id).val(), function() {
+                $.post('@{Defects.deleteComment()}', {commentId:commentId},
+                        function() {
+                            refreshCommentsList();
+                        }).error(errorHandler);
             })
         })
     }
 
-    function refreshCommentsList(){
+    function refreshCommentsList() {
         $.getJSON('@{Defects.getComments()}', {defectId:getSelectedRowId('#defectsTable')}, function(data) {
             ko.mapping.updateFromJS(viewModelComments, data);
             applyDefectCommentsButtonStyles();
@@ -325,18 +343,16 @@ $(document).ready(function() {
     }
 
 
-
-
 // filter functions
 
-  var filterSaveAction = #{jsAction @Defects.saveFilter() /};
-  var filterLoadAction = #{jsAction @Defects.loadFilters() /};
-  var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
+    var filterSaveAction = #{jsAction @Defects.saveFilter() /};
+    var filterLoadAction = #{jsAction @Defects.loadFilters() /};
+    var filterLoadByIdAction = #{jsAction @Defects.loadFilterById() /};
 
-  $('#filterContainer').oxFilter({
-            filterFormId: 'defectsFilterForm',
-            filterParameters: function() {
-              return {
+    $('#filterContainer').oxFilter({
+        filterFormId: 'defectsFilterForm',
+        filterParameters: function() {
+            return {
                 "constraint[title][value]" : $('#title').val(),
                 "constraint[title][match]" : $('#titleCase').val(),
                 "constraint[status][value]" : $('#status').val(),
@@ -345,20 +361,20 @@ $(document).ready(function() {
                 "constraint[submittedBy][value]" : $('#submittedById').val(),
                 "constraint[created][dateFrom]" : $('#dateFrom').val(),
                 "constraint[created][dateTo]" : $('#dateTo').val()
-              };
-            },
-            filterSaveAction: filterSaveAction,
-            filterLoadAction: filterLoadAction,
-            filterLoadByIdAction: filterLoadByIdAction,
-            onSelect: function() {
-              refreshTableContents('#defectsTable', true);
-            }
-          });
-
-        // this covers the case when user clicks on clear filter as that doesn't call onSelect method of filter plugin
-        $('#filterSelect').change(function(){
+            };
+        },
+        filterSaveAction: filterSaveAction,
+        filterLoadAction: filterLoadAction,
+        filterLoadByIdAction: filterLoadByIdAction,
+        onSelect: function() {
             refreshTableContents('#defectsTable', true);
-        });
+        }
+    });
+
+    // this covers the case when user clicks on clear filter as that doesn't call onSelect method of filter plugin
+    $('#filterSelect').change(function() {
+        refreshTableContents('#defectsTable', true);
+    });
 });
 
 
@@ -366,41 +382,42 @@ $(document).ready(function() {
 
 #{if createDefect}
 <script id="create" type="text/javascript">
-  $(document).ready(function() {
-    $('#createDefectDialog').dialog('open');
-    $('#createDefectForm_defect_description').val('${defectDescription.raw()}');
-  });
+    $(document).ready(function() {
+        $('#createDefectDialog').dialog('open');
+        $('#createDefectForm_defect_description').val('${defectDescription.raw()}');
+    });
 </script>
 #{/if}
 
 <script id='commentsTemplate' type='text/html'>
 
 
-            <div class="comments-entry" data-bind="attr: {id: mainCommentId}">
-                <div class="comments-caption">
-                    <span data-bind="text: submittedBy"> </span> commented <span style="float:right;" data-bind="text: submittedOn"> </span>
-                </div>
+    <div class="comments-entry" data-bind="attr: {id: mainCommentId}">
+        <div class="comments-caption">
+            <span data-bind="text: submittedBy"> </span> commented <span style="float:right;"
+                                                                         data-bind="text: submittedOn"> </span>
+        </div>
 
-                <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
-                   <div style="display:none;" class="hiddenOnLoad" data-bind="attr: {id: id}">
-                    <button  class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
-                    <button  class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
-                   </div>
-                </div>
-
-                <div class="comment-display-container" data-bind="attr: {id: visibleDivId}">
-                    <div class="comment-container" data-bind="html: comment"></div>
-                </div>
-                <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}"  style="display:none;">
-                    <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
-                        <button class="commentEditCancelButton">Cancel</button>
-                        <button id="commentEditConfirmButton" class="commentEditConfirmButton">Save</button>
-                    </div>
-                    <div class="comments-entry-edit" id="comments-entry-edit">
-                        <textarea class="comments-entry-edit" data-bind="attr: {id: commentEditInputId}, value: commentText" />
-                    </div>
-                </div>
+        <div class="comments-actions" data-bind="attr: {id: visibleActionsId}, visible: canEdit">
+            <div style="display:none;" class="hiddenOnLoad" data-bind="attr: {id: id}">
+                <button class="button-edit-comment" data-bind="attr: {id: id}">Edit</button>
+                <button class="button-delete-comment" data-bind="attr: {id: id}">Remove</button>
             </div>
+        </div>
+
+        <div class="comment-display-container" data-bind="attr: {id: visibleDivId}">
+            <div class="comment-container" data-bind="html: comment"></div>
+        </div>
+        <div class="comments-entry-edit-container" data-bind="attr: {id: hiddenDivId}" style="display:none;">
+            <div class="comments-actions" data-bind="attr: {id: hiddenActionsId}">
+                <button class="commentEditCancelButton">Cancel</button>
+                <button id="commentEditConfirmButton" class="commentEditConfirmButton">Save</button>
+            </div>
+            <div class="comments-entry-edit" id="comments-entry-edit">
+                <textarea class="comments-entry-edit" data-bind="attr: {id: commentEditInputId}, value: commentText"/>
+            </div>
+        </div>
+    </div>
 
 
 </script>

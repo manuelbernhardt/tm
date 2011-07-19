@@ -4,210 +4,212 @@
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
-            #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(), baseClass:'models.tm.TMUser',
-        openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
-        #{input.field field:'user.user.firstName', label:'First Name' /}
-        #{input.field field:'user.user.lastName', label:'Last Name' /}
-        #{input.field field:'user.user.email', label:'Email' /}
-        #{input.field field:'user.user.password', label:'Password' /}
-        #{/formDialog}
+            #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(),
+            baseClass:'models.tm.TMUser',
+            openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
+            #{input.field field:'user.user.firstName', label:'First Name' /}
+            #{input.field field:'user.user.lastName', label:'Last Name' /}
+            #{input.field field:'user.user.email', label:'Email' /}
+            #{input.field field:'user.user.password', label:'Password' /}
+            #{/formDialog}
 
-        <button class="button-delete" id="removeUserButton">Remove</button>
+            <button class="button-delete" id="removeUserButton">Remove</button>
 
-        <div id="dialog-confirm" title="Confirm user removal">
-          <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="confirmationMessage"></span></p>
-        </div>
+            <div id="dialog-confirm" class="confirm-dialog" title="Confirm user removal">
+                <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span
+                        id="confirmationMessage"></span></p>
+            </div>
         </div>
     </div>
-  <div class="tree-container">
-      <div class="left_table">
+    <div class="tree-container">
+        <div class="left_table">
 
 
-        #{box 'Users'}
-        <table class="display" id="tab">
-          <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        #{/box}
-      </div>
-      <div class="right_tree">
-
-
-
-        <div id="innerTabs">
-        <ul>
-          <li><a href="#userDetails"><span>User details</span></a></li>
-          <li><a href="#projects"><span>Projects</span></a></li>
-          <li><a href="#account"><span>Account</span></a></li>
-        </ul>
-        <div id="userDetails">
-          <div class="hiddenOnLoad">
-            #{ox.form action:@admin.Users.edit(), edit:util.Require.roles([[models.general.UnitRole.USEREDIT]]), id:'userDetailsForm', baseClass:'models.tm.TMUser'}
-                #{ox.field field:'tmUser.user.firstName', label:'First Name' /}
-                #{ox.field field:'tmUser.user.lastName', label:'Last Name' /}
-                #{ox.field field:'tmUser.user.email', label:'Email' /}
-                #{ox.field field:'tmUser.user.phone', label:'Phone' /}
-                #{ox.field field:'tmUser.id', hidden:true /}
-                #{ox.field field:'tmUser.user.id', hidden:true /}
-                #{ox.field field:'tmUser.account.id', hidden:true /}
-                #{ox.field field:'tmUser.user.account.id', hidden:true /}
-                #{ox.submit /}
-            #{/ox.form}
-          </div>
-          <div class="shownOnLoad">
-            No user selected.
-          </div>
+            #{box 'Users'}
+            <table class="display" id="tab">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            #{/box}
         </div>
-        <div id="projects">
-          <div class="hiddenOnLoad">
-                #{include 'admin/Users/projects.html'/}
-          </div>
-          <div class="shownOnLoad">
-            No user selected.
-          </div>
+        <div class="right_tree">
+
+
+            <div id="innerTabs">
+                <ul>
+                    <li><a href="#userDetails"><span>User details</span></a></li>
+                    <li><a href="#projects"><span>Projects</span></a></li>
+                    <li><a href="#account"><span>Account</span></a></li>
+                </ul>
+                <div id="userDetails">
+                    <div class="hiddenOnLoad">
+                        #{ox.form action:@admin.Users.edit(),
+                        edit:util.Require.roles([[models.general.UnitRole.USEREDIT]]), id:'userDetailsForm',
+                        baseClass:'models.tm.TMUser'}
+                        #{ox.field field:'tmUser.user.firstName', label:'First Name' /}
+                        #{ox.field field:'tmUser.user.lastName', label:'Last Name' /}
+                        #{ox.field field:'tmUser.user.email', label:'Email' /}
+                        #{ox.field field:'tmUser.user.phone', label:'Phone' /}
+                        #{ox.field field:'tmUser.id', hidden:true /}
+                        #{ox.field field:'tmUser.user.id', hidden:true /}
+                        #{ox.field field:'tmUser.account.id', hidden:true /}
+                        #{ox.field field:'tmUser.user.account.id', hidden:true /}
+                        #{ox.submit /}
+                        #{/ox.form}
+                    </div>
+                    <div class="shownOnLoad">
+                        No user selected.
+                    </div>
+                </div>
+                <div id="projects">
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Users/projects.html'/}
+                    </div>
+                    <div class="shownOnLoad">
+                        No user selected.
+                    </div>
+                </div>
+                <div id="account">
+                    <div class="hiddenOnLoad">
+                        <div id="accountActions">
+
+                            <div><input id='userAdmin' type="checkbox" value="userAdmin" data-bind="checked: accounts"/>
+                                User administration
+                            </div>
+                            <div><input id="projectAdmin" type="checkbox" value="projectAdmin"
+                                        data-bind="checked: accounts"/> Project administration
+                            </div>
+                            <div><input id="accountAdmin" type="checkbox" value="accountAdmin"
+                                        data-bind="checked: accounts"/> Account administration
+                            </div>
+                            <button id="saveButton">Save</button>
+                        </div>
+                    </div>
+                    <div class="shownOnLoad">
+                        No user selected.
+                    </div>
+                </div>
+
+
+            </div>
         </div>
-        <div id="account">
-          <div class="hiddenOnLoad">
-              <div id="accountActions">
 
-                        <div><input id='userAdmin' type="checkbox" value="userAdmin" data-bind="checked: accounts" /> User administration</div>
-                        <div><input id="projectAdmin" type="checkbox" value="projectAdmin" data-bind="checked: accounts" /> Project administration</div>
-                        <div><input id="accountAdmin" type="checkbox" value="accountAdmin" data-bind="checked: accounts" /> Account administration</div>
-                        <button id="saveButton">Save</button>
-              </div>
-          </div>
-          <div class="shownOnLoad">
-            No user selected.
-          </div>
-        </div>
-
-
-      </div>
-  </div>
-
-</div>
+    </div>
 </div>
 
 #{set 'moreScripts'}
 
 <script type="text/javascript">
 
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-      var viewModel = {
+        var viewModel = {
             accounts: ko.observableArray([''])
-      };
-      ko.applyBindings(viewModel, document.getElementById('accountActions'));
+        };
+        ko.applyBindings(viewModel, document.getElementById('accountActions'));
 
-      $("#removeUserButton").click(function () {
-          $("#dialog-confirm").dialog('open');
-      });
-
-    $("#dialog-confirm").dialog({
-          autoOpen: false,
-          resizable: false,
-          width:300,
-          height: 'auto',
-          modal: true,
-          open: function() {
+        $("#removeUserButton").click(function () {
+            $("#dialog-confirm").dialog('open');
+            $("#dialog-confirm").dialog("option", "buttons", {
+                "Remove the user": {
+                    click:function() {
+                        $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')},
+                                function() {
+                                    refreshTableContents('#tab', false);
+                                    $("#removeUserButton").button('disable');
+                                }).error(errorHandler);
+                        $(this).dialog("close");
+                    },
+                    id: "dialogConfirmConfirmButton",
+                    text: "Remove the user"
+                },
+                Cancel: {
+                    click: function() {
+                        $(this).dialog("close");
+                    },
+                    id: "dialogConfirmCancelButton",
+                    text: "Cancel"
+                }
+            });
             $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
-          },
-          buttons: {
-            "Remove the user": {
-                click:function() {
-                    $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')}, function() {
-                        refreshTableContents('#tab', false);
-                        $("#removeUserButton").button('disable');
-                    }).error(errorHandler);
-                    $(this).dialog("close");
-                },
-                id: "dialogConfirmConfirmButton",
-                text: "Remove the user"
-            },
-            Cancel: {
-                click: function() {
-                    $(this).dialog("close");
-                },
-                id: "dialogConfirmCancelButton",
-                text: "Cancel"
-            }
-          }
-    });
+        });
 
-    $('#userDetailsForm').oxForm({
-      loadAction: '@{admin.Users.userDetailsData()}',
-      submissionCallback:function() {
-                            refreshTableContents('#tab', false);
-                          }
-    });
 
-    #{tabularasa.init tableId:'tab'}
-    var tabParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "user.firstName"},
-        {"sName": "user.lastName"}
-      ],
-      "sAjaxSource": "@{admin.Users.data()}",
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "oLanguage": {
-        "sZeroRecords": "No users defined yet"
-      },
-      "fnDrawCallback": function(data){
-          
-          handlePagination('#tab',  data);
-      }
-    };
-    #{/tabularasa.init}
-    handleRowSelection('#tab', function(rowId){
-        if(rowId!=''){
-            $("#removeUserButton").button('enable');
-            $('.hiddenOnLoad').show();
-            $('.shownOnLoad').hide();
-            $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
-            updateCheckboxes();
-        }
-    });
-
-      $("#innerTabs").tabs();
-      $('.hiddenOnLoad').hide();
-
-      $('#saveButton').button({disabled:true}).click(function(){
-
-            $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },function(){
-                updateCheckboxes();
-            }).error(errorHandler);
-            $('#saveButton').button('disable');
-      });
-
-      $(':checkbox').click(function(){
-            $('#saveButton').button('enable');
-      });
-
-      //search filter align to left side
-      $('#tab_filter').addClass('search-input-table-left');
-
-      function updateCheckboxes(){
-        viewModel.accounts.removeAll();
-        $.getJSON('@{admin.Users.getAccountRoles()}', {userId: getSelectedRowId("#tab")}, function(data){
-            for(var i=0;i<data.length;i++){
-                viewModel.accounts.push(data[i]);
-
+        $('#userDetailsForm').oxForm({
+            loadAction: '@{admin.Users.userDetailsData()}',
+            submissionCallback:function() {
+                refreshTableContents('#tab', false);
             }
         });
-      }
 
-  });
+        #{tabularasa.init tableId:'tab'}
+        var tabParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone" },
+                {"sName": "user.firstName"},
+                {"sName": "user.lastName"}
+            ],
+            "sAjaxSource": "@{admin.Users.data()}",
+            "bProcessing": false,
+            "bServerSide": true,
+            "bLengthChange": false,
+            "bSort": false,
+            "iDisplayLength": 10,
+            "bInfo": false,
+            "oLanguage": {
+                "sZeroRecords": "No users defined yet"
+            },
+            "fnDrawCallback": function(data) {
+
+                handlePagination('#tab', data);
+            }
+        };
+        #{/tabularasa.init}
+        handleRowSelection('#tab', function(rowId) {
+            if (rowId != '') {
+                $("#removeUserButton").button('enable');
+                $('.hiddenOnLoad').show();
+                $('.shownOnLoad').hide();
+                $('#userDetailsForm').oxForm('load', getSelectedRowId('#tab'));
+                updateCheckboxes();
+            }
+        });
+
+        $("#innerTabs").tabs();
+        $('.hiddenOnLoad').hide();
+
+        $('#saveButton').button({disabled:true}).click(function() {
+
+            $.post('@{admin.Users.updateAccountRoles()}', {userId: getSelectedRowId("#tab"), roles: viewModel.accounts() },
+                    function() {
+                        updateCheckboxes();
+                    }).error(errorHandler);
+            $('#saveButton').button('disable');
+        });
+
+        $(':checkbox').click(function() {
+            $('#saveButton').button('enable');
+        });
+
+        //search filter align to left side
+        $('#tab_filter').addClass('search-input-table-left');
+
+        function updateCheckboxes() {
+            viewModel.accounts.removeAll();
+            $.getJSON('@{admin.Users.getAccountRoles()}', {userId: getSelectedRowId("#tab")}, function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    viewModel.accounts.push(data[i]);
+
+                }
+            });
+        }
+
+    });
 
 </script>
 #{/set}

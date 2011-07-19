@@ -2,92 +2,93 @@
 #{set title:'Requirements' /}
 
 <div id='deleteConfirmationDialogRequirement' title="Confirm deletion of requirement"></div>
-        
-<div class="container">
-    <div id="actions" class="actions">
 
-        <div class="actions buttons">
-            #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
-                <button id="create_folder" class='button-add-folder'>Create new folder</button>
+<div class="container">
+<div id="actions" class="actions">
+
+    <div class="actions buttons">
+        #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+        <button id="create_folder" class='button-add-folder'>Create new folder</button>
                     <span>
                     <button id="create_requirement" class="button-add">Requirement</button>
                     <button id="create_actions">Select an action</button>
                       <!-- style with margin bottom and z-index is here because of menu bug -->
                       <ul style="margin-bottom:-2em;z-index:20">
-                        <li><span id="import_requirements">Import requirements</span></li>
+                          <li><span id="import_requirements">Import requirements</span></li>
                       </ul>
                     </span>
-                    <div id="importRequirementsDialog">
-                    <div id="fileupload">
-                      <form action="@{Requirements.uploadExcel()}" method="POST" enctype="multipart/form-data">
-                        <div class="fileupload-buttonbar">
-                          <label class="fileinput-button">
+
+        <div id="importRequirementsDialog" class="tree-dialog" title="Import Requirements from Excel file">
+            <div id="fileupload">
+                <form action="@{Requirements.uploadExcel()}" method="POST" enctype="multipart/form-data">
+                    <div class="fileupload-buttonbar">
+                        <label class="fileinput-button">
                             <span>Add files...</span>
                             <input type="file" name="files" multiple>
-                          </label>
-                        </div>
-                      </form>
-                      <div class="fileupload-content">
-                        <table class="files"></table>
-                        <div class="fileupload-progressbar"></div>
-                      </div>
+                        </label>
                     </div>
-                    </div>
-            #{/deadbolt.restrict}
-            #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
-            <button id="remove" class="button-delete">Remove</button>
-            <input id="searchInput" class="searchInput" type="text">
-            #{/deadbolt.restrict}
+                </form>
+                <div class="fileupload-content">
+                    <table class="files"></table>
+                    <div class="fileupload-progressbar"></div>
+                </div>
+            </div>
+        </div>
+        #{/deadbolt.restrict}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+        <button id="remove" class="button-delete">Remove</button>
+        <input id="searchInput" class="searchInput" type="text">
+        #{/deadbolt.restrict}
+    </div>
+</div>
+<div class="tree-container">
+    <div class="left_tree">
+
+        #{box 'Requirements'}
+
+        <div id="requirementTree" class="tree" style="border-style:none;">
+
+        </div>
+        #{/box}
+    </div>
+    <div class="right_tree">
+        <div id="innerTabs">
+            <ul>
+                <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
+                <li><a href="#linked"><span>Linked entities</span></a></li>
+            </ul>
+            <div id="requirementDetails">
+                <div class="hiddenOnLoad">
+                    #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]),
+                    id:'requirementForm', baseClass:'models.tm.Requirement'}
+                    #{ox.field field:'requirement.name', label:'Name' /}
+                    #{ox.field field:'requirement.description', label:'Description' /}
+                    #{ox.field field:'requirement.tags', label:'Tags', type:'tags', tagsUrl:@Requirements.allTags() /}
+                    *{the following fields are necessary because play can't bind stuff automatically yet}*
+                    #{ox.field field:'requirement.id', hidden:true /}
+                    #{ox.field field:'requirement.account.id', hidden:true /}
+                    #{ox.field field:'requirement.project.id', hidden:true /}
+                    #{ox.field field:'requirement.project.account.id', hidden:true /}
+                    #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
+                    #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
+                    #{ox.submit /}
+                    #{/ox.form}
+                </div>
+                <div class="shownOnLoad">
+                    No requirement selected.
+                </div>
+
+            </div>
+            <div id="linked">
+                <div class="hiddenOnLoad">
+                    #{include 'Requirements/linkedEntities.html' /}
+                </div>
+                <div class="shownOnLoad">
+                    No requirement selected.
+                </div>
+            </div>
         </div>
     </div>
-    <div class="tree-container">
-        <div class="left_tree">
-
-            #{box 'Requirements'}
-
-            <div id="requirementTree" class="tree" style="border-style:none;">
-
-            </div>
-            #{/box}
-        </div>
-        <div class="right_tree">
-            <div id="innerTabs">
-                <ul>
-                    <li><a href="#requirementDetails" id="details"><span>Requirement details</span></a></li>
-                    <li><a href="#linked"><span>Linked entities</span></a></li>
-                </ul>
-                <div id="requirementDetails">
-                    <div class="hiddenOnLoad">
-                        #{ox.form action:@Requirements.edit(), edit:util.Require.roles([[models.general.UnitRole.REQEDIT]]),
-                        id:'requirementForm', baseClass:'models.tm.Requirement'}
-                        #{ox.field field:'requirement.name', label:'Name' /}
-                        #{ox.field field:'requirement.description', label:'Description' /}
-                        #{ox.field field:'requirement.tags', label:'Tags', type:'tags', tagsUrl:@Requirements.allTags() /}
-                        *{the following fields are necessary because play can't bind stuff automatically yet}*
-                        #{ox.field field:'requirement.id', hidden:true /}
-                        #{ox.field field:'requirement.account.id', hidden:true /}
-                        #{ox.field field:'requirement.project.id', hidden:true /}
-                        #{ox.field field:'requirement.project.account.id', hidden:true /}
-                        #{ox.field field:'requirement.project.projectCategory.id', hidden:true /}
-                        #{ox.field field:'requirement.project.projectCategory.account.id', hidden:true /}
-                        #{ox.submit /}
-                        #{/ox.form}
-                    </div>
-                    <div class="shownOnLoad">
-                        No requirement selected.
-                    </div>
-
-                </div>
-                <div id="linked">
-                    <div class="hiddenOnLoad">
-                        #{include 'Requirements/linkedEntities.html' /}
-                    </div>
-                    <div class="shownOnLoad">
-                        No requirement selected.
-                    </div>
-                </div>
-            </div>
-      </div>
 </div>
 
 
@@ -95,149 +96,160 @@
 
 <script type="text/javascript">
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    var isRequirement = function(event, data) { return isSelectedNodeType(data, ["requirement", "default"])};
-    var isNotRequirement = function(event, data) { return !isSelectedNodeType(data, ["requirement", "default"])};
+        var isRequirement = function(event, data) {
+            return isSelectedNodeType(data, ["requirement", "default"])
+        };
+        var isNotRequirement = function(event, data) {
+            return !isSelectedNodeType(data, ["requirement", "default"])
+        };
 
-    iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement)
-            .rule('.shownOnLoad', $hide )
-            .rule('.hiddenOnLoad', $show )
-            .rule('#remove', $enableButton)
-            .rule('#requirementForm', function(targets, data) { targets.oxForm('load', getNodeIdFromData(data)) })
-            .rule(null, function() { reloadTables() });
+        iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement)
+                .rule('.shownOnLoad', $hide)
+                .rule('.hiddenOnLoad', $show)
+                .rule('#remove', $enableButton)
+                .rule('#requirementForm', function(targets, data) {
+            targets.oxForm('load', getNodeIdFromData(data))
+        })
+                .rule(null, function() {
+            reloadTables()
+        });
 
-    iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement)
-            .rule('.shownOnLoad', $show)
-            .rule('.hiddenOnLoad', $hide)
-            .rule('#remove', $enableButton);
+        iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement)
+                .rule('.shownOnLoad', $show)
+                .rule('.hiddenOnLoad', $hide)
+                .rule('#remove', $enableButton);
 
-    iRule('#create_folder', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"}) } );
-    iRule('#create_requirement', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"}) } );
-    iRule('#create_actions', 'click.button', null, '#create_actions', function(targets) { targets.attr("style", "margin-left:-0.3em") } );
-    iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', $openDialog );
-    iRule('#remove', 'click.button', null, null, function() {
-      var node = getSelectedNode('requirementTree');
-      deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion) {
-        $("#requirementTree").jstree("remove", null);
-      });
-    });
-    iRule('#searchInput', 'keyup', null, '#requirementTree', function(targets) { targets.jstree("search", $('#searchInput').val()) });
-
-    $("#innerTabs").tabs();
-
-    $("#requirementTree").tree({
-              types: requirementTreeTypes,
-              onRename: function(name) {
-                var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
-                $(fieldName).val(name);
-              },
-              onDeleteFailed: function() {
-                errorMessage("Could not delete requirement - make sure there are no linked entities left.", "Error deleting requirement")
-              }
-            });
-
-    $('#requirementForm').oxForm({
-              loadAction: '@{Requirements.requirementsDetailsData()}',
-              submissionCallback: function() {
-                refreshTree('requirementTree');
-              }
-            });
-
-    $('#create_requirement')
-            .next()
-            .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }}).attr("style", "margin-left:-0.3em")
-            .oxMenu()
-            .parent()
-            .buttonset();
-
-    $('#importRequirementsDialog').dialog({
-              autoOpen: false,
-              height: 400,
-              width: 500,
-              modal: true,
-              title: 'Import Requirements from Excel file',
-              buttons: {
+        iRule('#create_folder', 'click.button', null, '#requirementTree', function(targets) {
+            targets.jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"})
+        });
+        iRule('#create_requirement', 'click.button', null, '#requirementTree', function(targets) {
+            targets.jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"})
+        });
+        iRule('#create_actions', 'click.button', null, '#create_actions', function(targets) {
+            targets.attr("style", "margin-left:-0.3em")
+        });
+        iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', $openDialog);
+        iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', function() {
+            $('#importRequirementsDialog').dialog("option", "buttons", {
                 "Close": {
                     click: function() {
-                      $(this).dialog('close');
+                        $(this).dialog('close');
                     },
                     id: "importRequirementsDialogCancelButton",
                     text: "Close"
                 }
-              }
             });
+        });
+        iRule('#remove', 'click.button', null, null, function() {
+            var node = getSelectedNode('requirementTree');
+            deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree'), function(deletion) {
+                $("#requirementTree").jstree("remove", null);
+            });
+        });
+        iRule('#searchInput', 'keyup', null, '#requirementTree', function(targets) {
+            targets.jstree("search", $('#searchInput').val())
+        });
 
-    $('#fileupload').fileupload({autoUpload: true});
+        $("#innerTabs").tabs();
 
-  });
+        $("#requirementTree").tree({
+            types: requirementTreeTypes,
+            onRename: function(name) {
+                var fieldName = '#' + $('#requirementForm').oxForm('getFieldId', 'requirement.name');
+                $(fieldName).val(name);
+            },
+            onDeleteFailed: function() {
+                errorMessage("Could not delete requirement - make sure there are no linked entities left.", "Error deleting requirement")
+            }
+        });
+
+        $('#requirementForm').oxForm({
+            loadAction: '@{Requirements.requirementsDetailsData()}',
+            submissionCallback: function() {
+                refreshTree('requirementTree');
+            }
+        });
+
+        $('#create_requirement')
+                .next()
+                .button({text: false, icons: { primary: "ui-icon-triangle-1-s" }}).attr("style", "margin-left:-0.3em")
+                .oxMenu()
+                .parent()
+                .buttonset();
+
+
+        $('#fileupload').fileupload({autoUpload: true});
+
+    });
 
 </script>
 <script id="template-upload" type="text/x-jquery-tmpl">
-  <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-    <td class="preview"></td>
-    <td class="name">${name}</td>
-    <td class="size">${sizef}</td>
-    {{if error}}
-    <td class="error" colspan="2">Error:
-      {{if error === 'maxFileSize'}}File is too big
-      {{else error === 'minFileSize'}}File is too small
-      {{else error === 'acceptFileTypes'}}Filetype not allowed
-      {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
-      {{else}}${error}
-      {{/if}}
-    </td>
-    {{else}}
-    <td class="progress">
-      <div></div>
-    </td>
-    <td class="start">
-      <button>Start</button>
-    </td>
-    {{/if}}
-    <td class="cancel">
-      <button>Cancel</button>
-    </td>
-  </tr>
+    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+        <td class="preview"></td>
+        <td class="name">${name}</td>
+        <td class="size">${sizef}</td>
+        {{if error}}
+        <td class="error" colspan="2">Error:
+            {{if error === 'maxFileSize'}}File is too big
+            {{else error === 'minFileSize'}}File is too small
+            {{else error === 'acceptFileTypes'}}Filetype not allowed
+            {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+            {{else}}${error}
+            {{/if}}
+        </td>
+        {{else}}
+        <td class="progress">
+            <div></div>
+        </td>
+        <td class="start">
+            <button>Start</button>
+        </td>
+        {{/if}}
+        <td class="cancel">
+            <button>Cancel</button>
+        </td>
+    </tr>
 </script>
 <script id="template-download" type="text/x-jquery-tmpl">${name}
-  <tr class="template-download{{if error}} ui-state-error{{/if}}">
-    {{if error}}
-    <td></td>
-    <td class="name">${name}</td>
-    <td class="size">${sizef}</td>
-    <td class="error" colspan="2">Error:
-      {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
-      {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
-      {{else error === 3}}File was only partially uploaded
-      {{else error === 4}}No File was uploaded
-      {{else error === 5}}Missing a temporary folder
-      {{else error === 6}}Failed to write file to disk
-      {{else error === 7}}File upload stopped by extension
-      {{else error === 'maxFileSize'}}File is too big
-      {{else error === 'minFileSize'}}File is too small
-      {{else error === 'acceptFileTypes'}}Filetype not allowed, excepting an Excel file
-      {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
-      {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
-      {{else error === 'emptyResult'}}Empty file upload result
-      {{else}}${error}
-      {{/if}}
-    </td>
-    {{else}}
-    <td class="preview">
-      {{if thumbnail_url}}
-      <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
-      {{/if}}
-    </td>
-    <td class="name">
-      ${name}
-    </td>
-    <td class="size">${sizef}</td>
-    <td colspan="2"></td>
-    {{/if}}
-    <td class="delete">
-      <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
-    </td>
-  </tr>
+    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+        {{if error}}
+        <td></td>
+        <td class="name">${name}</td>
+        <td class="size">${sizef}</td>
+        <td class="error" colspan="2">Error:
+            {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
+            {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
+            {{else error === 3}}File was only partially uploaded
+            {{else error === 4}}No File was uploaded
+            {{else error === 5}}Missing a temporary folder
+            {{else error === 6}}Failed to write file to disk
+            {{else error === 7}}File upload stopped by extension
+            {{else error === 'maxFileSize'}}File is too big
+            {{else error === 'minFileSize'}}File is too small
+            {{else error === 'acceptFileTypes'}}Filetype not allowed, excepting an Excel file
+            {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+            {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
+            {{else error === 'emptyResult'}}Empty file upload result
+            {{else}}${error}
+            {{/if}}
+        </td>
+        {{else}}
+        <td class="preview">
+            {{if thumbnail_url}}
+            <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+            {{/if}}
+        </td>
+        <td class="name">
+            ${name}
+        </td>
+        <td class="size">${sizef}</td>
+        <td colspan="2"></td>
+        {{/if}}
+        <td class="delete">
+            <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
+        </td>
+    </tr>
 </script>
 #{/set}

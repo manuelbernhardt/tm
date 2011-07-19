@@ -47,7 +47,7 @@
 
 
 #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
-<div id="linkScriptDialog" title="Assign Test Script to Requirement">
+<div id="linkScriptDialog" class="tree-dialog" title="Assign Test Script to Requirement">
     <div id="repositoryTree" class="tree"></div>
 </div>
 #{/deadbolt.restrict}
@@ -85,8 +85,8 @@
         }
 
         handleRowSelection('#scriptTable', function(rowId) {
-            if(rowId!=''){
-              $("#unlinkScript").button('enable');
+            if (rowId != '') {
+                $("#unlinkScript").button('enable');
             }
         });
 
@@ -150,65 +150,61 @@
         $("#repositoryTree").tree({types: repositoryTreeTypes});
 
         $("#linkScript").click(function() {
+            $("#linkScriptDialog").dialog("option", "buttons", {
+                "Link": {
+
+                    click: function() {
+
+                        var valid = false;
+                        var treeContainer = $("#repositoryTree");
+                        var $tree = jQuery.jstree._reference(treeContainer);
+                        var selectedNode = $tree.get_selected();
+                        if ($tree._get_type(selectedNode) == 'script') {
+                            valid = true;
+                        } else {
+                            errorMessage("You need to select a script");
+                        }
+
+                        if (valid) {
+                            $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
+                                    function(data) {
+                                        $('#scriptTable').dataTable().fnDraw();
+                                    }).error(errorHandler)
+
+                            refreshTableContents('#defectTable', false);
+                            refreshTableContents('#instanceTable', false);
+
+                            $(this).dialog("close");
+                        }
+                    },
+                    id: "linkScriptDialogConfirmButton",
+                    text: "Link"
+                },
+                Cancel: {
+                    click: function() {
+                        $(this).dialog("close");
+                    },
+                    id: "linkScriptDialogCancelButton",
+                    text: "Cancel"
+                }
+
+            });
             $("#linkScriptDialog").dialog("open");
         });
 
         $("#unlinkScript").click(function () {
-            deletionConfirmation('unlinkScriptConfirmationDialog', 'Script', getSelectedRowColumn($('#scriptTable').dataTable(), 1), function(){
+            deletionConfirmation('unlinkScriptConfirmationDialog', 'Script', getSelectedRowColumn($('#scriptTable').dataTable(), 1), function() {
                 $.post('@{Requirements.unlinkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(getSelectedRowId('#scriptTable'))}).success(
-                    function(data) {
-                        $('#scriptTable').dataTable().fnDraw();
-                        refreshTableContents('#defectTable', false);
-                        refreshTableContents('#instanceTable', false);
-                    }).error(errorHandler);
+                        function(data) {
+                            $('#scriptTable').dataTable().fnDraw();
+                            refreshTableContents('#defectTable', false);
+                            refreshTableContents('#instanceTable', false);
+                        }).error(errorHandler);
             })
 
         });
 
-        $("#linkScriptDialog").dialog({
-            autoOpen: false,
-            height: 550,
-            width: 300,
-            modal: true,
-            buttons: {
-                "Link": {
 
-                        click: function() {
-
-                            var valid = false;
-                            var treeContainer = $("#repositoryTree");
-                            var $tree = jQuery.jstree._reference(treeContainer);
-                            var selectedNode = $tree.get_selected();
-                            if ($tree._get_type(selectedNode) == 'script') {
-                                valid = true;
-                            } else {
-                                errorMessage("You need to select a script");
-                            }
-
-                            if (valid) {
-                                $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
-                                        function(data) {
-                                            $('#scriptTable').dataTable().fnDraw();
-                                        }).error(errorHandler)
-
-                                refreshTableContents('#defectTable', false);
-                                refreshTableContents('#instanceTable', false);
-
-                                $(this).dialog("close");
-                            }
-                        },
-                        id: "linkScriptDialogConfirmButton",
-                        text: "Link"
-                },
-                Cancel: {
-                        click: function() {
-                           $(this).dialog("close");
-                        },
-                        id: "linkScriptDialogCancelButton",
-                        text: "Cancel"
-                }
-            }
-        });
     });
 </script>
 
