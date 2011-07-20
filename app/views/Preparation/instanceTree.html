@@ -22,6 +22,16 @@
 
 <script type="text/javascript">
 
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
+    treeNodeCanCreate = true;
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPEDIT]]}
+    treeNodeCanEdit = true;
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
+    treeNodeCanDelete = true;
+    #{/deadbolt.restrict}
+
     $(document).ready(function() {
 
         $("#repositoryTree").bind("select_node.jstree", function (e, data) {

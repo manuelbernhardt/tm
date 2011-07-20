@@ -94,6 +94,16 @@
 #{set 'moreScripts'}
 <script type="text/javascript">
 
+  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE]]}
+  treeNodeCanCreate = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOEDIT]]}
+  treeNodeCanEdit = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPODELETE]]}
+  treeNodeCanDelete = true;
+  #{/deadbolt.restrict}
+
   $(document).ready(function () {
 
     $("#innerTabs").tabs();

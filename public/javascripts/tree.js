@@ -56,12 +56,86 @@
             },
             "hotkeys": {
                 "Ctrl+x" : function() {
-                    this.cut(null)
+                    if(treeNodeCanEdit) {
+                        this.cut(null)
+                    }
                 },
                 "Ctrl+v" : function() {
-                    this.paste(null)
+                    if(treeNodeCanEdit) {
+                        this.paste(null)
+                    }
+                },
+                "f2" : function() {
+                    if(treeNodeCanEdit) {
+                        this.rename(null)
+                    }
+                },
+                "Del" : function() {
+                    if(treeNodeCanDelete) {
+                        this.remove(null)
+                    }
                 }
+
+            },
+            "contextmenu": {
+                "items" :  function(node) {
+                    var items = {};
+                    if(treeNodeCanCreate) {
+                        $.extend(items, {
+                            "create": {
+                                "label": "Create",
+                                "separator_after": true,
+                                "action": function (obj) {
+                                    this.create(obj);
+                                }
+                            }
+                        });
+                    }
+                    if(treeNodeCanEdit) {
+                        $.extend(items, {
+                            "rename": {
+                                "label": "Rename",
+                                "action": function (obj) {
+                                    this.rename(obj);
+                                }
+                            },
+                            "cut": {
+                                "label": "Cut",
+                                "action": function (obj) {
+                                    this.cut(obj);
+                                }
+                            },
+                            "copy": {
+                                "label": "Copy",
+                                "action": function (obj) {
+                                    this.copy(obj);
+                                }
+                            },
+                            "paste": {
+                                "label": "Paste",
+                                "separator_after": true,
+                                "action": function (obj) {
+                                    this.paste(obj);
+                                }
+                            }
+                        });
+                    }
+                    if(treeNodeCanDelete) {
+                        $.extend(items, {
+                            "delete": {
+                                "label": "Delete",
+                                "action": function (obj) {
+                                    this.remove(obj);
+                                }
+                            }
+                        });
+                    }
+
+                    return items;
+                }
+
             }
+
         };
 
         $.extend(settings, defaults);

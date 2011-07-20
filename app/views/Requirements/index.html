@@ -95,6 +95,16 @@
 
 <script type="text/javascript">
 
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+  treeNodeCanCreate = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
+  treeNodeCanEdit = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+  treeNodeCanDelete = true;
+  #{/deadbolt.restrict}  
+
   $(document).ready(function () {
 
     var isRequirement = function(event, data) { return isSelectedNodeType(data, ["requirement", "default"])};
