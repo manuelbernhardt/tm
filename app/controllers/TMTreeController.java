@@ -53,7 +53,7 @@ public class TMTreeController extends TMController {
 
             // active project filter, for user part
             if (TMController.controllerHasActiveProject()) {
-                ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", projectThreadLocal.get().getId());
+                ((Session) JPA.em().getDelegate()).enableFilter("projects").setParameterList("projectIds", new Object[] {projectThreadLocal.get().getId()});
             }
         }
     }

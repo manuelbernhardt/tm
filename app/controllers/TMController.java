@@ -126,7 +126,9 @@ public class TMController extends Controller {
                     p = getActiveProject();
                 }
                 if (p != null) {
-                    ((Session) JPA.em().getDelegate()).enableFilter("activeProject").setParameter("project_id", p.getId());
+                    Object[] projectIds = {p.getId()};
+                    ((Session) JPA.em().getDelegate()).enableFilter("projects").setParameterList("projectIds", projectIds);
+                    ((Session) JPA.em().getDelegate()).enableFilter("projectId").setParameterList("projectIds", projectIds);
                     ((Session) JPA.em().getDelegate()).enableFilter("activeProjectUsers").setParameter("projectId", p.getId());
                 }
             }
@@ -148,7 +150,7 @@ public class TMController extends Controller {
                 // add one ID that is not in the DB so that we get zero results
                 projectIds.add(-1l);
             }
-            ((Session) JPA.em().getDelegate()).enableFilter("adminProjects").setParameterList("projectIds", projectIds.toArray());
+            ((Session) JPA.em().getDelegate()).enableFilter("projects").setParameterList("projectIds", projectIds.toArray());
             ((Session) JPA.em().getDelegate()).enableFilter("projectId").setParameterList("projectIds", projectIds.toArray());
         }
     }
@@ -278,7 +280,8 @@ public class TMController extends Controller {
         checkAuthenticity();
 
         // deactivate the project filter for this request
-        ((Session) JPA.em().getDelegate()).disableFilter("activeProject");
+        ((Session) JPA.em().getDelegate()).disableFilter("projects");
+        ((Session) JPA.em().getDelegate()).disableFilter("projectId");
 
         Project project = Lookups.getProject(projectId);
         if (project == null) {
