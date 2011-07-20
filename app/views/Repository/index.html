@@ -191,11 +191,7 @@
         });
 
         $('#requirementScriptDialogOpen').click(function () {
-
-            $('#linkRequirementDialog').dialog('open');
-        });
-
-        $("#linkRequirementDialog").dialog("option", "buttons", {
+            $("#linkRequirementDialog").dialog("option", "buttons", {
                 "Link": {
                     click: function() {
                         var treeContainer = $("#requirementTree");
@@ -226,7 +222,10 @@
                     id: "linkRequirementDialogCancelButton",
                     text: "Cancel"
                 }
+            });
+            $('#linkRequirementDialog').dialog('open');
         });
+
 
         $('#removeRequirementButton').click(function () {
             deletionConfirmation('requirementDeletionConfirmationDialog', "Link to requirement", getSelectedRowColumn($('#requirementTable').dataTable(), 2), function() {

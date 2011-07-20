@@ -769,7 +769,7 @@ function applyDialogStyles() {
     })
     $('.tree-dialog').dialog({
         autoOpen: false,
-        width: 300,
+        width: 400,
         height: 550,
         modal: true,
         resizable: true,
