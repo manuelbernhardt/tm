@@ -3,25 +3,47 @@
 #{topMenu space:'admin' /}
 
 #{tabLayout id:'main-wrapper'}
-  #{tabs id:'tabs'}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
-    #{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
-  #{/}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTEDIT], [models.general.UnitRole.PROJECTADMIN]]}
-    #{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
-  #{/}
-  #{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
-    #{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
-  #{/}
-  #{/tabs}
-  #{tabContent}
-    #{doLayout /}
-  #{/tabContent}
+#{tabs id:'tabs'}
+#{deadbolt.restrict roles:[[models.general.UnitRole.USEREDIT]]}
+#{tab link:@admin.Users.index(), title:'Users', controller:'admin.Users' /}
+#{/}
+#{deadbolt.restrict roles:[[models.general.UnitRole.PROJECTEDIT], [models.general.UnitRole.PROJECTADMIN]]}
+#{tab link:@admin.Projects.index(), title:'Projects', controller:'admin.Projects' /}
+#{/}
+#{deadbolt.restrict roles:[[models.general.UnitRole.ACCOUNTADMIN]]}
+#{tab link:@admin.AccountSettings.index(), title:'Account Settings', controller:'admin.AccountSettings' /}
+#{/}
+#{/tabs}
+#{tabContent}
+#{doLayout /}
+#{/tabContent}
 #{/tabLayout}
 
+#{if play.Play.id.equals("demo")}
+#{feedbackBar /}
+#{/if}
+
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('.searchInput').watermark('Search');
         applyButtonStyles();
+        feedbackInit();
+
+        <!-- address of page that is feedbacked -->
+        $('#sendFeedback').button().click(function() {
+            $.post("@{admin.Admin.sendFeedbackEmail()}", {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname},
+                    function() {
+                        $('#thanksNote').show().delay(1700).slideUp();
+                        $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
+                        $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
+                        $('#messageFeedback').val('');
+                    }).error(errorHandler);
+        })
+
+        $('#cancelFeedback').button().click(function() {
+            $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
+            $('#messageFeedback').val('');
+        })
+
     })
 </script>

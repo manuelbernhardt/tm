@@ -1,74 +1,61 @@
 #{extends 'header.html' /}
 
 <div id="screen" style="display:none;">
-    
-#{if play.Play.id.equals("demo")}
+
+    #{if play.Play.id.equals("demo")}
     #{feedbackBar /}
-#{/if}
+    #{/if}
 
 
-  #{topMenu space:'application' /}
+    #{topMenu space:'application' /}
 
-  #{tabLayout id:'main-wrapper'}
+    #{tabLayout id:'main-wrapper'}
     #{tabs id:'tabs'}
-      #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}
-        #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOVIEW]]}
-        #{tab link:@Repository.index(), title:'Test Scripts repository', controller:'Repository' /}
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPVIEW]]}
-        #{tab link:@Preparation.index(), title:'Test preparation', controller:'Preparation' /}
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECVIEW]]}
-        #{tab link:@Execution.index(), title:'Test execution', controller:'Execution' /}
-      #{/deadbolt.restrict}
-      #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTVIEW]]}
-        #{tab link:@Defects.index(), title:'Defects', controller:'Defects' /}
-      #{/deadbolt.restrict}
+    #{tab link:@Dashboard.index(), title:'Dashboard', controller:'Dashboard' /}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.REQVIEW]]}
+    #{tab link:@Requirements.index(), title:'Requirements', controller:'Requirements' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOVIEW]]}
+    #{tab link:@Repository.index(), title:'Test Scripts repository', controller:'Repository' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPVIEW]]}
+    #{tab link:@Preparation.index(), title:'Test preparation', controller:'Preparation' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTEXECVIEW]]}
+    #{tab link:@Execution.index(), title:'Test execution', controller:'Execution' /}
+    #{/deadbolt.restrict}
+    #{deadbolt.restrict roles:[[models.general.UnitRole.DEFECTVIEW]]}
+    #{tab link:@Defects.index(), title:'Defects', controller:'Defects' /}
+    #{/deadbolt.restrict}
     #{/tabs}
     #{tabContent}
-      #{doLayout /}
+    #{doLayout /}
     #{/tabContent}
-  #{/tabLayout}
+    #{/tabLayout}
 </div>
 
 
-
 <script type="text/javascript">
-  $(document).ready(function() {
-    $('#screen').show();
-    $('.searchInput').watermark('Search');
-    applyButtonStyles();
-       <!--feedback bar initialization -->
-    $('.slide-out-div').tabSlideOut({
-        tabHandle: '.handle',                              //class of the element that will be your tab
-        pathToTabImage: '/public/images/feedback.png',          //path to the image for the tab *required*
-        imageHeight: '40px',                               //height of tab image *required*
-        imageWidth: '122px',                               //width of tab image *required*
-        tabLocation: 'bottom',                               //side of screen where tab lives, top, right, bottom, or left
-        speed: 300,                                        //speed of animation
-        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
-        topPos: '0px',                                   //position from the top
-        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
-    });
-      <!-- address of page that is feedbacked -->
+    $(document).ready(function() {
+        $('#screen').show();
+        $('.searchInput').watermark('Search');
+        applyButtonStyles();
+        feedbackInit();
+        <!-- address of page that is feedbacked -->
 
-    $('#sendFeedback').button().click(function(){
+        $('#sendFeedback').button().click(function() {
+            $.post("@{TMController.sendFeedbackEmail()}", {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname},
+                    function() {
+                        $('#thanksNote').show().delay(1700).slideUp();
+                        $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
+                        $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
+                        $('#messageFeedback').val('');
+                    }).error(errorHandler);
+        })
 
-        $.post("@{TMController.sendFeedbackEmail()}", {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname}, function(){
-            $('#thanksNote').show().delay(1700).slideUp();
-            $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
-            $('#feedbackContainer').animate({bottom: '-'  + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
-            $('#messageFeedback').val('');
-        }).error(errorHandler);
-//        $('#feedbackElementsWrapper').html("<textarea id='messageFeedback' rows='10' cols='40'></textarea><br/><br/><button id='sendFeedback'>Send</button><button id='cancelFeedback'>Cancel</button>");
-    })
-
-    $('#cancelFeedback').button().click(function(){
+        $('#cancelFeedback').button().click(function() {
             $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
             $('#messageFeedback').val('');
-    })
-  });
+        })
+    });
 </script>
