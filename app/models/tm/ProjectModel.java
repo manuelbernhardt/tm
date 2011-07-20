@@ -14,7 +14,7 @@ import org.hibernate.annotations.Filters;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @MappedSuperclass
-@Filters({@Filter(name = "activeProject"), @Filter(name = "adminProjects")})
+@Filters({@Filter(name = "projects")})
 public class ProjectModel extends CompositeModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional = false)
