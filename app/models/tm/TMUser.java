@@ -42,6 +42,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     public Date sessionExpirationTime;
 
     @ElementCollection
+    @CollectionTable(name = "tm_TMUser_accountRoles")
     @OrderColumn
     public List<String> accountRoles = new ArrayList<String>();
 
@@ -89,7 +90,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
         List<models.deadbolt.Role> res = new ArrayList<models.deadbolt.Role>();
         for (ProjectRole r : projectRoles) {
             // the project should be filtered via the hibernate filters already but let's be sure
-            if(r.project.equals(project)) {
+            if (r.project.equals(project)) {
                 for (UnitRole ur : r.getAuthenticationUnitRoles()) {
                     if (!res.contains(ur)) {
                         res.add(ur);

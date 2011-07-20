@@ -19,10 +19,32 @@
 #{/tabContent}
 #{/tabLayout}
 
+#{if play.Play.id.equals("demo")}
+#{feedbackBar /}
+#{/if}
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.searchInput').watermark('Search');
         applyButtonStyles();
         applyDialogStyles();
+        feedbackInit();
+
+        <!-- address of page that is feedbacked -->
+        $('#sendFeedback').button().click(function() {
+            $.post("@{admin.Admin.sendFeedbackEmail()}", {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname},
+                    function() {
+                        $('#thanksNote').show().delay(1700).slideUp();
+                        $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
+                        $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
+                        $('#messageFeedback').val('');
+                    }).error(errorHandler);
+        })
+
+        $('#cancelFeedback').button().click(function() {
+            $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
+            $('#messageFeedback').val('');
+        })
+
     })
 </script>

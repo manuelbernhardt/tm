@@ -141,9 +141,9 @@ INSERT INTO `account_Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 --
 -- WHERE:  account_id = 1
 
-/*!40000 ALTER TABLE `tm_approach_ApproachRelease` DISABLE KEYS */;
-INSERT INTO `tm_approach_ApproachRelease` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
-/*!40000 ALTER TABLE `tm_approach_ApproachRelease` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_approach_Release` DISABLE KEYS */;
+INSERT INTO `tm_approach_Release` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
+/*!40000 ALTER TABLE `tm_approach_Release` ENABLE KEYS */;
 
 --
 -- Dumping data for table `Defect`
@@ -361,8 +361,8 @@ INSERT INTO `account_User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54'
 --
 -- WHERE:  account_id = 1
 
-/*!40000 ALTER TABLE `tm_UserWidget` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tm_UserWidget` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_TMUserWidget` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tm_TMUserWidget` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -537,9 +537,9 @@ INSERT INTO `tm_test_Instance_tm_test_Tag` VALUES (1,4);
 --
 -- WHERE:  ProjectRole_id in (select id from ProjectRole where account_id = 1)
 
-/*!40000 ALTER TABLE `ProjectRole_unitRoles` DISABLE KEYS */;
-INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(1,'reqCreate',2),(1,'reqEdit',3),(1,'reqDelete',4),(1,'testRepoView',5),(1,'testRepoCreate',6),(1,'testRepoEdit',7),(1,'testRepoDelete',8),(1,'testPrepView',9),(1,'testPrepCreate',10),(1,'testPrepEdit',11),(1,'testPrepDelete',12),(1,'testExecView',13),(1,'testExecCreate',14),(1,'testExecEdit',15),(1,'testExecDelete',16),(1,'defectView',17),(1,'defectCreate',18),(1,'defectEdit',19),(1,'defectDelete',20),(30,'reqView',0),(30,'reqCreate',1),(30,'reqEdit',2),(30,'testRepoView',3),(30,'testRepoCreate',4),(30,'testRepoEdit',5),(30,'testPrepView',6),(30,'testPrepCreate',7),(30,'testPrepEdit',8),(30,'testExecView',9),(30,'testExecCreate',10),(30,'testExecEdit',11),(30,'defectView',12),(30,'defectCreate',13),(30,'defectEdit',14),(31,'testExecView',0),(31,'testExecCreate',1),(31,'testExecEdit',2),(31,'defectView',3),(31,'defectCreate',4),(31,'defectEdit',5),(32,'defectView',0),(32,'defectEdit',1);
-/*!40000 ALTER TABLE `ProjectRole_unitRoles` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_ProjectRole_unitRoles` DISABLE KEYS */;
+INSERT INTO `tm_ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(1,'reqCreate',2),(1,'reqEdit',3),(1,'reqDelete',4),(1,'testRepoView',5),(1,'testRepoCreate',6),(1,'testRepoEdit',7),(1,'testRepoDelete',8),(1,'testPrepView',9),(1,'testPrepCreate',10),(1,'testPrepEdit',11),(1,'testPrepDelete',12),(1,'testExecView',13),(1,'testExecCreate',14),(1,'testExecEdit',15),(1,'testExecDelete',16),(1,'defectView',17),(1,'defectCreate',18),(1,'defectEdit',19),(1,'defectDelete',20),(30,'reqView',0),(30,'reqCreate',1),(30,'reqEdit',2),(30,'testRepoView',3),(30,'testRepoCreate',4),(30,'testRepoEdit',5),(30,'testPrepView',6),(30,'testPrepCreate',7),(30,'testPrepEdit',8),(30,'testExecView',9),(30,'testExecCreate',10),(30,'testExecEdit',11),(30,'defectView',12),(30,'defectCreate',13),(30,'defectEdit',14),(31,'testExecView',0),(31,'testExecCreate',1),(31,'testExecEdit',2),(31,'defectView',3),(31,'defectCreate',4),(31,'defectEdit',5),(32,'defectView',0),(32,'defectEdit',1);
+/*!40000 ALTER TABLE `tm_ProjectRole_unitRoles` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -573,9 +573,9 @@ INSERT INTO `ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(
 --
 -- WHERE:  ProjectWidget_id in (select id from ProjectWidget where account_id = 1)
 
-/*!40000 ALTER TABLE `ProjectWidget_parameters` DISABLE KEYS */;
-INSERT INTO `ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects over time','graphLabel'),(1,'temporal','graphType'),(1,'created','temporalField'),(1,'DATE','xAxis'),(1,'COUNT','yAxis'),(2,'Defect','entity'),(2,'All defects','title'),(3,'Requirement','entity'),(3,'All requirements','title'),(4,'Instance','entity'),(4,'All instances','title'),(5,'Script','entity'),(5,'All scripts','title');
-/*!40000 ALTER TABLE `ProjectWidget_parameters` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_ProjectWidget_parameters` DISABLE KEYS */;
+INSERT INTO `tm_ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects over time','graphLabel'),(1,'temporal','graphType'),(1,'created','temporalField'),(1,'DATE','xAxis'),(1,'COUNT','yAxis'),(2,'Defect','entity'),(2,'All defects','title'),(3,'Requirement','entity'),(3,'All requirements','title'),(4,'Instance','entity'),(4,'All instances','title'),(5,'Script','entity'),(5,'All scripts','title');
+/*!40000 ALTER TABLE `tm_ProjectWidget_parameters` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -751,9 +751,9 @@ INSERT INTO `tm_TMUser_tm_ProjectRole` VALUES (1,1),(34,32),(33,31),(2,30),(3,30
 --
 -- WHERE:  TMUser_id in (select id from TMUser where account_id = 1)
 
-/*!40000 ALTER TABLE `TMUser_accountRoles` DISABLE KEYS */;
-INSERT INTO `TMUser_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1,'userDelete',2),(1,'projectCreate',3),(1,'projectEdit',4),(1,'projectDelete',5),(1,'accountAdmin',6);
-/*!40000 ALTER TABLE `TMUser_accountRoles` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_TMUser_accountRoles` DISABLE KEYS */;
+INSERT INTO `tm_TMUser_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1,'userDelete',2),(1,'projectCreate',3),(1,'projectEdit',4),(1,'projectDelete',5),(1,'accountAdmin',6);
+/*!40000 ALTER TABLE `tm_TMUser_accountRoles` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

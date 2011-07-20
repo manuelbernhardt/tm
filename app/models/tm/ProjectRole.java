@@ -2,6 +2,7 @@ package models.tm;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import play.data.validation.Required;
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name="id", columnNames = {"project_id", "naturalId"})}, name = "tm_ProjectRole")
+@Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"project_id", "naturalId"})}, name = "tm_ProjectRole")
 @BatchSize(size = 10)
 public class ProjectRole extends ProjectModel {
 
@@ -26,6 +27,7 @@ public class ProjectRole extends ProjectModel {
     public String name;
 
     @ElementCollection
+    @CollectionTable(name = "tm_ProjectRole_unitRoles")
     @OrderColumn
     public List<String> unitRoles = new ArrayList<String>();
 
@@ -35,7 +37,7 @@ public class ProjectRole extends ProjectModel {
 
     public List<UnitRole> getAuthenticationUnitRoles() {
         List<UnitRole> res = new ArrayList<UnitRole>();
-        for(String r : unitRoles) {
+        for (String r : unitRoles) {
             res.add(new UnitRole(r));
         }
         return res;
@@ -45,5 +47,5 @@ public class ProjectRole extends ProjectModel {
         return ProjectRole.find("from ProjectRole r where r.project.id = ?", id).fetch();
     }
 
-    
+
 }

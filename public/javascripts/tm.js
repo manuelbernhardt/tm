@@ -778,6 +778,25 @@ function applyDialogStyles() {
 }
 
 /**
+ *  initialization function for feedback bar
+ */
+
+function feedbackInit() {
+    <!--feedback bar initialization -->
+    $('.slide-out-div').tabSlideOut({
+        tabHandle: '.handle',                              //class of the element that will be your tab
+        pathToTabImage: '/public/images/feedback.png',          //path to the image for the tab *required*
+        imageHeight: '40px',                               //height of tab image *required*
+        imageWidth: '122px',                               //width of tab image *required*
+        tabLocation: 'bottom',                               //side of screen where tab lives, top, right, bottom, or left
+        speed: 300,                                        //speed of animation
+        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
+        topPos: '0px',                                   //position from the top
+        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
+    });
+}
+
+/**
  * jQuery plugin for filters
  */
 (function($) {
