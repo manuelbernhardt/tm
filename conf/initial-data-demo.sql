@@ -141,9 +141,9 @@ INSERT INTO `account_Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 --
 -- WHERE:  account_id = 1
 
-/*!40000 ALTER TABLE `tm_approach_ApproachRelease` DISABLE KEYS */;
-INSERT INTO `tm_approach_ApproachRelease` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
-/*!40000 ALTER TABLE `tm_approach_ApproachRelease` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_approach_Release` DISABLE KEYS */;
+INSERT INTO `tm_approach_Release` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:10:56',1,'Template',1,1),(2,'2011-06-15 20:10:56','2011-06-15 20:10:56',2,'Roll-out UK',1,1),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',3,'Roll-out AT',1,1);
+/*!40000 ALTER TABLE `tm_approach_Release` ENABLE KEYS */;
 
 --
 -- Dumping data for table `Defect`
@@ -361,8 +361,8 @@ INSERT INTO `account_User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54'
 --
 -- WHERE:  account_id = 1
 
-/*!40000 ALTER TABLE `tm_UserWidget` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tm_UserWidget` ENABLE KEYS */;
+/*!40000 ALTER TABLE `tm_TMUserWidget` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tm_TMUserWidget` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
