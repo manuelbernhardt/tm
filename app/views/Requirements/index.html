@@ -96,61 +96,44 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQCREATE]]}
+  treeNodeCanCreate = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQEDIT]]}
+  treeNodeCanEdit = true;
+  #{/deadbolt.restrict}
+  #{deadbolt.restrict roles:[[models.general.UnitRole.REQDELETE]]}
+  treeNodeCanDelete = true;
+  #{/deadbolt.restrict}  
 
-        var isRequirement = function(event, data) {
-            return isSelectedNodeType(data, ["requirement", "default"])
-        };
-        var isNotRequirement = function(event, data) {
-            return !isSelectedNodeType(data, ["requirement", "default"])
-        };
+  $(document).ready(function () {
 
-        iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement)
-                .rule('.shownOnLoad', $hide)
-                .rule('.hiddenOnLoad', $show)
-                .rule('#remove', $enableButton)
-                .rule('#requirementForm', function(targets, data) {
-            targets.oxForm('load', getNodeIdFromData(data))
-        })
-                .rule(null, function() {
-            reloadTables()
-        });
+    var isRequirement = function(event, data) { return isSelectedNodeType(data, ["requirement", "default"])};
+    var isNotRequirement = function(event, data) { return !isSelectedNodeType(data, ["requirement", "default"])};
 
-        iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement)
-                .rule('.shownOnLoad', $show)
-                .rule('.hiddenOnLoad', $hide)
-                .rule('#remove', $enableButton);
+    iGroup("requirementSelected", '#requirementTree', 'select_node.jstree', isRequirement)
+            .rule('.shownOnLoad', $hide )
+            .rule('.hiddenOnLoad', $show )
+            .rule('#remove', $enableButton)
+            .rule('#requirementForm', function(targets, data) { targets.oxForm('load', getNodeIdFromData(data)) })
+            .rule(null, function() { reloadTables() });
 
-        iRule('#create_folder', 'click.button', null, '#requirementTree', function(targets) {
-            targets.jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"})
-        });
-        iRule('#create_requirement', 'click.button', null, '#requirementTree', function(targets) {
-            targets.jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"})
-        });
-        iRule('#create_actions', 'click.button', null, '#create_actions', function(targets) {
-            targets.attr("style", "margin-left:-0.3em")
-        });
-        iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', $openDialog);
-        iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', function() {
-            $('#importRequirementsDialog').dialog("option", "buttons", {
-                "Close": {
-                    click: function() {
-                        $(this).dialog('close');
-                    },
-                    id: "importRequirementsDialogCancelButton",
-                    text: "Close"
-                }
-            });
-        });
-        iRule('#remove', 'click.button', null, null, function() {
-            var node = getSelectedNode('requirementTree');
-            deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree'), function(deletion) {
-                $("#requirementTree").jstree("remove", null);
-            });
-        });
-        iRule('#searchInput', 'keyup', null, '#requirementTree', function(targets) {
-            targets.jstree("search", $('#searchInput').val())
-        });
+    iGroup("requirementFolderSelected", '#requirementTree', 'select_node.jstree', isNotRequirement)
+            .rule('.shownOnLoad', $show)
+            .rule('.hiddenOnLoad', $hide)
+            .rule('#remove', $enableButton);
+
+    iRule('#create_folder', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"requirementFolder"}, data:"New folder"}) } );
+    iRule('#create_requirement', 'click.button', null, '#requirementTree', function(targets) { targets.jstree("create", null, "last", {attr:{"rel":"default"}, data:"New requirement"}) } );
+    iRule('#create_actions', 'click.button', null, '#create_actions', function(targets) { targets.attr("style", "margin-left:-0.3em") } );
+    iRule('#import_requirements', 'click.button', null, '#importRequirementsDialog', $openDialog );
+    iRule('#remove', 'click.button', null, null, function() {
+      var node = getSelectedNode('requirementTree');
+      deletionConfirmation("deleteConfirmationDialogRequirement", "Requirement", getSelectedNodeName('requirementTree') , function(deletion) {
+        $("#requirementTree").jstree("remove", null);
+      });
+    });
+    iRule('#searchInput', 'keyup', null, '#requirementTree', function(targets) { targets.jstree("search", $('#searchInput').val()) });
 
         $("#innerTabs").tabs();
 

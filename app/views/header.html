@@ -62,6 +62,13 @@
         #{jsAction @TMTreeController.move() /}
     </script>
 
+    *{tree node access rules, override to enable}*
+    <script type="text/javascript">
+        var treeNodeCanCreate = false;
+        var treeNodeCanEdit = false;
+        var treeNodeCanDelete = false;
+    </script>
+
     #{get 'moreScripts' /}
 
 </head>
