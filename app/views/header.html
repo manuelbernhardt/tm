@@ -4,7 +4,8 @@
 <head>
     <title>#{get 'title' /}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/aristo/jquery-ui-1.8.7.custom.css'}"/>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="@{'/public/stylesheets/aristo/jquery-ui-1.8.7.custom.css'}"/>
     <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/demo_table_jui.css'}">
     <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jstree/style.css'}">
     <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/token-input.css'}">
@@ -14,9 +15,12 @@
     #{get 'moreStyles' /}
     <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
     <script src="@{'/public/javascripts/jquery-1.6.1.min.js'}" type="text/javascript" charset="utf-8"></script>
-    <script src="@{'/public/javascripts/jquery-ui-1.8.13.custom.min.js'}" type="text/javascript" charset="utf-8"></script>
+    <script src="@{'/public/javascripts/jquery-ui-1.8.13.custom.min.js'}" type="text/javascript"
+            charset="utf-8"></script>
     *{ this include *must* be here, otherwise it will have conflits in IE }*
-    <!--[if IE]><script src="@{'/public/javascripts/graph/excanvas.js'}" type="text/javascript" charset="utf-8"></script><![endif]-->
+    <!--[if IE]>
+    <script src="@{'/public/javascripts/graph/excanvas.js'}" type="text/javascript" charset="utf-8"></script>
+    <![endif]-->
     <script src="@{'/public/javascripts/jquery.tmpl.min.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/jquery.tabSlideOut.v1.3.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/jquery.metadata.js'}" type="text/javascript" charset="utf-8"></script>
@@ -32,7 +36,8 @@
     <script src="@{'/public/javascripts/jquery.ui.autocomplete.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/jquery.ui.menu.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/jquery.watermark.min.js'}" type="text/javascript" charset="utf-8"></script>
-    <script src="@{'/public/javascripts/i18n/jquery.ui.datepicker-en-GB.js'}" type="text/javascript" charset="utf-8"></script>
+    <script src="@{'/public/javascripts/i18n/jquery.ui.datepicker-en-GB.js'}" type="text/javascript"
+            charset="utf-8"></script>
     <script src="@{'/public/javascripts/jstree/jquery.jstree.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/tm.js'}" type="text/javascript" charset="utf-8"></script>
     <script src="@{'/public/javascripts/iRules.js'}" type="text/javascript" charset="utf-8"></script>
@@ -45,11 +50,16 @@
 
     *{client-side routing for the tree}*
     <script type="text/javascript">
-        var treeChildrenRouteAction = #{jsAction @TMTreeController.getChildren() /}
-        var treeCreateRouteAction = #{jsAction @TMTreeController.create() /}
-        var treeRenameRouteAction = #{jsAction @TMTreeController.rename() /}
-        var treeRemoveRouteAction = #{jsAction @TMTreeController.remove() /}
-        var treeMoveRouteAction = #{jsAction @TMTreeController.move() /}
+        var treeChildrenRouteAction =
+        #{jsAction @TMTreeController.getChildren() /}
+        var treeCreateRouteAction =
+        #{jsAction @TMTreeController.create() /}
+        var treeRenameRouteAction =
+        #{jsAction @TMTreeController.rename() /}
+        var treeRemoveRouteAction =
+        #{jsAction @TMTreeController.remove() /}
+        var treeMoveRouteAction =
+        #{jsAction @TMTreeController.move() /}
     </script>
 
     #{get 'moreScripts' /}
@@ -59,6 +69,11 @@
 <body>
 <div id="errorDialog"></div>
 #{doLayout /}
+
+<script type="text/javascript">
+    applyDialogStyles();
+</script>
+
 </body>
 
 </html>

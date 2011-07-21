@@ -1,157 +1,151 @@
-
 <div id="roleDeleteConfirmationDialog" title="Confirm deletion of a role"></div>
 
 <div class="container">
     <div class="actions">
         <div class="actions buttons">
 
-        <div id="newRoleDialog" title="Add role">
+            <div id="newRoleDialog" class="confirm-dialog" title="Add role">
 
                 <input id="roleInput"/>
-        </div>
+            </div>
 
-                <button class="button-add" id='add-role'> Role</button>
-                <button class="button-delete" id='remove-role'> Remove</button>
+            <button class="button-add" id='add-role'> Role</button>
+            <button class="button-delete" id='remove-role'> Remove</button>
         </div>
     </div>
     <div class="tree-container">
-      <div class="left_table">
-        #{box 'Roles'}
-        <table id="tab" class="display">
-          <thead>
-          <tr>
-            <th>Role</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        #{/box}
+        <div class="left_table">
+            #{box 'Roles'}
+            <table id="tab" class="display">
+                <thead>
+                <tr>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            #{/box}
 
-      </div>
-
-      <div class="right_table">
-        #{box 'Role details'}
-        <div id="roleDefinition">
-          <p align="center">Select a role in the table</p>
         </div>
-        #{/box}
-      </div>
+
+        <div class="right_table">
+            #{box 'Role details'}
+            <div id="roleDefinition">
+                <p align="center">Select a role in the table</p>
+            </div>
+            #{/box}
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
 
-  $(document).ready(function() {
+    $(document).ready(function() {
 
 
-    #{tabularasa.init tableId:'tab'}
-    var tabParameters = {
-      "aoColumns": [
-        {"sName": "id", "sClass": "sNone" },
-        {"sName": "name"}
-      ],
-      "sAjaxSource": '@{admin.ProjectRoles.data()}',
-      "bProcessing": false,
-      "bServerSide": true,
-      "bLengthChange": false,
-      "bSort": false,
-      "iDisplayLength": 10,
-      "bInfo": false,
-      "bFilter":false,
-      "oLanguage": {
-        "sZeroRecords": "No roles defined yet"
-      },
-        "fnDrawCallback": function(data){
+        #{tabularasa.init tableId:'tab'}
+        var tabParameters = {
+            "aoColumns": [
+                {"sName": "id", "sClass": "sNone" },
+                {"sName": "name"}
+            ],
+            "sAjaxSource": '@{admin.ProjectRoles.data()}',
+            "bProcessing": false,
+            "bServerSide": true,
+            "bLengthChange": false,
+            "bSort": false,
+            "iDisplayLength": 10,
+            "bInfo": false,
+            "bFilter":false,
+            "oLanguage": {
+                "sZeroRecords": "No roles defined yet"
+            },
+            "fnDrawCallback": function(data) {
 
-            handlePagination('#tab',data);
-        }
-    };
-    #{/tabularasa.init}
-
-      function addRequestParameters(parameters, tableId) {
-            if (tableId == 'tab') {
-              var nodeId = getSelectedNodeId('projectTree');
-                if(nodeId==null){
-                    nodeId=1;
-                }
-              parameters.push({"name": "projectId", "value": nodeId });
+                handlePagination('#tab', data);
             }
-          }
-      $("#projectTree").bind("select_node.jstree", function (e, data) {
-          refreshTableContents('#tab', false);
-      });
+        };
+        #{/tabularasa.init}
 
-      handleRowSelection("#tab", function(rowId){
-          if(rowId!=''){
-            $('#remove-role').button('enable');
-          }
-
-      });
-
-      $('#add-role').click(function(){
-          $('#newRoleDialog').dialog('open');
-      });
-
-    $('#remove-role').click(function(){
-        deletionConfirmation('roleDeleteConfirmationDialog', 'Role', getSelectedRowColumn($('#tab').dataTable(), 1) , function(){
-            $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function(){
-                refreshTableContents('#tab', false);
-            })
-            .error(errorHandler);
-        });
-    });
-
-    $('#newRoleDialog').dialog({
-      autoOpen: false,
-      width: 300,
-      height: 200,
-      draggable: true,
-      resizable: false,
-      modal: true,
-      buttons: {
-        "Create role": {
-            click: function() {
-                $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()}, function(){
-                    refreshTableContents('#tab', false);
-                    refreshTree('projectRolesAssignmentTree');
-                    $('#roleInput').val('');
-                    $('#newRoleDialog').dialog("close");
-                }).error(errorHandler);
-            },
-            id: "newRoleDialogConfirmButton",
-            text: "Create role"
-        },
-        "Cancel": {
-            click: function() {
-                $(this).dialog("close");
-            },
-            id: "newRoleDialogCancelButton",
-            text: "Cancel"
+        function addRequestParameters(parameters, tableId) {
+            if (tableId == 'tab') {
+                var nodeId = getSelectedNodeId('projectTree');
+                if (nodeId == null) {
+                    nodeId = 1;
+                }
+                parameters.push({"name": "projectId", "value": nodeId });
+            }
         }
-      }
+
+        $("#projectTree").bind("select_node.jstree", function (e, data) {
+            refreshTableContents('#tab', false);
+        });
+
+        handleRowSelection("#tab", function(rowId) {
+            if (rowId != '') {
+                $('#remove-role').button('enable');
+            }
+
+        });
+
+        $('#add-role').click(function() {
+            $('#newRoleDialog').dialog('open');
+        });
+
+        $('#remove-role').click(function() {
+            deletionConfirmation('roleDeleteConfirmationDialog', 'Role', getSelectedRowColumn($('#tab').dataTable(), 1), function() {
+                $.post('@{admin.ProjectRoles.roleDelete()}', { roleId: getSelectedRowId("#tab") }, function() {
+                    refreshTableContents('#tab', false);
+                })
+                        .error(errorHandler);
+            });
+        });
+
+        $('#newRoleDialog').dialog("option", "buttons", {
+            "Create role": {
+                click: function() {
+                    $.post('@{admin.ProjectRoles.create()}', {projectId:getSelectedNodeId('projectTree'), roleName: $('#roleInput').val()},
+                            function() {
+                                refreshTableContents('#tab', false);
+                                refreshTree('projectRolesAssignmentTree');
+                                $('#roleInput').val('');
+                                $('#newRoleDialog').dialog("close");
+                            }).error(errorHandler);
+                },
+                id: "newRoleDialogConfirmButton",
+                text: "Create role"
+            },
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "newRoleDialogCancelButton",
+                text: "Cancel"
+            }
+        });
+
+        /* Click listener to reload the role definition */
+        $("#tab tbody").click(function(event) {
+            $(tabDataTable.fnSettings().aoData).each(function () {
+                $(this.nTr).removeClass('row_selected');
+            });
+            $(event.target.parentNode).addClass('row_selected');
+
+            var selectedRole = getSelectedRowId('#tab');
+            // FIXME this does get executed anyway
+            if (typeof selectedRole !== 'undefined') {
+                // reloads the role definition
+                $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole },
+                        function(data) {
+                            $('#roleDefinition').html(data);
+                            $('#renameInput').val(getSelectedRowColumn($('#tab').dataTable(), 1));
+                        }).error(errorHandler);
+            }
+        });
+
+        $('.display').attr('style', 'width:100%');
+
     });
-
-    /* Click listener to reload the role definition */
-    $("#tab tbody").click(function(event) {
-      $(tabDataTable.fnSettings().aoData).each(function () {
-        $(this.nTr).removeClass('row_selected');
-      });
-      $(event.target.parentNode).addClass('row_selected');
-
-      var selectedRole = getSelectedRowId('#tab');
-      // FIXME this does get executed anyway
-      if (typeof selectedRole !== 'undefined') {
-        // reloads the role definition
-        $.get('@{admin.ProjectRoles.roleDefinition()}', { roleId: selectedRole }, function(data) {
-          $('#roleDefinition').html(data);
-          $('#renameInput').val(getSelectedRowColumn($('#tab').dataTable(), 1));
-        }).error(errorHandler);
-      }
-    });
-
-      $('.display').attr('style','width:100%');
-
-  });
 
 </script>
 

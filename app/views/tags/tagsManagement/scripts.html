@@ -1,136 +1,118 @@
-
 <script type="text/javascript">
 
-$(document).ready(function() {
-    var ${_type}SecondTagId = null;
+    $(document).ready(function() {
+        var ${_type}SecondTagId = null;
 
-    $("#${_type}RenameTag").click(function(){
-        $('#${_type}RenameDialog').dialog("open");
-        var ${_type}DataTable = $('#${_type}').dataTable();
-        $('#${_type}RenameInput').val(getSelectedRowColumn(${_type}DataTable,1));
-    });
+        $("#${_type}RenameTag").click(function() {
+            $('#${_type}RenameDialog').dialog("open");
+            var ${_type}DataTable = $('#${_type}').dataTable();
+            $('#${_type}RenameInput').val(getSelectedRowColumn(${_type}DataTable, 1));
+        });
 
-    $('#${_type}RenameDialog').dialog({
+        $('#${_type}RenameDialog').dialog("option", "buttons", {
+            "Confirm": {
+                click: function() {
+                    $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
+                            .success(
+                            function(data) {
+                                if (data != null && data != '') {
+                                    ${_type}
+                                    SecondTagId = data;
+                                    $('#${_type}MergeTagDialog').dialog("open");
+                                }
+                                refreshTableContents('#${_type}', false);
+                                disableRenameAndDeleteButtons();
+                                $(this).dialog("close");
+                            })
+                            .error(errorHandler);
 
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            modal: true,
-            buttons: {
-                "Confirm": {
-                    click: function(){
-                        $.post('@{admin.Projects.renameTag()}', {tagId: getSelectedRowId('#${_type}'), tagNewName: $('#${_type}RenameInput').val(), projectId:getSelectedNodeId('projectTree')})
-                                .success(
-                                function(data) {
-                                    if(data!=null && data!=''){
-                                        ${_type}SecondTagId = data;
-                                        $('#${_type}MergeTagDialog').dialog("open");
-                                    }
-                                    refreshTableContents('#${_type}', false);
-                                    disableRenameAndDeleteButtons();
-                                    $(this).dialog("close");
-                                })
-                                .error(errorHandler);
-
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}RenameDialogConfirmButton",
-                    text: "Confirm"
+                    $(this).dialog("close");
                 },
-                "Cancel": {
-                    click: function(){
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}RenameDialogCancelButton",
-                    text: "Cancel"
-                }
-            }
-    });
-
-    // row selection handler for tag table
-    handleRowSelection("#${_type}", function(rowId){
-        if(rowId!=''){
-            $("#${_type}RenameTag").button("enable");
-            $("#${_type}DeleteTag").button("enable");
-        }
-    });
-
-    $('#${_type}MergeTagDialog').dialog({
-
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            modal: true,
-            buttons: {
-                "Confirm": {
-                    click: function(){
-                        $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
-                                .success(
-                                function(data) {
-                                    refreshTableContents('#${_type}', false);
-                                    $(this).dialog("close");
-                                })
-                                .error(errorHandler);
-
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}MergeTagDialogConfirmButton",
-                    text: "Confirm"
+                id: "${_type}RenameDialogConfirmButton",
+                text: "Confirm"
+            },
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
                 },
-                "Cancel": {
-                    click: function(){
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}MergeTagDialogCancelButton",
-                    text: "Cancel"
-                }
+                id: "${_type}RenameDialogCancelButton",
+                text: "Cancel"
             }
-    });
+        });
 
-            $("#${_type}AddTag").click(function(){
-                $('#${_type}AddTagDialog').dialog("open");
+        // row selection handler for tag table
+        handleRowSelection("#${_type}", function(rowId) {
+            if (rowId != '') {
+                $("#${_type}RenameTag").button("enable");
+                $("#${_type}DeleteTag").button("enable");
+            }
+        });
+
+        $('#${_type}MergeTagDialog').dialog("option", "buttons", {
+
+            "Confirm": {
+                click: function() {
+                    $.post('@{admin.Projects.mergeTags()}', {firstTagId: getSelectedRowId('#${_type}'), secondTagId: ${_type}SecondTagId, projectId:getSelectedNodeId('projectTree')})
+                            .success(
+                            function(data) {
+                                refreshTableContents('#${_type}', false);
+                                $(this).dialog("close");
+                            })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                id: "${_type}MergeTagDialogConfirmButton",
+                text: "Confirm"
+            },
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "${_type}MergeTagDialogCancelButton",
+                text: "Cancel"
+            }
+        });
+
+        $("#${_type}AddTag").click(function() {
+            $('#${_type}AddTagDialog').dialog("open");
+        });
+
+        $('#${_type}AddTagDialog').dialog("option", "buttons", {
+
+            "Confirm": {
+                click: function() {
+                    $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
+                            .success(
+                            function(data) {
+                                refreshTableContents('#${_type}', false);
+                                disableRenameAndDeleteButtons();
+                                $(this).dialog("close");
+                            })
+                            .error(errorHandler);
+
+                    $(this).dialog("close");
+                },
+                id: "${_type}AddTagDialogConfirmButton",
+                text: "Confirm"
+            },
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "${_type}AddTagDialogCancelButton",
+                text: "Cancel"
+            }
+        });
+
+        $("#${_type}DeleteTag").click(function() {
+            deletionConfirmation('${_type}TagDeletionConfirmationDialog', '${_type} tag', getSelectedRowColumn($('#${_type}').dataTable(), 1), function() {
+                $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#${_type}'), type:'${_type}'},
+                        function() {
+                            refreshTableContents('#${_type}', false);
+                            disableRenameAndDeleteButtons();
+                        }).error(errorHandler);
             });
-
-            $('#${_type}AddTagDialog').dialog({
-
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            modal: true,
-            buttons: {
-                "Confirm": {
-                    click: function(){
-                        $.post('@{admin.Projects.addTag()}', {projectId:getSelectedNodeId('projectTree'), name: $('#${_type}AddTagInput').val(),type: "${_type}" })
-                                .success(
-                                function(data) {
-                                    refreshTableContents('#${_type}', false);
-                                    disableRenameAndDeleteButtons();
-                                    $(this).dialog("close");
-                                })
-                                .error(errorHandler);
-
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}AddTagDialogConfirmButton",
-                    text: "Confirm"
-                },
-                "Cancel": {
-                    click: function(){
-                        $(this).dialog("close");
-                    },
-                    id: "${_type}AddTagDialogCancelButton",
-                    text: "Cancel"
-                }
-            }
+        });
     });
-
-            $("#${_type}DeleteTag").click(function(){
-                deletionConfirmation('${_type}TagDeletionConfirmationDialog','${_type} tag', getSelectedRowColumn($('#${_type}').dataTable(), 1), function(){
-                    $.post('@{admin.Projects.deleteTag()}', {tagId: getSelectedRowId('#${_type}'), type:'${_type}'}, function(){
-                        refreshTableContents('#${_type}', false);
-                        disableRenameAndDeleteButtons();
-                    }).error(errorHandler);
-                });
-    });
-});
 </script>

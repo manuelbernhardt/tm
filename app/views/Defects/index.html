@@ -163,49 +163,31 @@ $(document).ready(function() {
 
 // creating a defect
     $('#createDefectButton').click(function() {
-        $('#createDefectDialog').dialog("option", "buttons",
-        {
-            "Confirm": {
-                click: function() {
-                    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
-                },
-                id: "createDefectDialogConfirmButton",
-                text:"Confirm"
-            },
-            "Cancel": {
-                click: function() {
-                    $(this).dialog('close');
-                },
-                id:"createDefectDialogCancelButton",
-                text: "Cancel"
-            }
-        });
         $('#createDefectDialog').dialog('open');
+    });
+
+    $('#createDefectDialog').dialog("option", "buttons",
+    {
+        "Confirm": {
+            click: function() {
+                $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
+            },
+            id: "createDefectDialogConfirmButton",
+            text:"Confirm"
+        },
+        "Cancel": {
+            click: function() {
+                $(this).dialog('close');
+            },
+            id:"createDefectDialogCancelButton",
+            text: "Cancel"
+        }
     });
 
     $('#createDefectForm').oxForm({
         submissionCallback: function() {
             refreshTableContents('#defectsTable', true, true);
             $('#createDefectDialog').dialog('close');
-        }
-    });
-
-    $('#createDefectDialog').dialog("option", "buttons", {
-        buttons: {
-            "Confirm": {
-                click: function() {
-                    $('#createDefectForm').oxForm('submitCreateForm', {runId: '${runId}'});
-                },
-                id: "createDefectDialogConfirmButton",
-                text:"Confirm"
-            },
-            "Cancel": {
-                click: function() {
-                    $(this).dialog('close');
-                },
-                id:"createDefectDialogCancelButton",
-                text: "Cancel"
-            }
         }
     });
 

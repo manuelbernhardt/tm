@@ -150,46 +150,47 @@
         $("#repositoryTree").tree({types: repositoryTreeTypes});
 
         $("#linkScript").click(function() {
-            $("#linkScriptDialog").dialog("option", "buttons", {
-                "Link": {
-
-                    click: function() {
-
-                        var valid = false;
-                        var treeContainer = $("#repositoryTree");
-                        var $tree = jQuery.jstree._reference(treeContainer);
-                        var selectedNode = $tree.get_selected();
-                        if ($tree._get_type(selectedNode) == 'script') {
-                            valid = true;
-                        } else {
-                            errorMessage("You need to select a script");
-                        }
-
-                        if (valid) {
-                            $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
-                                    function(data) {
-                                        $('#scriptTable').dataTable().fnDraw();
-                                    }).error(errorHandler)
-
-                            refreshTableContents('#defectTable', false);
-                            refreshTableContents('#instanceTable', false);
-
-                            $(this).dialog("close");
-                        }
-                    },
-                    id: "linkScriptDialogConfirmButton",
-                    text: "Link"
-                },
-                Cancel: {
-                    click: function() {
-                        $(this).dialog("close");
-                    },
-                    id: "linkScriptDialogCancelButton",
-                    text: "Cancel"
-                }
-
-            });
             $("#linkScriptDialog").dialog("open");
+        });
+
+        $("#linkScriptDialog").dialog("option", "buttons", {
+            "Link": {
+
+                click: function() {
+
+                    var valid = false;
+                    var treeContainer = $("#repositoryTree");
+                    var $tree = jQuery.jstree._reference(treeContainer);
+                    var selectedNode = $tree.get_selected();
+                    if ($tree._get_type(selectedNode) == 'script') {
+                        valid = true;
+                    } else {
+                        errorMessage("You need to select a script");
+                    }
+
+                    if (valid) {
+                        $.post('@{Requirements.linkScript()}', {requirementId: getSelectedNodeId('requirementTree'), scriptId: extractId(selectedNode.attr('id'))}).success(
+                                function(data) {
+                                    $('#scriptTable').dataTable().fnDraw();
+                                }).error(errorHandler)
+
+                        refreshTableContents('#defectTable', false);
+                        refreshTableContents('#instanceTable', false);
+
+                        $(this).dialog("close");
+                    }
+                },
+                id: "linkScriptDialogConfirmButton",
+                text: "Link"
+            },
+            Cancel: {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "linkScriptDialogCancelButton",
+                text: "Cancel"
+            }
+
         });
 
         $("#unlinkScript").click(function () {

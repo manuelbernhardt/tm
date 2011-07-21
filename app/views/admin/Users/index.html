@@ -115,28 +115,29 @@
 
         $("#removeUserButton").click(function () {
             $("#dialog-confirm").dialog('open');
-            $("#dialog-confirm").dialog("option", "buttons", {
-                "Remove the user": {
-                    click:function() {
-                        $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')},
-                                function() {
-                                    refreshTableContents('#tab', false);
-                                    $("#removeUserButton").button('disable');
-                                }).error(errorHandler);
-                        $(this).dialog("close");
-                    },
-                    id: "dialogConfirmConfirmButton",
-                    text: "Remove the user"
-                },
-                Cancel: {
-                    click: function() {
-                        $(this).dialog("close");
-                    },
-                    id: "dialogConfirmCancelButton",
-                    text: "Cancel"
-                }
-            });
             $('#confirmationMessage').html('User "' + getSelectedRowColumn($('#tab').dataTable(), 1) + ' ' + getSelectedRowColumn($('#tab').dataTable(), 2) + '" will be permanently disabled. Are you sure?');
+        });
+
+        $("#dialog-confirm").dialog("option", "buttons", {
+            "Remove the user": {
+                click:function() {
+                    $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')},
+                            function() {
+                                refreshTableContents('#tab', false);
+                                $("#removeUserButton").button('disable');
+                            }).error(errorHandler);
+                    $(this).dialog("close");
+                },
+                id: "dialogConfirmConfirmButton",
+                text: "Remove the user"
+            },
+            Cancel: {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "dialogConfirmCancelButton",
+                text: "Cancel"
+            }
         });
 
 

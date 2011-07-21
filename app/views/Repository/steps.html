@@ -91,29 +91,30 @@
         });
 
         $('#createStepButton').click(function() {
-            $('#createStepDialog').dialog("option", "buttons", {
-
-                "Create step": {
-
-                    click: function() {
-                        if ($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
-                            $(this).dialog("close");
-                        }
-                    },
-                    id: "createStepDialogConfirmButton",
-                    text: "Create step"
-                },
-                "Cancel": {
-                    click: function() {
-                        $('#createStepForm').validate({meta: 'validate'}).resetForm();
-                        $(this).dialog("close");
-                    },
-
-                    id: "createStepDialogCancelButton",
-                    text: "Cancel"
-                }
-            });
             $('#createStepDialog').dialog('open');
+        });
+
+        $('#createStepDialog').dialog("option", "buttons", {
+
+            "Create step": {
+
+                click: function() {
+                    if ($('#createStepForm').oxForm('submitCreateForm', {scriptId: getSelectedNodeId('repositoryTree')})) {
+                        $(this).dialog("close");
+                    }
+                },
+                id: "createStepDialogConfirmButton",
+                text: "Create step"
+            },
+            "Cancel": {
+                click: function() {
+                    $('#createStepForm').validate({meta: 'validate'}).resetForm();
+                    $(this).dialog("close");
+                },
+
+                id: "createStepDialogCancelButton",
+                text: "Cancel"
+            }
         });
 
         $('#updateStepForm').oxForm({

@@ -224,37 +224,37 @@ $(document).ready(function() {
         $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function() {
             $('#createRunDialog').dialog('open');
         });
-        $('#createRunDialog').dialog("option", "buttons", {
-            "Save": {
-                click: function() {
-                    $('#runForm').ajaxSubmit({
-                        success: function(data) {
-                            fullDrawInstanceTable = false;
-                            refreshTableContents('#instanceTable', false);
-                            $('#createRunDialog').dialog("close");
-                            if (data != null && data != '') {
-                                createdRunId = data;
-                                $('#createDefectDialog').dialog("open");
-                                addButtonsToCreateDefectDialog();
-                            }
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            errorHandler(xhr, textStatus, errorThrown);
-                            $('#createRunDialog').dialog("close");
+    });
+
+    $('#createRunDialog').dialog("option", "buttons", {
+        "Save": {
+            click: function() {
+                $('#runForm').ajaxSubmit({
+                    success: function(data) {
+                        fullDrawInstanceTable = false;
+                        refreshTableContents('#instanceTable', false);
+                        $('#createRunDialog').dialog("close");
+                        if (data != null && data != '') {
+                            createdRunId = data;
+                            $('#createDefectDialog').dialog("open");
                         }
-                    });
-                },
-                id: "createRunDialogConfirmButton",
-                text: "Save"
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        errorHandler(xhr, textStatus, errorThrown);
+                        $('#createRunDialog').dialog("close");
+                    }
+                });
             },
-            "Cancel": {
-                click: function() {
-                    $(this).dialog("close");
-                },
-                id: "createRunDialogCancelButton",
-                text: "Cancel"
-            }
-        });
+            id: "createRunDialogConfirmButton",
+            text: "Save"
+        },
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "createRunDialogCancelButton",
+            text: "Cancel"
+        }
     });
 
 
@@ -262,37 +262,37 @@ $(document).ready(function() {
         $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function() {
             $('#updateRunDialog').dialog('open')
         });
-        $('#updateRunDialog').dialog("option", "buttons", {
-            "Save": {
-                click: function() {
-                    $('#updateForm').ajaxSubmit({
-                        success: function(data) {
-                            fullDrawInstanceTable = false;
-                            refreshTableContents('#instanceTable', false);
-                            $('#updateRunDialog').dialog("close");
-                            if (data != null && data != '') {
-                                createdRunId = data;
-                                $('#createDefectDialog').dialog("open");
-                                addButtonsToCreateDefectDialog();
-                            }
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            errorHandler(xhr, textStatus, errorThrown);
-                            $('#updateRunDialog').dialog("close");
+    });
+
+    $('#updateRunDialog').dialog("option", "buttons", {
+        "Save": {
+            click: function() {
+                $('#updateForm').ajaxSubmit({
+                    success: function(data) {
+                        fullDrawInstanceTable = false;
+                        refreshTableContents('#instanceTable', false);
+                        $('#updateRunDialog').dialog("close");
+                        if (data != null && data != '') {
+                            createdRunId = data;
+                            $('#createDefectDialog').dialog("open");
                         }
-                    });
-                },
-                id: "updateRunDialogConfirmButton",
-                text: "Save"
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        errorHandler(xhr, textStatus, errorThrown);
+                        $('#updateRunDialog').dialog("close");
+                    }
+                });
             },
-            "Cancel": {
-                click: function() {
-                    $(this).dialog("close");
-                },
-                id: "updateRunDialogCancelButton",
-                text: "Cancel"
-            }
-        });
+            id: "updateRunDialogConfirmButton",
+            text: "Save"
+        },
+        "Cancel": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "updateRunDialogCancelButton",
+            text: "Cancel"
+        }
     });
 
     $('#deleteRunButton').click(function() {
@@ -304,26 +304,24 @@ $(document).ready(function() {
         })
     });
 
-    function addButtonsToCreateDefectDialog() {
-        $('#createDefectDialog').dialog("option", "buttons", {
-            "Yes": {
-                click: function() {
-                    $(this).dialog("close");
-                    window.location = "/defects/create/" + createdRunId;
+    $('#createDefectDialog').dialog("option", "buttons", {
+        "Yes": {
+            click: function() {
+                $(this).dialog("close");
+                window.location = "/defects/create/" + createdRunId;
 
-                },
-                id: "createDefectDialogConfirmButton",
-                text: "Yes"
             },
-            "No": {
-                click: function() {
-                    $(this).dialog("close");
-                },
-                id: "createDefectDialogCancelButton",
-                text: "No"
-            }
-        });
-    }
+            id: "createDefectDialogConfirmButton",
+            text: "Yes"
+        },
+        "No": {
+            click: function() {
+                $(this).dialog("close");
+            },
+            id: "createDefectDialogCancelButton",
+            text: "No"
+        }
+    });
 
     //hack for creating defect
     var createdRunId = null;
