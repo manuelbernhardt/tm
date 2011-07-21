@@ -346,4 +346,7 @@ table.display tr.even:hover{
 }
 
 
+/* tree fix */
+a > .jstree-icon { background-position: 0 0; }
+
 
