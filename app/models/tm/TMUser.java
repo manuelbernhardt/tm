@@ -25,7 +25,7 @@ import play.db.jpa.JPA;
  */
 @Entity
 @Filters({@Filter(name = "account"), @Filter(name = "activeTMUser"), @Filter(name = "activeProjectUsers")})
-@Table(name = "tm_TMUser")
+@Table(name = "tm_User")
 public class TMUser extends TemporalModel implements AccountEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, optional = false)
@@ -42,7 +42,7 @@ public class TMUser extends TemporalModel implements AccountEntity {
     public Date sessionExpirationTime;
 
     @ElementCollection
-    @CollectionTable(name = "tm_TMUser_accountRoles")
+    @CollectionTable(name = "tm_User_accountRoles")
     @OrderColumn
     public List<String> accountRoles = new ArrayList<String>();
 
