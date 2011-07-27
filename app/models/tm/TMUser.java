@@ -42,7 +42,9 @@ public class TMUser extends TemporalModel implements AccountEntity {
     public Date sessionExpirationTime;
 
     @ElementCollection
-    @CollectionTable(name = "tm_User_accountRoles")
+    @CollectionTable(name = "tm_User_accountRoles", joinColumns = {
+            @JoinColumn(name="tm_User_id", referencedColumnName="id")
+    })
     @OrderColumn
     public List<String> accountRoles = new ArrayList<String>();
 

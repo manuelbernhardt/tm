@@ -1,14 +1,15 @@
 package models.tm;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.general.UnitRole;
 import org.hibernate.annotations.BatchSize;
@@ -27,7 +28,9 @@ public class ProjectRole extends ProjectModel {
     public String name;
 
     @ElementCollection
-    @CollectionTable(name = "tm_ProjectRole_unitRoles")
+    @CollectionTable(name = "tm_ProjectRole_unitRoles", joinColumns = {
+            @JoinColumn(name="tm_ProjectRole_id", referencedColumnName="id")
+    })
     @OrderColumn
     public List<String> unitRoles = new ArrayList<String>();
 

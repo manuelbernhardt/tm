@@ -1,17 +1,18 @@
 package models.tm;
 
-import java.util.List;
-import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyClass;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import java.util.List;
+import java.util.Map;
 
 import play.db.jpa.JPABase;
 
@@ -39,7 +40,9 @@ public class ProjectWidget extends ProjectModel {
     public boolean publicWidget;
 
     @ElementCollection(targetClass = String.class)
-    @CollectionTable(name = "tm_ProjectWidget_parameters")
+    @CollectionTable(name = "tm_ProjectWidget_parameters", joinColumns = {
+            @JoinColumn(name="tm_ProjectWidget_id", referencedColumnName="id")
+    })
     @MapKeyClass(String.class)
     public Map<String, Object> parameters;
 
