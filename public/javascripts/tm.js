@@ -781,7 +781,7 @@ function applyDialogStyles() {
  *  initialization function for feedback bar
  */
 
-function feedbackInit() {
+function feedbackInit(url) {
     <!--feedback bar initialization -->
     $('.slide-out-div').tabSlideOut({
         tabHandle: '.handle',                              //class of the element that will be your tab
@@ -794,6 +794,21 @@ function feedbackInit() {
         topPos: '0px',                                   //position from the top
         fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
     });
+
+    $('#sendFeedback').button().click(function() {
+        $.post(url, {name: $('#personName').val(), message:$('#messageFeedback').val(), location: window.location.pathname},
+            function() {
+                $('#thanksNote').show().delay(1700).slideUp();
+                $('#feedbackElementsWrapper').hide().delay(3000).slideDown();
+                $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 1800).removeClass('open');
+                $('#messageFeedback').val('');
+            }).error(errorHandler);
+    })
+
+    $('#cancelFeedback').button().click(function() {
+        $('#feedbackContainer').animate({bottom: '-' + parseInt($('#feedbackContainer').outerHeight(), 10) + 'px' }, 300).removeClass('open');
+        $('#messageFeedback').val('');
+    })
 }
 
 /**

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font: 12px/1.4 arial, FreeSans, Helvetica, sans-serif;
-    background-color:#E2E4FF;
+    background-color: #E2E4FF;
     overflow-y: scroll;
 }
 
@@ -14,7 +14,7 @@ input {
     border-radius: 3px;
 }
 
-textarea{
+textarea {
     margin: 0;
     padding: 0;
     -webkit-border-radius: 3px;
@@ -102,11 +102,11 @@ div.left_tree {
 div.right_tree {
     width: 65%;
     float: right;
-    margin-top:0.1em;
+    margin-top: 0.1em;
 }
 
-div.inner{
-    margin-top:-0.3em;
+div.inner {
+    margin-top: -0.3em;
 }
 
 div.right_column {
@@ -140,8 +140,8 @@ label.name {
 }
 
 label.extended {
-    width:25%;
-    margin:3px 10px 0px 0px;
+    width: 25%;
+    margin: 3px 10px 0px 0px;
 }
 
 span.name {
@@ -208,132 +208,130 @@ div#top_menu {
     font-size: 12px;
 }
 
-.searchBox{
-    float:left;
-    width:100%;
-    padding:0.2em;
+.searchBox {
+    float: left;
+    width: 100%;
+    padding: 0.2em;
 }
 
-.searchInput{
-    float:right;
-    margin-top:0.4em;
+.searchInput {
+    float: right;
+    margin-top: 0.4em;
 }
 
-.tag-inlining-input{
-    float:left;
+.tag-inlining-input {
+    float: left;
 }
 
-.tag-inlining-label{
-    float:left;
-    margin-right:1em;
+.tag-inlining-label {
+    float: left;
+    margin-right: 1em;
 }
 
-.actions{
-    width:100%;
+.actions {
+    width: 100%;
 }
 
-.actions .buttons{
-    width:35%;
+.actions .buttons {
+    width: 35%;
 }
 
-.tree-container{
-    float:left;
-    width:100%;
+.tree-container {
+    float: left;
+    width: 100%;
 }
 
-.table-inlining-tabs{
-    margin-top:3.8em;
+.table-inlining-tabs {
+    margin-top: 3.8em;
 }
 
-.search-input-table-left{
-    width:100%;
-    float:left;
-    text-align:left;
-    margin-top:5px;
+.search-input-table-left {
+    width: 100%;
+    float: left;
+    text-align: left;
+    margin-top: 5px;
 }
 
-a.export{
-    height:18px;
-    background-image:url("../images/icons/page_excel.png");
-    background-repeat:no-repeat;
-    padding-left:20px;
-    display:inline-block;
+a.export {
+    height: 18px;
+    background-image: url("../images/icons/page_excel.png");
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    display: inline-block;
 }
 
 /* additional style for jquery UI */
-#main-wrapper{
-    margin:40px 20px 20px 20px;
-    background-color:transparent;
+#main-wrapper {
+    margin: 40px 20px 20px 20px;
+    background-color: transparent;
 }
 
 /*defect details styles */
 
-.defect-detail-left{
+.defect-detail-left {
     width: 45%;
     float: left;
 }
 
-.defect-detail-right{
-    width:54%;
+.defect-detail-right {
+    width: 54%;
     float: right;
 }
 
 /* defects comments styles */
 
-.comments-actions{
-    float:right;
-    width:100%;
-    text-align:right;
-    margin-bottom:5px;
-    height:0px;
+.comments-actions {
+    float: right;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 5px;
+    height: 0px;
 }
 
-
-.comments-caption{
-    margin-bottom:5px;
-    background-color:#E2E4FF;
-    padding:4px;
-    border-radius:3px;
+.comments-caption {
+    margin-bottom: 5px;
+    background-color: #E2E4FF;
+    padding: 4px;
+    border-radius: 3px;
 }
 
-.comments-entry{
-    padding:10px;
-    margin:5px;
-    border:solid 1px;
-    border-radius:3px;
+.comments-entry {
+    padding: 10px;
+    margin: 5px;
+    border: solid 1px;
+    border-radius: 3px;
 }
 
-textarea.comments-entry-edit{
-    width:75%;
-    height:80px;
+textarea.comments-entry-edit {
+    width: 75%;
+    height: 80px;
 }
 
-.comment-container{
-    overflow:auto;
-    width:80%;
-    margin-bottom:5px;
+.comment-container {
+    overflow: auto;
+    width: 80%;
+    margin-bottom: 5px;
 }
 
-label.comment{
+label.comment {
     display: block;
     float: left;
     width: 100px;
     text-align: right;
     margin: 0px 8px 0px 0px;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 /* overriding on hover style of datatable */
-table.display tr.odd:hover{
+table.display tr.odd:hover {
     cursor: pointer;
     background-color: #ECFFB3;
 }
 
-table.display tr.even:hover{
+table.display tr.even:hover {
     cursor: pointer;
     background-color: #ECFFB3;
 }
-
 
 /* feedback bar style*/
 .slide-out-div {
@@ -341,12 +339,13 @@ table.display tr.even:hover{
     width: 350px;
     background: #e8e8e8;
     border: 1px solid #29216d;
-    height:260px;
-    z-index:10000;
+    height: 260px;
+    z-index: 100000;
 }
 
-
 /* tree fix */
-a > .jstree-icon { background-position: 0 0; }
+a > .jstree-icon {
+    background-position: 0 0;
+}
 
 
