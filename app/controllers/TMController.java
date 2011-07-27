@@ -450,8 +450,9 @@ public class TMController extends Controller {
     }
 
     public static void sendFeedbackEmail(String name, String message, String location) {
-        if (play.Play.id.equals("demo"))
-            TMMails.feedbackEmail(name, message, location, request.headers.toString());
+        if (play.Play.id.equals("demo")) {
+            TMMails.feedbackEmail(name, message, location,  request.headers.get("user-agent").value());
+        }
     }
 
     /////////////////////////////////////////////////////////////

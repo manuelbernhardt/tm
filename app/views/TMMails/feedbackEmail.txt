@@ -1,12 +1,9 @@
-#this is an automatic notification from oxiras TM
-
-Following feedback has been provided for page ${location}:
-
-${message}
+# this is an automatic notification from Oxiras TM
 
 #{if name}
-Feedback provided by ${name}
+Feedback provided by: ${name}
 #{/if}
+Location: ${location}
+User-Agent: ${userAgent}
 
-Client info:
-${headers}
+${message}

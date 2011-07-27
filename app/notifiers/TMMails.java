@@ -4,16 +4,14 @@ package notifiers;
  * @author nikola
  */
 
-import play.*;
-import play.mvc.*;
-import java.util.*;
+import play.mvc.Mailer;
 
-public class TMMails extends Mailer{
+public class TMMails extends Mailer {
 
-    public static void feedbackEmail(String name, String message, String location, String headers){
+    public static void feedbackEmail(String name, String message, String location, String userAgent) {
         setSubject("[Oxiras][Feedback] Page: %s", location);
         addRecipient("feedback@oxiras.com");
         setFrom("info@oxiras.com");
-        send(name, message, location, headers);
+        send(name, message, location, userAgent);
     }
 }
