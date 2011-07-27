@@ -31,7 +31,7 @@
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:26
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -67,7 +67,7 @@ INSERT INTO `account_Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:26
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -118,7 +118,7 @@ INSERT INTO `account_Account` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:26
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -335,7 +335,7 @@ INSERT INTO `tm_test_ScriptStep` VALUES (1,'2011-06-15 20:10:56','2011-06-15 20:
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `tm_User` DISABLE KEYS */;
-INSERT INTO `tm_User` VALUES (1,'2011-06-15 20:10:55','2011-07-26 21:59:25','layout3','2011-07-26 20:21:51',1,1,1),(2,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,2),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',NULL,NULL,1,1,3),(33,'2011-06-16 15:14:11','2011-06-16 16:02:35',NULL,NULL,1,1,33),(34,'2011-06-16 15:16:47','2011-06-16 16:02:43',NULL,NULL,1,1,34);
+INSERT INTO `tm_User` VALUES (1,'2011-06-15 20:10:55','2011-07-27 20:04:29','layout3','2011-07-27 23:04:29',1,1,1),(2,'2011-06-15 20:10:55','2011-06-15 20:10:55',NULL,NULL,1,1,2),(3,'2011-06-15 20:10:56','2011-06-15 20:10:56',NULL,NULL,1,1,3),(33,'2011-06-16 15:14:11','2011-06-16 16:02:35',NULL,NULL,1,1,33),(34,'2011-06-16 15:16:47','2011-06-16 16:02:43',NULL,NULL,1,1,34);
 /*!40000 ALTER TABLE `tm_User` ENABLE KEYS */;
 
 --
@@ -353,7 +353,7 @@ INSERT INTO `tm_test_Tag` VALUES (1,'2011-06-15 20:10:57','2011-06-15 20:10:57',
 -- WHERE:  account_id = 1
 
 /*!40000 ALTER TABLE `account_User` DISABLE KEYS */;
-INSERT INTO `account_User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','demo@example.com','John','Smith','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(2,'2011-06-15 20:10:54','2011-06-15 20:10:54',2,'','hui.zhong.huang@example.com','Hui Zhong','Hu','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(3,'2011-06-15 20:10:54','2011-06-15 20:10:54',3,'','anne.lechauve@example.com','Anne','Le Chauve','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(33,'2011-06-16 15:14:11','2011-07-26 21:58:41',4,'','soren@example.com','Søren','Jensen','j4dT9l/2qYxWYc8ABvRGIA==','',1),(34,'2011-06-16 15:16:47','2011-06-16 15:16:47',5,'','sanjivani@example.com','Sanjivani','Sharma','NBuJzJXsWg2AdwYQS1TdZw==',NULL,1);
+INSERT INTO `account_User` VALUES (1,'2011-06-15 20:10:54','2011-06-15 20:10:54',1,'','demo@example.com','John','Smith','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(2,'2011-06-15 20:10:54','2011-06-15 20:10:54',2,'','hui.zhong.huang@example.com','Hui Zhong','Hu','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(3,'2011-06-15 20:10:54','2011-06-15 20:10:54',3,'','anne.lechauve@example.com','Anne','Le Chauve','/gHOKn+6yPr67XyYKgTiKQ==',NULL,1),(33,'2011-06-16 15:14:11','2011-07-26 21:58:41',4,'','soren@example.com','S','Jensen','j4dT9l/2qYxWYc8ABvRGIA==','',1),(34,'2011-06-16 15:16:47','2011-06-16 15:16:47',5,'','sanjivani@example.com','Sanjivani','Sharma','NBuJzJXsWg2AdwYQS1TdZw==',NULL,1);
 /*!40000 ALTER TABLE `account_User` ENABLE KEYS */;
 
 --
@@ -374,7 +374,7 @@ INSERT INTO `tm_UserWidget` VALUES (1,'2011-07-26 21:59:20','2011-07-26 21:59:20
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -409,7 +409,7 @@ INSERT INTO `tm_UserWidget` VALUES (1,'2011-07-26 21:59:20','2011-07-26 21:59:20
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -444,7 +444,7 @@ INSERT INTO `tm_UserWidget` VALUES (1,'2011-07-26 21:59:20','2011-07-26 21:59:20
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -479,7 +479,7 @@ INSERT INTO `tm_UserWidget` VALUES (1,'2011-07-26 21:59:20','2011-07-26 21:59:20
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -515,7 +515,7 @@ INSERT INTO `tm_test_Instance_tm_test_Tag` VALUES (1,4);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -536,7 +536,7 @@ INSERT INTO `tm_test_Instance_tm_test_Tag` VALUES (1,4);
 --
 -- Dumping data for table `tm_ProjectRole_unitRoles`
 --
--- WHERE:  ProjectRole_id in (select id from tm_ProjectRole where account_id = 1)
+-- WHERE:  tm_ProjectRole_id in (select id from tm_ProjectRole where account_id = 1)
 
 /*!40000 ALTER TABLE `tm_ProjectRole_unitRoles` DISABLE KEYS */;
 INSERT INTO `tm_ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1),(1,'reqCreate',2),(1,'reqEdit',3),(1,'reqDelete',4),(1,'testRepoView',5),(1,'testRepoCreate',6),(1,'testRepoEdit',7),(1,'testRepoDelete',8),(1,'testPrepView',9),(1,'testPrepCreate',10),(1,'testPrepEdit',11),(1,'testPrepDelete',12),(1,'testExecView',13),(1,'testExecCreate',14),(1,'testExecEdit',15),(1,'testExecDelete',16),(1,'defectView',17),(1,'defectCreate',18),(1,'defectEdit',19),(1,'defectDelete',20),(30,'reqView',0),(30,'reqCreate',1),(30,'reqEdit',2),(30,'testRepoView',3),(30,'testRepoCreate',4),(30,'testRepoEdit',5),(30,'testPrepView',6),(30,'testPrepCreate',7),(30,'testPrepEdit',8),(30,'testExecView',9),(30,'testExecCreate',10),(30,'testExecEdit',11),(30,'defectView',12),(30,'defectCreate',13),(30,'defectEdit',14),(31,'testExecView',0),(31,'testExecCreate',1),(31,'testExecEdit',2),(31,'defectView',3),(31,'defectCreate',4),(31,'defectEdit',5),(32,'defectView',0),(32,'defectEdit',1);
@@ -551,7 +551,7 @@ INSERT INTO `tm_ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -572,7 +572,7 @@ INSERT INTO `tm_ProjectRole_unitRoles` VALUES (1,'projectEdit',0),(1,'reqView',1
 --
 -- Dumping data for table `tm_ProjectWidget_parameters`
 --
--- WHERE:  ProjectWidget_id in (select id from tm_ProjectWidget where account_id = 1)
+-- WHERE:  tm_ProjectWidget_id in (select id from tm_ProjectWidget where account_id = 1)
 
 /*!40000 ALTER TABLE `tm_ProjectWidget_parameters` DISABLE KEYS */;
 INSERT INTO `tm_ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defects over time','graphLabel'),(1,'temporal','graphType'),(1,'created','temporalField'),(1,'DATE','xAxis'),(1,'COUNT','yAxis'),(2,'Defect','entity'),(2,'All defects','title'),(3,'Requirement','entity'),(3,'All requirements','title'),(4,'Instance','entity'),(4,'All instances','title'),(5,'Script','entity'),(5,'All scripts','title');
@@ -587,7 +587,7 @@ INSERT INTO `tm_ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defec
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -622,7 +622,7 @@ INSERT INTO `tm_ProjectWidget_parameters` VALUES (1,'Defect','entity'),(1,'Defec
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -658,7 +658,7 @@ INSERT INTO `tm_Requirement_tm_test_Tag` VALUES (1,2),(8,1),(11,1),(10,1),(12,1)
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -693,7 +693,7 @@ INSERT INTO `tm_Requirement_tm_test_Tag` VALUES (1,2),(8,1),(11,1),(10,1),(12,1)
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -729,7 +729,7 @@ INSERT INTO `tm_User_tm_ProjectRole` VALUES (1,1),(34,32),(33,31),(2,30),(3,30);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
 -- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tm
@@ -750,7 +750,7 @@ INSERT INTO `tm_User_tm_ProjectRole` VALUES (1,1),(34,32),(33,31),(2,30),(3,30);
 --
 -- Dumping data for table `tm_User_accountRoles`
 --
--- WHERE:  TMUser_id in (select id from tm_User where account_id = 1)
+-- WHERE:  tm_User_id in (select id from tm_User where account_id = 1)
 
 /*!40000 ALTER TABLE `tm_User_accountRoles` DISABLE KEYS */;
 INSERT INTO `tm_User_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1,'userDelete',2),(1,'projectCreate',3),(1,'projectEdit',4),(1,'projectDelete',5),(1,'accountAdmin',6);
@@ -765,4 +765,4 @@ INSERT INTO `tm_User_accountRoles` VALUES (1,'userCreate',0),(1,'userEdit',1),(1
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-07-27 11:41:27
+-- Dump completed on 2011-07-27 23:00:37
