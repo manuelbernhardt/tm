@@ -110,8 +110,13 @@ public class Preparation extends TMController {
                             if (n.equals("id")) {
                                 id = reader.nextLong();
                             }
-                            if (n.equals("value") && !n.equals(null)) {
-                                paramValue = reader.nextString();
+                            if (n.equals("value")) {
+                                try {
+                                    paramValue = reader.nextString();
+                                } catch (IllegalStateException e) {
+                                    e.fillInStackTrace();
+                                    reader.skipValue();
+                                }
                             }
                             if (n.equals("name")) {
                                 reader.nextString();
@@ -129,7 +134,6 @@ public class Preparation extends TMController {
             reader.endObject();
 
         } catch (Throwable t) {
-            t.fillInStackTrace();
             Logger.error(Logger.LogType.TECHNICAL, t, "Could not extract JSON parameters for test instance parameter update, JSON string is '%s'", paramsJson);
             error();
         }
