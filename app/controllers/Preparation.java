@@ -102,9 +102,9 @@ public class Preparation extends TMController {
                 if (name.equals("params")) {
                     reader.beginArray();
                     while (reader.hasNext()) {
-                        reader.beginObject();
                         Long id = -1l;
                         String paramValue = "", paramName;
+                        reader.beginObject();
                         while (reader.hasNext()) {
                             String n = reader.nextName();
                             if (n.equals("id")) {
@@ -117,15 +117,20 @@ public class Preparation extends TMController {
                                 reader.nextString();
                             }
                         }
+                        reader.endObject();
                         InstanceParam p = Lookups.getInstanceParam(id);
                         p.value = paramValue;
                         p.save();
+
                     }
+                    reader.endArray();
                 }
             }
+            reader.endObject();
 
         } catch (Throwable t) {
-            Logger.error(Logger.LogType.TECHNICAL, t, "Could not extract JSON parameters for test instance parameter update, instanceId is '%s' and JSON string is '%s'", instanceId, paramsJson);
+            t.fillInStackTrace();
+            Logger.error(Logger.LogType.TECHNICAL, t, "Could not extract JSON parameters for test instance parameter update, JSON string is '%s'", paramsJson);
             error();
         }
         ok();
@@ -145,11 +150,11 @@ public class Preparation extends TMController {
 
     @Restrict(UnitRole.TESTPREPCREATE)
     public static void createInstance(String name, Long scriptId) {
-        if(scriptId == null) {
+        if (scriptId == null) {
             error("No scriptId provided");
         }
         Script script = Lookups.getScript(scriptId);
-        if(script == null) {
+        if (script == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find script with ID %s", scriptId);
             notFound("Could not find script with ID " + scriptId);
         }
@@ -158,7 +163,7 @@ public class Preparation extends TMController {
         instance.name = name;
         instance.script = script;
         boolean created = instance.create();
-        if(!created) {
+        if (!created) {
             Logger.error(Logger.LogType.DB, "Could not create new instance");
             error("Error creating new instance, please try again");
         } else {
