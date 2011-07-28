@@ -110,7 +110,7 @@ public class Preparation extends TMController {
                             if (n.equals("id")) {
                                 id = reader.nextLong();
                             }
-                            if (n.equals("value")) {
+                            if (n.equals("value") && !n.equals(null)) {
                                 paramValue = reader.nextString();
                             }
                             if (n.equals("name")) {
