@@ -6,7 +6,7 @@
         <div class="actions buttons">
             #{formDialog id:'newUserDialog', title:'Create a user', action:@admin.Users.create(),
             baseClass:'models.tm.TMUser',
-            openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true}
+            openDialogButtonText:'User', submitButtonText:'Create user', width: 400, dnd:true, refreshTableId:'tab'}
             #{input.field field:'user.user.firstName', label:'First Name' /}
             #{input.field field:'user.user.lastName', label:'Last Name' /}
             #{input.field field:'user.user.email', label:'Email' /}
@@ -124,6 +124,8 @@
                     $.post('@{admin.Users.removeUser()}', {userId: getSelectedRowId('#tab')},
                             function() {
                                 refreshTableContents('#tab', false);
+                                $(".hiddenOnLoad").hide();
+                                $(".shownOnLoad").show();
                                 $("#removeUserButton").button('disable');
                             }).error(errorHandler);
                     $(this).dialog("close");
@@ -166,7 +168,6 @@
                 "sZeroRecords": "No users defined yet"
             },
             "fnDrawCallback": function(data) {
-
                 handlePagination('#tab', data);
             }
         };

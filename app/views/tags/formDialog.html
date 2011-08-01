@@ -26,6 +26,9 @@
                     $('#${_id}Form').submit();
                     $('#${_id}').dialog("close");
                 }
+                if ("${_refreshTableId}") {
+                    refreshTableContents('#${_refreshTableId}', false)
+                }
             },
             Cancel: function() {
                 $('#${_id}Form').validate().resetForm();
