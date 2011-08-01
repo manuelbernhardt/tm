@@ -8,12 +8,12 @@ tm.DefectStatus(defectStatusNew):
 
 tm.DefectStatus(defectStatusOpen):
     name: Open
-    defaultOnCreation: true
+    defaultOnCreation: false
     position: 1
 
 tm.DefectStatus(defectStatusClosed):
     name: Closed
-    defaultOnCreation: true
+    defaultOnCreation: false
     position: 2
 
 tm.ProjectWidget(templateWidgetDefectByDay):
