@@ -712,6 +712,38 @@ tm.TMUser(testTMuserDefectsDelete):
     projectRoles:
        -  testTMtestProject2RoleDefectsDelete
 
+tm.test.Script(testTMtestProject1TestScript1):
+    account: accountTest
+    project: testTMtestProject1
+    name: Test script 1
+    createdBy: testTMuserGwen
+
+tm.test.ScriptParam(testTMtestProject1TestScript1Param1):
+    account: accountTest
+    project: testTMtestProject1
+    script: testTMtestProject1TestScript1
+    name: param1
+
+tm.test.ScriptStep(testTMtestProject1TestScript1Step1):
+    account: accountTest
+    project: testTMtestProject1
+    script: testTMtestProject1TestScript1
+    position: 1
+    name: Step 1
+    description: "Step 1 description with \u003C\u003C\u003Cparam1\u003E\u003E\u003E"
+    expectedResult: Step 1 expected results
+
+tm.ProjectTreeNode(testTMtestProject1RepositoryTreeNodeFolderRootScript1):
+    account: accountTest
+    level: 1
+    name: Test script 1
+    nodeId: testTMtestProject1TestScript1
+    opened: true
+    path: '/Test script 1'
+    treeId: repositoryTree
+    type: script
+    project: testTMtestProject1
+
 tm.approach.Release(testTMtestProject2ReleaseProto):
     account: accountTest
     project: testTMtestProject2
