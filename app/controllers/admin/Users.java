@@ -178,14 +178,14 @@ public class Users extends TMController {
         List<Project> projects = new ArrayList<Project>();
         List<ProjectCategory> projectCategories = new ArrayList<ProjectCategory>();
 
-        if(categoryId != null && projectId == null && roleId == null) {
+        if (categoryId != null && projectId == null && roleId == null) {
             projectCategories.add(Lookups.getProjectCategory(categoryId));
             renderJSON(computeRolesData(projectCategories, null, null));
-        } else if(categoryId != null && projectId != null && roleId == null) {
+        } else if (categoryId != null && projectId != null && roleId == null) {
             projectCategories.add(Lookups.getProjectCategory(categoryId));
             projects.add(Lookups.getProject(projectId));
             renderJSON(computeRolesData(projectCategories, projects, null));
-        } else if(categoryId != null && projectId != null && roleId != null) {
+        } else if (categoryId != null && projectId != null && roleId != null) {
             // we're stuffed
             projectCategories.add(Lookups.getProjectCategory(categoryId));
             projects.add(Lookups.getProject(projectId));
@@ -230,7 +230,9 @@ public class Users extends TMController {
                     role.addProperty("id", r.getId());
                     role.addProperty("name", r.name);
                 }
+                projectRoles = null;
             }
+            projects = null;
         }
         return res.toString();
     }
