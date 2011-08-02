@@ -1,118 +1,77 @@
 <div id="actions" class="actions">
-  <div class="actions buttons">
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
-    <button id="createInstanceButton" class="button-add">Instance</button>
-    #{/deadbolt.restrict}
-    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
-    <button id="removeInstance" class="button-delete">Remove</button>
-    #{/deadbolt.restrict}
-  </div>
+    <div class="actions buttons">
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPCREATE]]}
+        <button id="createInstanceButton" class="button-add">Instance</button>
+        #{/deadbolt.restrict}
+        #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
+        <button id="removeInstance" class="button-delete">Remove</button>
+        #{/deadbolt.restrict}
+    </div>
 </div>
 #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
 <div id="createInstanceDialog" title="Create new test instance">
-  <form action="@{Preparation.createInstance()}" id="createInstanceForm" method="post">
-    <label for="name">Name</label>
-    <input name="name" type="text" id="name">
-  </form>
+    <form action="@{Preparation.createInstance()}" id="createInstanceForm" method="post">
+        <label for="name">Name</label>
+        <input name="name" type="text" id="name">
+    </form>
 </div>
 #{/deadbolt.restrict}
 <div class="left_table inner">
-  #{box 'Test Instances'}
-  <table class="display" id="instancesTable">
-    <thead>
-    <tr>
-      <th>Name</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  #{/box}
+    #{box 'Test Instances'}
+    <table class="display" id="instancesTable">
+        <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    #{/box}
 </div>
 <div class="right_table inner">
-  #{include 'Preparation/instanceTabs.html' /}
+    #{include 'Preparation/instanceTabs.html' /}
 </div>
 
 <script type="text/javascript">
 
-  #{tabularasa.init tableId:'instancesTable'}
-  var instancesTableParameters = {
-    "aoColumns":[
-      {"sName": "naturalId", "sClass": "sNone"},
-      {"sName": "name"}
+    #{tabularasa.init tableId:'instancesTable'}
+    var instancesTableParameters = {
+        "aoColumns":[
+            {"sName": "naturalId", "sClass": "sNone"},
+            {"sName": "name"}
 
-    ],
-    "bServerSide": true,
-    "bLengthChange": false,
-    "bSort": false,
-    "bFilter": false,
-    "bAutoWidth": false,
-    "iDisplayLength": false,
-    "bInfo": false,
-    "sAjaxSource": "@{Preparation.instances()}",
-    "oLanguage": {
-      "sZeroRecords": "No test instances created"
+        ],
+        "bServerSide": true,
+        "bLengthChange": false,
+        "bSort": false,
+        "bFilter": false,
+        "bAutoWidth": false,
+        "iDisplayLength": false,
+        "bInfo": false,
+        "sAjaxSource": "@{Preparation.instances()}",
+        "oLanguage": {
+            "sZeroRecords": "No test instances created"
+        }
+    };
+    #{/tabularasa.init}
+
+    handleRowSelection("#instancesTable", function(id) {
+        handleTabsPopulation(id);
+    });
+
+    function getSelectedId() {
+        return getSelectedRowId('#instancesTable');
     }
-  };
-  #{/tabularasa.init}
 
-  handleRowSelection("#instancesTable", function(id) {
-    handleTabsPopulation(id);
-  });
+    function getInstanceQuery() {
+        return {'instanceId': getSelectedRowId('#instancesTable')};
+    }
 
-  function getSelectedId() {
-    return getSelectedRowId('#instancesTable');
-  }
-
-  function getInstanceQuery() {
-    return {'instanceId': getSelectedRowId('#instancesTable')};
-  }
-
-  function loadInnerData() {
-    $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
-            function() {
-              refreshTableContents('#instancesTable', false);
-            }).error(errorHandler);
-  }
-
-  #{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
-  $('#createInstanceButton').click(function() {
-    $('#createInstanceDialog').dialog('open');
-  });
-  $("#createInstanceDialog").dialog({
-            autoOpen: false,
-            height: 200,
-            width: 300,
-            modal: true,
-            resizable: false,
-            buttons: {
-              "Create": {
-                  click: function() {
-                            var dialog = $(this);
-                            $('#createInstanceForm').ajaxSubmit({
-                                      data: {scriptId: getSelectedNodeId('repositoryTree')},
-                                      success: function() {
-                                        refreshTableContents('#instancesTable', false);
-                                        dialog.dialog("close");
-                                        $('#createInstanceForm').resetForm();
-                                      },
-                                      error: errorHandler
-                                    });
-                          },
-                  id: "createInstanceDialogConfirmButton",
-                  text: "Create"
-              },
-              Cancel: {
-                  click: function() {
-                      $('#createInstanceForm').resetForm();
-                      $(this).dialog("close");
-                  },
-                  id: "createInstanceDialogCancelButton",
-                  text: "Cancel"
-              }
-            }
-
-          });
-  #{/deadbolt.restrict}
-
+    function loadInnerData() {
+        $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
+                function() {
+                    refreshTableContents('#instancesTable', false);
+                }).error(errorHandler);
+    }
 
 </script>

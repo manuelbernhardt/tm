@@ -4,6 +4,7 @@ import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.approach.Release;
 import models.tm.approach.TestCycle;
+import models.tm.test.ExecutionStatus;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
 import models.tm.test.Script;
@@ -51,9 +52,9 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
 
             // releases and cycles
             List<Release> releaseList = Release.find("from Release r").fetch();
-            for(Release r : releaseList) {
+            for (Release r : releaseList) {
                 List<TestCycle> testCycles = r.getTestCycles();
-                if(testCycles.size() > 0) {
+                if (testCycles.size() > 0) {
                     releases.put(r, testCycles);
                 }
             }
@@ -112,6 +113,7 @@ public class ScriptCycleTreeDataHandler implements TreeDataHandler, TreeRoleHold
             Instance ti = new Instance(script.project);
             ti.testCycle = cycle;
             ti.script = script;
+            ti.status = ExecutionStatus.NOT_RUN.getPosition();
             ti.name = script.name + " " + (Instance.count("from Instance i where i.script = ? and i.testCycle = ?", script, cycle) + 1);
 
             boolean created = ti.create();
