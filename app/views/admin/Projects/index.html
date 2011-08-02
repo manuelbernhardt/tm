@@ -1,58 +1,62 @@
 #{extends 'admin/main.html' /}
 #{set title:'Project administration' /}
 
-        <!--important! in this page, javascript should come before HTML elements, in order to be loaded before javascript in includes-->
+<!--important! in this page, javascript should come before HTML elements, in order to be loaded before javascript in includes-->
 
 <script type="text/javascript">
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    $('#projectForm').oxForm({
-      loadAction: '@{admin.Projects.projectDetails()}',
-      submissionCallback:function() {
-                            refreshTree('projectTree');
-                          }
+        $('#projectForm').oxForm({
+            loadAction: '@{admin.Projects.projectDetails()}',
+            submissionCallback:function() {
+                refreshTree('projectTree');
+            }
+        });
+
+
+        $("#innerTabs").tabs();
+
+        $("#projectTree").tree({types: projectTreeTypes, onRename: function(name) {
+
+            $('#projectForm_project_name').val(name);
+        }
+        });
+
+        /** Selection listener **/
+        $("#projectTree").bind("select_node.jstree", function (e, data) {
+            if (isSelectedNodeType(data, ['default', 'project'])) {
+                $('.hiddenOnLoad').show();
+                $('.shownOnLoad').hide();
+                $("#remove").button('enable');
+                $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
+                refreshTableContents('#requirement', false);
+                refreshTableContents('#testScript', false);
+                refreshTableContents('#testInstance', false);
+                refreshTableContents('#defect', false);
+            }
+            else {
+                $('.hiddenOnLoad').hide();
+                $('.shownOnLoad').show();
+            }
+        });
+
+        /** Button initialisation **/
+        $("#create_category").click(function () {
+            $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
+        });
+
+        $("#create_project").click(function () {
+            $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
+        });
+
+        $("#remove").click(function () {
+            deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function() {
+                $("#projectTree").jstree("remove", null);
+            });
+
+        });
+
     });
-
-    
-
-    $("#innerTabs").tabs();
-
-    $("#projectTree").tree({types: projectTreeTypes, onRename: function(name){
-
-         $('#projectForm_project_name').val(name);
-    }
-    });
-
-    /** Selection listener **/
-    $("#projectTree").bind("select_node.jstree", function (e, data) {
-        $('.hiddenOnLoad').show();
-        $('.shownOnLoad').hide();
-        $("#remove").button('enable');
-        $('#projectForm').oxForm('load', getSelectedNodeId('projectTree'));
-        refreshTableContents('#requirement', false);
-        refreshTableContents('#testScript', false);
-        refreshTableContents('#testInstance', false);
-        refreshTableContents('#defect', false);
-
-    });
-
-    /** Button initialisation **/
-    $("#create_category").click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"category"}, data: "New category"});
-    });
-
-    $("#create_project").click(function () {
-      $("#projectTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New project"});
-    });
-
-    $("#remove").click(function () {
-      deletionConfirmation('projectDeletionConfirmationDialog', 'Project', getSelectedNodeName('projectTree'), function(){
-            $("#projectTree").jstree("remove", null);
-      });
-
-    });
-
-  });
 </script>
 
 
@@ -68,65 +72,65 @@
     </div>
     <div class="tree-container">
 
-      <div class="left_tree">
-        #{box 'Projects'}
+        <div class="left_tree">
+            #{box 'Projects'}
             <div id="projectTree" class="tree" style="border-style:none;"></div>
-        #{/box}
-      </div>
-      <div class="right_tree">
-    <div id="innerTabs">
-      <ul>
-        <li><a href="#projectDetails"><span>Project details</span></a></li>
-        <li><a href="#testCycles"><span>Test cycles</span></a></li>
-        <li><a href="#tags"><span>Tags</span></a></li>
-        <li><a href="#roles"><span>Roles</span></a></li>
-        <li><a href="#users"><span>Users</span></a></li>
-      </ul>
+            #{/box}
+        </div>
+        <div class="right_tree">
+            <div id="innerTabs">
+                <ul>
+                    <li><a href="#projectDetails"><span>Project details</span></a></li>
+                    <li><a href="#testCycles"><span>Test cycles</span></a></li>
+                    <li><a href="#tags"><span>Tags</span></a></li>
+                    <li><a href="#roles"><span>Roles</span></a></li>
+                    <li><a href="#users"><span>Users</span></a></li>
+                </ul>
 
-        <div id='projectDetails'>
-            <div class="hiddenOnLoad">
-                #{include 'admin/Projects/projectDetails.html' /}
-            </div>
-            <div class="shownOnLoad">
-                No project selected
-            </div>
-        </div>
-        <div id='testCycles'>
-            <div class="hiddenOnLoad">
-                #{include 'admin/Approach/cycles.html' /}
-            </div>
-            <div class="shownOnLoad">
-                No project selected
-            </div>
-        </div>
-        <div id='tags'>
-            <div class="hiddenOnLoad">
-                 #{include 'admin/Projects/tags.html' /}
-            </div>
-            <div class="shownOnLoad">
-                No project selected
-            </div>
-        </div>
-        <div id='roles'>
-            <div class="hiddenOnLoad">
-                #{include 'admin/Projects/roles.html' /}
-            </div>
-            <div class="shownOnLoad">
-                No project selected
-            </div>
-        </div>
-        <div id='users'>
-            <div class="hiddenOnLoad">
-                #{include 'admin/Projects/users.html' /}
-            </div>
-            <div class="shownOnLoad">
-                No project selected
-            </div>
-        </div>
+                <div id='projectDetails'>
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Projects/projectDetails.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No project selected
+                    </div>
+                </div>
+                <div id='testCycles'>
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Approach/cycles.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No project selected
+                    </div>
+                </div>
+                <div id='tags'>
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Projects/tags.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No project selected
+                    </div>
+                </div>
+                <div id='roles'>
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Projects/roles.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No project selected
+                    </div>
+                </div>
+                <div id='users'>
+                    <div class="hiddenOnLoad">
+                        #{include 'admin/Projects/users.html' /}
+                    </div>
+                    <div class="shownOnLoad">
+                        No project selected
+                    </div>
+                </div>
 
 
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 </div>
 
