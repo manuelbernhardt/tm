@@ -52,7 +52,7 @@ public class Defects extends TMController {
 
         for (RunStep runStep : runSteps) {
             defectDescription = defectDescription + "\\n\\nExpected result: "
-                    + runStep.expectedResult + "\\nActual result: " + runStep.actualResult;
+                    + runStep.getExpectedResultText() + "\\nActual result: " + runStep.actualResult;
         }
 
         render("Defects/index.html", createDefect, runId, defectDescription);
@@ -257,12 +257,12 @@ public class Defects extends TMController {
     }
 
     @Restrict(UnitRole.DEFECTVIEW)
-    public static void getComments(Long defectId){
+    public static void getComments(Long defectId) {
         List<DefectComment> defectComments = DefectComment.find("defect.id=?", defectId).fetch();
         TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
         JsonArray jsonArray = new JsonArray();
         JsonObject result = new JsonObject();
-        for(DefectComment defectComment: defectComments){
+        for (DefectComment defectComment : defectComments) {
             JsonObject comment = new JsonObject();
             comment.addProperty("id", defectComment.id);
             comment.addProperty("comment", JavaExtensions.nl2br(defectComment.comment).toString());
@@ -278,7 +278,7 @@ public class Defects extends TMController {
             comment.addProperty("hiddenActionsId", "hiddenActions" + defectComment.id);
             comment.addProperty("commentEditInputId", "commentEditInputId" + defectComment.id);
             comment.addProperty("canEdit", defectComment.submittedBy.equals(tmUser));
-            
+
             jsonArray.add(comment);
         }
         result.add("comments", jsonArray);
@@ -286,7 +286,7 @@ public class Defects extends TMController {
     }
 
     @Restrict(UnitRole.DEFECTEDIT)
-    public static void addComment(DefectComment comment, Long defectId){
+    public static void addComment(DefectComment comment, Long defectId) {
         Defect defect = Defect.find("id=?", defectId).first();
         TMUser tmUser = TMUser.find("id=?", getConnectedUserId()).first();
         Project project = Project.find("id=?", getActiveProjectId()).first();
@@ -297,14 +297,15 @@ public class Defects extends TMController {
         comment.save();
         ok();
     }
+
     @Restrict(UnitRole.DEFECTEDIT)
-    public static void editComment(Long commentId, String comment){
+    public static void editComment(Long commentId, String comment) {
         DefectComment defectComment = DefectComment.find("id=?", commentId).first();
-        if(defectComment==null){
+        if (defectComment == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find comment %s for edition", commentId);
             notFound("Sorry, the selected comment could not be found. Please refresh the page");
         }
-        defectComment.comment=comment;
+        defectComment.comment = comment;
         try {
             defectComment.save();
         } catch (Throwable t) {
@@ -315,9 +316,9 @@ public class Defects extends TMController {
     }
 
     @Restrict(UnitRole.DEFECTEDIT)
-    public static void deleteComment(Long commentId){
+    public static void deleteComment(Long commentId) {
         DefectComment defectComment = DefectComment.find("id=?", commentId).first();
-        if(defectComment==null){
+        if (defectComment == null) {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find comment %s for deletion", commentId);
             notFound("Sorry, the selected comment could not be found. Please refresh the page");
         }

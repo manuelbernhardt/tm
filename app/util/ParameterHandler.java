@@ -90,6 +90,27 @@ public class ParameterHandler {
         return sb.toString();
     }
 
+    public static String getRawParameter(String text, ParameterHolder parameterHolder) {
+        Matcher matcher = parameterPattern.matcher(text);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            Param p = parameterHolder.getParam(extractParamName(text, matcher));
+
+            if (p instanceof RunParam) {
+                RunParam rp = (RunParam) p;
+                if (rp.value != null) {
+                    matcher.appendReplacement(sb, rp.value);
+                }
+            } else if (p instanceof ScriptParam) {
+                matcher.appendReplacement(sb, ((ScriptParam) p).name);
+            } else {
+                throw new RuntimeException("What are you trying to do?");
+            }
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
     private static String getRunParameterId(RunParam p) {
         return "param_" + p.id + "_" + Codec.UUID();
     }

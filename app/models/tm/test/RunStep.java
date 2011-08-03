@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import java.util.regex.Matcher;
+
 import models.tm.Project;
 import models.tm.ProjectModel;
 import play.data.validation.MaxSize;
@@ -58,6 +60,10 @@ public class RunStep extends ProjectModel {
         return ParameterHandler.applyClass(expectedResult, this.run, ParameterHandler.VIEW_CLASS);
     }
 
+    public String getExpectedResultText() {
+        return ParameterHandler.getRawParameter(expectedResult, this.run);
+    }
+
     public String getDescriptionEditableHTML() {
         return ParameterHandler.applyClass(description, this.run, ParameterHandler.EDIT_CLASS);
     }
@@ -71,7 +77,7 @@ public class RunStep extends ProjectModel {
 
     @Override
     public boolean create() {
-        if(executionStatus != null) {
+        if (executionStatus != null) {
             this.status = executionStatus.getPosition();
         }
         return super.create();
@@ -79,7 +85,7 @@ public class RunStep extends ProjectModel {
 
     @Override
     public JPABase save() {
-        if(executionStatus != null) {
+        if (executionStatus != null) {
             this.status = executionStatus.getPosition();
         }
         return super.save();
