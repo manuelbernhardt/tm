@@ -12,9 +12,12 @@ import models.general.UnitRole;
 import models.tm.Project;
 import models.tm.TMUser;
 import models.tm.approach.Release;
+import models.tm.test.ExecutionStatus;
 import models.tm.test.Instance;
 import models.tm.test.InstanceParam;
+import models.tm.test.Run;
 import models.tm.test.Script;
+import models.tm.test.ScriptParam;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
 import play.db.jpa.GenericModel;
@@ -141,10 +144,10 @@ public class Preparation extends TMController {
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
-    public static void instances(String tableId, Integer iDisplayStart, Integer iDisplayLength, String sColumns, String sEcho, Long instanceId) {
+    public static void instances(String tableId, Integer iDisplayStart, Integer iDisplayLength, String sColumns, String sEcho, Long scriptId) {
         GenericModel.JPAQuery query;
-        if (instanceId != null) {
-            query = Instance.find("script.id=?", instanceId);
+        if (scriptId != null) {
+            query = Instance.find("script.id=?", scriptId);
         } else {
             query = Instance.all();
         }
@@ -153,7 +156,7 @@ public class Preparation extends TMController {
     }
 
     @Restrict(UnitRole.TESTPREPCREATE)
-    public static void createInstance(String name, Long scriptId) {
+    public static void createInstance(Long scriptId) {
         if (scriptId == null) {
             error("No scriptId provided");
         }
@@ -162,16 +165,42 @@ public class Preparation extends TMController {
             Logger.error(Logger.LogType.TECHNICAL, "Could not find script with ID %s", scriptId);
             notFound("Could not find script with ID " + scriptId);
         }
-        Project project = Lookups.getProject(getActiveProjectId());
-        Instance instance = new Instance(project);
-        instance.name = name;
+        Instance instance = new Instance(script.project);
         instance.script = script;
+        instance.status = ExecutionStatus.NOT_RUN.getPosition();
+        instance.name = script.name + " " + (Instance.count("from Instance i where i.script = ?", script) + 1);
         boolean created = instance.create();
+
         if (!created) {
             Logger.error(Logger.LogType.DB, "Could not create new instance");
             error("Error creating new instance, please try again");
         } else {
+
+            // create instance params
+            for (ScriptParam param : script.getParams()) {
+                InstanceParam instanceParam = new InstanceParam(script.project);
+                instanceParam.scriptParam = param;
+                instanceParam.instance = instance;
+                instanceParam.project = param.project;
+                instanceParam.create();
+            }
+
             ok();
+        }
+    }
+
+    @Restrict(UnitRole.TESTPREPDELETE)
+    public static void deleteInstance(Long instanceId) {
+        Instance instance = Lookups.getInstance(instanceId);
+        if (instance != null && instance.isInAccount(TMController.getConnectedUserAccount())) {
+            try {
+                instance.delete();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        } else {
+            Logger.error(Logger.LogType.SECURITY, "Could not delete instance with id %s", instanceId);
+            error("Instance with given id doesn't exist!");
         }
     }
 }

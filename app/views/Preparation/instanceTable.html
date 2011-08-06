@@ -8,14 +8,10 @@
         #{/deadbolt.restrict}
     </div>
 </div>
-#{deadbolt.restrict roles:[[models.general.UnitRole.TESTREPOCREATE],[models.general.UnitRole.TESTREPOEDIT]]}
-<div id="createInstanceDialog" title="Create new test instance">
-    <form action="@{Preparation.createInstance()}" id="createInstanceForm" method="post">
-        <label for="name">Name</label>
-        <input name="name" type="text" id="name">
-    </form>
-</div>
-#{/deadbolt.restrict}
+
+<div id="cycleDeleteConfirmationDialog" title="Deletion confirmation of cycle"></div>
+
+
 <div class="left_table inner">
     #{box 'Test Instances'}
     <table class="display" id="instancesTable">
@@ -34,10 +30,16 @@
 
 <script type="text/javascript">
 
+    var scriptIdParam = null;
+    $("#repositoryTree").bind("select_node.jstree", function (e, data) {
+        scriptIdParam = getScriptId();
+        refreshTableContents("#instancesTable", false, false)
+    })
+
     #{tabularasa.init tableId:'instancesTable'}
     var instancesTableParameters = {
         "aoColumns":[
-            {"sName": "naturalId", "sClass": "sNone"},
+            {"sName": "id", "sClass": "sNone"},
             {"sName": "name"}
 
         ],
@@ -55,8 +57,25 @@
     };
     #{/tabularasa.init}
 
+    function addRequestParameters(parameters, tableId) {
+        if (tableId == 'instancesTable') {
+            parameters.push({"name": "scriptId", "value": scriptIdParam});
+        }
+    }
+
     handleRowSelection("#instancesTable", function(id) {
         handleTabsPopulation(id);
+        $('#removeInstance').button('enable');
+    });
+
+    $('#removeInstance').click(function() {
+        $('.instanceHiddenOnLoad').hide();
+        $('.instanceShownOnLoad').show();
+        deletionConfirmation('cycleDeleteConfirmationDialog', 'Instance', getSelectedRowColumn($('#instancesTable').dataTable(), 1), function() {
+            $.post("@{Preparation.deleteInstance()}", { instanceId: getSelectedRowId("#instancesTable")}, function() {
+                refreshTableContents("#instancesTable", false, false);
+            });
+        });
     });
 
     function getSelectedId() {
@@ -67,11 +86,26 @@
         return {'instanceId': getSelectedRowId('#instancesTable')};
     }
 
+    function getScriptId() {
+        if (getSelectedNode('repositoryTree') != null) {
+            return getSelectedNodeId('repositoryTree');
+        }
+        else {
+            return null;
+        }
+    }
+
     function loadInnerData() {
-        $.post('@{Preparation.instances()}', {instanceId: getSelectedNodeId('repositoryTree')},
+        $.post('@{Preparation.instances()}', {scriptId: getSelectedNodeId('repositoryTree')},
                 function() {
-                    refreshTableContents('#instancesTable', false);
+                    refreshTableContents('#instancesTable', false, false);
                 }).error(errorHandler);
     }
+
+    $('#createInstanceButton').click(function() {
+        $.post("@{Preparation.createInstance()}", {scriptId: getSelectedNodeId('repositoryTree')}, function() {
+            refreshTableContents("#instancesTable", false, false);
+        })
+    });
 
 </script>
