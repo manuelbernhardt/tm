@@ -1,60 +1,65 @@
 #{if run == null}
 No test run selected
 #{/if}
+#{elseif numberOfSteps < 1}
+There are no steps defined for selected test run
+#{/elseif}
 #{else}
 <form id="${formName}" name="${formName}" action="@{Execution.updateRun('runId': run.id)}" method="post">
-  <table id="runTable">
-    <thead>
-    <th>Nr</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Expected results</th>
-    <th>Actual results</th>
-    <th>Status</th>
-    </thead>
-    <tbody>
-    #{list items:run.getSteps(), as:'step'}
-    <tr class="${step_parity}">
-      <td>${step.position}</td>
-      <td>${step.name}</td>
-      <td>${step.descriptionEditableHTML.raw()}</td>
-      <td>${step.expectedResultEditableHTML.raw()}</td>
-      <td><textarea id="actualResult" name="actualResult_${step.id}" rows="5" cols="48">${step.actualResult}</textarea>
-      </td>
-      <td>
-        <select id="status" name="status_${step.id}">
-          <option value="">- pick -</option>
-          #{list items:models.tm.test.ExecutionStatus.runValues(), as:'s'}
-          <option value="${s.getPosition()}" ${s.equals(step.executionStatus)?'selected':''}>${s}</option>
-          #{/list}
-        </select>
-      </td>
-    </tr>
-    #{/list}
+    <table id="runTable">
+        <thead>
+        <th>Nr</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Expected results</th>
+        <th>Actual results</th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        #{list items:run.getSteps(), as:'step'}
+        <tr class="${step_parity}">
+            <td>${step.position}</td>
+            <td>${step.name}</td>
+            <td>${step.descriptionEditableHTML.raw()}</td>
+            <td>${step.expectedResultEditableHTML.raw()}</td>
+            <td><textarea id="actualResult" name="actualResult_${step.id}" rows="5"
+                          cols="48">${step.actualResult}</textarea>
+            </td>
+            <td>
+                <select id="status" name="status_${step.id}">
+                    <option value="">- pick -</option>
+                    #{list items:models.tm.test.ExecutionStatus.runValues(), as:'s'}
+                    <option value="${s.getPosition()}"
+                    ${s.equals(step.executionStatus)?'selected':''}>${s}</option>
+                    #{/list}
+                </select>
+            </td>
+        </tr>
+        #{/list}
 
-    </tbody>
-  </table>
+        </tbody>
+    </table>
 </form>
 
 <script type="text/javascript">
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    $('.editParam').editable('@{Execution.updateParameter("runId": run.id)}', {
-      callback : function(value, settings) {
-        // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.
-        // if yes, update its value
-        var thisId = $(this).attr('id');
-        var paramId = thisId.substring(0, thisId.lastIndexOf('_'));
-        $('#runForm div[id^="' + paramId + '"][id!="' + thisId + '"]').each(function(index, el) {
-          if ($.trim(value).length) {
-            $(el).html(value);
-          } else {
-            $(el).html("Click to edit");
-          }
+        $('.editParam').editable('@{Execution.updateParameter("runId": run.id)}', {
+            callback : function(value, settings) {
+                // go through all parameters of all steps, and check if we by chance have the same parameter used somewhere else.
+                // if yes, update its value
+                var thisId = $(this).attr('id');
+                var paramId = thisId.substring(0, thisId.lastIndexOf('_'));
+                $('#runForm div[id^="' + paramId + '"][id!="' + thisId + '"]').each(function(index, el) {
+                    if ($.trim(value).length) {
+                        $(el).html(value);
+                    } else {
+                        $(el).html("Click to edit");
+                    }
+                });
+            }
         });
-      }
     });
-  });
 
 </script>
 #{/else}

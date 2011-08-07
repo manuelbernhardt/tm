@@ -193,7 +193,8 @@ public class Execution extends TMController {
             runParam.create();
         }
         String formName = "runForm";
-        render("Execution/runExecution.html", run, formName);
+        Integer numberOfSteps = run.getSteps().size();
+        render("Execution/runExecution.html", run, formName, numberOfSteps);
     }
 
     @Restrict(UnitRole.TESTEXECEDIT)
@@ -253,8 +254,8 @@ public class Execution extends TMController {
         run.updateStatus();
         run.instance.updateStatus();
 
-        if(run.executionStatus == ExecutionStatus.FAILED) {
-           renderJSON(run.id);
+        if (run.executionStatus == ExecutionStatus.FAILED) {
+            renderJSON(run.id);
         }
 
         ok();
@@ -325,7 +326,7 @@ public class Execution extends TMController {
     }
 
     @Restrict(UnitRole.TESTEXECCREATE)
-    public static void createDefect(Long id){
+    public static void createDefect(Long id) {
         Run run = Lookups.getRun(id);
         Defect defect = new Defect(getActiveProject());
         defect.name = run.instance.name;

@@ -746,6 +746,15 @@ function applyDialogStyles() {
         closeOnEscape: false,
         open: function() {
             $(".ui-dialog-titlebar-close").hide();
+        },
+        buttons: {
+            "Close": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "createRunDialogCancelButton",
+                text: "Close"
+            }
         }
 
     })

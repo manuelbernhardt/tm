@@ -45,7 +45,12 @@
             <div id="deleteRunButton" class="button-delete">Delete Test Run</div>
             #{/deadbolt.restrict}
 
-            <div id="createRunDialog" class="form-dialog" title="Run Test Instance"></div>
+            <div id="createRunDialog" class="#{if numberOfSteps < 1}info#{/if}#{else}form#{/else}-dialog"
+                 title="Run Test Instance">
+                #{if numberOfSteps < 1}
+                There are no steps defined for selected test run
+                #{/if}
+            </div>
             <div id="updateRunDialog" class="form-dialog" title="Update Test Run"></div>
             <div id="deleteRunDialog" class="form-dialog" title="Delete Test Run"></div>
             <div id="createDefectDialog" class="confirm-dialog" title="Create a defect ?">
@@ -225,7 +230,7 @@ $(document).ready(function() {
             $('#createRunDialog').dialog('open');
         });
     });
-
+    #{if  numberOfSteps > 1 }
     $('#createRunDialog').dialog("option", "buttons", {
         "Save": {
             click: function() {
@@ -256,7 +261,7 @@ $(document).ready(function() {
             text: "Cancel"
         }
     });
-
+    #{/if}
 
     $('#updateRunButton').click(function() {
         $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function() {
