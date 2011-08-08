@@ -3,6 +3,15 @@ No test run selected
 #{/if}
 #{elseif numberOfSteps < 1}
 There are no steps defined for selected test run
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#createRunDialog').removeClass('form-dialog');
+        $('#createRunDialog').addClass('info-dialog');
+        applyDialogStyles();
+    });
+</script>
+
 #{/elseif}
 #{else}
 <form id="${formName}" name="${formName}" action="@{Execution.updateRun('runId': run.id)}" method="post">
@@ -57,6 +66,41 @@ There are no steps defined for selected test run
                         $(el).html("Click to edit");
                     }
                 });
+            }
+        });
+
+        $('#createRunDialog').addClass('form-dialog');
+        $('#createRunDialog').removeClass('info-dialog');
+        applyDialogStyles();
+
+        $('#createRunDialog').dialog("option", "buttons", {
+            "Save": {
+                click: function() {
+                    $('#runForm').ajaxSubmit({
+                        success: function(data) {
+                            fullDrawInstanceTable = false;
+                            refreshTableContents('#instanceTable', false);
+                            $('#createRunDialog').dialog("close");
+                            if (data != null && data != '') {
+                                createdRunId = data;
+                                $('#createDefectDialog').dialog("open");
+                            }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            errorHandler(xhr, textStatus, errorThrown);
+                            $('#createRunDialog').dialog("close");
+                        }
+                    });
+                },
+                id: "createRunDialogConfirmButton",
+                text: "Save"
+            },
+            "Cancel": {
+                click: function() {
+                    $(this).dialog("close");
+                },
+                id: "createRunDialogCancelButton",
+                text: "Cancel"
             }
         });
     });

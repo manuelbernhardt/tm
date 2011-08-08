@@ -68,6 +68,14 @@ public class ParameterHandler {
      * @return a HTML snipet with divs having the specified classes
      */
     public static String applyClass(String text, ParameterHolder parameterHolder, String classes) {
+        return getParameters(text, parameterHolder, classes, true);
+    }
+
+    public static String getRawParameter(String text, ParameterHolder parameterHolder) {
+        return getParameters(text, parameterHolder, null, false);
+    }
+
+    private static String getParameters(String text, ParameterHolder parameterHolder, String classes, boolean applyClass) {
         Matcher matcher = parameterPattern.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
@@ -78,31 +86,18 @@ public class ParameterHandler {
                 if (rp.value == null) {
                     matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">enter a value</div>");
                 } else {
-                    matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">" + rp.value + "</div>");
+                    if (applyClass) {
+                        matcher.appendReplacement(sb, "<div id=\"" + getRunParameterId(rp) + "\" class=\"" + classes + "\">" + rp.value + "</div>");
+                    } else {
+                        matcher.appendReplacement(sb, rp.value);
+                    }
                 }
             } else if (p instanceof ScriptParam) {
-                matcher.appendReplacement(sb, "<div class=\"viewParam\">" + ((ScriptParam) p).name + "</div>");
-            } else {
-                throw new RuntimeException("What are you trying to do?");
-            }
-        }
-        matcher.appendTail(sb);
-        return sb.toString();
-    }
-
-    public static String getRawParameter(String text, ParameterHolder parameterHolder) {
-        Matcher matcher = parameterPattern.matcher(text);
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            Param p = parameterHolder.getParam(extractParamName(text, matcher));
-
-            if (p instanceof RunParam) {
-                RunParam rp = (RunParam) p;
-                if (rp.value != null) {
-                    matcher.appendReplacement(sb, rp.value);
+                if (applyClass) {
+                    matcher.appendReplacement(sb, "<div class=\"viewParam\">" + ((ScriptParam) p).name + "</div>");
+                } else {
+                    matcher.appendReplacement(sb, ((ScriptParam) p).name);
                 }
-            } else if (p instanceof ScriptParam) {
-                matcher.appendReplacement(sb, ((ScriptParam) p).name);
             } else {
                 throw new RuntimeException("What are you trying to do?");
             }
