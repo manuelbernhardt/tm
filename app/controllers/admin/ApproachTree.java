@@ -1,9 +1,14 @@
-package controllers;
+package controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import controllers.Lookups;
+import controllers.ScriptCycleTreeDataHandler;
+import controllers.TMJPATreeStorage;
+import controllers.TMTree;
+import controllers.TMTreeController;
 import models.general.TreeRoleHolder;
 import models.general.UnitRole;
 import models.tm.Project;
@@ -23,8 +28,7 @@ import static models.general.UnitRole.roles;
 
 /**
  * Test Approach tree - contains releases and test cycles.
- * This tree is special in that it is shared between the admin area and the rest of the application, and there is no
- * an "active project" concept in the admin area, this we have to handle the project linking differently.
+ * This is a managed tree which is project dependent which means we ought to set ourselves the ThreadLocal in TMTreeController
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -62,16 +66,18 @@ public class ApproachTree extends TMTree implements TreeRoleHolder {
 
         final TMJPATreeStorage storage = (TMJPATreeStorage) getStorage();
 
-        List<JSTreeNode> children = null;
-        if (parentId == null || parentId == -1) {
+        List<JSTreeNode> children = new ArrayList<JSTreeNode>();
+        if (getRootName() != null && (parentId == -1 || parentId == null)) {
             children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.threadRoot = n and n.project.id = ?", projectId);
-            RootNode rootNode = new RootNode(getRootName(), -1l, true, true, "root", children);
+            RootNode rootNode = new RootNode(getRootName(), -2l, true, true, "root", children);
             List<JSTreeNode> nodes = new ArrayList<JSTreeNode>();
             nodes.add(rootNode);
             return nodes;
         } else {
             GenericTreeNode parent = storage.getTreeNode(parentId, type, getName());
-            children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
+            if(parent != null) {
+                children = storage.findJSTreeNodes("from TreeNode n where n.treeId = '" + getName() + "' and n.level = ? and n.path like ? and n.threadRoot = ?", parent.getLevel() + 1, parent.getPath() + "%", parent.getThreadRoot());
+            }
             return children;
         }
 

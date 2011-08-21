@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import controllers.ApproachTree;
+import controllers.admin.ApproachTree;
 import controllers.Lookups;
 import controllers.ScriptCycleTreeDataHandler;
 import models.tm.Project;

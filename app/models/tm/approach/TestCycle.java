@@ -1,15 +1,15 @@
 package models.tm.approach;
 
-import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.Date;
+import java.util.List;
 
-import controllers.ApproachTree;
 import controllers.Lookups;
 import controllers.ScriptCycleTreeDataHandler;
+import controllers.admin.ApproachTree;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.ProjectTreeNode;

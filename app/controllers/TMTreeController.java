@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import controllers.tree.TreeController;
 import models.deadbolt.RoleHolder;
 import models.general.TreeRoleHolder;
@@ -30,17 +29,10 @@ public class TMTreeController extends TMController {
     public static ThreadLocal<Project> projectThreadLocal = new ThreadLocal<Project>();
 
     /**
-     * For trees that are shared between the admin area and the user area, we use an alias for demarcation that we resolve to the original tree
-     * afterhand. This is necessary for access control.
+     * Set a threadLocal containing the active project so that we know how to create {@link models.tm.ProjectTreeNode} instances in {@link controllers.TMJPATreeStorage#getNewTreeNode()}
      */
-    private final static ImmutableMap<String, String> sharedTreeRewrites = ImmutableMap.of("adminApproachTree", "approachTree");
-
-    /**
-     * Set a Hibernate filter so that all queries get a project id appended.
-     * We also set a threadLocal so that the {@link TMTree} knows how to create new {@link models.tm.ProjectTreeNode} instances.
-     */
-    @Before
-    public static void setProjectFilter() {
+    @Before(priority = 0)
+    public static void setProjectThreadLocal() {
         if (Security.isConnected() && controllerHasActiveProject()) {
             @SuppressWarnings("unchecked")
             Long projectId = params.get("args[projectId]", Long.class);
@@ -50,11 +42,17 @@ public class TMTreeController extends TMController {
             } else if (getActiveProject() != null) {
                 projectThreadLocal.set(getActiveProject());
             }
+        }
+    }
 
+    /**
+     * Set a Hibernate filter so that all queries get a project id appended.
+     */
+    @Before(priority = 1)
+    public static void setProjectFilter() {
+        if (Security.isConnected() && controllerHasActiveProject()) {
             // active project filter, for user part
-            if (TMController.controllerHasActiveProject()) {
-                ((Session) JPA.em().getDelegate()).enableFilter("projects").setParameterList("projectIds", new Object[] {projectThreadLocal.get().getId()});
-            }
+            ((Session) JPA.em().getDelegate()).enableFilter("projects").setParameterList("projectIds", new Object[] {projectThreadLocal.get().getId()});
         }
     }
 
@@ -71,9 +69,8 @@ public class TMTreeController extends TMController {
     }
 
     public static void create(String treeId, Long parentId, String parentType, Long position, String name, String type, Map<String, String> args) {
-        String tId = rewriteTreeId(treeId);
-        if (canCreate(tId)) {
-            TreeController.createDirect(tId, parentId, parentType, position, name, type, args);
+        if (canCreate(treeId)) {
+            TreeController.createDirect(treeId, parentId, parentType, position, name, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to create a node for tree %s, parentId %s, parentType %s, name %s, type %s", treeId, parentId, parentType, name, type);
             forbidden();
@@ -81,9 +78,8 @@ public class TMTreeController extends TMController {
     }
 
     public static void remove(String treeId, Long id, Long parentId, String type, Map<String, String> args) {
-        String tId = rewriteTreeId(treeId);
-        if (canDelete(tId)) {
-            TreeController.removeDirect(tId, id, parentId, type, args);
+        if (canDelete(treeId)) {
+            TreeController.removeDirect(treeId, id, parentId, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to delete a node for tree %s, id %s, parentId %s, type %s", treeId, id, parentId, type);
             forbidden();
@@ -91,9 +87,8 @@ public class TMTreeController extends TMController {
     }
 
     public static void rename(String treeId, Long id, String name, String type) {
-        String tId = rewriteTreeId(treeId);
-        if (canUpdate(tId)) {
-            TreeController.renameDirect(tId, id, name, type);
+        if (canUpdate(treeId)) {
+            TreeController.renameDirect(treeId, id, name, type);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to rename a node for tree %s, id %s, new name %s, type %s", treeId, id, name, type);
             forbidden();
@@ -101,24 +96,22 @@ public class TMTreeController extends TMController {
     }
 
     public static void move(String treeId, Long id, String type, Long target, String targetType, Long position, String name, boolean copy) {
-        String tId = rewriteTreeId(treeId);
-        if (!copy && canUpdate(tId)) {
-            TreeController.moveDirect(tId, id, type, target, targetType, position, name, copy);
-        } else if (!copy && !canUpdate(tId)) {
+        if (!copy && canUpdate(treeId)) {
+            TreeController.moveDirect(treeId, id, type, target, targetType, position, name, copy);
+        } else if (!copy && !canUpdate(treeId)) {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to move a node for tree %s, id %s, type %s, target %s", treeId, id, type, target);
             forbidden();
-        } else if (copy && canCreate(tId)) {
-            TreeController.moveDirect(tId, id, type, target, targetType, position, name, copy);
-        } else if (copy && !canCreate(tId)) {
+        } else if (copy && canCreate(treeId)) {
+            TreeController.moveDirect(treeId, id, type, target, targetType, position, name, copy);
+        } else if (copy && !canCreate(treeId)) {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to copy a node for tree %s, id %s, type %s, target %s", treeId, id, type, target);
             forbidden();
         }
     }
 
     public static void getChildren(String treeId, Long id, String type, Map<String, String> args) {
-        String tId = rewriteTreeId(treeId);
-        if (canView(tId)) {
-            TreeController.getChildrenDirect(tId, id, type, args);
+        if (canView(treeId)) {
+            TreeController.getChildrenDirect(treeId, id, type, args);
         } else {
             Logger.error(Logger.LogType.SECURITY, "Illegal attempt to view a node for tree %s, id %s, type %s", treeId, id, type);
             forbidden();
@@ -159,9 +152,5 @@ public class TMTreeController extends TMController {
             throw new RuntimeException(String.format("Programmer error: tree of class %s is not implementing the TreeRoleHolder interface", tree.getClass().getName()));
         }
         return (TreeRoleHolder) tree;
-    }
-
-    private static String rewriteTreeId(String treeId) {
-        return sharedTreeRewrites.get(treeId) == null ? treeId : sharedTreeRewrites.get(treeId);
     }
 }
