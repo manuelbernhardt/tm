@@ -9,8 +9,9 @@
     </div>
 </div>
 
+#{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
 <div id="cycleDeleteConfirmationDialog" title="Deletion confirmation of cycle"></div>
-
+#{/}
 
 <div class="left_table inner">
     #{box 'Test Instances'}
@@ -34,7 +35,7 @@
     $("#repositoryTree").bind("select_node.jstree", function (e, data) {
         scriptIdParam = getScriptId();
         refreshTableContents("#instancesTable", false, false)
-    })
+    });
 
     #{tabularasa.init tableId:'instancesTable'}
     var instancesTableParameters = {
@@ -68,6 +69,7 @@
         $('#removeInstance').button('enable');
     });
 
+    #{deadbolt.restrict roles:[[models.general.UnitRole.TESTPREPDELETE]]}
     $('#removeInstance').click(function() {
         $('.instanceHiddenOnLoad').hide();
         $('.instanceShownOnLoad').show();
@@ -77,6 +79,7 @@
             });
         });
     });
+    #{/}
 
     function getSelectedId() {
         return getSelectedRowId('#instancesTable');
@@ -97,9 +100,9 @@
 
     function loadInnerData() {
         $.post('@{Preparation.instances()}', {scriptId: getSelectedNodeId('repositoryTree')},
-                function() {
-                    refreshTableContents('#instancesTable', false, false);
-                }).error(errorHandler);
+            function() {
+                refreshTableContents('#instancesTable', false, false);
+            }).error(errorHandler);
     }
 
     $('#createInstanceButton').click(function() {
