@@ -237,7 +237,7 @@ public class TMController extends Controller {
 
     // TODO replace by something automatic
     private final static String[] adminTrees = {"accountRolesAssignmentTree", "projectRolesAssignmentTree", "projectRolesTree", "projectTree", "userTree"};
-    private final static String[] sharedTrees = {"adminApproachTree"};
+    private final static String[] specialProjectTrees = {"approachTree"};
 
     /**
      * Does this controller have the concept of active project
@@ -247,9 +247,9 @@ public class TMController extends Controller {
     @Util
     public static boolean controllerHasActiveProject() {
         if (request.controllerClass.equals(TMTreeController.class)) {
-            boolean hasAdminTree = Arrays.binarySearch(adminTrees, request.params.get("treeId")) < 0;
-            boolean hasSharedTree = Arrays.binarySearch(sharedTrees, request.params.get("treeId")) < 0;
-            return hasAdminTree && hasSharedTree;
+            boolean isAdminTree = Arrays.binarySearch(adminTrees, request.params.get("treeId")) < 0;
+            boolean isSpecialProjectTree = Arrays.binarySearch(specialProjectTrees, request.params.get("treeId")) < 0;
+            return isAdminTree && isSpecialProjectTree;
         }
         return !request.controller.startsWith("admin");
     }

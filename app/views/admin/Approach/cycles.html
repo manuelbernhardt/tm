@@ -7,7 +7,7 @@ When Test Cycles are defined for a project, the newly created Test Instances wil
 Alternatively simple tags can be used to organize the Test Execution.
 #{/}
 
-        <!-- todo reorganise css classes to fit different width and positioning needs-->
+<!-- todo reorganise css classes to fit different width and positioning needs-->
 
 <div class="container">
     <div id="actions" class="actions">
@@ -20,7 +20,7 @@ Alternatively simple tags can be used to organize the Test Execution.
   <div class="tree-container">
       <div class="left_tree" style="width:29%">
         #{box 'Releases and Cycles'}
-        <div id="adminApproachTree" class="tree" style="border:none;"></div>
+        <div id="approachTree" class="tree" style="border:none;"></div>
         #{/box}
       </div>
       <div class="right_table" style="width:70%">
@@ -78,14 +78,14 @@ Alternatively simple tags can be used to organize the Test Execution.
         $('#cycleForm').oxForm({
           loadAction: '@{admin.Approach.cycleDetails()}',
           submissionCallback:function() {
-                                refreshTree('adminApproachTree');
+                                refreshTree('approachTree');
                               }
         });
 
         $('#releaseForm').oxForm({
           loadAction: '@{admin.Approach.releaseDetails()}',
           submissionCallback:function() {
-                                refreshTree('adminApproachTree');
+                                refreshTree('approachTree');
                               }
         });
 
@@ -98,9 +98,9 @@ Alternatively simple tags can be used to organize the Test Execution.
             $('#cycleDetails').hide();
             $('#shownOnLoad').show();
 
-            if($.jstree._reference('#adminApproachTree') == null && getProjectNodeId!=null){
+            if($.jstree._reference('#approachTree') == null && getProjectNodeId!=null){
 
-                $('#adminApproachTree').tree(
+                $('#approachTree').tree(
                     {
                       "args" : {"projectId": getProjectNodeId},
                       types: approachTreeTypes,
@@ -119,35 +119,35 @@ Alternatively simple tags can be used to organize the Test Execution.
                 });
             }
             if(getProjectNodeId!=null){
-                refreshTree('adminApproachTree');
+                refreshTree('approachTree');
             }
         });
 
         /** button initialisation **/
         $("#create_release").click(function () {
-          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getProjectNodeId}}});
+          $("#approachTree").jstree("create", null, "last", {attr:{"rel":"release"}, data:"New release", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#create_cycle").click(function () {
-          $("#adminApproachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getProjectNodeId}}});
+          $("#approachTree").jstree("create", null, "last", {attr:{"rel":"default"}, data:"New cycle", metadata: {args: {projectId: getProjectNodeId}}});
         });
         $("#remove_cycleRelease").click(function () {
-            deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('adminApproachTree') ,function(){
-                $("#adminApproachTree").jstree("remove", null);
+            deletionConfirmation('cycleDeletionConfirmationDialog','Project cycle', getSelectedNodeName('approachTree') ,function(){
+                $("#approachTree").jstree("remove", null);
             })
 
         });
 
         /** Selection listener **/
-        $("#adminApproachTree").bind("select_node.jstree", function (e, data) {
+        $("#approachTree").bind("select_node.jstree", function (e, data) {
           if (isSelectedNodeType(data, ['default', 'testCycle'])) {
              $("#remove_cycleRelease").button('enable');
              $('#releaseDetails').hide();
              $('#cycleDetails').show();
              $('#shownOnLoad').hide();
-             $('#cycleForm').oxForm('load', getSelectedNodeId('adminApproachTree'));
+             $('#cycleForm').oxForm('load', getSelectedNodeId('approachTree'));
           } else if (isSelectedNodeType(data, ['release'])) {
              $("#remove_cycleRelease").button('enable');
-              $('#releaseForm').oxForm('load', getSelectedNodeId('adminApproachTree'));
+              $('#releaseForm').oxForm('load', getSelectedNodeId('approachTree'));
               $('#releaseDetails').show();
               $('#cycleDetails').hide();
               $('#shownOnLoad').hide();
