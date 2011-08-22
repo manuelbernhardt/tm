@@ -201,7 +201,8 @@ public class Execution extends TMController {
     public static void updateRunDialog(Long runId) {
         Run run = Lookups.getRun(runId);
         String formName = "updateForm";
-        render("Execution/runExecution.html", run, formName);
+        Integer numberOfSteps = run.getSteps().size();
+        render("Execution/runExecution.html", run, formName, numberOfSteps);
     }
 
     @Restrict(UnitRole.TESTEXECEDIT)
