@@ -223,13 +223,45 @@ $(document).ready(function() {
     $('#createRunButton').click(function() {
         $('#createRunDialog').load('@{Execution.createRunDialog}', { instanceId: getSelectedRowId('#instanceTable') }, function() {
             $('#createRunDialog').dialog('open');
+            if ($('#createRunDialog').hasClass('form-dialog')) {
+                $('#createRunDialog').dialog("option", "buttons", {
+                    "Save": {
+                        click: function() {
+                            $('#runForm').ajaxSubmit({
+                                success: function(data) {
+                                    fullDrawInstanceTable = false;
+                                    refreshTableContents('#instanceTable', false);
+                                    $('#createRunDialog').dialog("close");
+                                    if (data != null && data != '') {
+                                        createdRunId = data;
+                                        $('#createDefectDialog').dialog("open");
+                                    }
+                                },
+                                error: function(xhr, textStatus, errorThrown) {
+                                    errorHandler(xhr, textStatus, errorThrown);
+                                    $('#createRunDialog').dialog("close");
+                                }
+                            });
+                        },
+                        id: "createRunDialogConfirmButton",
+                        text: "Save"
+                    },
+                    "Cancel": {
+                        click: function() {
+                            $(this).dialog("close");
+                        },
+                        id: "createRunDialogCancelButton",
+                        text: "Cancel"
+                    }
+                });
+            }
         });
     });
 
 
     $('#updateRunButton').click(function() {
         $('#updateRunDialog').load('@{Execution.updateRunDialog}', { runId: getSelectedRowId('#runTable') }, function() {
-            $('#updateRunDialog').dialog('open')
+            $('#updateRunDialog').dialog('open');
         });
     });
 
