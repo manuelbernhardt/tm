@@ -18,7 +18,9 @@ import models.tm.test.Script;
 import models.tm.test.ScriptParam;
 import models.tm.test.Tag;
 import play.data.validation.Valid;
+import play.data.validation.Validation;
 import play.db.jpa.GenericModel;
+import play.mvc.Before;
 import util.Logger;
 
 /**
@@ -34,14 +36,15 @@ public class Preparation extends TMController {
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
-    public static void tags(Long instanceId) {
-        Instance instance = Lookups.getInstance(instanceId);
-        Lookups.tags(instance.tags);
+    public static void instanceDetailsData(Long baseObjectId, String[] fields) {
+        Object base = Lookups.getInstance(baseObjectId);
+        renderFields(base, fields);
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
-    public static void allTags(String q) {
-        Lookups.allTags(getActiveProject().getId(), Tag.TagType.TESTINSTANCE, q);
+    public static void tags(Long instanceId) {
+        Instance instance = Lookups.getInstance(instanceId);
+        Lookups.tags(instance.tags);
     }
 
     @Restrict(UnitRole.TESTPREPVIEW)
@@ -72,9 +75,25 @@ public class Preparation extends TMController {
     }
 
     @Restrict(UnitRole.TESTPREPEDIT)
-    public static void updateTags(Long instanceId, String tags) {
-        Instance instance = Lookups.getInstance(instanceId);
-        instance.tags = getTags(tags, Tag.TagType.TESTINSTANCE);
+    public static void allTags(String q) {
+        Lookups.allTags(getActiveProject().getId(), Tag.TagType.TESTINSTANCE, q);
+    }
+
+    @Before
+    public static void handleTags() {
+        if (request.actionMethod.equals("edit")) {
+            processTags("instance.tags", Tag.TagType.TESTINSTANCE);
+        }
+    }
+
+    @Restrict(UnitRole.TESTPREPEDIT)
+    public static void edit(@Valid Instance instance) {
+        checkInAccount(instance);
+        checkAuthenticity();
+        if (Validation.hasErrors()) {
+            // TODO handle validation errors in view somehow
+            error();
+        }
         instance.save();
         ok();
     }

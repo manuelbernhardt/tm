@@ -2,25 +2,21 @@ package models.tm.test;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.PostLoad;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import models.tm.Defect;
 import models.tm.Project;
 import models.tm.ProjectModel;
 import models.tm.TMUser;
 import models.tm.approach.TestCycle;
+import play.data.validation.MaxSize;
+import play.data.validation.Required;
 import play.db.jpa.JPABase;
 import play.templates.JavaExtensions;
+import tree.persistent.NodeName;
 
 /**
- * @author: Gwenael Alizon <gwenael.alizon@oxiras.com>
+ * @author Gwenael Alizon <gwenael.alizon@oxiras.com>
  */
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "id", columnNames = {"naturalId", "project_id"})}, name = "tm_test_Instance")
@@ -30,7 +26,14 @@ public class Instance extends ProjectModel implements TagHolder{
         super(project);
     }
 
+    @NodeName
+    @Required
+    @Column(nullable = false)
     public String name;
+
+    @MaxSize(8000)
+    @Column(length = 8000)
+    public String description;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, optional = false)
     public Script script;

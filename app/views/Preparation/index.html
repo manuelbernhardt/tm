@@ -24,13 +24,8 @@
   function handleTabsPopulation(instanceId) {
     // TODO all these requests should be in fact one request!
 
-    // tags data loading
-    $.getJSON('@{Preparation.tags()}', {instanceId: instanceId}, function(data) {
-      $('#tags').tokenInput('clearAll');
-      $(data).each(function() {
-        $('#tags').tokenInput('add', this.id, this.name);
-      });
-    });
+    // instance details data loading
+    $('#instanceForm').oxForm('load', instanceId);
 
     // schedule data loading
     $('#scheduleForm').oxForm('load', instanceId);

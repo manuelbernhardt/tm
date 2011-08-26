@@ -37,7 +37,15 @@
         $("#repositoryTree").bind("select_node.jstree", function (e, data) {
 
             // selection listener for the instance tree
-            $("#scriptCycleTree").tree({"args" : getScriptQuery, types: scriptCycleTreeTypes});
+            $("#scriptCycleTree").tree({args : getScriptQuery, types: scriptCycleTreeTypes,
+                onRename: function(name) {
+                    var fieldName = '#' + $('#instanceForm').oxForm('getFieldId', 'instance.name');
+                    $(fieldName).val(name);
+                },
+                onDeleteFailed: function() {
+                    errorMessage("Could not delete test instance", "Error deleting test instance")
+                }
+            });
             $("#scriptCycleTree").bind("select_node.jstree", function (e, data) {
                 if (isSelectedNodeType(data, ["instance", "default"])) {
                     var instanceId = getNodeIdFromData(data);
