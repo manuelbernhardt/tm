@@ -25,7 +25,23 @@ public class Profile extends TMController {
     public static void index() {
         TMUser user = getConnectedUser();
         Router.ActionDefinition action = Router.reverse("profile.Profile.edit");
-        render("/profile/Profile/index.html", action, user);
+        List<AccountRole> accountRoles = AccountRole.getAccountRoles(user.accountRoles);
+
+        boolean userAdmin = false;
+        boolean projectAdmin = false;
+        boolean accountAdmin = false;
+
+        if (accountRoles.contains(AccountRole.USER_ADMIN)) {
+            userAdmin = true;
+            System.out.println("yeah");
+        }
+        if (accountRoles.contains(AccountRole.PROJECT_ADMIN)) {
+            projectAdmin = true;
+        }
+        if (accountRoles.contains(AccountRole.ACCOUNT_ADMIN)) {
+            accountAdmin = true;
+        }
+        render("/profile/Profile/index.html", action, user, userAdmin, projectAdmin, accountAdmin);
     }
 
     public static void edit(@Valid TMUser user) {
