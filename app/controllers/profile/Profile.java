@@ -33,7 +33,6 @@ public class Profile extends TMController {
 
         if (accountRoles.contains(AccountRole.USER_ADMIN)) {
             userAdmin = true;
-            System.out.println("yeah");
         }
         if (accountRoles.contains(AccountRole.PROJECT_ADMIN)) {
             projectAdmin = true;
