@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="left_tree">
+        <div id="projectRolesTree" class="tree"></div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $("#projectRolesTree").tree({"args" : {"userId": "${user.id}"}, types: projectRoleTreeTypes});
+</script>

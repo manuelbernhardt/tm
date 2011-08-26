@@ -1,3 +1,23 @@
 #{extends 'profile/main.html' /}
 
-#{include 'general/userProfile.html' /}
+<div id="profileTabs">
+    <ul>
+        <li><a href="#userProfile"><span>My profile</span></a></li>
+        <li><a href="#projects"><span>My projects</span></a></li>
+        <li><a href="#account"><span>My account roles</span></a></li>
+    </ul>
+    <div id="userProfile">
+        #{include 'general/userProfile.html' /}
+    </div>
+    <div id="projects">
+        #{include 'profile/Profile/projects.html' /}
+    </div>
+    <div id="account">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#profileTabs").tabs();
+</script>
+
