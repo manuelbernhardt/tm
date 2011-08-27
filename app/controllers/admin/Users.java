@@ -12,6 +12,7 @@ import controllers.Lookups;
 import controllers.TMController;
 import controllers.deadbolt.Deadbolt;
 import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.tabularasa.TableController;
 import models.account.User;
 import models.general.UnitRole;
@@ -69,7 +70,7 @@ public class Users extends TMController {
         ok();
     }
 
-    @Restrict(UnitRole.ACCOUNTADMIN)
+    @Restrictions({@Restrict(UnitRole.USEREDIT), @Restrict(UnitRole.ACCOUNTADMIN)})
     public static void getAccountRoles(Long userId) {
         TMUser user = null;
         if (userId != null) {
