@@ -40,7 +40,7 @@
             },
             "cookies" : {
                 "auto_save" : true,
-                "save_opened" : false
+                "save_opened" : true
             }
         };
 
