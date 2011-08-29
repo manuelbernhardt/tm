@@ -185,5 +185,6 @@ mail.smtp=mock
 
 deadbolt.handler=controllers.TMDeadboltHandler
 excel.template.root=app/export
+tree.shouldRenderNodeState=false
 
 tm.hostname=localhost
