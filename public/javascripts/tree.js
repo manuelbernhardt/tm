@@ -37,10 +37,6 @@
             "search": {
                 "case_insensitive": true,
                 "show_only_matches": true
-            },
-            "cookies" : {
-                "auto_save" : true,
-                "save_opened" : true
             }
         };
 
@@ -172,7 +168,7 @@
                 },
                     function (r) {
                         if (r.status) {
-                            $(data.rslt.obj).attr("id", "node_" + r.rel + "_" + r.id);
+                            $(data.rslt.obj).attr("id", "node_" + treeId + "_" + r.rel + "_" + r.id);
                             $(data.rslt.obj).attr("rel", r.rel);
                         }
                         else {
@@ -251,7 +247,7 @@
                             $.jstree.rollback(data.rlbk);
                         }
                         else {
-                            $(data.rslt.oc).attr("id", "node_" + r.type + "_" + r.id);
+                            $(data.rslt.oc).attr("id", "node_" + treeId + "_" + r.type + "_" + r.id);
                             if (data.rslt.cy && $(data.rslt.oc).children("UL").length) {
                                 data.inst.refresh(data.inst._get_parent(data.rslt.oc));
                             }
